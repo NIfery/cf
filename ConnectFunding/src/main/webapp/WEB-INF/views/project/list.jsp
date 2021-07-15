@@ -49,11 +49,27 @@
 			hr {
 				border-bottom: 5px solid #eceff8;
 			}
+			.dropdown-submenu {
+		    	position: relative;
+			}
+
+			.dropdown-submenu .dropdown-menu {
+				top: 0;
+				left: 100%;
+				margin-top: -1px;
+			}
 		</style>
 		
 		<script type="text/javascript" 
 			src="<c:url value='/project_assets/js/jquery-3.6.0.min.js'/>"></script>
 		<script type="text/javascript">
+			$(function(){
+				$('.dropdown-submenu a.test').on("click", function(e){
+					$(this).next('ul').toggle();
+					e.stopPropagation();
+					e.preventDefault();
+				});
+			});
 			function test(type){
 				$.ajax({
 					url:"<c:url value='/project/alist'/>",
@@ -63,41 +79,51 @@
 					success:function(res){
 						$('#test').empty();
 						
-						var str="<div class='container'><div class='weekly2-wrapper'><div class='row'>";
+						var str="";
+						str+="<div class='container'><div class='weekly2-wrapper'><div class='row'>";
 						str+="<div class='col-lg-12'><div class='section-tittle mb-30'>";
-						str+="<c:if test='${empty "+res+" }'>";
-						str+="<h3><span style='color:red'>0</span>개의 프로젝트가 있습니다.</h3></c:if>";
-						str+="<c:if test='${!empty "+res+" }'>";
-						str+="<h3><span style='color:red'>"+res.length+"</span>개의 프로젝트가 있습니다.</h3></c:if>";
+						str+="<h3><span style='color:red'>"+res.length+"</span>개의 프로젝트가 있습니다.</h3>";
 						str+="</div></div></div><div class='row'><div class='col-12'>";
 						str+="<div class='dot-style d-flex dot-style'>";
-						str+="<c:if test='${empty "+res+" }'>데이터가 없습니다.</c:if>";
-						str+="<c:if test='${!empty "+res+" }'>";
-						str+="<c:forEach var='vo' items='${list }' begin='0' end='3'>";
-						str+="<div class='weekly2-single'><div class='weekly2-img'>";
-						str+="<img src='${pageContext.request.contextPath}/project_assets/${vo.projectImage}'></div>";
-						str+="<div class='weekly2-caption'><span></span>";
-						str+="<h4><a href='#'>${vo.projectName}</a></h4>";
-						str+="<p><fmt:formatDate value='${vo.projectStartdate }' pattern='yyyy-MM-dd'/></p>";
-						str+="<h4><a href='#'>${vo.projectSummary }</a></h4>";
-						str+="<hr style='margin:5px 0px 8px 0px;'>";
-						str+="<h6 style='color:red'>${vo.totalFundingAmount/vo.totalAmount*100 }% 달성</h6>";
-						str+="</div></div></c:forEach></c:if></div></div></div></div></div>";
+						if(res==''){
+							str+="데이터가 없습니다.";
+						}else{
+							$.each(res, function(idx,item){
+								if(idx<4){
+									str+="<div class='weekly2-single'><div class='weekly2-img'>";
+									str+="<img src='${pageContext.request.contextPath}/project_assets/"+item.projectImage+"'></div>";
+									str+="<div class='weekly2-caption'><span></span>";
+									str+="<h4><a href='#'>"+item.projectName+"</a></h4>";
+									str+="<p>"+item.projectStartdate+"</p>";
+									str+="<h4><a href='#'>"+item.projectSummary+"</a></h4>";
+									str+="<hr style='margin:5px 0px 8px 0px;'>";
+									str+="<h6 style='color:red'>"+item.totalFundingAmount/+item.totalAmount*100+"% 달성</h6>";
+									str+="</div></div>";
+								}
+							});
+							str+="</div></div></div></div></div>";
+							if(res.length>4){
+								str+="<div class='container'><div class='weekly2-wrapper'><div class='row'>";
+								str+="<div class='col-lg-12'><div class='section-tittle mb-30'><br><br></div></div></div>";
+								str+="<div class='row'><div class='col-12'>";
+								str+="<div class='dot-style d-flex dot-style'>";
+								$.each(res, function(idx,item){
+									if(idx>=4){
+										str+="<div class='weekly2-single'><div class='weekly2-img'>";
+										str+="<img src='${pageContext.request.contextPath}/project_assets/"+item.projectImage+"'></div>";
+										str+="<div class='weekly2-caption'><span></span>";
+										str+="<h4><a href='#'>"+item.projectName+"</a></h4>";
+										str+="<p>"+item.projectStartdate+"</p>";
+										str+="<h4><a href='#'>"+item.projectSummary+"</a></h4>";
+										str+="<hr style='margin:5px 0px 8px 0px;'>";
+										str+="<h6 style='color:red'>"+item.totalFundingAmount/+item.totalAmount*100+"% 달성</h6>";
+										str+="</div></div>";
+									}
+								});
+								str+="</div></div></div></div></div>";
+							}
+						}
 						
-						str+="<div class='container'><div class='weekly2-wrapper'><div class='row'>";
-						str+="<div class='col-lg-12'><div class='section-tittle mb-30'><br><br></div></div></div>";
-						str+="<div class='row'><div class='col-12'><div class='dot-style d-flex dot-style'>";
-						str+="<c:if test='${!empty "+res+" && fn:length(list)>4}'>";
-						str+="<c:forEach var='vo' items='${"+res+" }' begin='4'>";
-						str+="<div class='weekly2-single'><div class='weekly2-img'>";
-						str+="<img src='${pageContext.request.contextPath}/project_assets/${vo.projectImage}'></div>";
-						str+="<div class='weekly2-caption'><span></span>";
-						str+="<h4><a href='#'>${vo.projectName}</a></h4>";
-						str+="<p><fmt:formatDate value='${vo.projectStartdate }' pattern='yyyy-MM-dd'/></p>";
-						str+="<h4><a href='#'>${vo.projectSummary }</a></h4>";
-						str+="<hr style='margin:5px 0px 8px 0px;'>";
-						str+="<h6 style='color:red'>${vo.totalFundingAmount/vo.totalAmount*100 }% 달성</h6>";
-						str+="</div></div></c:forEach></c:if></div></div></div></div></div>";
 						
 						$('#test').append(str);
 					},
@@ -205,16 +231,32 @@
                 <!-- section Tittle -->
                 <div class="row">
                     <div class="col-lg-12">
-                    	<div class="dropdown">
-						  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						    카테고리
-						  </button>
-						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						    <a class="dropdown-item" href="#" onclick="test('1')">모바일 게임</a>
-						    <a class="dropdown-item" href="#">Another action</a>
-						    <a class="dropdown-item" href="#">Something else here</a>
-						  </div>
-						</div>
+                    
+                    <div class="dropdown">
+					    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">카테고리
+					    <span class="caret"></span></button>
+					    <ul class="dropdown-menu">
+					      <li class="dropdown-submenu dropend">
+					        <a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">게임<span class="caret"></span></a>
+					        <ul class="dropdown-menu">
+					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">모든 게임</a></li>
+					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="test('1')">모바일 게임</a></li>
+					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">보드 게임</a></li>
+					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">비디오 게임</a></li>
+					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">카드 게임</a></li>
+					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">게임 페스티벌</a></li>
+					        </ul>
+					      </li>
+					      <li class="dropdown-submenu dropend">
+					      <a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">공연<span class="caret"></span></a>
+					      </li>
+					      <li class="dropdown-submenu dropend">
+					      <a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">디자인<span class="caret"></span></a>
+					      </li>
+					    </ul>
+					  </div>
+                    
+                    	
 						<div class="dropdown">
 						  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						    상태
@@ -247,8 +289,8 @@
 						</div>
 						<div class="dropdown" style="float:right;padding:3px;">
 						  <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-						  	style="padding:12px 0px;" onclick="location.reload()">
-						    초기화
+						  	style="padding:12px 0px;" onclick="test('0')">
+						    전체보기
 						  </button>
 						</div>
                     </div>

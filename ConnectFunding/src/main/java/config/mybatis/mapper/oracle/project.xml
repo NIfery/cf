@@ -8,7 +8,9 @@
 	</select>
 	<select id="selectBySecondCategoryNo" parameterType="int" resultType="projectVo">
 		select * from PROJECT
-		where second_category_no=#{secondCategoryNo}
+		<if test="secondCategoryNo!=0">
+			where second_category_no=#{secondCategoryNo}
+		</if>
 		order by PROJECT_NO desc
 	</select>
 	

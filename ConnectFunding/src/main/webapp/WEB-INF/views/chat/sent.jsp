@@ -18,23 +18,18 @@
   </thead>
   <tbody>
     <tr>
-      <th scope="row">3</th>
-      <td>관리자입니다.</td>
-      <td>문의주신 내용 답변드립니다.</td>
+      <th scope="row">2</th>
+      <td>결제관련</td>
+      <td>펀딩 완료 후 결제는 언제 되나요?</td>
       <td>2021-07-15</td>
     </tr>
     <tr>
-      <th scope="row">2</th>
-      <td>관리자 답변</td>
-      <td>문의 관련 답변입니다.</td>
+      <th scope="row">1</th>
+      <td>펀딩 관련</td>
+      <td>모바일 게임 펀딩</td>
       <td>2021-07-13</td>
     </tr>
-    <tr>
-      <th scope="row">1</th>
-      <td>답변</td>
-      <td>답변입니다.</td>
-      <td>2021-07-11</td>
-    </tr>
+    
   </tbody>
 </table>
   </div>

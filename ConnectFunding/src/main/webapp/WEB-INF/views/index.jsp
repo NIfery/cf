@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!doctype html>
 <html class="no-js" lang="zxx">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>title 수정-1mj jh </title>
+        <title>★ Connect Funding ★</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="manifest" href="site.webmanifest">
@@ -25,8 +26,12 @@
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/slick.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/nice-select.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/style.css">
-   
-   </head>
+<style type="text/css">
+a {
+	text-decoration: none !important;
+}
+</style>
+</head>
 
    <body>
        
@@ -53,7 +58,7 @@
                             <!-- Logo -->
                             <div class="col-xl-3 col-lg-3 col-md-3">
                                 <div class="logo">
-                                    <a href="index.html">
+                                    <a href="<c:url value='/'/>">
                                     <img src="${pageContext.request.contextPath}/assets/img/logo/logo.png" alt="로고"></a>
                                 </div>
                             </div>
@@ -66,25 +71,39 @@
                             <div class="col-xl-10 col-lg-10 col-md-12 header-flex">
                                 <!-- sticky -->
                                     <div class="sticky-logo">
-                                        <a href="index.html"><img src="${pageContext.request.contextPath}/assets/img/logo/logo.png" alt=""></a>
+                                        <a href="<c:url value='/'/>"><img src="${pageContext.request.contextPath}/assets/img/logo/logo.png" alt=""></a>
                                     </div>
                                 <!-- Main-menu -->
                                 <div class="main-menu d-none d-md-block">
                                     <nav>                  
                                         <ul id="navigation">    
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="categori.html">Category</a></li>
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="latest_news.html">Latest News</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                            <li><a href="#">Pages</a>
-                                                <ul class="submenu">
-                                                    <li><a href="elements.html">Element</a></li>
-                                                    <li><a href="blog.html">Blog</a></li>
-                                                    <li><a href="single-blog.html">Blog Details</a></li>
-                                                    <li><a href="details.html">Categori Details</a></li>
-                                                </ul>
-                                            </li>
+                                            <li><a href="<c:url value='/'/>">Home</a></li>
+                                            <li><a href="#">Category</a></li>
+                                            <li><a href="#">About</a></li>
+                                            <c:if test="${empty userVo.userName}">
+	                                            <li><a href="<c:url value='/cfmember/cfLogin'/>">로그인</a></li>
+	                                            <li><a href="<c:url value='/cfmember/register'/>">회원가입</a></li>
+	                                            <li><a href="#">
+	                                            	<img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
+	                                            		alt="로그인" style="width: 40px;" >
+	                                            	</a>
+	                                            </li>
+                                            </c:if>
+                                            <c:if test="${!empty userVo.userName}">
+                                            	<li><a href="<c:url value='/cfmember/cfLogout'/>">로그아웃</a></li>
+                                            	<li><span>${userVo.userName}</span></li>
+	                                            <li><a href="<c:url value='/cfmember/mypage'/>">
+	                                            	<img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
+	                                            		alt="로그인" style="width: 40px;" >
+	                                            	</a>
+	                                            </li>
+                                            </c:if>
+                                               <!--  <ul class="submenu">
+                                                    <li><a href="#">Element</a></li>
+                                                    <li><a href="#">Blog</a></li>
+                                                    <li><a href="#">Blog Details</a></li>
+                                                    <li><a href="#">Categori Details</a></li>
+                                                </ul> -->
                                         </ul>
                                     </nav>
                                 </div>

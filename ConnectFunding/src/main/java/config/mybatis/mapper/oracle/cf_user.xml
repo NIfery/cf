@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.it.cf.user.model.UserDAO">
+	
+	<!-- <insert id="insertMember" parameterType="memberVo">
+		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
+			select USERS_SEQ.nextval from dual
+		</selectKey>
+		insert into users(user_no, user_flag, user_email, user_pwd, user_name,
+			user_hp, user_zipcode, user_address) 
+		values(#{userNo}, #{userFlag}, #{userEmail}, #{userPwd}, #{userName},
+			 #{userHp}, #{userZipcode}, #{userAddress})
+	</insert> -->
+	<insert id="insertUser" parameterType="userVo">
+		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
+			select USERS_SEQ.nextval from dual
+		</selectKey>
+		insert into users(user_no, user_flag, user_email, user_pwd, user_name) 
+		values(#{userNo}, #{userFlag}, #{userEmail}, #{userPwd}, #{userName})
+	</insert>
+	
+	<select id="selectByEmail" resultType="userVo" parameterType="String">
+		select * from users where user_email=#{userEmail}
+	</select>
+	
+	<select id="selectByNo" resultType="userVo" parameterType="int">
+		select * from users where user_no=#{userNo}
+	</select>
+	
+	<!-- 로그인시 메일,비번 일치여부를 위해 -->
+	<select id="selectPwd" parameterType="String" resultType="String">
+		select user_pwd from users
+		where user_email=#{userEmail} and USER_OUTDATE is null
+	</select>
+	
+	<update id="updateProfile" parameterType="userVo">
+		update users
+		set user_name=#{userName} , user_email=#{userEmail}, user_hp=#{userHp}
+		where user_no=#{userNo}
+	</update>
+	
+</mapper>

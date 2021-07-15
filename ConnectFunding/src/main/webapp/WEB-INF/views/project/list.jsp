@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html class="no-js" lang="zxx">
@@ -48,7 +49,64 @@
 			hr {
 				border-bottom: 5px solid #eceff8;
 			}
-		</style>   
+		</style>
+		
+		<script type="text/javascript" 
+			src="<c:url value='/project_assets/js/jquery-3.6.0.min.js'/>"></script>
+		<script type="text/javascript">
+			function test(type){
+				$.ajax({
+					url:"<c:url value='/project/alist'/>",
+					type:"get",
+					data:"secondCategoryNo="+type,
+					dataType:"json",
+					success:function(res){
+						$('#test').empty();
+						
+						var str="<div class='container'><div class='weekly2-wrapper'><div class='row'>";
+						str+="<div class='col-lg-12'><div class='section-tittle mb-30'>";
+						str+="<c:if test='${empty "+res+" }'>";
+						str+="<h3><span style='color:red'>0</span>개의 프로젝트가 있습니다.</h3></c:if>";
+						str+="<c:if test='${!empty "+res+" }'>";
+						str+="<h3><span style='color:red'>"+res.length+"</span>개의 프로젝트가 있습니다.</h3></c:if>";
+						str+="</div></div></div><div class='row'><div class='col-12'>";
+						str+="<div class='dot-style d-flex dot-style'>";
+						str+="<c:if test='${empty "+res+" }'>데이터가 없습니다.</c:if>";
+						str+="<c:if test='${!empty "+res+" }'>";
+						str+="<c:forEach var='vo' items='${list }' begin='0' end='3'>";
+						str+="<div class='weekly2-single'><div class='weekly2-img'>";
+						str+="<img src='${pageContext.request.contextPath}/project_assets/${vo.projectImage}'></div>";
+						str+="<div class='weekly2-caption'><span></span>";
+						str+="<h4><a href='#'>${vo.projectName}</a></h4>";
+						str+="<p><fmt:formatDate value='${vo.projectStartdate }' pattern='yyyy-MM-dd'/></p>";
+						str+="<h4><a href='#'>${vo.projectSummary }</a></h4>";
+						str+="<hr style='margin:5px 0px 8px 0px;'>";
+						str+="<h6 style='color:red'>${vo.totalFundingAmount/vo.totalAmount*100 }% 달성</h6>";
+						str+="</div></div></c:forEach></c:if></div></div></div></div></div>";
+						
+						str+="<div class='container'><div class='weekly2-wrapper'><div class='row'>";
+						str+="<div class='col-lg-12'><div class='section-tittle mb-30'><br><br></div></div></div>";
+						str+="<div class='row'><div class='col-12'><div class='dot-style d-flex dot-style'>";
+						str+="<c:if test='${!empty "+res+" && fn:length(list)>4}'>";
+						str+="<c:forEach var='vo' items='${"+res+" }' begin='4'>";
+						str+="<div class='weekly2-single'><div class='weekly2-img'>";
+						str+="<img src='${pageContext.request.contextPath}/project_assets/${vo.projectImage}'></div>";
+						str+="<div class='weekly2-caption'><span></span>";
+						str+="<h4><a href='#'>${vo.projectName}</a></h4>";
+						str+="<p><fmt:formatDate value='${vo.projectStartdate }' pattern='yyyy-MM-dd'/></p>";
+						str+="<h4><a href='#'>${vo.projectSummary }</a></h4>";
+						str+="<hr style='margin:5px 0px 8px 0px;'>";
+						str+="<h6 style='color:red'>${vo.totalFundingAmount/vo.totalAmount*100 }% 달성</h6>";
+						str+="</div></div></c:forEach></c:if></div></div></div></div></div>";
+						
+						$('#test').append(str);
+					},
+					error:function(xhr, status, error){
+						alert("Error 발생 : " + error);
+					}
+				});
+			}
+		</script>   
    </head>
 
    <body>
@@ -152,7 +210,7 @@
 						    카테고리
 						  </button>
 						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						    <a class="dropdown-item" href="#">Action</a>
+						    <a class="dropdown-item" href="#" onclick="test('1')">모바일 게임</a>
 						    <a class="dropdown-item" href="#">Another action</a>
 						    <a class="dropdown-item" href="#">Something else here</a>
 						  </div>
@@ -189,7 +247,7 @@
 						</div>
 						<div class="dropdown" style="float:right;padding:3px;">
 						  <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-						  	style="padding:12px 0px;">
+						  	style="padding:12px 0px;" onclick="location.reload()">
 						    초기화
 						  </button>
 						</div>
@@ -202,7 +260,7 @@
     <!-- End Weekly-News -->
 
     <!--   Weekly2-News start -->
-    <div class="weekly2-news-area  weekly2-pading gray-bg">
+    <div class="weekly2-news-area  weekly2-pading gray-bg" id="test">
         <div class="container">
             <div class="weekly2-wrapper">
                 <!-- section Tittle -->
@@ -233,7 +291,7 @@
 			                </c:if>
 			                <c:if test="${!empty list }">
 			                	<c:forEach var="vo" items="${list }" begin="0" end="3">
-			                		<div class="weekly2-single" style="width:24%">
+			                		<div class="weekly2-single">
 		                                <div class="weekly2-img">
 		                                    <img src="${pageContext.request.contextPath}/project_assets/${vo.projectImage}"
 		                                    	<%-- style="width:263px; height:170px" --%>
@@ -270,9 +328,9 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="dot-style d-flex dot-style">
-                            <c:if test="${!empty list }">
+                            <c:if test="${!empty list && fn:length(list)>4}">
                             <c:forEach var="vo" items="${list }" begin="4">
-			                	<div class="weekly2-single" style="width:24%">
+			                	<div class="weekly2-single">
 		                               <div class="weekly2-img">
 		                                   <img src="${pageContext.request.contextPath}/project_assets/${vo.projectImage}"
 		                                   	<%-- style="width:263px; height:170px" --%>

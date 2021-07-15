@@ -6,6 +6,11 @@
 	<select id="selectAll" resultType="projectVo">
 		select * from PROJECT order by PROJECT_NO desc
 	</select>
+	<select id="selectBySecondCategoryNo" parameterType="int" resultType="projectVo">
+		select * from PROJECT
+		where second_category_no=#{secondCategoryNo}
+		order by PROJECT_NO desc
+	</select>
 	
 	<select id="selectTotalFundingAmountByFundingNo" parameterType="int" resultType="int">
 		select total_funding_amount from TOTAL_FUNDING

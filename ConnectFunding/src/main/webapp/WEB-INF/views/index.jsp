@@ -79,7 +79,7 @@ a {
                                         <ul id="navigation">    
                                             <li><a href="<c:url value='/'/>">Home</a></li>
                                             <li><a href="#">Category</a></li>
-                                            <li><a href="#">About</a></li>
+                                            <li><a href="<c:url value='/board/List'/>">게시판</a></li>
                                             <c:if test="${empty userVo.userName}">
 	                                            <li><a href="<c:url value='/cfmember/cfLogin'/>">로그인</a></li>
 	                                            <li><a href="<c:url value='/cfmember/register'/>">회원가입</a></li>

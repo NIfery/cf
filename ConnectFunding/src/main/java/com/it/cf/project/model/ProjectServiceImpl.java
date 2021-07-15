@@ -15,6 +15,10 @@ public class ProjectServiceImpl implements ProjectService{
 		return projectDao.selectAll();
 	}
 	
+	public List<ProjectVO> selectBySecondCategoryNo(int secondCategoryNo) {
+		return projectDao.selectBySecondCategoryNo(secondCategoryNo);
+	}
+	
 	public int selectTotalFundingAmountByFundingNo(int fundingNo) {
 		return projectDao.selectTotalFundingAmountByFundingNo(fundingNo);
 	}

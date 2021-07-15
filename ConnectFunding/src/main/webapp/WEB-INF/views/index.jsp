@@ -80,18 +80,19 @@ a {
                                             <li><a href="<c:url value='/'/>">Home</a></li>
                                             <li><a href="#">Category</a></li>
                                             <li><a href="#">About</a></li>
-                                            <c:if test="${empty userVo.userName}">
+                                            <c:if test="${empty sessionScope.userName}">
 	                                            <li><a href="<c:url value='/cfmember/cfLogin'/>">로그인</a></li>
 	                                            <li><a href="<c:url value='/cfmember/register'/>">회원가입</a></li>
-	                                            <li><a href="#">
+	                                            <li><a href="<c:url value='/cfmember/cfLogin'/>">
 	                                            	<img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
-	                                            		alt="로그인" style="width: 40px;" >
+	                                            	<%-- <img src="${pageContext.request.contextPath}/assets/img/${sessionScope.userName}.png" --%> 
+	                                            		alt="로그인" style="width: 40px; ㅗㄷ" >
 	                                            	</a>
 	                                            </li>
                                             </c:if>
-                                            <c:if test="${!empty userVo.userName}">
+                                            <c:if test="${!empty sessionScope.userName}">
                                             	<li><a href="<c:url value='/cfmember/cfLogout'/>">로그아웃</a></li>
-                                            	<li><span>${userVo.userName}</span></li>
+                                            	<li><span>${sessionScope.userName}</span></li>
 	                                            <li><a href="<c:url value='/cfmember/mypage'/>">
 	                                            	<img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
 	                                            		alt="로그인" style="width: 40px;" >

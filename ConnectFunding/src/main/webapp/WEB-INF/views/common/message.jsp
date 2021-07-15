@@ -11,9 +11,9 @@
 	String msg=(String)request.getAttribute("msg");
 	String url=(String)request.getAttribute("url");
 	
-	String ctxPath = request.getContextPath();  //=> /mymvc
-	url = ctxPath+url;  //=> /mymvc + /pd/pdList.do
-						//=> /mymvc/pd/pdList.do
+	String ctxPath = request.getContextPath(); 
+	url = ctxPath+url; 
+					
 %>
 
 <script type="text/javascript">
@@ -23,6 +23,3 @@
 
 </body>
 </html>
-
-
-

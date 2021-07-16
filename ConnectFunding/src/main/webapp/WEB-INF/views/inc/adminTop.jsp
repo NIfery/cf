@@ -85,15 +85,15 @@
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
-                            <a class="js-arrow" href="#">
+                            <a class="js-arrow" href="<c:url value='/admin/index'/>">
                                 <i class="fas fa-tachometer-alt"></i>메인화면</a>
                         </li>
                         <li>
-                            <a href="chart.html">
+                            <a href="#">
                                 <i class="fas fa-user"></i>회원관리</a>
                         </li>
                         <li>
-                            <a href="chart.html">
+                            <a href="<c:url value='/admin/register'/>">
                                 <i class="fas  fa-user-md"></i>관리자 등록</a>
                         </li>
 					</ul>

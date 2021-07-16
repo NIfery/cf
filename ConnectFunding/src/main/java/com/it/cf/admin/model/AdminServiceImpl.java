@@ -1,5 +1,8 @@
 package com.it.cf.admin.model;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -27,5 +30,16 @@ public class AdminServiceImpl implements AdminService{
 		
 		return result;
 	}
+
+	@Override
+	public int insertAdmin(AdminVO vo) {
+		return adminDao.insertAdmin(vo);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectPosition() {
+		return adminDao.selectPosition();
+	}
+
 
 }

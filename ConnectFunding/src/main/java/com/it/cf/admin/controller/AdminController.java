@@ -3,6 +3,7 @@ package com.it.cf.admin.controller;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,11 +32,17 @@ public class AdminController {
 		
 	}
 	
+	@RequestMapping("/inbox")
+	public void inbox() {
+		
+	}
+	
 	@RequestMapping("/login")
 	public void login() {
 		
 	}
 	
+	//로그인 처리
 	@PostMapping("/login")
 	public String login_post(@ModelAttribute AdminVO vo, 
 			@RequestParam(required = false) String chkSave, 
@@ -53,9 +60,10 @@ public class AdminController {
 			
 			//session - adminUserid
 			request.getSession().setAttribute("adminId", vo.getAdminId());
+			request.getSession().setAttribute("adminPosition", vo.getAdminPosition());
 			
 			//cookie - ck_admin_userid
-			Cookie ck = new Cookie("ck_admin_userid", vo.getAdminId());
+			Cookie ck = new Cookie("ck_adminId", vo.getAdminId());
 			ck.setPath("/");
 			if(chkSave!=null && !chkSave.isEmpty()) {
 				ck.setMaxAge(1000*24*60*60);
@@ -74,5 +82,15 @@ public class AdminController {
 		model.addAttribute("url", url);
 		
 		return "common/message";
+	}
+	
+	//로그아웃 처리
+	@RequestMapping("/login/logout")
+	public String logout(HttpSession session) {
+		logger.info("관리자 로그아웃");
+		
+		session.removeAttribute("adminId");
+		
+		return "redirect:/admin/login";
 	}
 }

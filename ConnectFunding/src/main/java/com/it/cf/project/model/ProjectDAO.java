@@ -6,7 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ProjectDAO {
-	List<ProjectVO> selectAll();
-	List<ProjectVO> selectBySecondCategoryNo(int secondCategoryNo);
+	List<ProjectVO> selectAll(ProjectVO pageVo);
+	List<ProjectVO> selectBySecondCategoryNo(ProjectVO pageVo);
 	int selectTotalFundingAmountByFundingNo(int fundingNo);
+	int selectTotalRecord();
+	int selectTotalRecordBySecondCategoryNo(int secondCategoryNo);
 }

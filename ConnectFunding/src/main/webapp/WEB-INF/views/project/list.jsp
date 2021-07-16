@@ -62,8 +62,12 @@
 		
 		<script type="text/javascript" 
 			src="<c:url value='/project_assets/js/jquery-3.6.0.min.js'/>"></script>
+		<script type="text/javascript"
+			src="<c:url value='/project_assets/js/paging.js'/>"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 		<script type="text/javascript">
+			var totalCount=0;
+		
 			$(function(){
 				$('.dropdown-submenu a.test').on("click", function(e){
 					$(this).next('ul').toggle();
@@ -71,25 +75,44 @@
 					e.preventDefault();
 				});
 			});
+			
+			function send(curPage) {
+				$('#currentPage').val(curPage);
+			}
+			
+			function pageProc(curPage){
+				$('input[name=currentPage]').val(curPage);
+				$('form[name=frmPage]').submit();	
+			}
+			
 			function test(type){
 				$.ajax({
 					url:"<c:url value='/project/alist'/>",
 					type:"get",
-					data:"secondCategoryNo="+type,
+					data:{
+							secondCategoryNo:type,
+							curPage:$('#currentPage').val()
+						},
 					dataType:"json",
 					success:function(res){
+						var list = res.list;
+						var pagingInfo = res.pagingInfo;
+						
+						
+						totalCount = pagingInfo.totalRecord;
+						
 						$('#test').empty();
 						
 						var str="";
 						str+="<div class='container'><div class='weekly2-wrapper'><div class='row'>";
 						str+="<div class='col-lg-12'><div class='section-tittle mb-30'>";
-						str+="<h3><span style='color:red'>"+res.length+"</span>개의 프로젝트가 있습니다.</h3>";
+						str+="<h3><span style='color:red'>"+totalCount+"</span>개의 프로젝트가 있습니다.</h3>";
 						str+="</div></div></div><div class='row'><div class='col-12'>";
 						str+="<div class='dot-style d-flex dot-style'>";
-						if(res==''){
+						if(list==''){
 							str+="데이터가 없습니다.";
 						}else{
-							$.each(res, function(idx,item){
+							$.each(list, function(idx,item){
 								if(idx<4){
 									str+="<div class='weekly2-single'><div class='weekly2-img'>";
 									str+="<img src='${pageContext.request.contextPath}/project_assets/"+item.projectImage+"'></div>";
@@ -103,12 +126,12 @@
 								}
 							});
 							str+="</div></div></div></div></div>";
-							if(res.length>4){
+							if(list.length>4){
 								str+="<div class='container'><div class='weekly2-wrapper'><div class='row'>";
 								str+="<div class='col-lg-12'><div class='section-tittle mb-30'><br><br></div></div></div>";
 								str+="<div class='row'><div class='col-12'>";
 								str+="<div class='dot-style d-flex dot-style'>";
-								$.each(res, function(idx,item){
+								$.each(list, function(idx,item){
 									if(idx>=4){
 										str+="<div class='weekly2-single'><div class='weekly2-img'>";
 										str+="<img src='${pageContext.request.contextPath}/project_assets/"+item.projectImage+"'></div>";
@@ -123,8 +146,23 @@
 								});
 								str+="</div></div></div></div></div>";
 							}
+							
+							//페이징처리
+						    var pageStr="";
+
+							//[1][2][3][4][5][6][7][8][9][10]
+							for (var i = pagingInfo.firstPage; i <= pagingInfo.lastPage; i++) {
+								if (i == pagingInfo.currentPage) {
+									pageStr += "<span style='color:blue;font-weight: bold'>" + i
+											+ "</span>";
+								} else {
+									pageStr += "<a style='color:black;text-decoration: none' href='#' onclick='send("+i+");test("+type+")'>[" + i
+											+ "]</a>";
+								}
+							}
+							
+							$('#divPage').html(pageStr);
 						}
-						
 						
 						$('#test').append(str);
 					},
@@ -240,7 +278,7 @@
 					        <a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">게임<span class="caret"></span></a>
 					        <ul class="dropdown-menu">
 					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">모든 게임</a></li>
-					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="test('1')">모바일 게임</a></li>
+					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="send('1');test('1');">모바일 게임</a></li>
 					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">보드 게임</a></li>
 					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">비디오 게임</a></li>
 					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">카드 게임</a></li>
@@ -258,7 +296,7 @@
                     
                     	
 						<div class="dropdown">
-						  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						    상태
 						  </button>
 						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -268,7 +306,7 @@
 						  </div>
 						</div>
 						<div class="dropdown">
-						  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						    달성률
 						  </button>
 						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -278,7 +316,7 @@
 						  </div>
 						</div>
 						<div class="dropdown">
-						  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						    모인금액
 						  </button>
 						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -288,7 +326,7 @@
 						  </div>
 						</div>
 						<div class="dropdown" style="float:right;padding:3px;">
-						  <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+						  <button class="btn btn-default" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 						  	style="padding:12px 0px;" onclick="test('0')">
 						    전체보기
 						  </button>
@@ -312,7 +350,7 @@
                             <h3><span style="color:red">0</span>개의 프로젝트가 있습니다.</h3>
                         </c:if>    
 						<c:if test="${!empty list }">
-                            <h3><span style="color:red">${list.size() }</span>개의 프로젝트가 있습니다.</h3>
+                            <h3><span style="color:red">${pagingInfo.totalRecord }</span>개의 프로젝트가 있습니다.</h3>
                         </c:if>    
                             
                         </div>
@@ -394,6 +432,37 @@
             </div>
         </div>
     </div>           
-   
+        <c:if test="${!empty list && fn:length(list)>4}">
+        	<br><br>
+        </c:if>
+        <div id="divPage" style="text-align: center">
+			<c:if test="${pagingInfo.firstPage>1 }">
+				<a href="#" onclick="pageProc(${pagingInfo.firstPage-1})">
+					<img src="<c:url value='/resources/images/first.JPG'/>" alt="이전 블럭으로">
+				</a>
+			</c:if>
+								
+			<!-- [1][2][3][4][5][6][7][8][9][10] -->
+			<c:forEach var="i" begin="${pagingInfo.firstPage }" 
+				end="${pagingInfo.lastPage }">
+				<c:if test="${i==pagingInfo.currentPage }">
+					<span style="color:blue;font-weight: bold">${i}</span>
+				</c:if>
+				<c:if test="${i!=pagingInfo.currentPage }">
+					<a style="color:black;text-decoration: none" href="#" onclick="pageProc(${i})">[${i}]</a>
+				</c:if>
+			</c:forEach>
+			
+			<c:if test="${pagingInfo.lastPage < pagingInfo.totalPage }">
+				<a href="#" onclick="pageProc(${pagingInfo.lastPage+1})">
+					<img src="<c:url value='/resources/images/last.JPG'/>" alt="다음 블럭으로">
+				</a>
+			</c:if>
+		</div>
+    <form action="<c:url value='/project/list'/>" 
+		name="frmPage" method="post">
+		<input type="hidden" name="currentPage" id="currentPage"><br>
+		<input type="hidden" name="countPerPage" id="countPerPage" value="8" />
+	</form>
    
    <%@ include file="../include/bottom.jsp" %>  

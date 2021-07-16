@@ -11,15 +11,23 @@ import lombok.RequiredArgsConstructor;
 public class ProjectServiceImpl implements ProjectService{
 	private final ProjectDAO projectDao;
 	
-	public List<ProjectVO> selectAll() {
-		return projectDao.selectAll();
+	public List<ProjectVO> selectAll(ProjectVO pageVo) {
+		return projectDao.selectAll(pageVo);
 	}
 	
-	public List<ProjectVO> selectBySecondCategoryNo(int secondCategoryNo) {
-		return projectDao.selectBySecondCategoryNo(secondCategoryNo);
+	public List<ProjectVO> selectBySecondCategoryNo(ProjectVO pageVo) {
+		return projectDao.selectBySecondCategoryNo(pageVo);
 	}
 	
 	public int selectTotalFundingAmountByFundingNo(int fundingNo) {
 		return projectDao.selectTotalFundingAmountByFundingNo(fundingNo);
+	}
+	
+	public int selectTotalRecord() {
+		return projectDao.selectTotalRecord();
+	}
+	
+	public int selectTotalRecordBySecondCategoryNo(int secondCategoryNo) {
+		return projectDao.selectTotalRecordBySecondCategoryNo(secondCategoryNo);
 	}
 }

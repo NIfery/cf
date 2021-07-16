@@ -6,7 +6,10 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
 import com.it.cf.admin.controller.AdminLoginInterceptor;
+import com.it.cf.user.controller.LoginInterceptor;
+
 
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer{
@@ -18,7 +21,7 @@ public class MvcConfiguration implements WebMvcConfigurer{
 	.excludePathPatterns("/cfmember/cfLogin","/cfmember/register")
 	.addPathPatterns("/cfmember/*");
 	}
-		
+
 	registry.addInterceptor(new AdminLoginInterceptor())
 	.excludePathPatterns("/admin/login/adminLogin")
 	.addPathPatterns("/admin/**");

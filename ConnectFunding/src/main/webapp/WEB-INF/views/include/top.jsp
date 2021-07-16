@@ -30,6 +30,13 @@
 	a{
 		text-decoration: none !important;		
 	}
+	
+	.genric-btn.warning {
+    color: #787483;
+    font-size: 1.1em;
+    background: #f4e700;
+    border: 1px solid transparent;
+    }
 </style>   
    </head>
 

@@ -61,7 +61,7 @@
                 <a href="#"><i class="icon-social-facebook" title="Facebook"></i></a>
                 <a href="#"><i class="icon-social-google" title="Google"></i></a>
                 <a href="#"><i class="icon-social-twitter" title="Twitter"></i></a>
-			    <input type ="text" name="userFlag">
+			    <!-- <input type ="text" name="userFlag"> -->
             </div>
         </div>
     </div>

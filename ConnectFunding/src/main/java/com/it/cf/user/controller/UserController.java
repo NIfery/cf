@@ -83,8 +83,6 @@ public class UserController {
 			session.setAttribute("userName", vo.getUserName());
 			session.setAttribute("userNo", vo.getUserNo());
 		
-//			session.setAttribute("userVo", vo);
-			
 			//쿠키저장
 			Cookie cookie = new Cookie("ck_mail", "userEmail");
 			cookie.setPath("/");
@@ -125,7 +123,7 @@ public class UserController {
 		logger.info("마이페이지");
 	}
 	
-	@RequestMapping("/settings2")
+	@RequestMapping("/settings")
 	public String Setting(HttpSession session, Model model) {
 		
 		String userEmail = (String) session.getAttribute("userEmail");
@@ -135,7 +133,7 @@ public class UserController {
 
 		model.addAttribute("vo", vo);
 		
-		return "cfmember/settings2";
+		return "cfmember/settings";
 	}
 	
 	@RequestMapping("/update")
@@ -150,7 +148,7 @@ public class UserController {
 		int cnt = userService.updateProfile(userVo);
 		logger.info("회원수정 결과, cnt={}", cnt);
 		
-		String msg="수정 실패..", url="/cfmember/settings2";
+		String msg="수정 실패..", url="/cfmember/settings";
 		if(cnt>0) {
 			msg="회원정보를 수정하였습니다.";
 		}
@@ -175,7 +173,7 @@ public class UserController {
 		int result = userService.checkPwd(userEmail, oldPwd);
 		logger.info("비밀번호 체크결과, result={}", result);
 		
-		String msg="비밀번호 수정을 실패하였습니다.", url="/cfmember/settings2";
+		String msg="비밀번호 수정을 실패하였습니다.", url="/cfmember/settings";
 		if(result==UserService.PWD_OK) {
 			int cnt = userService.updatePwd(userVo);
 			logger.info("비밀번호 수정결과, cnt={}", cnt);

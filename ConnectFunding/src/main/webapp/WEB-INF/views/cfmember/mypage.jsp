@@ -30,7 +30,7 @@
 				<li><a href="#" class="d-flex">
 						<p>내가 만든 프로젝트</p>
 				</a></li>
-				<li><a href="<c:url value='/cfmember/settings2'/>" class="d-flex">
+				<li><a href="<c:url value='/cfmember/settings'/>" class="d-flex">
 						<p>설정</p>
 				</a></li>
 				<li><a href="<c:url value='/cfmember/cfLogout'/>" class="d-flex">

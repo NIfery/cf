@@ -15,14 +15,15 @@ public class MvcConfiguration implements WebMvcConfigurer{
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		
-//	registry.addInterceptor(new LoginInterceptor())
-//	.excludePathPatterns("/cfmember/cfLogin","/cfmember/register")
-//	.addPathPatterns("/cfmember/*");
-		
-///		registry.addInterceptor(new AdminLoginInterceptor())
-//		.excludePathPatterns("/admin/login/adminLogin")
-//		.addPathPatterns("/admin/**");
+	registry.addInterceptor(new LoginInterceptor())
+	.excludePathPatterns("/cfmember/cfLogin","/cfmember/register")
+	.addPathPatterns("/cfmember/*");
 	}
+		
+//	registry.addInterceptor(new AdminLoginInterceptor())
+//	.excludePathPatterns("/admin/login/adminLogin")
+//	.addPathPatterns("/admin/**");
+//	}
 
 	@Bean
 	public CommonsMultipartResolver multipartResolver() {

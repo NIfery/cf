@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.it.cf.chat.model.MessageDAO">
+	<insert id="insertChat" parameterType="messageSendVo" >
+		<selectKey keyProperty="messageNo" resultType="int" order="BEFORE">
+			select MESSAGENO_SEQ.nextval from dual
+		</selectKey>
+		insert into MESSAGE_SEND(MESSAGE_NO,MESSAGE_TITLE,MESSAGE_CONTENT,USER_NO)
+		values(#{messageNo},#{messageTitle},#{messageContent},#{userNo})
+	</insert>
+	
+	<select id="sentAll" parameterType="int" resultType="messageSendVo">
+		select * from MESSAGE_SEND
+		where USER_NO=#{userNo} order by MESSAGE_NO desc
+	</select>
+	
+	<delete id="deleteCart" parameterType="int">
+		delete from cart where cartNo=#{cartNo}
+	</delete>
+	
+	<delete id="deleteChat" parameterType="int">
+		delete from MESSAGE_SEND where MESSAGE_NO=#{messageNo}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+

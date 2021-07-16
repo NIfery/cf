@@ -2,16 +2,54 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.it.cf.project.model.ProjectDAO">
-	<select id="selectAll" resultType="projectVo">
-		select * from PROJECT order by PROJECT_NO desc
+<mapper namespace="com.it.cf.project.model.ProjectDAO">	
+	<select id="selectAll" parameterType="pageVo" resultType="projectVo">
+		select *
+		from
+		(
+			select rownum as RNUM, A.*
+			from
+			(	
+				select * from PROJECT
+				order by PROJECT_NO desc
+			)A
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex}
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
 	</select>
-	<select id="selectBySecondCategoryNo" parameterType="int" resultType="projectVo">
-		select * from PROJECT
+	
+	
+	<select id="selectBySecondCategoryNo" parameterType="pageVo" resultType="projectVo">
+		select *
+		from
+		(
+			select rownum as RNUM, A.*
+			from
+			(	
+				select * from PROJECT
+				<if test="secondCategoryNo!=0">
+					where second_category_no=#{secondCategoryNo}
+				</if>
+				order by PROJECT_NO desc
+			)A
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex}
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="selectTotalRecord" resultType="int">
+		select count(*) from PROJECT
+	</select>
+	
+	<select id="selectTotalRecordBySecondCategoryNo" parameterType="int" resultType="int">
+		select count(*) from PROJECT
 		<if test="secondCategoryNo!=0">
 			where second_category_no=#{secondCategoryNo}
 		</if>
-		order by PROJECT_NO desc
 	</select>
 	
 	<select id="selectTotalFundingAmountByFundingNo" parameterType="int" resultType="int">

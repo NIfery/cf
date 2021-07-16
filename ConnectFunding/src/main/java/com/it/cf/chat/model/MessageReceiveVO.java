@@ -2,6 +2,13 @@ package com.it.cf.chat.model;
 
 import java.sql.Timestamp;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
 public class MessageReceiveVO {
 	private int messageNo; /* 번호 */
 	private String messageTitle; /* 제목 */

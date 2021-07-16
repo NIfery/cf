@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProjectVO {
+public class ProjectVO extends PageVO{
 	private int projectNo; /* 프로젝트번호 */
 	private String projectName; /* 프로젝트명 */
 	private String projectSummary; /* 프로젝트요약 */

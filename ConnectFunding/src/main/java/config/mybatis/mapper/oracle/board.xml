@@ -5,10 +5,10 @@
 <mapper namespace="com.it.cf.board.model.BoardDAO">
 	<insert id="boardWrite" parameterType="boardVo">
 		<selectKey keyColumn="boardNo" resultType="int" order="BEFORE">
-			select board2_seq.nextval from dual
+			select board_seq.nextval from dual
 		</selectKey>
-		insert into board2(boardNo,boardTitle,board_Content)
-		values(#{boardNo},#{boardTitle},#{boardContent})
+		insert into board(board_No,board_Title,board_Content,board_regdate)
+		values(#{boardNo},#{boardTitle},#{boardContent},sysdate)
 	</insert>
 </mapper>
 

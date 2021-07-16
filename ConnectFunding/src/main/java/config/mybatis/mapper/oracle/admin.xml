@@ -7,6 +7,18 @@
 		select admin_pwd, admin_name from admin
 		where admin_id=#{adminId}
 	</select>
+	
+	<select id="selectPosition" resultType="map">
+		select * from position
+	</select>
+	
+	<insert id="insertAdmin" parameterType="adminVo">
+		<selectKey keyProperty="adminNo" resultType="int" order="BEFORE">
+			select admin_seq.nextval from dual
+		</selectKey>
+		INSERT INTO admin(admin_No, admin_Id, admin_Pwd, admin_Position) 
+		VALUES (#{adminNo}, #{adminId}, #{adminPwd}, #{adminPosition})
+	</insert>
 </mapper>
 
 

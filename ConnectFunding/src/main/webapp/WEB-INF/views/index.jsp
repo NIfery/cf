@@ -79,14 +79,14 @@ a {
                                         <ul id="navigation">    
                                             <li><a href="<c:url value='/'/>">Home</a></li>
                                             <li><a href="#">Category</a></li>
-                                            <li><a href="#">About</a></li>
+			   <li><a href="<c:url value='/board/List'/>">게시판</a></li>         
                                             <c:if test="${empty sessionScope.userName}">
 	                                            <li><a href="<c:url value='/cfmember/cfLogin'/>">로그인</a></li>
 	                                            <li><a href="<c:url value='/cfmember/register'/>">회원가입</a></li>
 	                                            <li><a href="<c:url value='/cfmember/cfLogin'/>">
 	                                            	<img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
 	                                            	<%-- <img src="${pageContext.request.contextPath}/assets/img/${sessionScope.userName}.png" --%> 
-	                                            		alt="로그인" style="width: 40px; ㅗㄷ" >
+	                                            		alt="로그인" style="width: 40px;" >
 	                                            	</a>
 	                                            </li>
                                             </c:if>

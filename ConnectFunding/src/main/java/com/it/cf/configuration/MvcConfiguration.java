@@ -11,7 +11,6 @@ import com.it.cf.admin.controller.AdminLoginInterceptor;
 import com.it.cf.user.controller.LoginInterceptor;
 
 
-
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer{
 
@@ -26,7 +25,6 @@ public class MvcConfiguration implements WebMvcConfigurer{
 	.excludePathPatterns("/admin/login/adminLogin")
 	.addPathPatterns("/admin/**");
 
-	}
 
 	@Bean
 	public CommonsMultipartResolver multipartResolver() {

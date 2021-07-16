@@ -225,7 +225,6 @@
 
     <main>
 
-    <!--   Weekly-News start -->
     <div class="weekly-news-area pt-50">
         <div class="container">
            <div class="weekly-wrapper">
@@ -300,9 +299,7 @@
            </div>
         </div>
     </div>           
-    <!-- End Weekly-News -->
-
-    <!--   Weekly2-News start -->
+    
     <div class="weekly2-news-area  weekly2-pading gray-bg" id="test">
         <div class="container">
             <div class="weekly2-wrapper">
@@ -397,138 +394,6 @@
             </div>
         </div>
     </div>           
-    <!-- End Weekly-News -->
-
-    <!--  Recent Articles start -->
-    <%-- <div class="recent-articles">
-        <div class="container">
-           <div class="recent-wrapper">
-                <!-- section Tittle -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-tittle mb-30">
-                            <h3>Recent Articles</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="recent-active dot-style d-flex dot-style">
-                            <div class="single-recent mb-100">
-                                <div class="what-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/recent1.jpg" alt="">
-                                </div>
-                                <div class="what-cap">
-                                    <span class="color1">Night party</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                            <div class="single-recent mb-100">
-                                <div class="what-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/recent2.jpg" alt="">
-                                </div>
-                                <div class="what-cap">
-                                    <span class="color1">Night party</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                            <div class="single-recent mb-100">
-                                <div class="what-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/recent3.jpg" alt="">
-                                </div>
-                                <div class="what-cap">
-                                    <span class="color1">Night party</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                            <div class="single-recent mb-100">
-                                <div class="what-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/recent2.jpg" alt="">
-                                </div>
-                                <div class="what-cap">
-                                    <span class="color1">Night party</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-           </div>
-        </div>
-    </div>            --%>
-    <!--Recent Articles End -->
    
-    </main>
-    
-   <footer>
-       <!-- footer-bottom aera -->
-       <div class="footer-bottom-area">
-           <div class="container">
-               <div class="footer-border">
-                    <div class="row d-flex align-items-center justify-content-between">
-                        <div class="col-lg-6">
-                            <div class="footer-copy-right">
-                                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="ti-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="footer-menu f-right">
-                                <ul>                             
-                                    <li><a href="#">Terms of use</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                    <li><a href="#">Contact</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-               </div>
-           </div>
-       </div>
-       <!-- Footer End-->
-   </footer>
    
-	<!-- JS here -->
-	
-		<!-- All JS Custom Plugins Link Here here -->
-        <script src="${pageContext.request.contextPath}/assets/js/vendor/modernizr-3.5.0.min.js"></script>
-		<!-- Jquery, Popper, Bootstrap -->
-		<script src="${pageContext.request.contextPath}/assets/js/vendor/jquery-1.12.4.min.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/popper.min.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
-	    <!-- Jquery Mobile Menu -->
-        <script src="${pageContext.request.contextPath}/assets/js/jquery.slicknav.min.js"></script>
-
-		<!-- Jquery Slick , Owl-Carousel Plugins -->
-        <script src="${pageContext.request.contextPath}/assets/js/owl.carousel.min.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/slick.min.js"></script>
-        <!-- Date Picker -->
-        <script src="${pageContext.request.contextPath}/assets/js/gijgo.min.js"></script>
-		<!-- One Page, Animated-HeadLin -->
-        <script src="${pageContext.request.contextPath}/assets/js/wow.min.js"></script>
-		<script src="${pageContext.request.contextPath}/assets/js/animated.headline.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/jquery.magnific-popup.js"></script>
-
-        <!-- Breaking New Pluging -->
-        <script src="${pageContext.request.contextPath}/assets/js/jquery.ticker.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/site.js"></script>
-
-		<!-- Scrollup, nice-select, sticky -->
-        <script src="${pageContext.request.contextPath}/assets/js/jquery.scrollUp.min.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/jquery.nice-select.min.js"></script>
-		<script src="${pageContext.request.contextPath}/assets/js/jquery.sticky.js"></script>
-        
-        <!-- contact js -->
-        <script src="${pageContext.request.contextPath}/assets/js/contact.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/jquery.form.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/jquery.validate.min.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/mail-script.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/jquery.ajaxchimp.min.js"></script>
-        
-		<!-- Jquery Plugins, main Jquery -->	
-        <script src="${pageContext.request.contextPath}/assets/js/plugins.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
-        
-    </body>
-</html>
+   <%@ include file="../include/bottom.jsp" %>  

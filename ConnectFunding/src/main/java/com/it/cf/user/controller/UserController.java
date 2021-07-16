@@ -78,13 +78,12 @@ public class UserController {
 			logger.info("로그인 성공 - 회원조회 결과 vo={}", vo);
 			
 			HttpSession session = request.getSession();
-			/*
-			 * session.setAttribute("userEmail", userEmail);
-			 * session.setAttribute("userName", vo.getUserName());
-			 * session.setAttribute("userNo", vo.getUserNo());
-			 */
-			
-			session.setAttribute("userVo", vo);
+
+			session.setAttribute("userEmail", userEmail);
+			session.setAttribute("userName", vo.getUserName());
+			session.setAttribute("userNo", vo.getUserNo());
+		
+//			session.setAttribute("userVo", vo);
 			
 			//쿠키저장
 			Cookie cookie = new Cookie("ck_mail", "userEmail");
@@ -126,35 +125,17 @@ public class UserController {
 		logger.info("마이페이지");
 	}
 	
-	@RequestMapping("/settings")
+	@RequestMapping("/settings2")
 	public String Setting(HttpSession session, Model model) {
-//		String userEmail = (String) session.getAttribute("userEmail");
-//		logger.info("회원정보 수정");
-//		
-//		UserVO vo = userService.selectByEmail(userEmail);
-//		
-//		if(userEmail == null || userEmail.isEmpty()) {
-//			model.addAttribute("msg", "먼저 로그인하세요");
-//			model.addAttribute("url", "/cfmember/cfLogin");
-//			return "common/message";
-//		}
-//		
-//		model.addAttribute("vo", vo);
 		
-		UserVO userVo = (UserVO) session.getAttribute("userVo");
+		String userEmail = (String) session.getAttribute("userEmail");
+		logger.info("회원정보 수정");
 		
-		UserVO vo = userService.selectByEmail(userVo.getUserEmail());
-		String userEmail = userVo.getUserEmail();
-		
-		if(userEmail == null || userEmail.isEmpty()) {
-			model.addAttribute("msg", "먼저 로그인하세요");
-			model.addAttribute("url", "/cfmember/cfLogin");
-			return "common/message";
-		}
-		
+		UserVO vo = userService.selectByEmail(userEmail);
+
 		model.addAttribute("vo", vo);
 		
-		return "cfmember/settings";
+		return "cfmember/settings2";
 	}
 	
 	@RequestMapping("/update")
@@ -165,19 +146,48 @@ public class UserController {
 		userVo.setUserNo(userNo);
 		
 		logger.info("프로필 수정화면, 파라미터 userVo={}", userVo);
-		logger.info("수정이름", userVo.getUserName());
 		
 		int cnt = userService.updateProfile(userVo);
 		logger.info("회원수정 결과, cnt={}", cnt);
 		
-		String msg="수정 실패..", url="/cfmember/settings";
+		String msg="수정 실패..", url="/cfmember/settings2";
 		if(cnt>0) {
-			msg="수정 성공";
+			msg="회원정보를 수정하였습니다.";
 		}
 		
 		model.addAttribute("msg", msg);
 		model.addAttribute("url", url);
 
+		return "common/message";
+	}//
+	
+	@RequestMapping("/pwdUpdate")
+	public String pwdUpdate(@ModelAttribute UserVO userVo,
+			@RequestParam String oldPwd,
+			HttpSession session, Model model) {
+		
+		String userEmail = (String) session.getAttribute("userEmail");
+		userVo.setUserEmail(userEmail);
+		logger.info("userEmail={}", userEmail);
+		
+		logger.info("비밀번호 변경 페이지, 파라미터 userVo={}, oldPwd={}", userVo , oldPwd);
+		
+		int result = userService.checkPwd(userEmail, oldPwd);
+		logger.info("비밀번호 체크결과, result={}", result);
+		
+		String msg="비밀번호 수정을 실패하였습니다.", url="/cfmember/settings2";
+		if(result==UserService.PWD_OK) {
+			int cnt = userService.updatePwd(userVo);
+			logger.info("비밀번호 수정결과, cnt={}", cnt);
+			
+			msg="비밀번호를 수정하였습니다.";
+		}else if(result==UserService.PWD_NO) {
+			msg="비밀번호 불일치";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
 		return "common/message";
 	}//
 	

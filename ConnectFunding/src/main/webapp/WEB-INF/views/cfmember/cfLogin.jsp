@@ -12,7 +12,22 @@
 	href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-   
+<script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
+<script type="text/javascript">
+	$(function(){
+		$('#login').click(function(){
+			if($('#userEmail').val().length<1){
+				alert("이메일주소를 입력하세요.");
+				$('#userEmail').focus();
+				event.preventDefault();
+			}else if($('#userPwd').val().length<1){
+				alert("비밀번호를 입력하세요.");
+				$('#userPwd').focus();
+				event.preventDefault();
+			}	
+		});
+	});
+</script>   
    <form class="form-signin" name="frmInsert" method="post"
 		action="<c:url value='/cfmember/cfLogin'/>">
     <div class="container">
@@ -36,7 +51,8 @@
                             	<label class="custom-control-label" for="customCheck1">아이디저장</label> 
                             </div> 
                             
-                           		<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">로그인하기</button>
+                           		<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit"
+                           			id="login">로그인하기</button>
                             <hr class="my-4"> 
                            		<button class="btn btn-lg btn-google btn-block text-uppercase" type="submit">
                             <i class="fab fa-google mr-2"></i>구글 아이디로 로그인</button> 

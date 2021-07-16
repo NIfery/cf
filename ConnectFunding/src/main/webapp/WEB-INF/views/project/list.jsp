@@ -327,7 +327,7 @@
 						</div>
 						<div class="dropdown" style="float:right;padding:3px;">
 						  <button class="btn btn-default" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-						  	style="padding:12px 0px;" onclick="test('0')">
+						  	style="padding:12px 0px;" onclick="send('1');test('0')">
 						    전체보기
 						  </button>
 						</div>

@@ -14,14 +14,14 @@ public class MvcConfiguration implements WebMvcConfigurer{
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		
-//		registry.addInterceptor(new LoginInterceptor())
-//		.addPathPatterns("/shop/cart/*", "/shop/order/*","/member/memberEdit","/member/memberOut");
+	registry.addInterceptor(new LoginInterceptor())
+	.excludePathPatterns("/cfmember/cfLogin","/cfmember/register")
+	.addPathPatterns("/cfmember/*");
+	}
 		
-		registry.addInterceptor(new AdminLoginInterceptor())
-		.excludePathPatterns("/admin/login")
-		.addPathPatterns("/admin/**");
-		
-		
+	registry.addInterceptor(new AdminLoginInterceptor())
+	.excludePathPatterns("/admin/login/adminLogin")
+	.addPathPatterns("/admin/**");
 	}
 
 	@Bean

@@ -8,7 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.it.cf.admin.controller.AdminLoginInterceptor;
 
-
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer{
 

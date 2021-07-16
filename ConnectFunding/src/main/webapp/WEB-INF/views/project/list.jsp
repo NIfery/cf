@@ -62,6 +62,7 @@
 		
 		<script type="text/javascript" 
 			src="<c:url value='/project_assets/js/jquery-3.6.0.min.js'/>"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 		<script type="text/javascript">
 			$(function(){
 				$('.dropdown-submenu a.test').on("click", function(e){
@@ -94,7 +95,7 @@
 									str+="<img src='${pageContext.request.contextPath}/project_assets/"+item.projectImage+"'></div>";
 									str+="<div class='weekly2-caption'><span></span>";
 									str+="<h4><a href='#'>"+item.projectName+"</a></h4>";
-									str+="<p>"+item.projectStartdate+"</p>";
+									str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
 									str+="<h4><a href='#'>"+item.projectSummary+"</a></h4>";
 									str+="<hr style='margin:5px 0px 8px 0px;'>";
 									str+="<h6 style='color:red'>"+item.totalFundingAmount/+item.totalAmount*100+"% 달성</h6>";
@@ -113,7 +114,7 @@
 										str+="<img src='${pageContext.request.contextPath}/project_assets/"+item.projectImage+"'></div>";
 										str+="<div class='weekly2-caption'><span></span>";
 										str+="<h4><a href='#'>"+item.projectName+"</a></h4>";
-										str+="<p>"+item.projectStartdate+"</p>";
+										str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
 										str+="<h4><a href='#'>"+item.projectSummary+"</a></h4>";
 										str+="<hr style='margin:5px 0px 8px 0px;'>";
 										str+="<h6 style='color:red'>"+item.totalFundingAmount/+item.totalAmount*100+"% 달성</h6>";

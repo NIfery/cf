@@ -11,6 +11,5 @@ public class AdminVO {
 	private int adminNo;
 	private String adminId;
 	private String adminPwd;
-	private String adminName;
 	private String adminPosition;
 }

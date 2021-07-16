@@ -36,7 +36,7 @@
                             </a>
                         </div>
                         <div class="login-form">
-                            <form action="" method="post" action="<c:url value='/admin/login'/>">
+                            <form method="post" action="<c:url value='/admin/login'/>">
                                 <div class="form-group">
                                     <label>관리자 계정</label>
                                     <input class="infobox au-input au-input--full" type="text" name="adminId" placeholder="admin-ID" value="${cookie.ck_adminId.value }">

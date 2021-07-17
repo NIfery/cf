@@ -133,21 +133,5 @@
     </header>
 
     <main>
-    <div class="container">
-<div class="row no-gutters m-5">
-  <div class="col-6 col-md-2">
-  	<ul class="list-group">
-  	<a href="<c:url value='/chat/write'/>"><li class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning">
-    쪽지쓰기
-  </li></a>
-  <a href="<c:url value='/chat/inbox'/>"><li class="list-group-item d-flex justify-content-between align-items-center">
-    받은 쪽지함
-    <span class="badge badge-primary badge-warning">3</span>
-  </li></a>
-  <a href="<c:url value='/chat/sent'/>"><li class="list-group-item d-flex justify-content-between align-items-center">
-    보낸 쪽지함
-    <span class="badge badge-primary badge-warning">2</span>
-  </li></a>
-</ul>
-  </div>
-  <div class="col-12 col-md-1"></div>
+    <c:import url="/chat/chatCategory"></c:import>
+    

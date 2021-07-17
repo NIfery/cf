@@ -64,7 +64,7 @@ public class ChatController {
 		
 		model.addAttribute("list", list);
 		
-		return "/chat/sent";
+		return "chat/sent";
 	}
 	
 	@RequestMapping("/deleteChat")
@@ -81,5 +81,70 @@ public class ChatController {
 			model.addAttribute("msg", "쪽지 삭제 실패!");
 			return "common/message";
 		}
+	}
+	
+	@RequestMapping("/chatCategory")
+	public String countMessage(HttpSession session,Model model) {
+		int userNo=(int) session.getAttribute("userNo");
+		logger.info("보낸 쪽지, 받은 쪽지 수, userNo={}",userNo);
+		
+		int sentCount=messageService.sentCount(userNo);
+		logger.info("보낸 쪽지 수 sentCount={}",sentCount);
+		
+		int receiveCount=messageService.receiveCount(userNo);
+		logger.info("받은 쪽지 수 receiveCount={}",receiveCount);
+		
+		model.addAttribute("sentCount", sentCount);
+		model.addAttribute("receiveCount", receiveCount);
+		
+		return "chat/chatCategory";
+	}
+	
+	@RequestMapping("/detail")
+	public String sentDetail(int messageNo,Model model) {
+		logger.info("보낸 쪽지 상세보기 messageNo={}",messageNo);
+		
+		MessageSendVO sendVo=messageService.sentByMessageNo(messageNo);
+		logger.info("sendVo={}",sendVo);
+		
+		model.addAttribute("sendVo", sendVo);
+		return "chat/detail";
+	}
+	
+	@GetMapping("/edit")
+	public String sentEdit(int messageNo,Model model) {
+		logger.info("보낸 쪽지 수정 messageNo={}",messageNo);
+		
+		MessageSendVO sendVo=messageService.sentByMessageNo(messageNo);
+		logger.info("sendVo={}",sendVo);
+		
+		model.addAttribute("sendVo", sendVo);
+		return "chat/edit";
+	}
+	
+	@PostMapping("/edit")
+	public String sentEdit_post(@ModelAttribute MessageSendVO vo,Model model) {
+		logger.info("쪽지 수정, vo={}",vo);
+		
+		int cnt=messageService.editMessage(vo);
+		logger.info("쪽지 수정 결과 cnt={}",cnt);
+		
+		String msg="쪽지 수정 실패!", url="/chat/edit";
+		if(cnt>0) {
+			model.addAttribute("msg", "쪽지 수정 성공");
+			model.addAttribute("url", "/chat/detail?messageNo="+vo.getMessageNo());
+		}
+		return "common/message";
+	}
+	
+	@RequestMapping("/adminInbox")
+	public String adminInbox(Model model) {
+		logger.info("관리자 받은 편지함");
+		
+		List<MessageSendVO> list=messageService.receiveAdmin();
+		logger.info("list.size=",list.size());
+		
+		model.addAttribute("list", list);
+		return "/chat/adminInbox";
 	}
 }

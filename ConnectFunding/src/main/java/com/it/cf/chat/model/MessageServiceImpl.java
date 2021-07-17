@@ -26,5 +26,30 @@ public class MessageServiceImpl implements MessageService{
 		return messageDao.deleteChat(messageNo);
 	}
 
+	@Override
+	public int sentCount(int userNo) {
+		return messageDao.sentCount(userNo);
+	}
+
+	@Override
+	public int receiveCount(int userNo) {
+		return messageDao.receiveCount(userNo);
+	}
+
+	@Override
+	public MessageSendVO sentByMessageNo(int messageNo) {
+		return messageDao.sentByMessageNo(messageNo);
+	}
+
+	@Override
+	public int editMessage(MessageSendVO vo) {
+		return messageDao.editMessage(vo);
+	}
+
+	@Override
+	public List<MessageSendVO> receiveAdmin() {
+		return messageDao.receiveAdmin();
+	}
+
 	
 }

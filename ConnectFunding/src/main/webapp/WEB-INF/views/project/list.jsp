@@ -34,6 +34,11 @@
 				left: 100%;
 				margin-top: -1px;
 			}
+			.dot-style.d-flex.dot-style {
+			    display: flex;
+			    flex-wrap: wrap;
+			    justify-content: center;
+			}
 		</style>
 		
 		<script type="text/javascript" 
@@ -238,7 +243,7 @@
         <div class="container">
             <div class="weekly2-wrapper">
                 <!-- section Tittle -->
-                <div class="row">
+                <div class="row" style="position: relative;left: 6%;">
                     <div class="col-lg-12">
                         <div class="section-tittle mb-30">
 

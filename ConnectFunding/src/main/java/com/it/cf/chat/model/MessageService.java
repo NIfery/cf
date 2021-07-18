@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface MessageService {
 	int insertChat(MessageSendVO vo);
+	int insertAdmin(MessageReceiveVO vo);
 	List<MessageSendVO> sentAll(int userNo);
 	int deleteChat(int messageNo);
 	int sentCount(int userNo);
@@ -11,4 +12,5 @@ public interface MessageService {
 	MessageSendVO sentByMessageNo(int messageNo);
 	int editMessage(MessageSendVO vo);
 	List<MessageSendVO> receiveAdmin();
+	MessageReceiveVO receiveByMessageNo(int messageNo);
 }

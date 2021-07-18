@@ -51,5 +51,15 @@ public class MessageServiceImpl implements MessageService{
 		return messageDao.receiveAdmin();
 	}
 
+	@Override
+	public MessageReceiveVO receiveByMessageNo(int messageNo) {
+		return messageDao.receiveByMessageNo(messageNo);
+	}
+
+	@Override
+	public int insertAdmin(MessageReceiveVO vo) {
+		return messageDao.insertAdmin(vo);
+	}
+
 	
 }

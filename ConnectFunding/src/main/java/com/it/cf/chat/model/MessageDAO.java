@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface MessageDAO {
 	int insertChat(MessageSendVO vo);
+	int insertAdmin(MessageReceiveVO vo);
 	List<MessageSendVO> sentAll(int userNo);
 	int deleteChat(int messageNo);
 	int sentCount(int userNo);
@@ -14,4 +15,5 @@ public interface MessageDAO {
 	MessageSendVO sentByMessageNo(int messageNo);
 	int editMessage(MessageSendVO vo);
 	List<MessageSendVO> receiveAdmin();
+	MessageReceiveVO receiveByMessageNo(int messageNo);
 }

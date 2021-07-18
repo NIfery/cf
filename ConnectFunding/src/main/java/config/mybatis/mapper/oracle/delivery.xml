@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.it.cf.delivery.model.DeliveryDAO">
+
+	<insert id="insertAddress" parameterType="deliveryVo">
+		<selectKey keyProperty="delNo" resultType="int" order="BEFORE">
+			select DELIVERY_SEQ.nextval from dual
+		</selectKey>
+		insert into delivery(del_no, del_receiver, del_address, del_zipcode, del_hp, user_no)
+		values(#{delNo}, #{delReceiver}, #{delAddress}, #{delZipcode}, #{delHp}, #{userNo})
+	</insert>
+	
+	<select id="selectdelivery" parameterType="int" resultType="deliveryVo">
+		select * from delivery
+		where user_no=#{userNo}
+	</select>
+	
+	<delete id="deletedelivery" parameterType="int">
+		delete delivery where del_no=#{delNo}
+	</delete>
+
+</mapper>
+
+
+
+
+
+
+
+
+

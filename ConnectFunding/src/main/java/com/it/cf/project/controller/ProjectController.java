@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.it.cf.project.model.FirstCategoryVO;
 import com.it.cf.project.model.ProjectPageInfo;
 import com.it.cf.project.model.ProjectService;
 import com.it.cf.project.model.ProjectUtil;
 import com.it.cf.project.model.ProjectVO;
+import com.it.cf.project.model.SecondCategoryVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -102,12 +104,25 @@ public class ProjectController {
 	@RequestMapping("/writeCategory")
 	public void writeCategory() {}
 	
-	@RequestMapping("/writeDetail")
-	public void writeDetail() {}
+	@RequestMapping("/writeTitle")
+	public String writeTitle(@RequestParam String firstCategory, Model model) {
+		List<FirstCategoryVO> fList = projectService.selectFirstCategory();
+		List<SecondCategoryVO> sList = projectService.selectSecondCategory(firstCategory);
+		
+		model.addAttribute("firstCategory", firstCategory);
+		model.addAttribute("fList", fList);
+		model.addAttribute("sList", sList);
+		
+		return "project/writeTitle";
+	}
 	
 	@ResponseBody
-	@RequestMapping("/aWrite")
-	public void ajaxWrite() {
-		
+	@RequestMapping("/aWriteTitle")
+	public List<SecondCategoryVO> ajaxWriteTitle(@RequestParam String firstCategory) {
+		List<SecondCategoryVO> list = projectService.selectSecondCategory(firstCategory);
+		return list;
 	}
+	
+	@RequestMapping("/writeDetail")
+	public void writeDetail() {}
 }

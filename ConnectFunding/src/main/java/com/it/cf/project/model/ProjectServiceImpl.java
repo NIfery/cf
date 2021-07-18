@@ -1,6 +1,7 @@
 package com.it.cf.project.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -29,5 +30,13 @@ public class ProjectServiceImpl implements ProjectService{
 	
 	public int selectTotalRecordBySecondCategoryNo(int secondCategoryNo) {
 		return projectDao.selectTotalRecordBySecondCategoryNo(secondCategoryNo);
+	}
+	
+	public List<FirstCategoryVO> selectFirstCategory() {
+		return projectDao.selectFirstCategory();
+	}
+	
+	public List<SecondCategoryVO> selectSecondCategory(String firstCategory) {
+		return projectDao.selectSecondCategory(firstCategory);
 	}
 }

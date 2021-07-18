@@ -86,6 +86,11 @@ public class AccountController {
 		}
 		
 		return "common/message";
+	}//
+	
+	@RequestMapping("/agree")
+	public String agree_del() {
+		return "/cfmember/agree";
 	}
 
 }

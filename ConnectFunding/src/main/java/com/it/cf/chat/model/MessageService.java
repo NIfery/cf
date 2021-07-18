@@ -6,4 +6,9 @@ public interface MessageService {
 	int insertChat(MessageSendVO vo);
 	List<MessageSendVO> sentAll(int userNo);
 	int deleteChat(int messageNo);
+	int sentCount(int userNo);
+	int receiveCount(int userNo);
+	MessageSendVO sentByMessageNo(int messageNo);
+	int editMessage(MessageSendVO vo);
+	List<MessageSendVO> receiveAdmin();
 }

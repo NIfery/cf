@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.it.cf.chat.model.MessageReceiveVO;
 import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.chat.model.MessageService;
 
@@ -52,6 +53,21 @@ public class ChatController {
 		}
 		return "common/message";
 		
+	}
+	
+	@PostMapping("/adminWrite")
+	public String adminWrite(@ModelAttribute MessageReceiveVO vo,int messageNo, Model model) {
+		vo.setMessageNo(messageNo);
+		logger.info("답변하기 vo={}",vo);
+		
+		int cnt=messageService.insertAdmin(vo);
+		
+		String msg="답변 등록 실패!", url="/chat/adminWrite";
+		if(cnt>0) {
+			model.addAttribute("msg", "답변 등록 성공");
+			model.addAttribute("url", "/chat/adminDetail?messageNo="+vo.getMessageNo());
+		}
+		return "common/message";
 	}
 	
 	@RequestMapping("/sent")
@@ -109,6 +125,21 @@ public class ChatController {
 		
 		model.addAttribute("sendVo", sendVo);
 		return "chat/detail";
+	}
+	
+	@RequestMapping("/adminDetail")
+	public String adminDetail(int messageNo,Model model) {
+		logger.info("관리자 받은 쪽지 상세보기 messageNo={}",messageNo);
+		
+		MessageSendVO sendVo=messageService.sentByMessageNo(messageNo);
+		logger.info("sendVo={}",sendVo);
+		
+		MessageReceiveVO receiveVo=messageService.receiveByMessageNo(messageNo);
+		logger.info("receiveVo={}",receiveVo);
+		
+		model.addAttribute("sendVo", sendVo);
+		model.addAttribute("receiveVo", receiveVo);
+		return "chat/adminDetail";
 	}
 	
 	@GetMapping("/edit")

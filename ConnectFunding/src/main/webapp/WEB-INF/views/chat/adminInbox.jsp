@@ -38,8 +38,8 @@
 														type="checkbox"> <span class="au-checkmark"></span>
 												</label></td>
 												<td><span class="block-email">${vo.userNo }</span></td>
-												<td class="desc">${vo.messageTitle }</td>
-												<td>${vo.messageContent }</td>
+												<td>${vo.messageTitle }</td>
+												<td class="desc"><a  href="<c:url value='/chat/adminDetail?messageNo=${vo.messageNo }'/>">${vo.messageContent }</a></td>
 												<td><fmt:formatDate value="${vo.messageRegdate }"
 														type="date" pattern="yyyy-MM-dd" /></td>
 												<td>

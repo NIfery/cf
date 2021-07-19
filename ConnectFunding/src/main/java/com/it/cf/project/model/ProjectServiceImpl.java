@@ -39,4 +39,11 @@ public class ProjectServiceImpl implements ProjectService{
 	public List<SecondCategoryVO> selectSecondCategory(String firstCategory) {
 		return projectDao.selectSecondCategory(firstCategory);
 	}
+	
+	public int createTotalFunding() {
+		return projectDao.createTotalFunding();
+	}
+	public int insertProject(ProjectVO vo) {
+		return projectDao.insertProject(vo);
+	}
 }

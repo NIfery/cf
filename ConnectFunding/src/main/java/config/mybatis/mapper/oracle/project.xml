@@ -67,6 +67,20 @@
 		select total_funding_amount from TOTAL_FUNDING
 		where FUNDING_NO=#{fundingNo}
 	</select>
+	
+	<insert id="createTotalFunding" >
+		insert into TOTAL_FUNDING(FUNDING_NO)
+		values(total_funding_seq.nextval)
+	</insert>
+	
+	<insert id="insertProject" parameterType="projectVo">
+		insert into PROJECT(PROJECT_NO,PROJECT_NAME,project_summary,project_content,PROJECT_IMAGE,
+			TOTAL_AMOUNT,PROJECT_STARTDATE,PROJECT_ENDDATE,USER_NO,FUNDING_NO,second_category_no) 
+		values(project_seq.nextval,#{projectName},#{projectSummary},<!-- #{projectContent} -->'test입니다',#{projectImage},
+			#{totalAmount},sysdate,
+			sysdate,1,total_funding_seq.currval,#{secondCategoryNo})
+	</insert>
+	
 </mapper>
 
 

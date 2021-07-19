@@ -13,4 +13,6 @@ public interface ProjectDAO {
 	int selectTotalRecordBySecondCategoryNo(int secondCategoryNo);
 	List<FirstCategoryVO> selectFirstCategory();
 	List<SecondCategoryVO> selectSecondCategory(String firstCategory);
+	int createTotalFunding();
+	int insertProject(ProjectVO vo);
 }

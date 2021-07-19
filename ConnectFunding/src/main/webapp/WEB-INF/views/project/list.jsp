@@ -100,7 +100,7 @@
 							$.each(list, function(idx,item){
 								if(idx<4){
 									str+="<div class='weekly2-single'><div class='weekly2-img'>";
-									str+="<img src='${pageContext.request.contextPath}/project_assets/"+item.projectImage+"'></div>";
+									str+="<img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></div>";
 									str+="<div class='weekly2-caption'><span></span>";
 									str+="<h4><a href='#'>"+item.projectName+"</a></h4>";
 									str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
@@ -119,7 +119,7 @@
 								$.each(list, function(idx,item){
 									if(idx>=4){
 										str+="<div class='weekly2-single'><div class='weekly2-img'>";
-										str+="<img src='${pageContext.request.contextPath}/project_assets/"+item.projectImage+"'></div>";
+										str+="<img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></div>";
 										str+="<div class='weekly2-caption'><span></span>";
 										str+="<h4><a href='#'>"+item.projectName+"</a></h4>";
 										str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
@@ -268,9 +268,8 @@
 			                	<c:forEach var="vo" items="${list }" begin="0" end="3">
 			                		<div class="weekly2-single">
 		                                <div class="weekly2-img">
-		                                    <img src="${pageContext.request.contextPath}/project_assets/${vo.projectImage}"
-		                                    	<%-- style="width:263px; height:170px" --%>
-		                                    	>
+		                                    <img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
+		                                    	style="width:263px; height:170px">
 		                                </div>
 		                                <div class="weekly2-caption">
 		                                    <span></span>
@@ -307,9 +306,8 @@
                             <c:forEach var="vo" items="${list }" begin="4">
 			                	<div class="weekly2-single">
 		                               <div class="weekly2-img">
-		                                   <img src="${pageContext.request.contextPath}/project_assets/${vo.projectImage}"
-		                                   	<%-- style="width:263px; height:170px" --%>
-		                                   	>
+		                                   <img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
+		                                   		style="width:263px; height:170px">
 		                               </div>
 		                               <div class="weekly2-caption">
 		                                   <span></span>

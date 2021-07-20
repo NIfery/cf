@@ -35,7 +35,7 @@
 					<textarea class="form-control" id="messageContent" name="messageContent" rows="3">${sendVo.messageContent }</textarea>
 					<input class="btn btn-warning m-4" type="submit" value="수정">
 					<input type="hidden" name="messageNo" value="${sendVo.messageNo }">
-					<input class="btn btn-warning m-4" type="reset" value="취소">
+					<a href="<c:url value='/chat/sent'/>"><input class="btn btn-warning m-2" type="button" value="목록"></a>	
 				</div>
 			</form>
 		</div>

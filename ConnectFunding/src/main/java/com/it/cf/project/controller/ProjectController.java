@@ -1,11 +1,17 @@
 package com.it.cf.project.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.it.cf.project.model.ProjectFileUploadUtil;
 import com.it.cf.project.model.FirstCategoryVO;
@@ -183,6 +190,79 @@ public class ProjectController {
 		return "common/message";
 	}
 	
+	@ResponseBody
+	@PostMapping("/summer_image")
+	public void summer_image(MultipartFile file, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		
+		// 업로드할 폴더 경로
+		String realFolder = request.getSession().getServletContext().getRealPath("project_assets/projectImg");;
+		UUID uuid = UUID.randomUUID();
+
+		// 업로드할 파일 이름
+		String org_filename = file.getOriginalFilename();
+		String str_filename = uuid.toString() + org_filename;
+
+		System.out.println("원본 파일명 : " + org_filename);
+		System.out.println("저장할 파일명 : " + str_filename);
+
+		String filepath = realFolder + "\\" + str_filename;
+		System.out.println("파일경로 : " + filepath);
+
+		File f = new File(filepath);
+		if (!f.exists()) {
+			f.mkdirs();
+		}
+		file.transferTo(f);
+		out.println("/cf/project_assets/projectImg/"+str_filename);
+		out.close();
+		
+		/*
+		 * // 업로드할 파일 이름 String file_name = file.getOriginalFilename(); String
+		 * server_file_name = fileDBName(file_name,
+		 * ProjectUtil.IMAGE_FILE_UPLOAD_PATH_TEST);
+		 * 
+		 * System.out.println("원본 파일명 : " + file_name); System.out.println("저장할 파일명 : "
+		 * + server_file_name);
+		 * 
+		 * String filepath = ProjectUtil.IMAGE_FILE_UPLOAD_PATH_TEST + server_file_name;
+		 * System.out.println("파일경로 : " + filepath);
+		 * 
+		 * File f = new File(filepath); if (!f.exists()) { f.mkdirs(); }
+		 * file.transferTo(f);
+		 * out.println("project_assets/projectImg"+server_file_name); out.close();
+		 */
+	}
+    private String fileDBName(String fileName, String saveFolder) {
+		Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		int date = c.get(Calendar.DATE);
+
+		String homedir = saveFolder + year + "-" + month + "-" + date;
+		System.out.println(homedir);
+		File path1 = new File(homedir);
+		if (!(path1.exists())) {
+			path1.mkdir();
+		}
+		Random r = new Random();
+		int random = r.nextInt(100000000);
+
+		int index = fileName.lastIndexOf(".");
+
+		String fileExtension = fileName.substring(index + 1);
+		System.out.println("fileExtension = " + fileExtension);
+
+		String refileName = "bbs" + year + month + date + random + "." + fileExtension;
+		System.out.println("refileName = " + refileName);
+
+		String fileDBName = "/" + year + "-" + month + "-" + date + "/" + refileName;
+		System.out.println("fileDBName = " + fileDBName);
+
+		return fileDBName;
+	}
 	
 	@RequestMapping("/writeDetail")
 	public void writeDetail() {}

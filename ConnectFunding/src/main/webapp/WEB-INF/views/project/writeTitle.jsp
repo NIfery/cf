@@ -4,8 +4,15 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ include file="../include/top.jsp" %>
 <script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.9.13/combined/js/gijgo.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.9.13/combined/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+<!-- include summernote css/js-->
+<script src="<c:url value='/project_assets/js/summernote/summernote-lite.js'/>"></script>
+<script src="<c:url value='/project_assets/js/summernote/lang/summernote-ko-KR.js'/>"></script>
+
+<link rel="stylesheet" href="<c:url value='/project_assets/css/summernote/summernote-lite.css'/>">
 <script type="text/javascript">
 	$(function() {
 		$('#firstSelect').change(function(){
@@ -65,23 +72,59 @@
                 return $('#datepickerEnddate').val();
         	}
 		});
-		
 		$('#datepickerEnddate').datepicker({
 			format: 'yyyy-mm-dd',
 			minDate: function () {
                 return $('#datepickerStartdate').val();
             }
 		});
-		
+
 		$('#datepickerStartdate').change(function(){
-			alert($(this).val());
-			$('#projectStartdate').val($(this).val());
+			$('#projectStartdate').val($(this).val()+' 00:00:00');
+		});
+		$('#datepickerEnddate').change(function(){
+			$('#projectEnddate').val($(this).val()+' 00:00:00');
 		});
 		
-		$('form[name=frmWrite]').submit(function(){
-			
+		$('#summernote').summernote({ 
+			height: 400,                  // 에디터 높이
+			minHeight: null,              // 최소 높이
+			maxHeight: null,              // 최대 높이
+			focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+			lang: "ko-KR",				  // 한글 설정
+			placeholder: '내용을 입력하세요', //placeholder 설정
+			disableResizeEditor: true,
+			callbacks: {
+		      	onImageUpload: function(files, editor, welEditable) {
+		      		for(var i = files.length -1; i>=0; i--) {
+		       			sendFile(files[i], this);
+		       		}
+		       	}
+		    }
 		});
 	});
+	
+	function sendFile(file, el) {
+		var form_data = new FormData();
+		form_data.append('file', file);
+		$.ajax({
+			data: form_data,
+			type : "post",
+			url: 'summer_image',
+			cache :false,
+			contentType : false,
+			enctype : 'multipart/form-data',
+			processData : false,
+			success : function(img_name) {
+				var ttt="<img src='${pageContext.request.contextPath}/"+img_name+"'>";
+				alert(ttt);
+				$('#summernote').html(ttt);
+				$(el).summernote('editor.insertImage', ttt);
+				$(el).summernote('editor.insertImage', img_name);
+				$(el).summernote('editor.insertImage', img_name.url);
+			}
+		});
+	}
 </script>
 
 <style type="text/css">
@@ -286,7 +329,7 @@
                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                     <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">기본정보</a>
                                     <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">펀딩 계획</a>
-                                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Travel</a>
+                                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">내용</a>
                                     <a class="nav-item nav-link" id="nav-last-tab" data-toggle="tab" href="#nav-last" role="tab" aria-controls="nav-contact" aria-selected="false">Fashion</a>
                                     <a class="nav-item nav-link" id="nav-Sports" data-toggle="tab" href="#nav-nav-Sport" role="tab" aria-controls="nav-contact" aria-selected="false">Sports</a>
                                     <a class="nav-item nav-link" id="nav-technology" data-toggle="tab" href="#nav-techno" role="tab" aria-controls="nav-contact" aria-selected="false">Technology</a>
@@ -497,35 +540,37 @@
 									      			  </div>
 									    		</div>   
 									    	</div>   
-									    <div class="weekly2-news-area weekly2-pading gray-bg" style="padding-bottom: 0px;">
-									        <div class="container" style="border-bottom: 1px solid #e4e1e1">
-									        	<div class="video-info">
-									                <div class="row captionMain">
-									                    <div class="col-lg-6">
-									                        <div class="video-caption">
-									                            <div class="bottom-caption">
-									                            	<h3>펀딩 일정</h3>
-											                        <br>
-											                        <h6 style="color:gray">설정한 일시가 되면 펀딩이 자동 시작됩니다. <br>
-											                        펀딩 시작 전까지 날짜를 변경할 수 있고, 즉시 펀딩을 시작할 수도 있습니다.</h6>
-											                        <br><br>
-									                            </div>
-									                        </div>
-									                    </div>
-									                    <div class="col-lg-6">
-										                    <div class="row row-cols-2">
-															    <div class="col">시작일<input id="datepickerStartdate" width="50%"/></div>
-															    <div class="col">종료일<input id="datepickerEnddate" width="50%"/></div>
-															    <input type="text" name="projectStartdate" id="projectStartdate">
-															</div>
-										                    <div class="row row-cols-1">
-																
-															</div>
-									                    </div>
-									                </div>
-									            </div>
-									        </div>
-									        </div>
+										    <div class="weekly2-news-area weekly2-pading gray-bg" style="padding-bottom: 0px;">
+										        <div class="container" style="border-bottom: 1px solid #e4e1e1">
+										        	<div class="video-info">
+										                <div class="row captionMain">
+										                    <div class="col-lg-6">
+										                        <div class="video-caption">
+										                            <div class="bottom-caption">
+										                            	<h3>펀딩 일정</h3>
+												                        <br>
+												                        <h6 style="color:gray">설정한 일시가 되면 펀딩이 자동 시작됩니다. <br>
+												                        펀딩 시작 전까지 날짜를 변경할 수 있고, 즉시 펀딩을 시작할 수도 있습니다.</h6>
+												                        <br><br>
+										                            </div>
+										                        </div>
+										                    </div>
+										                    <div class="col-lg-6">
+											                    <div class="row row-cols-1">
+																    <div class="col">시작일<input id="datepickerStartdate" width="50%"/></div>
+																    <br><br><br><br>
+																    <div class="col">종료일<input id="datepickerEnddate" width="50%"/></div>
+																    <input type="hidden" name="projectStartdate" id="projectStartdate">
+																    <input type="hidden" name="projectEnddate" id="projectEnddate">
+																</div>
+											                    <div class="row row-cols-1">
+																	
+																</div>
+										                    </div>
+										                </div>
+										            </div>
+										        </div>
+										    </div>
 									    </div> 
                                     </div>
                                 </div>
@@ -534,50 +579,28 @@
                             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                                 <div class="whats-news-caption">
                                     <div class="row">
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews1.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews2.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews3.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews4.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div>
+                                       <div class="weekly2-news-area weekly2-pading gray-bg" style="padding-bottom: 0px;">
+									        <div class="container" style="border-bottom: 1px solid #e4e1e1">
+									        	<div class="video-info">
+									                <div class="row captionMain">
+										                    <div class="row row-cols-1">
+										                        <div class="video-caption">
+										                            <div class="bottom-caption">
+										                            	<h3>프로젝트 내용</h3>
+												                        <br>
+												                        <h6 style="color:gray">프로젝트를 소개하고, 준비하는 과정에서 후원자에게 들려주고 싶었던 이야기를 작성해주세요.</h6>
+										                            </div>
+										                        </div>
+									                        </div>
+										                    <div class="row row-cols-1" style="background: white">
+										                    	<textarea id="summernote" name="projectContent"></textarea>	
+									                        </div>
+									                        <br><br>
+									                    
+									      			  </div>
+									    		</div>   
+									    	</div>   
+									    </div> 
                                     </div>
                                 </div>
                             </div>
@@ -744,4 +767,76 @@
     </section>
     <!-- Whats New End -->
 	</form>
-<%@ include file="../include/bottom.jsp" %>
+</main>
+    
+   <footer>
+       <!-- footer-bottom aera -->
+       <div class="footer-bottom-area">
+           <div class="container">
+               <div class="footer-border">
+                    <div class="row d-flex align-items-center justify-content-between">
+                        <div class="col-lg-6">
+                            <div class="footer-copy-right">
+                                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Connect Funding &nbsp<i class="ti-heart" aria-hidden="true"></i></a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="footer-menu f-right">
+                                <ul>                             
+                                    <li><a href="#">Terms of use</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="#">Contact</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+           </div>
+       </div>
+       <!-- Footer End-->
+   </footer>
+   
+	<!-- JS here -->
+	
+		<!-- All JS Custom Plugins Link Here here -->
+        <script src="../assets/js/vendor/modernizr-3.5.0.min.js"></script>
+		<!-- Jquery, Popper, Bootstrap -->
+        <script src="../assets/js/popper.min.js"></script>
+        <script src="../assets/js/bootstrap.min.js"></script>
+	    <!-- Jquery Mobile Menu -->
+        <script src="../assets/js/jquery.slicknav.min.js"></script>
+
+		<!-- Jquery Slick , Owl-Carousel Plugins -->
+        <script src="../assets/js/owl.carousel.min.js"></script>
+        <script src="../assets/js/slick.min.js"></script>
+        <!-- Date Picker -->
+        <script src="../assets/js/gijgo.min.js"></script>
+		<!-- One Page, Animated-HeadLin -->
+        <script src="../assets/js/wow.min.js"></script>
+		<script src="../assets/js/animated.headline.js"></script>
+        <script src="../assets/js/jquery.magnific-popup.js"></script>
+
+        <!-- Breaking New Pluging -->
+        <script src="../assets/js/jquery.ticker.js"></script>
+        <script src="../assets/js/site.js"></script>
+
+		<!-- Scrollup, nice-select, sticky -->
+        <script src="../assets/js/jquery.scrollUp.min.js"></script>
+        <script src="../assets/js/jquery.nice-select.min.js"></script>
+		<script src="../assets/js/jquery.sticky.js"></script>
+        
+        <!-- contact js -->
+        <script src="../assets/js/contact.js"></script>
+        <script src="../assets/js/jquery.form.js"></script>
+        <script src="../assets/js/jquery.validate.min.js"></script>
+        <script src="../assets/js/mail-script.js"></script>
+        <script src="../assets/js/jquery.ajaxchimp.min.js"></script>
+        
+		<!-- Jquery Plugins, main Jquery -->	
+        <script src="../assets/js/plugins.js"></script>
+        <script src="../assets/js/main.js"></script>
+        
+    </body>
+</html>

@@ -3,6 +3,9 @@ package com.it.cf.admin.model;
 import java.util.List;
 import java.util.Map;
 
+import com.it.cf.common.SearchVO;
+import com.it.cf.user.model.UserVO;
+
 public interface AdminService {
 	//로그인 처리에 사용하는 상수
 	int LOGIN_OK=1;  //로그인 성공
@@ -12,4 +15,8 @@ public interface AdminService {
 	int loginProc(String userid, String pwd);
 	int insertAdmin(AdminVO vo);
 	List<Map<String, Object>> selectPosition();
+	List<UserVO> selectAllUser(SearchVO searchVo);
+	int selectTotalRecord(SearchVO searchVo);
+	int idDuplChk(String adminId);
+	AdminVO selectByUserid(String adminId);
 }

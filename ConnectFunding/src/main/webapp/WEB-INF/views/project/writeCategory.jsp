@@ -15,7 +15,7 @@
 			});
 		});
 		
-		$('#taSummary').keydown(function(){
+		$('#taSummary').keyup(function(){
 			var lenghtSummary = $(this).val().length;
 			$('#lengthSummary').html(lenghtSummary+'/50');
 			

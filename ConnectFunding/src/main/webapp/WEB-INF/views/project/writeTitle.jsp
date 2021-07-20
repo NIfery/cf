@@ -58,23 +58,28 @@
 		});
 		
 		var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-		$('#projectStartdate').datepicker({ 
+		$('#datepickerStartdate').datepicker({ 
 			format: 'yyyy-mm-dd',
 			minDate:today, 
 			maxDate: function () {
-                return $('#projectEnddate').val();
+                return $('#datepickerEnddate').val();
         	}
 		});
 		
-		$('#projectEnddate').datepicker({
+		$('#datepickerEnddate').datepicker({
 			format: 'yyyy-mm-dd',
 			minDate: function () {
-                return $('#projectStartdate').val();
+                return $('#datepickerStartdate').val();
             }
 		});
 		
+		$('#datepickerStartdate').change(function(){
+			alert($(this).val());
+			$('#projectStartdate').val($(this).val());
+		});
+		
 		$('form[name=frmWrite]').submit(function(){
-			alert('asdf');
+			
 		});
 	});
 </script>
@@ -509,8 +514,9 @@
 									                    </div>
 									                    <div class="col-lg-6">
 										                    <div class="row row-cols-2">
-															    <!-- <div class="col">시작일<input name="projectStartdate" id="projectStartdate" width="50%"/></div>
-															    <div class="col">종료일<input name="projectEnddate" id="projectEnddate" width="50%"/></div> -->
+															    <div class="col">시작일<input id="datepickerStartdate" width="50%"/></div>
+															    <div class="col">종료일<input id="datepickerEnddate" width="50%"/></div>
+															    <input type="text" name="projectStartdate" id="projectStartdate">
 															</div>
 										                    <div class="row row-cols-1">
 																

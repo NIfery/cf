@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../incChat/top.jsp" %> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
 <script type="text/javascript">
@@ -36,9 +37,20 @@
   	<c:forEach var="vo" items="${list }">
 	  	<tr>
 	      <th scope="row">${vo.messageNo }</th>
-	      <td>${vo.messageTitle }</td>
+	      <td><c:if test="${fn:length(vo.messageTitle)>5 }">
+				${fn:substring(vo.messageTitle, 0, 5) }...
+			</c:if> 
+			<c:if test="${fn:length(vo.messageTitle)<=5 }">
+				${vo.messageTitle}
+			</c:if>
+		</td>
 	      <td><a href="<c:url value='/chat/detail?messageNo=${vo.messageNo }'/>">
-	      	${vo.messageContent }
+	      	<c:if test="${fn:length(vo.messageContent)>10 }">
+				${fn:substring(vo.messageContent, 0, 10) }...
+			</c:if> 
+			<c:if test="${fn:length(vo.messageContent)<=10 }">
+				${vo.messageContent}
+			</c:if>
 	      </a></td>
 	      <td><fmt:formatDate value="${vo.messageRegdate }" type="date" pattern="yyyy-MM-dd"/></td>
 	      <td><a id="delete" href="<c:url value='/chat/deleteChat?messageNo=${vo.messageNo }'/>">삭제</a>

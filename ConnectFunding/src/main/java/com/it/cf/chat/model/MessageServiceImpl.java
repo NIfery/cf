@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.it.cf.chat.controller.ChatController;
+import com.it.cf.common.SearchVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -54,11 +55,6 @@ public class MessageServiceImpl implements MessageService{
 	@Override
 	public int editMessage(MessageSendVO vo) {
 		return messageDao.editMessage(vo);
-	}
-
-	@Override
-	public List<MessageSendVO> receiveAdmin() {
-		return messageDao.receiveAdmin();
 	}
 
 	@Override
@@ -109,6 +105,16 @@ public class MessageServiceImpl implements MessageService{
 	@Override
 	public int editAdmin(MessageReceiveVO vo) {
 		return messageDao.editAdmin(vo);
+	}
+
+	@Override
+	public List<MessageSendVO> receiveAdmin(SearchVO searchVo) {
+		return messageDao.receiveAdmin(searchVo);
+	}
+
+	@Override
+	public int totalReceive(SearchVO searchVo) {
+		return messageDao.totalReceive(searchVo);
 	}
 
 	

@@ -3,13 +3,23 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.it.cf.admin.model.AdminDAO">
+	<sql id="searchWhere">
+		<if test="searchKeyword!=null and searchKeyword!=''">
+			where ${searchCondition}  like '%' || #{searchKeyword} || '%'
+		</if>
+	</sql>
+
 	<select id="selectPwd" parameterType="string" resultType="string">
-		select admin_pwd, admin_name from admin
+		select admin_pwd from admin
 		where admin_id=#{adminId}
 	</select>
 	
 	<select id="selectPosition" resultType="map">
 		select * from position
+	</select>
+	
+	<select id="selectByUserid" parameterType="string" resultType="adminVo">
+		select * from admin where admin_id=#{adminId}
 	</select>
 	
 	<insert id="insertAdmin" parameterType="adminVo">
@@ -19,6 +29,34 @@
 		INSERT INTO admin(admin_No, admin_Id, admin_Pwd, admin_Position) 
 		VALUES (#{adminNo}, #{adminId}, #{adminPwd}, #{adminPosition})
 	</insert>
+	
+	<select id="selectAllUser" parameterType="searchVo" resultType="userVo" >
+		select *
+		from
+		(
+		    select rownum as RNUM,A.*
+		    from
+		    (
+		    	select * from users 
+		    	<include refid="searchWhere"></include>
+		    	order by user_no desc
+		    )A
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="selectTotalRecord" parameterType="SearchVo"
+		resultType="int">
+		select count(*) from users 
+        <include refid="searchWhere"></include>
+	</select>
+	
+	<select id = "idDuplChk" parameterType = "String" resultType = "int">
+    	SELECT COUNT(*) FROM admin WHERE admin_id = #{adminId}
+</select>
 </mapper>
 
 

@@ -34,10 +34,8 @@
 				left: 100%;
 				margin-top: -1px;
 			}
-			.dot-style.d-flex.dot-style {
-			    display: flex;
-			    flex-wrap: wrap;
-			    justify-content: center;
+			.col-12{
+				margin-left: 5.5%;
 			}
 		</style>
 		
@@ -90,7 +88,7 @@
 						
 						var str="";
 						str+="<div class='container'><div class='weekly2-wrapper'><div class='row'>";
-						str+="<div class='col-lg-12'><div class='section-tittle mb-30'>";
+						str+="<div class='col-lg-12'><div class='section-tittle mb-30' style='margin-left: 6%;'>";
 						str+="<h3><span style='color:red'>"+totalCount+"</span>개의 프로젝트가 있습니다.</h3>";
 						str+="</div></div></div><div class='row'><div class='col-12'>";
 						str+="<div class='dot-style d-flex dot-style'>";

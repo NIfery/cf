@@ -5,6 +5,9 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.it.cf.common.SearchVO;
+import com.it.cf.user.model.UserVO;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -40,6 +43,28 @@ public class AdminServiceImpl implements AdminService{
 	public List<Map<String, Object>> selectPosition() {
 		return adminDao.selectPosition();
 	}
+
+	@Override
+	public List<UserVO> selectAllUser(SearchVO searchVo) {
+		return adminDao.selectAllUser(searchVo);
+	}
+
+	@Override
+	public int selectTotalRecord(SearchVO searchVo) {
+		// TODO Auto-generated method stub
+		return adminDao.selectTotalRecord(searchVo);
+	}
+
+	@Override
+	public int idDuplChk(String adminId) {
+		return adminDao.idDuplChk(adminId);
+	}
+
+	@Override
+	public AdminVO selectByUserid(String adminId) {
+		return adminDao.selectByUserid(adminId);
+	}
+
 
 
 }

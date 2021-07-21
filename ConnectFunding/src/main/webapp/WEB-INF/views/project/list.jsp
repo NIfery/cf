@@ -104,7 +104,7 @@
 									str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
 									str+="<h6>"+item.projectSummary+"</h6>";
 									str+="<hr style='margin:5px 0px 8px 0px;'>";
-									str+="<h6>"+AddComma(item.totalFundingAmount)+"원<span style='color:red;font-size:0.8em'>"+(item.totalFundingAmount/+item.totalAmount*100).toFixed(1)+"%</span></h6>";
+									str+="<h6>"+AddComma(item.totalFundingAmount)+"원<span style='color:red;font-size:0.8em'>"+(item.totalFundingAmount/+item.totalAmount*100).toFixed(2)+"%</span></h6>";
 									str+="</div></div>";
 								}
 							});
@@ -123,7 +123,7 @@
 										str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
 										str+="<h6>"+item.projectSummary+"</h6>";
 										str+="<hr style='margin:5px 0px 8px 0px;'>";
-										str+="<h6>"+AddComma(item.totalFundingAmount)+"원<span style='color:red;font-size:0.8em'>"+(item.totalFundingAmount/+item.totalAmount*100).toFixed(1)+"%</span></h6>";
+										str+="<h6>"+AddComma(item.totalFundingAmount)+"원<span style='color:red;font-size:0.8em'>"+(item.totalFundingAmount/+item.totalAmount*100).toFixed(2)+"%</span></h6>";
 										str+="</div></div>";
 									}
 								});
@@ -281,7 +281,8 @@
 		                                    <p><fmt:formatDate value="${vo.projectStartdate }" pattern="yyyy-MM-dd"/></p>
 		                                    <h6>${vo.projectSummary }</h6>
 		                                    <hr style="margin:5px 0px 8px 0px;">
-		                                    <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">${vo.totalFundingAmount/vo.totalAmount*100 }%</span></h6>
+		                                    <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
+		                                    <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
 		                                </div>
 		                            </div> 
 			                	</c:forEach>
@@ -318,7 +319,8 @@
 		                                   <p><fmt:formatDate value="${vo.projectStartdate }" pattern="yyyy-MM-dd"/></p>
 		                                   <h6>${vo.projectSummary }</h6>
 		                                   <hr style="margin:5px 0px 8px 0px;">
-		                                   <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">${vo.totalFundingAmount/vo.totalAmount*100 }%</span></h6>
+		                                   <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
+		                                   <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
 		                               </div>
 		                           </div> 
 			                </c:forEach>

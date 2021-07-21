@@ -50,4 +50,8 @@ public class ProjectServiceImpl implements ProjectService{
 	public Map<String, Object> selectByNo(int projectNo) {
 		return projectDao.selectByNo(projectNo);
 	}
+	
+	public int selectFundingUserCount(int projectNo) {
+		return projectDao.selectFundingUserCount(projectNo);
+	}
 }

@@ -14,4 +14,5 @@ public interface ProjectService {
 	int createTotalFunding();
 	int insertProject(ProjectVO vo);
 	Map<String, Object> selectByNo(int projectNo);
+	int selectFundingUserCount(int projectNo);
 }

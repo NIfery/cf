@@ -65,11 +65,6 @@ public class ProjectController {
 		logger.info("list 화면 결과, totalRecord={}", totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
 		
-		for(int i=0;i<list.size();i++) {
-			int currentAmount = projectService.selectTotalFundingAmountByFundingNo(list.get(i).getFundingNo());
-			list.get(i).setTotalFundingAmount(currentAmount);
-		}
-		
 		model.addAttribute("list", list);
 		model.addAttribute("pagingInfo", pagingInfo);
 		
@@ -95,11 +90,6 @@ public class ProjectController {
 		int totalRecord = projectService.selectTotalRecordBySecondCategoryNo(secondCategoryNo);
 		logger.info("list 화면 결과, totalRecord={}", totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
-		
-		for(int i=0;i<list.size();i++) {
-			int currentAmount = projectService.selectTotalFundingAmountByFundingNo(list.get(i).getFundingNo());
-			list.get(i).setTotalFundingAmount(currentAmount);
-		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
@@ -224,9 +214,11 @@ public class ProjectController {
 		logger.info("프로젝트 상세화면, 파라미터 projectNo={}", projectNo);
 		
 		Map<String, Object> map = projectService.selectByNo(projectNo);
-		logger.info("프로젝트 상세화면 결과 map={}", map);
+		int userCnt = projectService.selectFundingUserCount(projectNo);
+		logger.info("프로젝트 상세화면 결과 map={}, userCnt={}", map, userCnt);
 		
 		model.addAttribute("map", map);
+		model.addAttribute("userCnt", userCnt);
 		
 		return "project/detail";
 	}

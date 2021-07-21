@@ -10,8 +10,14 @@
 			select rownum as RNUM, A.*
 			from
 			(	
-				select * from PROJECT
-				order by PROJECT_NO desc
+				select * from PROJECT p
+                left join 
+                (
+                    select project_no, sum(funding_amount) as totalFundingAmount from funding_list
+                    group by project_no
+                )t
+                on p.project_no=t.project_no
+				order by p.PROJECT_NO desc
 			)A
 		)
 		<![CDATA[
@@ -27,11 +33,17 @@
 			select rownum as RNUM, A.*
 			from
 			(	
-				select * from PROJECT
+				select * from PROJECT p
+				left join 
+                (
+                    select project_no, sum(funding_amount) as totalFundingAmount from funding_list
+                    group by project_no
+                )t
+                on p.project_no=t.project_no
 				<if test="secondCategoryNo!=0">
-					where second_category_no=#{secondCategoryNo}
+					and second_category_no=#{secondCategoryNo}
 				</if>
-				order by PROJECT_NO desc
+				order by p.PROJECT_NO desc
 			)A
 		)
 		<![CDATA[
@@ -81,14 +93,37 @@
 			#{projectEnddate},1,total_funding_seq.currval,#{secondCategoryNo})
 	</insert>
 	
-	<select id="selectByNo" parameterType="int" resultType="map">
+	<resultMap id="DetailResultMap" type="HashMap">
+		<result column="PROJECT_NO" jdbcType="BIGINT" property="PROJECT_NO"/>
+		<result column="PROJECT_NAME" jdbcType="VARCHAR" property="PROJECT_NAME"/>
+		<result column="PROJECT_SUMMARY" jdbcType="CLOB" property="PROJECT_SUMMARY" javaType="java.lang.String"/>
+		<result column="PROJECT_CONTENT" jdbcType="CLOB" property="PROJECT_CONTENT" javaType="java.lang.String"/>
+		<result column="PROJECT_IMAGE" jdbcType="VARCHAR" property="PROJECT_IMAGE"/>
+		<result column="PROJECT_FILENAME" jdbcType="VARCHAR" property="PROJECT_FILENAME"/>
+		<result column="TOTAL_AMOUNT" jdbcType="BIGINT" property="TOTAL_AMOUNT" javaType="double"/>
+		<result column="PROJECT_STARTDATE" jdbcType="TIMESTAMP" property="PROJECT_STARTDATE"/>
+		<result column="PROJECT_ENDDATE" jdbcType="TIMESTAMP" property="PROJECT_ENDDATE"/>
+		<result column="USER_NO" jdbcType="BIGINT" property="USER_NO"/>
+		<result column="FUNDING_NO" jdbcType="BIGINT" property="FUNDING_NO"/>
+		<result column="SECOND_CATEGORY_NO" jdbcType="BIGINT" property="SECOND_CATEGORY_NO"/>
+		<result column="USER_NAME" jdbcType="VARCHAR" property="USER_NAME"/>
+		<result column="TOTAL_FUNDING_AMOUNT" jdbcType="BIGINT" property="TOTAL_FUNDING_AMOUNT" javaType="double"/>
+	</resultMap>
+	
+	<select id="selectByNo" parameterType="int" resultMap="DetailResultMap">
 		select A.*,t.total_funding_amount from 
 			(
 				select p.*, u.USER_NAME from PROJECT p join USERS u
 				on p.USER_NO=u.USER_NO
-			)A join TOTAL_FUNDING t
-        on A.funding_no=t.funding_no
-        where PROJECT_NO=#{projectNo}
+			)A left join (select project_no, sum(funding_amount) as total_funding_amount from funding_list
+                group by project_no) t
+        on a.project_no=t.project_no
+        where A.PROJECT_NO=#{projectNo}
+	</select>
+	
+	<select id="selectFundingUserCount" parameterType="int" resultType="int">
+		select count(distinct user_no) from funding_list
+		where project_no=#{projectNo}
 	</select>
 	
 </mapper>

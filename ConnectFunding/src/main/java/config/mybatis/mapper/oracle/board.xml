@@ -4,17 +4,47 @@
 
 <mapper namespace="com.it.cf.board.model.BoardDAO">
 	
+	<sql id="searchForm">
+		<if test="searchKeyword!=null and searchKeyword!=''">
+			where ${searchCondition}  like '%' || #{searchKeyword} || '%'
+		</if>
+	</sql>
+	
+	<sql id="searchNum">
+		<if test="searchKeyword == board_No">
+			where ${searchCondition}=#{searchKeyword}
+		</if>
+	</sql>
+	
 	<insert id="boardWrite" parameterType="boardVo">
-		<!-- <selectKey keyColumn="boardNo" resultType="int" order="BEFORE">
+	<!--<selectKey keyColumn="boardNo" resultType="int" order="BEFORE">
 			select board2_seq.nextval from dual
 		</selectKey> -->
 		insert into board2(board_No,board_Title,board_Content,board_Filename,board_Oldfilename,board_Filesize)
 		values(board2_seq.nextval,#{boardTitle},#{boardContent},#{boardFilename},#{boardOldfilename},#{boardFilesize})
 	</insert>
 	
-	<select id="selectAll" resultType="boardVo">
-		select * from board2
-		order by board_No desc
+	<select id="selectAll" parameterType="SearchVO" resultType="boardVo">
+		select *
+      from
+      (
+          select rownum as RNUM,A.*
+          from
+          (
+              select * from board2 
+			<include refid="searchForm"></include>
+              order by BOARD_NO desc
+          )A
+      )
+      <![CDATA[
+      where RNUM > #{firstRecordIndex} 
+      and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+      ]]>
+	</select>
+	
+	<select id="TotalRecord" parameterType="SearchVo" resultType="int">
+		select count(*) from board2 
+        <include refid="searchForm"></include>
 	</select>
 	
 	 <update id="updateReadCount" parameterType="int">
@@ -33,13 +63,14 @@
 	 	set BOARD_DOWNCOUNT = BOARD_DOWNCOUNT +1
 	 	where BOARD_NO=#{boardNo}
 	 </update>
+	 
+	 <update id="EditBoard" parameterType="boardVo">
+	 	update board2
+	 	set board_Title=#{boardTitle}, board_Content=#{boardContent}
+	 	<if test="boardFilename !=null and boardFilename !=''">
+	 		,board_Filename=#{boardFilename},board_Oldfilename=#{boardOldfilename}
+	 		,board_Filesize=#{boardFilesize}
+	 	</if>
+	 	where BOARD_NO=#{boardNo}
+	 </update>
 </mapper>
-
-
-
-
-
-
-
-
-

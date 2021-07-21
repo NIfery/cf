@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 <!doctype html>
 <html class="no-js" lang="zxx">
     <head>
@@ -80,7 +81,7 @@
                                             <li><a href="<c:url value='/'/>">Home</a></li>
                                             <li><a href="#">Category</a></li>
                                             <li><a href="#">About</a></li>
-                                          <c:if test="${empty userVo.userName}">
+                                          <c:if test="${empty sessionScope.userName}">
 	                                            <li><a href="<c:url value='/cfmember/cfLogin'/>">로그인</a></li>
 	                                            <li><a href="<c:url value='/cfmember/register'/>">회원가입</a></li>
 	                                            <li><a href="<c:url value='/cfmember/mypage'/>">
@@ -89,9 +90,9 @@
 	                                            	</a>
 	                                            </li>
                                             </c:if>
-                                            <c:if test="${!empty userVo.userName}">
+                                            <c:if test="${!empty sessionScope.userName}">
                                             	<li><a href="<c:url value='/cfmember/cfLogout'/>">로그아웃</a></li>
-                                            	<li><span>${userVo.userName}</span></li>
+                                            	<li><span>${sessionScope.userName}</span></li>
 	                                            <li><a href="<c:url value='/cfmember/mypage'/>">
 	                                            	<img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
 	                                            		alt="로그인" style="width: 40px;" >

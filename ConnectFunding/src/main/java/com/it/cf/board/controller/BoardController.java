@@ -15,12 +15,15 @@ import com.it.cf.board.model.BoardService;
 import com.it.cf.board.model.BoardVO;
 import com.it.cf.common.ConstUtil;
 import com.it.cf.common.FileUploadUtil;
+import com.it.cf.common.PaginationInfo;
+import com.it.cf.common.SearchVO;
 import com.it.cf.common.Utility;
 
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,14 +41,30 @@ public class BoardController {
 	private final FileUploadUtil fileUploadUtil;
 	
 	// List 화면 출력
-	@GetMapping("/List")
-	public void List(Model model) {
-		logger.info("게시판 목록 화면 출력");
+	@RequestMapping("/List")
+	public String List(@ModelAttribute SearchVO searchVo, Model model) {
+		logger.info("게시판 목록 화면 출력 파라미터 searchVo={}",searchVo);
 		
-		List<BoardVO> list = boardService.selectAll();
+		//[1]
+		PaginationInfo pagingInfo = new PaginationInfo();
+		pagingInfo.setCurrentPage(searchVo.getCurrentPage());
+		pagingInfo.setBlockSize(ConstUtil.BLOCK_SIZE);
+		pagingInfo.setRecordCountPerPage(ConstUtil.RECORD_COUNT);
+		//[2]
+		searchVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
+		searchVo.setRecordCountPerPage(ConstUtil.RECORD_COUNT);
+		logger.info("페이징 처리 적용후 파라미터 searchVo={}",searchVo);
+		
+		List<BoardVO> list = boardService.selectAll(searchVo);
 		logger.info("게시판 목록 출력 list.size={}",list.size());
 		
+		int TotalRecord = boardService.TotalRecord(searchVo);
+		logger.info("게시판 레코드 수 TotalRecord ={}",TotalRecord);
+		pagingInfo.setTotalRecord(TotalRecord);
+		
 		model.addAttribute("list",list);
+		model.addAttribute("pagingInfo",pagingInfo);
+		return "board/List";
 	}
 	
 	// Write 화면 출력 / 등록
@@ -156,4 +175,78 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView("DownloadView",map);
 		return mav;
 	}
+	
+	@GetMapping("/Edit")
+	public String Edit(@RequestParam(defaultValue ="0") int boardNo,
+					HttpServletRequest request,Model model) {
+		
+		logger.info("수정 화면 출력 파라미터 boardNo={}",boardNo);
+	      if(boardNo==0) {
+	          model.addAttribute("msg", "잘못된 url 방식의 접근입니다!");
+	          model.addAttribute("url", "/Board/List");
+	          return "common/message";
+	       }
+		
+		BoardVO vo = boardService.selectByNo(boardNo);
+		
+		String FileInfo = Utility.getFileInfo(vo.getBoardFilename(),request , boardNo);
+		
+		model.addAttribute("vo",vo);
+		model.addAttribute("FileInfo",FileInfo);
+		
+		return "board/Edit";
+	}
+	
+	@PostMapping("/Edit")
+	public String Edit_post(@ModelAttribute BoardVO vo, @RequestParam String boardOldfilename,
+							HttpServletRequest request, Model model) {
+		
+		logger.info("게시글 수정 처리 파라미터 vo={}, boardOldfilename={}",vo,boardOldfilename );
+		
+		String Filename = "", Oldfilename = "";
+		long fileSize = 0;
+		List<Map<String, Object>> list = null;
+		
+		try {
+    		list =fileUploadUtil.fileUpload(request,ConstUtil.UPLOAD_FILE_FLAG);
+    		
+    		for(Map<String, Object> map : list) {
+    			Filename= (String) map.get("fileName");
+    			Oldfilename = (String) map.get("originalFileName");
+    			fileSize = (long) map.get("fileSize");
+    			
+    		}
+    		
+    	} catch (IllegalStateException e) {
+    		e.printStackTrace();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+		
+		vo.setBoardFilename(Filename);
+        vo.setBoardOldfilename(Oldfilename);
+        vo.setBoardFilesize(fileSize);
+        
+        int result = boardService.EditBoard(vo);
+        String msg ="수정에 실패하였습니다.", url="/board/Edit?boardNo="+vo.getBoardNo();
+        if(result > 0) {
+        	msg ="수정 성공하였습니다.";
+        	url="/board/Detail?boardNo="+vo.getBoardNo();
+        	
+        	if(!list.isEmpty()) {
+        		if(Oldfilename !=null && !Oldfilename.isEmpty()) {
+        			File oldFile = new File(fileUploadUtil.getUploadPath(request, ConstUtil.UPLOAD_FILE_FLAG),Oldfilename);
+        			if(oldFile.exists()) {
+        				boolean bool = oldFile.delete();
+        				logger.info("기존 업로드 자료 삭제 결과 ={}",bool);
+        			}
+        		}
+        	}
+        }
+        model.addAttribute("msg", msg);
+        model.addAttribute("url", url);
+        
+        return "common/message";
+	}
+
 }

@@ -1,12 +1,17 @@
 package com.it.cf.admin.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,11 +36,21 @@ public class AdminController {
 		
 	}
 	
+	@RequestMapping("/register")
+	public void register(Model model) {
+		List<Map<String, Object>> list=adminService.selectPosition();
+		logger.info("권한 조회 결과, list.size={}", list.size());
+		
+		//3
+		model.addAttribute("list", list);
+	}
+	
 	@RequestMapping("/login")
 	public void login() {
 		
 	}
-	
+	 
+	//로그인 처리
 	@PostMapping("/login")
 	public String login_post(@ModelAttribute AdminVO vo, 
 			@RequestParam(required = false) String chkSave, 
@@ -53,9 +68,10 @@ public class AdminController {
 			
 			//session - adminUserid
 			request.getSession().setAttribute("adminId", vo.getAdminId());
+			request.getSession().setAttribute("adminPosition", vo.getAdminPosition());
 			
 			//cookie - ck_admin_userid
-			Cookie ck = new Cookie("ck_admin_userid", vo.getAdminId());
+			Cookie ck = new Cookie("ck_adminId", vo.getAdminId());
 			ck.setPath("/");
 			if(chkSave!=null && !chkSave.isEmpty()) {
 				ck.setMaxAge(1000*24*60*60);
@@ -68,6 +84,34 @@ public class AdminController {
 			msg="비밀번호가 일치하지 않습니다.";
 		}else if(result==AdminService.ID_NONE) {
 			msg="해당 아이디가 존재하지 않습니다.";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
+	
+	//로그아웃 처리
+	@RequestMapping("/login/logout")
+	public String logout(HttpSession session) {
+		logger.info("관리자 로그아웃");
+		
+		session.removeAttribute("adminId");
+		
+		return "redirect:/admin/login";
+	}
+	
+	@PostMapping("/register")
+	public String write_post(@ModelAttribute AdminVO vo, Model model) {
+		logger.info("관리자 등록, 파라미터 vo={}", vo);
+		
+		int cnt=adminService.insertAdmin(vo);
+		logger.info("관리자 등록 결과, cnt={}", cnt);
+		
+		String msg="관리자 등록 실패", url="/admin/register";
+		if(cnt>0) {
+			msg="관리자 등록되었습니다.";
 		}
 		
 		model.addAttribute("msg", msg);

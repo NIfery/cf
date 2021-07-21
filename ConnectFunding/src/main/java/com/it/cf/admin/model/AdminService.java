@@ -1,5 +1,8 @@
 package com.it.cf.admin.model;
 
+import java.util.List;
+import java.util.Map;
+
 public interface AdminService {
 	//로그인 처리에 사용하는 상수
 	int LOGIN_OK=1;  //로그인 성공
@@ -7,4 +10,6 @@ public interface AdminService {
 	int ID_NONE=3; //아이디 존재하지 않음
 	
 	int loginProc(String userid, String pwd);
+	int insertAdmin(AdminVO vo);
+	List<Map<String, Object>> selectPosition();
 }

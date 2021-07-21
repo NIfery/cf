@@ -28,17 +28,12 @@
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/nice-select.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/style.css">
 <style type="text/css">
-   a{
-      text-decoration: none !important;      
-   }
-   
-   .genric-btn.warning {
-    color: #787483;
-    font-size: 1.1em;
-    background: #f4e700;
-    border: 1px solid transparent;
-    }
-   .btn {
+
+	a{
+		text-decoration: none !important;		
+	}
+	
+.btn {
     background: #ff656a;
     -moz-user-select: none;
     text-transform: uppercase;
@@ -52,7 +47,7 @@
     margin-bottom: 0;
     padding: 27px 44px;
     border-radius: 5px;
-    min-width: 20px; 
+    min-width: 20px;
     margin: 10px;
     cursor: pointer;
     transition: color 0.4s linear;
@@ -62,6 +57,15 @@
     overflow: hidden;
     margin: 0;
 }
+
+	.genric-btn.warning {
+    color: #787483;
+    font-size: 1.1em;
+    background: #f4e700;
+    border: 1px solid transparent;
+    }
+
+
 </style>   
    </head>
 

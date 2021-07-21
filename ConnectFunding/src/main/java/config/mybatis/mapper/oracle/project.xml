@@ -81,6 +81,16 @@
 			#{projectEnddate},1,total_funding_seq.currval,#{secondCategoryNo})
 	</insert>
 	
+	<select id="selectByNo" parameterType="int" resultType="map">
+		select A.*,t.total_funding_amount from 
+			(
+				select p.*, u.USER_NAME from PROJECT p join USERS u
+				on p.USER_NO=u.USER_NO
+			)A join TOTAL_FUNDING t
+        on A.funding_no=t.funding_no
+        where PROJECT_NO=#{projectNo}
+	</select>
+	
 </mapper>
 
 

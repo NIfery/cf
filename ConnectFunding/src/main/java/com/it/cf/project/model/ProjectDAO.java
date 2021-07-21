@@ -1,6 +1,7 @@
 package com.it.cf.project.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,4 +16,5 @@ public interface ProjectDAO {
 	List<SecondCategoryVO> selectSecondCategory(String firstCategory);
 	int createTotalFunding();
 	int insertProject(ProjectVO vo);
+	Map<String, Object> selectByNo(int projectNo);
 }

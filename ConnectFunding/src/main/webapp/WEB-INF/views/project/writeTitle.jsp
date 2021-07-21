@@ -117,11 +117,7 @@
 			processData : false,
 			success : function(img_name) {
 				var ttt="<img src='${pageContext.request.contextPath}/"+img_name+"'>";
-				alert(ttt);
-				$('#summernote').html(ttt);
-				$(el).summernote('editor.insertImage', ttt);
 				$(el).summernote('editor.insertImage', img_name);
-				$(el).summernote('editor.insertImage', img_name.url);
 			}
 		});
 	}

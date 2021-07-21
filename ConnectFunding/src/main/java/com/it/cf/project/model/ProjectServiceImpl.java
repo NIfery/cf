@@ -46,4 +46,8 @@ public class ProjectServiceImpl implements ProjectService{
 	public int insertProject(ProjectVO vo) {
 		return projectDao.insertProject(vo);
 	}
+	
+	public Map<String, Object> selectByNo(int projectNo) {
+		return projectDao.selectByNo(projectNo);
+	}
 }

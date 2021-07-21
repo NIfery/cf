@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
@@ -10,10 +11,10 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="manifest" href="site.webmanifest">
-		<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/img/favicon.ico">
+      <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/img/favicon.ico">
 
-		<!-- CSS here -->
-		
+      <!-- CSS here -->
+      
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/owl.carousel.min.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/ticker-style.css">
@@ -27,18 +28,17 @@
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/nice-select.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/style.css">
 <style type="text/css">
-	a{
-		text-decoration: none !important;		
-	}
-	
-	.genric-btn.warning {
+   a{
+      text-decoration: none !important;      
+   }
+   
+   .genric-btn.warning {
     color: #787483;
     font-size: 1.1em;
     background: #f4e700;
     border: 1px solid transparent;
     }
-
-	.btn {
+   .btn {
     background: #ff656a;
     -moz-user-select: none;
     text-transform: uppercase;
@@ -62,7 +62,6 @@
     overflow: hidden;
     margin: 0;
 }
-
 </style>   
    </head>
 
@@ -104,32 +103,32 @@
                             <div class="col-xl-10 col-lg-10 col-md-12 header-flex">
                                 <!-- sticky -->
                                     <div class="sticky-logo">
-                                        <a href="index.html"><img src="${pageContext.request.contextPath}/assets/img/logo/logo.png" alt=""></a>
+                                        <a href="<c:url value='/'/>"><img src="${pageContext.request.contextPath}/assets/img/logo/logo.png" alt=""></a>
                                     </div>
                                 <!-- Main-menu -->
                                 <div class="main-menu d-none d-md-block">
                                     <nav>                  
                                         <ul id="navigation">    
                                             <li><a href="<c:url value='/'/>">Home</a></li>
-                                            <li><a href="#">Category</a></li>
+                                            <li><a href="<c:url value='/project/list'/>">프로젝트</a></li>
                                             <li><a href="<c:url value='/board/List'/>">게시판</a></li>
                                           <c:if test="${empty sessionScope.userName}">
-	                                            <li><a href="<c:url value='/cfmember/cfLogin'/>">로그인</a></li>
-	                                            <li><a href="<c:url value='/cfmember/register'/>">회원가입</a></li>
-	                                            <li><a href="<c:url value='/cfmember/mypage'/>">
-	                                            	<img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
-	                                            		alt="로그인" style="width: 40px;" >
-	                                            	</a>
-	                                            </li>
+                                               <li><a href="<c:url value='/cfmember/cfLogin'/>">로그인</a></li>
+                                               <li><a href="<c:url value='/cfmember/register'/>">회원가입</a></li>
+                                               <li><a href="<c:url value='/cfmember/mypage'/>">
+                                                  <img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
+                                                     alt="로그인" style="width: 40px;" >
+                                                  </a>
+                                               </li>
                                             </c:if>
                                             <c:if test="${!empty sessionScope.userName}">
-                                            	<li><a href="<c:url value='/cfmember/cfLogout'/>">로그아웃</a></li>
-                                            	<li><span>${sessionScope.userName}</span></li>
-	                                            <li><a href="<c:url value='/cfmember/mypage'/>">
-	                                            	<img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
-	                                            		alt="로그인" style="width: 40px;" >
-	                                            	</a>
-	                                            </li>
+                                               <li><a href="<c:url value='/cfmember/cfLogout'/>">로그아웃</a></li>
+                                               <li><span>${sessionScope.userName}</span></li>
+                                               <li><a href="<c:url value='/cfmember/mypage'/>">
+                                                  <img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
+                                                     alt="로그인" style="width: 40px;" >
+                                                  </a>
+                                               </li>
                                             </c:if>
                                                <!--  <ul class="submenu">
                                                     <li><a href="#">Element</a></li>

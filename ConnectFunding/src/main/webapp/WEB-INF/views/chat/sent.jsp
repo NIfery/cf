@@ -37,7 +37,9 @@
 	  	<tr>
 	      <th scope="row">${vo.messageNo }</th>
 	      <td>${vo.messageTitle }</td>
-	      <td>${vo.messageContent }</td>
+	      <td><a href="<c:url value='/chat/detail?messageNo=${vo.messageNo }'/>">
+	      	${vo.messageContent }
+	      </a></td>
 	      <td><fmt:formatDate value="${vo.messageRegdate }" type="date" pattern="yyyy-MM-dd"/></td>
 	      <td><a id="delete" href="<c:url value='/chat/deleteChat?messageNo=${vo.messageNo }'/>">삭제</a>
 	      </td>

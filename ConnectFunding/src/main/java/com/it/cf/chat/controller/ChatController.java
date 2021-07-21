@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.it.cf.chat.model.MessageSendListVO;
+import com.it.cf.chat.model.MessageReceiveVO;
 import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.chat.model.MessageService;
 
@@ -26,10 +28,6 @@ public class ChatController {
 	
 	private final MessageService messageService;
 	
-	@RequestMapping("/inbox")
-	public void inbox() {
-		logger.info("받은 쪽지함");
-	}
 	
 	@GetMapping("/write")
 	public void write() {
@@ -54,6 +52,21 @@ public class ChatController {
 		
 	}
 	
+	@PostMapping("/adminWrite")
+	public String adminWrite(@ModelAttribute MessageReceiveVO vo,int messageNo, Model model) {
+		vo.setMessageNo(messageNo);
+		logger.info("답변하기 vo={}",vo);
+		
+		int cnt=messageService.insertAdmin(vo);
+		
+		String msg="답변 등록 실패!", url="/chat/adminWrite";
+		if(cnt>0) {
+			model.addAttribute("msg", "답변 등록 성공");
+			model.addAttribute("url", "/chat/adminDetail?messageNo="+vo.getMessageNo());
+		}
+		return "common/message";
+	}
+	
 	@RequestMapping("/sent")
 	public String sentAll(HttpSession session,Model model) {
 		int userNo=(int) session.getAttribute("userNo");
@@ -64,14 +77,28 @@ public class ChatController {
 		
 		model.addAttribute("list", list);
 		
-		return "/chat/sent";
+		return "chat/sent";
+	}
+	
+	@RequestMapping("/inbox")
+	public String receiveAll(HttpSession session,Model model) {
+		int userNo=(int) session.getAttribute("userNo");
+		logger.info("받은 쪽지함, userNo={}",userNo);
+		
+		List<MessageReceiveVO> list=messageService.receiveAll(userNo);
+		logger.info("list.size={}",list.size());
+		
+		model.addAttribute("list", list);
+		
+		return "chat/inbox";
 	}
 	
 	@RequestMapping("/deleteChat")
 	public String deleteChat(int messageNo,Model model) {
 		logger.info("파라미터 messageNo={}",messageNo);
 		
-		int cnt=messageService.deleteChat(messageNo);
+		int cnt=messageService.deleteReceive(messageNo);
+		cnt=messageService.deleteChat(messageNo);
 		logger.info("삭제 결과 cnt={}",cnt);
 		
 		String url="/chat/sent";
@@ -81,5 +108,156 @@ public class ChatController {
 			model.addAttribute("msg", "쪽지 삭제 실패!");
 			return "common/message";
 		}
+	}
+	
+	@RequestMapping("/adminDelete")
+	public String adminDelete(int messageNo,Model model) {
+		logger.info("파라미터 messageNo={}",messageNo);
+		
+		int cnt=messageService.deleteReceive(messageNo);
+		cnt=messageService.deleteChat(messageNo);
+		logger.info("삭제 결과 cnt={}",cnt);
+		
+		String url="/chat/adminEdit";
+		if(cnt>0) {
+			return "redirect:/chat/adminInbox";
+		}else {
+			model.addAttribute("msg", "쪽지 삭제 실패!");
+			return "common/message";
+		}
+	}
+	
+	@RequestMapping("/deleteMulti")
+	public String deleteMulti(@ModelAttribute MessageSendListVO sListVo,Model model) {
+		logger.info("선택한 쪽지 삭제, 파라미터 mrListVo={}",sListVo);
+		
+		List<MessageSendVO> list=sListVo.getSMessage();
+		for(int i=0;i<list.size();i++) {
+			MessageSendVO vo=list.get(i);
+			int messageNo=vo.getMessageNo();
+			
+			logger.info("i={}, messageNo={}", i, messageNo);
+		}
+		
+		String msg="선택한 쪽지 삭제 중 에러 발생!", url="/chat/adminInbox";
+		int cnt=messageService.deleteMessageMulti(list);
+		if(cnt>0) {
+			msg="선택한 쪽지 삭제 완료";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
+	
+	@RequestMapping("/chatCategory")
+	public String countMessage(HttpSession session,Model model) {
+		int userNo=(int) session.getAttribute("userNo");
+		logger.info("보낸 쪽지, 받은 쪽지 수, userNo={}",userNo);
+		
+		int sentCount=messageService.sentCount(userNo);
+		logger.info("보낸 쪽지 수 sentCount={}",sentCount);
+		
+		int receiveCount=messageService.receiveCount(userNo);
+		logger.info("받은 쪽지 수 receiveCount={}",receiveCount);
+		
+		model.addAttribute("sentCount", sentCount);
+		model.addAttribute("receiveCount", receiveCount);
+		
+		return "chat/chatCategory";
+	}
+	
+	@RequestMapping("/detail")
+	public String sentDetail(int messageNo,Model model) {
+		logger.info("보낸 쪽지 상세보기 messageNo={}",messageNo);
+		
+		MessageSendVO sendVo=messageService.sentByMessageNo(messageNo);
+		logger.info("sendVo={}",sendVo);
+		
+		model.addAttribute("sendVo", sendVo);
+		return "chat/detail";
+	}
+	
+	@RequestMapping("/adminDetail")
+	public String adminDetail(int messageNo,Model model) {
+		logger.info("관리자 받은 쪽지 상세보기 messageNo={}",messageNo);
+		
+		MessageSendVO sendVo=messageService.sentByMessageNo(messageNo);
+		logger.info("sendVo={}",sendVo);
+		
+		MessageReceiveVO receiveVo=messageService.receiveByMessageNo(messageNo);
+		logger.info("receiveVo={}",receiveVo);
+		
+		model.addAttribute("sendVo", sendVo);
+		model.addAttribute("receiveVo", receiveVo);
+		return "chat/adminDetail";
+	}
+	
+	@GetMapping("/edit")
+	public String sentEdit(int messageNo,Model model) {
+		logger.info("보낸 쪽지 수정 messageNo={}",messageNo);
+		
+		MessageSendVO sendVo=messageService.sentByMessageNo(messageNo);
+		logger.info("sendVo={}",sendVo);
+		
+		model.addAttribute("sendVo", sendVo);
+		return "chat/edit";
+	}
+	
+	@GetMapping("/adminEdit")
+	public String adminEdit(int messageNo,Model model) {
+		logger.info("답변 수정 messageNo={}",messageNo);
+		
+		MessageReceiveVO receiveVo=messageService.receiveByMessageNo(messageNo);
+		logger.info("receiveVo={}",receiveVo);
+		
+		MessageSendVO sendVo=messageService.sentByMessageNo(messageNo);
+		logger.info("sendVo={}",sendVo);
+		
+		model.addAttribute("sendVo", sendVo);
+		model.addAttribute("receiveVo", receiveVo);
+		return "chat/adminEdit";
+	}
+	
+	@PostMapping("/edit")
+	public String sentEdit_post(@ModelAttribute MessageSendVO vo,Model model) {
+		logger.info("쪽지 수정, vo={}",vo);
+		
+		int cnt=messageService.editMessage(vo);
+		logger.info("쪽지 수정 결과 cnt={}",cnt);
+		
+		String msg="쪽지 수정 실패!", url="/chat/edit";
+		if(cnt>0) {
+			model.addAttribute("msg", "쪽지 수정 성공");
+			model.addAttribute("url", "/chat/detail?messageNo="+vo.getMessageNo());
+		}
+		return "common/message";
+	}
+	
+	@PostMapping("/adminEdit")
+	public String adminEdit_post(@ModelAttribute MessageReceiveVO vo,Model model) {
+		logger.info("답변 수정, vo={}",vo);
+		
+		int cnt=messageService.editAdmin(vo);
+		logger.info("답변 수정 결과 cnt={}",cnt);
+		
+		String msg="답변 수정 실패!", url="/chat/adminEdit";
+		if(cnt>0) {
+			model.addAttribute("msg", "쪽지 수정 성공");
+			model.addAttribute("url", "/chat/adminDetail?messageNo="+vo.getMessageNo());
+		}
+		return "common/message";
+	}
+	
+	@RequestMapping("/adminInbox")
+	public String adminInbox(Model model) {
+		logger.info("관리자 받은 편지함");
+		
+		List<MessageSendVO> list=messageService.receiveAdmin();
+		logger.info("list.size={}",list.size());
+		
+		model.addAttribute("list", list);
+		return "/chat/adminInbox";
 	}
 }

@@ -22,7 +22,7 @@
 </script>
 <title>받은 쪽지함</title>
 
-		<div class="col-13 col-sm-7 col-md-6">
+		<div class="col-13 col-sm-7 col-md-8">
 			<form name="frmChat" method="post" action="<c:url value='/chat/write'/>">
 				<h1>쪽지쓰기</h1>
 				<div class="form-group">

@@ -20,6 +20,11 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public List<AccountVO> selectAccount(int userNo) {
 		return accountDao.selectAccount(userNo);
+	}
+
+	@Override
+	public int deleteAccount(String accountNo) {
+		return accountDao.deleteAccount(accountNo);
 	}//
 
 }

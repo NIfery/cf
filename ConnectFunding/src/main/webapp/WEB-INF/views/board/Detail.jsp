@@ -54,7 +54,7 @@ body {
 				</div>
 			<div>
 			<!-- 본인글 일경우에만 보이게 처리 -->
-				<a href="<c:url value='/board/Edit'/>">
+				<a href="<c:url value='/board/Edit?boardNo=${vo.boardNo}'/>">
 				<button type="submit" class="btn btn-sm btn-primary" id="btnEdit">수정</button>
 				</a>
 				<a href="<c:url value='board/Delete'/>">

@@ -27,7 +27,7 @@
 				<li><a href="#" class="d-flex">
 						<p>알림</p>
 				</a></li>
-				<li><a href="#" class="d-flex">
+				<li><a href="<c:url value='/cfmember/follow'/>" class="d-flex">
 						<p>팔로우</p>
 				</a></li>
 				<li><a href="#" class="d-flex">

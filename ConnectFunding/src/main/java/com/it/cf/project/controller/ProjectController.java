@@ -65,11 +65,6 @@ public class ProjectController {
 		logger.info("list 화면 결과, totalRecord={}", totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
 		
-		for(int i=0;i<list.size();i++) {
-			int currentAmount = projectService.selectTotalFundingAmountByFundingNo(list.get(i).getFundingNo());
-			list.get(i).setTotalFundingAmount(currentAmount);
-		}
-		
 		model.addAttribute("list", list);
 		model.addAttribute("pagingInfo", pagingInfo);
 		
@@ -95,11 +90,6 @@ public class ProjectController {
 		int totalRecord = projectService.selectTotalRecordBySecondCategoryNo(secondCategoryNo);
 		logger.info("list 화면 결과, totalRecord={}", totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
-		
-		for(int i=0;i<list.size();i++) {
-			int currentAmount = projectService.selectTotalFundingAmountByFundingNo(list.get(i).getFundingNo());
-			list.get(i).setTotalFundingAmount(currentAmount);
-		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
@@ -198,12 +188,11 @@ public class ProjectController {
 		PrintWriter out = response.getWriter();
 		
 		// 업로드할 폴더 경로
-		String realFolder = request.getSession().getServletContext().getRealPath("project_assets/projectImg");;
-		UUID uuid = UUID.randomUUID();
+		String realFolder = request.getSession().getServletContext().getRealPath("project_assets/projectImg/projectMainImg");;
 
 		// 업로드할 파일 이름
 		String org_filename = file.getOriginalFilename();
-		String str_filename = uuid.toString() + org_filename;
+		String str_filename = fileUploadUtil.getUniqueFileName(org_filename);
 
 		System.out.println("원본 파일명 : " + org_filename);
 		System.out.println("저장할 파일명 : " + str_filename);
@@ -216,54 +205,21 @@ public class ProjectController {
 			f.mkdirs();
 		}
 		file.transferTo(f);
-		out.println("/cf/project_assets/projectImg/"+str_filename);
+		out.println("/cf/project_assets/projectImg/projectMainImg/"+str_filename);
 		out.close();
-		
-		/*
-		 * // 업로드할 파일 이름 String file_name = file.getOriginalFilename(); String
-		 * server_file_name = fileDBName(file_name,
-		 * ProjectUtil.IMAGE_FILE_UPLOAD_PATH_TEST);
-		 * 
-		 * System.out.println("원본 파일명 : " + file_name); System.out.println("저장할 파일명 : "
-		 * + server_file_name);
-		 * 
-		 * String filepath = ProjectUtil.IMAGE_FILE_UPLOAD_PATH_TEST + server_file_name;
-		 * System.out.println("파일경로 : " + filepath);
-		 * 
-		 * File f = new File(filepath); if (!f.exists()) { f.mkdirs(); }
-		 * file.transferTo(f);
-		 * out.println("project_assets/projectImg"+server_file_name); out.close();
-		 */
-	}
-    private String fileDBName(String fileName, String saveFolder) {
-		Calendar c = Calendar.getInstance();
-		int year = c.get(Calendar.YEAR);
-		int month = c.get(Calendar.MONTH);
-		int date = c.get(Calendar.DATE);
-
-		String homedir = saveFolder + year + "-" + month + "-" + date;
-		System.out.println(homedir);
-		File path1 = new File(homedir);
-		if (!(path1.exists())) {
-			path1.mkdir();
-		}
-		Random r = new Random();
-		int random = r.nextInt(100000000);
-
-		int index = fileName.lastIndexOf(".");
-
-		String fileExtension = fileName.substring(index + 1);
-		System.out.println("fileExtension = " + fileExtension);
-
-		String refileName = "bbs" + year + month + date + random + "." + fileExtension;
-		System.out.println("refileName = " + refileName);
-
-		String fileDBName = "/" + year + "-" + month + "-" + date + "/" + refileName;
-		System.out.println("fileDBName = " + fileDBName);
-
-		return fileDBName;
 	}
 	
-	@RequestMapping("/writeDetail")
-	public void writeDetail() {}
+	@RequestMapping("/detail")
+	public String detail(@RequestParam(defaultValue = "0") int projectNo, Model model) {
+		logger.info("프로젝트 상세화면, 파라미터 projectNo={}", projectNo);
+		
+		Map<String, Object> map = projectService.selectByNo(projectNo);
+		int userCnt = projectService.selectFundingUserCount(projectNo);
+		logger.info("프로젝트 상세화면 결과 map={}, userCnt={}", map, userCnt);
+		
+		model.addAttribute("map", map);
+		model.addAttribute("userCnt", userCnt);
+		
+		return "project/detail";
+	}
 }

@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.it.cf.admin.controller.AdminLoginInterceptor;
@@ -16,13 +17,19 @@ public class MvcConfiguration implements WebMvcConfigurer{
 	public void addInterceptors(InterceptorRegistry registry) {
 
 		registry.addInterceptor(new LoginInterceptor())
-		.excludePathPatterns("/cfmember/cfLogin","/cfmember/register","/cfmember/jusoPopup","/project/list","/project/alist")
+		.excludePathPatterns("/cfmember/cfLogin","/cfmember/register","/cfmember/jusoPopup","/project/list","/project/alist","/project/detail")
 		.addPathPatterns("/cfmember/*","/project/*");
 
 		registry.addInterceptor(new AdminLoginInterceptor())
 		.excludePathPatterns("/admin/login")
 		.addPathPatterns("/admin/**");
 
+	}
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/summernoteImage/**")
+		.addResourceLocations("C:\\Users\\Chung\\Desktop\\Test");
 	}
 
 	@Bean

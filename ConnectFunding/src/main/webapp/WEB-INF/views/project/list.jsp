@@ -98,13 +98,13 @@
 							$.each(list, function(idx,item){
 								if(idx<4){
 									str+="<div class='weekly2-single'><div class='weekly2-img'>";
-									str+="<img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></div>";
+									str+="<a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'><img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></a></div>";
 									str+="<div class='weekly2-caption'><span></span>";
-									str+="<h4><a href='#'>"+item.projectName+"</a></h4>";
+									str+="<h4><a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'>"+item.projectName+"</a></h4>";
 									str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
-									str+="<h4><a href='#'>"+item.projectSummary+"</a></h4>";
+									str+="<h6>"+item.projectSummary+"</h6>";
 									str+="<hr style='margin:5px 0px 8px 0px;'>";
-									str+="<h6 style='color:red'>"+item.totalFundingAmount/+item.totalAmount*100+"% 달성</h6>";
+									str+="<h6>"+AddComma(item.totalFundingAmount)+"원<span style='color:red;font-size:0.8em'>"+(item.totalFundingAmount/+item.totalAmount*100).toFixed(2)+"%</span></h6>";
 									str+="</div></div>";
 								}
 							});
@@ -117,13 +117,13 @@
 								$.each(list, function(idx,item){
 									if(idx>=4){
 										str+="<div class='weekly2-single'><div class='weekly2-img'>";
-										str+="<img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></div>";
+										str+="<a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'><img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></a></div>";
 										str+="<div class='weekly2-caption'><span></span>";
-										str+="<h4><a href='#'>"+item.projectName+"</a></h4>";
+										str+="<h4><a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'>"+item.projectName+"</a></h4>";
 										str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
-										str+="<h4><a href='#'>"+item.projectSummary+"</a></h4>";
+										str+="<h6>"+item.projectSummary+"</h6>";
 										str+="<hr style='margin:5px 0px 8px 0px;'>";
-										str+="<h6 style='color:red'>"+item.totalFundingAmount/+item.totalAmount*100+"% 달성</h6>";
+										str+="<h6>"+AddComma(item.totalFundingAmount)+"원<span style='color:red;font-size:0.8em'>"+(item.totalFundingAmount/+item.totalAmount*100).toFixed(2)+"%</span></h6>";
 										str+="</div></div>";
 									}
 								});
@@ -154,6 +154,12 @@
 					}
 				});
 			}
+			
+			function AddComma(num) {
+				var regexp = /\B(?=(\d{3})+(?!\d))/g;
+				return num.toString().replace(regexp, ',');
+			}
+
 		</script>   
 
     <div class="weekly-news-area pt-50">
@@ -266,17 +272,17 @@
 			                	<c:forEach var="vo" items="${list }" begin="0" end="3">
 			                		<div class="weekly2-single">
 		                                <div class="weekly2-img">
-		                                    <img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
-		                                    	style="width:263px; height:170px">
+		                                    <a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>"><img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
+		                                    	style="width:263px; height:170px"></a>
 		                                </div>
 		                                <div class="weekly2-caption">
 		                                    <span></span>
-		                                    <h4><a href="#">${vo.projectName}</a></h4>
+		                                    <h4><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
 		                                    <p><fmt:formatDate value="${vo.projectStartdate }" pattern="yyyy-MM-dd"/></p>
-		                                    <h4><a href="#">${vo.projectSummary }</a></h4>
+		                                    <h6>${vo.projectSummary }</h6>
 		                                    <hr style="margin:5px 0px 8px 0px;">
-		                                    <%-- <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/> 원</h6> --%>
-		                                    <h6 style="color:red">${vo.totalFundingAmount/vo.totalAmount*100 }% 달성</h6>
+		                                    <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
+		                                    <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
 		                                </div>
 		                            </div> 
 			                	</c:forEach>
@@ -304,17 +310,17 @@
                             <c:forEach var="vo" items="${list }" begin="4">
 			                	<div class="weekly2-single">
 		                               <div class="weekly2-img">
-		                                   <img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
-		                                   		style="width:263px; height:170px">
+		                                   <a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>"><img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
+		                                   		style="width:263px; height:170px"></a>
 		                               </div>
 		                               <div class="weekly2-caption">
 		                                   <span></span>
-		                                   <h4><a href="#">${vo.projectName}</a></h4>
+		                                   <h4><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
 		                                   <p><fmt:formatDate value="${vo.projectStartdate }" pattern="yyyy-MM-dd"/></p>
-		                                   <h4><a href="#">${vo.projectSummary }</a></h4>
+		                                   <h6>${vo.projectSummary }</h6>
 		                                   <hr style="margin:5px 0px 8px 0px;">
-		                                   <%-- <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/> 원</h6> --%>
-		                                   <h6 style="color:red">${vo.totalFundingAmount/vo.totalAmount*100 }% 달성</h6>
+		                                   <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
+		                                   <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
 		                               </div>
 		                           </div> 
 			                </c:forEach>
@@ -325,9 +331,7 @@
             </div>
         </div>
     </div>           
-        <c:if test="${!empty list && fn:length(list)>4}">
-        	<br><br>
-        </c:if>
+        <br><br>
         <div id="divPage" style="text-align: center">
 			<c:if test="${pagingInfo.firstPage>1 }">
 				<a href="#" onclick="pageProc(${pagingInfo.firstPage-1})">

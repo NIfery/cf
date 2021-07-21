@@ -35,9 +35,9 @@
 				</div>
 				
 				<br>
-				<h3 class="title-5 m-b-35">답변</h3>
 				
 				<div class="border border-warning p-3">
+				<h3 class="title-5 m-b-35">답변</h3>
 				<form name="frmChat" method="post" action="<c:url value='/chat/adminEdit?messageNo=${receiveVo.messageNo }'/>">
 				<div class="form-group">
 				<input type="hidden" name="messageNo" value="${receiveVo.messageNo }">

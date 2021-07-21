@@ -18,7 +18,7 @@
 <title>쪽지보기</title>
 
 		<div class="col-13 col-sm-7 col-md-8">
-			<form name="frmChat" method="post" action="<c:url value='/chat/write'/>">
+			<form name="frmChat">
 				<h1>보낸 쪽지</h1>
 				<div class="form-group">
 					<label for="title">제목</label>

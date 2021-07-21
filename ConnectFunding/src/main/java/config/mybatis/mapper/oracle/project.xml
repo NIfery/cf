@@ -20,7 +20,6 @@
 		]]>
 	</select>
 	
-	
 	<select id="selectBySecondCategoryNo" parameterType="pageVo" resultType="projectVo">
 		select *
 		from
@@ -41,6 +40,18 @@
 		]]>
 	</select>
 	
+	<select id="selectFirstCategory" resultType="firstCategoryVo">
+		select * from first_category
+		order by first_category_no
+	</select>
+	
+	<select id="selectSecondCategory" parameterType="string" resultType="secondCategoryVo">
+		select s.*,f.category_name from second_category s join first_category f
+		on s.first_category_no=f.first_category_no
+		and f.category_name=#{firstCategory}
+		order by s.second_category_no
+	</select>
+	
 	<select id="selectTotalRecord" resultType="int">
 		select count(*) from PROJECT
 	</select>
@@ -56,6 +67,20 @@
 		select total_funding_amount from TOTAL_FUNDING
 		where FUNDING_NO=#{fundingNo}
 	</select>
+	
+	<insert id="createTotalFunding" >
+		insert into TOTAL_FUNDING(FUNDING_NO)
+		values(total_funding_seq.nextval)
+	</insert>
+	
+	<insert id="insertProject" parameterType="projectVo">
+		insert into PROJECT(PROJECT_NO,PROJECT_NAME,project_summary,project_content,PROJECT_IMAGE,
+			TOTAL_AMOUNT,PROJECT_STARTDATE,PROJECT_ENDDATE,USER_NO,FUNDING_NO,second_category_no) 
+		values(project_seq.nextval,#{projectName},#{projectSummary},#{projectContent},#{projectImage},
+			#{totalAmount},#{projectStartdate},
+			#{projectEnddate},1,total_funding_seq.currval,#{secondCategoryNo})
+	</insert>
+	
 </mapper>
 
 

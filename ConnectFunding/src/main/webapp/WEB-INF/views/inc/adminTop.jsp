@@ -61,11 +61,11 @@
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
                         <li class="has-sub">
-                            <a class="js-arrow" href="#">
+                            <a class="js-arrow" href="<c:url value='/admin/index'/>">
                                 <i class="fas fa-tachometer-alt"></i>메인화면</a>
                         </li>
                         <li>
-                            <a href="chart.html">
+                            <a href="<c:url value='/admin/membership'/>">
                                 <i class="fas fa-chart-bar"></i>회원관리</a>
                         </li>
                     </ul>
@@ -84,12 +84,12 @@
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        <li class="active has-sub">
+                        <li>
                             <a class="js-arrow" href="<c:url value='/admin/index'/>">
                                 <i class="fas fa-tachometer-alt"></i>메인화면</a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="<c:url value='/admin/membership'/>">
                                 <i class="fas fa-user"></i>회원관리</a>
                         </li>
                         <li>
@@ -228,7 +228,17 @@
 	                                </div>
 	                                <div class="account-wrap">
 	                                    <div class="account-item clearfix js-item-menu">
-	                                            <a class="js-acc-btn" href="#">${adminId }</a>
+			                                    <a class="js-acc-btn" href="#">
+													<c:if test="${adminPosition eq 'QnA_Admin'}">
+																QnA 담당자
+													</c:if>
+													<c:if test="${adminPosition eq 'ADMIN'}">
+																총책임자
+													</c:if>
+													<c:if test="${adminPosition eq 'FUNDING_CHECK_ADMIN'}">
+																펀딩심사 담당자
+													</c:if>
+												</a>
 	                                        <div class="account-dropdown js-dropdown">
 	                                            <div class="account-dropdown__body">
 	                                                <div class="account-dropdown__item">

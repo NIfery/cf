@@ -11,8 +11,18 @@
 		values(#{messageNo},#{messageTitle},#{messageContent},#{userNo})
 	</insert>
 	
+	<insert id="insertAdmin" parameterType="messageReceiveVo">
+		insert into MESSAGE_RECEIVE(MESSAGE_NO,MESSAGE_TITLE,MESSAGE_CONTENT)
+		values(#{messageNo},#{messageTitle},#{messageContent})
+	</insert>
+	
 	<select id="sentAll" parameterType="int" resultType="messageSendVo">
 		select * from MESSAGE_SEND
+		where USER_NO=#{userNo} order by MESSAGE_NO desc
+	</select>
+	
+	<select id="receiveAll" parameterType="int" resultType="messageReceiveVo">
+		select * from messageView
 		where USER_NO=#{userNo} order by MESSAGE_NO desc
 	</select>
 	
@@ -30,20 +40,34 @@
 		delete from MESSAGE_SEND where MESSAGE_NO=#{messageNo}
 	</delete>
 	
+	<delete id="deleteReceive" parameterType="int">
+		delete from MESSAGE_RECEIVE where MESSAGE_NO=#{messageNo}
+	</delete>
+	
 	<select id="sentByMessageNo" parameterType="int" resultType="messageSendVo">
 		select * from MESSAGE_SEND
 		where MESSAGE_NO=#{messageNo}
 	</select>
 	
 	<update id="editMessage" parameterType="messageSendVo">
-	
 		update MESSAGE_SEND
+		set MESSAGE_TITLE=#{messageTitle}, MESSAGE_CONTENT=#{messageContent}
+		where MESSAGE_NO=#{messageNo}
+	</update>
+	
+	<update id="editAdmin" parameterType="messageReceiveVo">
+		update MESSAGE_RECEIVE
 		set MESSAGE_TITLE=#{messageTitle}, MESSAGE_CONTENT=#{messageContent}
 		where MESSAGE_NO=#{messageNo}
 	</update>
 	
 	<select id="receiveAdmin" resultType="messageSendVo">
 		select * from MESSAGE_SEND order by MESSAGE_REGDATE desc 
+	</select>
+	
+	<select id="receiveByMessageNo" parameterType="int" resultType="messageReceiveVo">
+		select * from MESSAGE_RECEIVE
+		where MESSAGE_NO=#{messageNo}
 	</select>
 </mapper>
 

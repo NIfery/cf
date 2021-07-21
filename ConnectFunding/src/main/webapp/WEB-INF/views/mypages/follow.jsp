@@ -17,6 +17,7 @@
 	-webkit-box-align: center;
 	align-items: center;
 	height: 300px;
+	margin-top: 70px;
 }
 
 .genric-btn.primary-border {
@@ -64,8 +65,11 @@
 							<div class="main" style="height: 600px; margin: 0 auto;">
 								<div class="div_1">
 									<div class="div_2">
-										<img
+										<%-- <img
 											src="${pageContext.request.contextPath}/assets/img/ssong/human-resources.png"
+											style="width: 100px;"> --%>
+										<img
+											src="${pageContext.request.contextPath}/assets/img/ssong/users.png"
 											style="width: 100px;">
 									</div>
 									<div>

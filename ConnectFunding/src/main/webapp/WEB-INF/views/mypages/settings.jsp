@@ -3,7 +3,7 @@
 <%@ include file="../include/top.jsp" %>   
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/ssong.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -66,7 +66,7 @@
 						<div class="tab-pane fade show active" id="nav-profiles"
 							role="tabpanel" aria-labelledby="nav-profiles-tab">
 							<div class="whats-news-caption" id="one">
-								<form method="post" action="<c:url value='/cfmember/update?userNo=${sessionScope.userNo}'/>">
+								<form method="post" action="<c:url value='/mypages/update?userNo=${sessionScope.userNo}'/>">
 								<div class="col-lg-4">
 									<div class="blog_right_sidebar">
 										<div class="single_sidebar_widget post_category_widget"
@@ -152,7 +152,7 @@
 							aria-labelledby="nav-accounts-tab">
 							<div class="whats-news-caption" id="two">
 								<form method="post" name="frmPwd" id="frmPwd"
-									action="<c:url value='/cfmember/pwdUpdate?userNo=${sessionScope.userNo}'/>">
+									action="<c:url value='/mypages/pwdUpdate?userNo=${sessionScope.userNo}'/>">
 								<div class="col-lg-4">
 									<div class="blog_right_sidebar">
 										<div class="single_sidebar_widget post_category_widget"
@@ -250,7 +250,7 @@
 							</div>
 							<!-- Modal -->
 							<form name="frmAccount" method="post"
-								action="<c:url value='/cfmember/addAcc'/>">
+								action="<c:url value='/mypages/addAcc'/>">
 								<div class="modal fade" id="staticBackdrop"
 									data-backdrop="static" tabindex="-1" role="dialog"
 									aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -346,7 +346,7 @@
 								<!-- mypageload.address.jsp -->
 							</div>
 							<!-- Modal -->
-							<form name="frmAccount" method="post" action="<c:url value='/cfmember/insertAddress'/>">
+							<form name="frmAccount" method="post" action="<c:url value='/mypages/insertAddress'/>">
 								<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog"
 									aria-labelledby="staticBackdropLabel" aria-hidden="true">
 									<div class="modal-dialog" role="document">

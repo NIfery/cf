@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.it.cf.delivery.model.DeliveryService;
 import com.it.cf.delivery.model.DeliveryVO;
@@ -19,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/cfmember")
+/* @RequestMapping("/cfmember") */
 public class DeliveryController {
 
 	private static final Logger logger
@@ -27,7 +28,7 @@ public class DeliveryController {
 	
 	private final DeliveryService deliveryService;
 	
-	@RequestMapping("/insertAddress")
+	@RequestMapping("/cfmember/insertAddress")
 	public String insertAddress(@ModelAttribute DeliveryVO delVo, Model model) {
 		
 		logger.info("배송지 등록, 파라미터 delVo={}", delVo);
@@ -46,7 +47,7 @@ public class DeliveryController {
 		return "common/message";
 	}//
 	
-	@RequestMapping("/selectAddress")
+	@RequestMapping("/mypageload/address")
 	public String showAddress(HttpSession session, Model model) {
 		
 		int userNo = (int) session.getAttribute("userNo");
@@ -57,10 +58,23 @@ public class DeliveryController {
 		
 		model.addAttribute("delList", delList);
 		
-		return "cfmember/settings";
+		return "mypageload/address";
 	}//
 	
-	@RequestMapping("/deleteAddress")
+//	@ResponseBody
+//	@RequestMapping("/selectAddress")
+//	public List<DeliveryVO> showAddress(HttpSession session) {
+//		
+//		int userNo = (int) session.getAttribute("userNo");
+//		logger.info("session userNo={}", userNo);
+//		
+//		List<DeliveryVO> delList = deliveryService.selectdelivery(userNo);
+//		logger.info("배송지 조회결과, delList.size={}", delList.size());
+//
+//		return delList;
+//	}//
+	
+	@RequestMapping("/cfmember/deleteAddress")
 	public String deleteAddress(@RequestParam(defaultValue = "0") int delNo, Model model) {
 		
 		logger.info("배송지 삭제, 파라미터 delNo={}", delNo);

@@ -14,19 +14,20 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
 <script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
 <script type="text/javascript">
-	$(function(){
-		$('#login').click(function(){
-			if($('#userEmail').val().length<1){
-				alert("이메일주소를 입력하세요.");
-				$('#userEmail').focus();
-				event.preventDefault();
-			}else if($('#userPwd').val().length<1){
-				alert("비밀번호를 입력하세요.");
-				$('#userPwd').focus();
-				event.preventDefault();
-			}	
-		});
+/* $(document).ready(function(){
+	$('#login').on("click",function(e) {
+		e.preventDefault();
+		if ($('#inputEmail').val().length < 1) {
+			alert('이메일을 입력하세요.');
+			$('#inputEmail').focus();
+			event.preventDefaulut();
+		} else if ($('#inputPassword').val().length < 1) {
+			alert('비밀번호를 입력하세요.');
+			$('#inputPassword').focus();
+			event.preventDefaulut();
+		}
 	});
+});// */	
 </script>   
    <form class="form-signin" name="frmInsert" method="post"
 		action="<c:url value='/cfmember/cfLogin'/>">

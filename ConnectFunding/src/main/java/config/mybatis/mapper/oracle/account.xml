@@ -13,6 +13,11 @@
 		select * from account 
 		where user_no=#{userNo}
 	</select>
+	
+	<delete id="deleteAccount" parameterType="String">
+		delete account
+		where account_no=#{accountNo}
+	</delete>
 </mapper>
 
 

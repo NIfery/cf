@@ -17,11 +17,19 @@
 	</sql>
 	
 	<insert id="boardWrite" parameterType="boardVo">
+<<<<<<< HEAD
 	<!--<selectKey keyColumn="boardNo" resultType="int" order="BEFORE">
+=======
+		<!-- <selectKey keyColumn="boardNo" resultType="int" order="BEFORE">
+>>>>>>> branch 'main' of https://github.com/NIfery/cf.git
 			select board2_seq.nextval from dual
 		</selectKey> -->
 		insert into board2(board_No,board_Title,board_Content,board_Filename,board_Oldfilename,board_Filesize)
 		values(board2_seq.nextval,#{boardTitle},#{boardContent},#{boardFilename},#{boardOldfilename},#{boardFilesize})
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'main' of https://github.com/NIfery/cf.git
 	</insert>
 	
 	<select id="selectAll" parameterType="SearchVO" resultType="boardVo">
@@ -74,3 +82,4 @@
 	 	where BOARD_NO=#{boardNo}
 	 </update>
 </mapper>
+

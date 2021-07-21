@@ -15,20 +15,24 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
 	
 	private static final Logger log = LoggerFactory.getLogger(AdminLoginInterceptor.class);
 	
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		String adminId = (String) request.getSession().getAttribute("adminId");
-		log.info("adminId={}", adminId);
+	public boolean preHandle(HttpServletRequest request, 
+			HttpServletResponse response, Object handler)
+			throws Exception {		
+		String adminId=(String) request.getSession().getAttribute("adminId");
+		String adminPosition=(String) request.getSession().getAttribute("adminPosition");
+		log.info("admin-preHandle()호출, adminId={}, adminPosition={}", adminId, adminPosition);
 		
 		if(adminId==null || adminId.isEmpty()) {
-			request.setAttribute("msg", "먼저 관리자 로그인하세요.");
+			request.setAttribute("msg", "먼저 관리자 로그인하세요");
 			request.setAttribute("url", "/admin/login");
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/message.jsp");
+			RequestDispatcher dispatcher
+			=request.getRequestDispatcher("/WEB-INF/views/common/message.jsp");
 			dispatcher.forward(request, response);
 			
 			return false;
 		}
+		
 		return true;
 	}
 	

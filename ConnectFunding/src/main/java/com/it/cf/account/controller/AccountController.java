@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/cfmember")
+/* @RequestMapping("/cfmember") */
 public class AccountController {
 
 	private static final Logger logger
@@ -28,7 +28,7 @@ public class AccountController {
 	
 	private final AccountService accountService;
 	
-	@RequestMapping("/addAcc")
+	@RequestMapping("/cfmember/addAcc")
 	public String insertAccount(@ModelAttribute AccountVO accVo, 
 			HttpSession session, Model model) {
 		
@@ -40,7 +40,7 @@ public class AccountController {
 		int cnt = accountService.insertAccount(accVo);
 		logger.info("계좌입력 결과, cnt={}", cnt);
 		
-		String msg="계좌등록 실패, 다시 시도해주세요.", url="/cfmember/setting2";
+		String msg="계좌등록 실패, 다시 시도해주세요.", url="/cfmember/settings";
 		if(cnt>0) {
 			msg="계좌를 등록하였습니다.";
 		}
@@ -51,9 +51,10 @@ public class AccountController {
 		return "common/message";
 	}//
 	
-	@RequestMapping("/showAcc")
-	public String selectAccount(@RequestParam(defaultValue = "0") int userNo,
-			HttpSession session, Model model) {
+	@RequestMapping("/mypageload/account")
+	public String selectAccount(HttpSession session, Model model) {
+		
+		int userNo = (int) session.getAttribute("userNo");
 		
 		logger.info("등록한 계좌목록보기, 파라미터 userNo={}", userNo);
 		
@@ -62,8 +63,49 @@ public class AccountController {
 		
 		model.addAttribute("accList", accList);
 		
-		return "cfmember/settings2";
+		return "mypageload/account";
 		
+	}//
+	
+//	@ResponseBody
+//	@RequestMapping("/showAcc")
+//	public List<AccountVO> selectAccount(HttpSession session) {
+//		
+//		int userNo = (int) session.getAttribute("userNo");
+//		
+//		logger.info("등록한 계좌목록보기, 파라미터 userNo={}", userNo);
+//		
+//		List<AccountVO> accList = accountService.selectAccount(userNo);
+//		logger.info("계좌 목록 조회 결과, accList.size={}", accList);
+//		
+//		return accList;
+//		
+//	}//
+	
+	@RequestMapping("/cfmember/jusoPopup")
+	public String jusoPopup() {
+		return "cfmember/jusoPopup";
+	}
+	
+	@RequestMapping("/cfmember/deleteAcc")
+	public String deleteAcc(@RequestParam(defaultValue = "0") String accountNo, Model model) {
+		
+		logger.info("계좌삭제, 파라미터 accountNo={}", accountNo);
+		
+		int cnt = accountService.deleteAccount(accountNo);
+		logger.info("등록계좌 삭제결과, cnt={}", cnt);
+		
+		if(cnt>0) {
+			model.addAttribute("msg", "선택하신 계좌정보가 삭제되었습니다.");
+			model.addAttribute("url", "/mypageload/account");
+		}
+		
+		return "common/message";
+	}//
+	
+	@RequestMapping("/agree")
+	public String agree_del() {
+		return "/cfmember/agree";
 	}
 
 }

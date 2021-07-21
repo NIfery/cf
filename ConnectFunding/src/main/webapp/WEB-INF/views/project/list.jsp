@@ -1,34 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="../include/top.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!doctype html>
-<html class="no-js" lang="zxx">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>ConnectFunding </title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="manifest" href="site.webmanifest">
-		<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/img/favicon.ico">
 
-		<!-- CSS here -->
-		
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/owl.carousel.min.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/ticker-style.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/flaticon.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/slicknav.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/animate.min.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/magnific-popup.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/fontawesome-all.min.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/themify-icons.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/slick.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/nice-select.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/style.css">
-		
 		<style type="text/css">
 			.dropdown{
 				float: left;
@@ -58,6 +34,9 @@
 				left: 100%;
 				margin-top: -1px;
 			}
+			.col-12{
+				margin-left: 5.5%;
+			}
 		</style>
 		
 		<script type="text/javascript" 
@@ -73,6 +52,10 @@
 					$(this).next('ul').toggle();
 					e.stopPropagation();
 					e.preventDefault();
+				});
+				
+				$('#btWrite').click(function(){
+					location.href="<c:url value='/project/writeMain'/>";
 				});
 			});
 			
@@ -105,7 +88,7 @@
 						
 						var str="";
 						str+="<div class='container'><div class='weekly2-wrapper'><div class='row'>";
-						str+="<div class='col-lg-12'><div class='section-tittle mb-30'>";
+						str+="<div class='col-lg-12'><div class='section-tittle mb-30' style='margin-left: 6%;'>";
 						str+="<h3><span style='color:red'>"+totalCount+"</span>개의 프로젝트가 있습니다.</h3>";
 						str+="</div></div></div><div class='row'><div class='col-12'>";
 						str+="<div class='dot-style d-flex dot-style'>";
@@ -115,7 +98,7 @@
 							$.each(list, function(idx,item){
 								if(idx<4){
 									str+="<div class='weekly2-single'><div class='weekly2-img'>";
-									str+="<img src='${pageContext.request.contextPath}/project_assets/"+item.projectImage+"'></div>";
+									str+="<img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></div>";
 									str+="<div class='weekly2-caption'><span></span>";
 									str+="<h4><a href='#'>"+item.projectName+"</a></h4>";
 									str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
@@ -134,7 +117,7 @@
 								$.each(list, function(idx,item){
 									if(idx>=4){
 										str+="<div class='weekly2-single'><div class='weekly2-img'>";
-										str+="<img src='${pageContext.request.contextPath}/project_assets/"+item.projectImage+"'></div>";
+										str+="<img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></div>";
 										str+="<div class='weekly2-caption'><span></span>";
 										str+="<h4><a href='#'>"+item.projectName+"</a></h4>";
 										str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
@@ -172,96 +155,6 @@
 				});
 			}
 		</script>   
-   </head>
-
-   <body>
-       
-    <!-- Preloader Start -->
-    <!-- <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="preloader-circle"></div>
-                <div class="preloader-img pere-text">
-                    <img src="${pageContext.request.contextPath}/assets/img/logo/logo.png" alt="">
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- Preloader Start -->
-
-    <header>
-        <!-- Header Start -->
-       <div class="header-area">
-            <div class="main-header ">
-                <div class="header-mid d-none d-md-block">
-                   <div class="container">
-                        <div class="row d-flex align-items-center">
-                            <!-- Logo -->
-                            <div class="col-xl-3 col-lg-3 col-md-3">
-                                <div class="logo">
-                                    <a href="index.html">
-                                    <img src="${pageContext.request.contextPath}/assets/img/logo/logo.png" alt="로고"></a>
-                                </div>
-                            </div>
-                        </div>
-                   </div>
-                </div>
-               <div class="header-bottom header-sticky">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-xl-10 col-lg-10 col-md-12 header-flex">
-                                <!-- sticky -->
-                                    <div class="sticky-logo">
-                                        <a href="index.html"><img src="${pageContext.request.contextPath}/assets/img/logo/logo.png" alt=""></a>
-                                    </div>
-                                <!-- Main-menu -->
-                                <div class="main-menu d-none d-md-block">
-                                    <nav>                  
-                                        <ul id="navigation">    
-                                            <li><a href="/index">Home</a></li>
-                                            <li><a href="#">Category</a></li>
-                                            <li><a href="#">About</a></li>
-                                            <li><a href="#">로그인</a></li>
-                                            <li><a href="#">회원가입</a></li>
-                                            <li><a href="#">
-                                            	<img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
-                                            		alt="로그인" style="width: 40px;" >
-                                            	</a>
-                                               <!--  <ul class="submenu">
-                                                    <li><a href="#">Element</a></li>
-                                                    <li><a href="#">Blog</a></li>
-                                                    <li><a href="#">Blog Details</a></li>
-                                                    <li><a href="#">Categori Details</a></li>
-                                                </ul> -->
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>             
-                            <div class="col-xl-2 col-lg-2 col-md-4">
-                                <div class="header-right-btn f-right d-none d-lg-block">
-                                    <i class="fas fa-search special-tag"></i>
-                                    <div class="search-box">
-                                        <form action="#">
-                                            <input type="text" placeholder="Search">
-                                            
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Mobile Menu -->
-                            <div class="col-12">
-                                <div class="mobile_menu d-block d-md-none"></div>
-                            </div>
-                        </div>
-                    </div>
-               </div>
-            </div>
-       </div>
-        <!-- Header End -->
-    </header>
-
-    <main>
 
     <div class="weekly-news-area pt-50">
         <div class="container">
@@ -326,10 +219,16 @@
 						  </div>
 						</div>
 						<div class="dropdown" style="float:right;padding:3px;">
-						  <button class="btn btn-default" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-						  	style="padding:12px 0px;" onclick="send('1');test('0')">
-						    전체보기
-						  </button>
+							<button class="btn btn-default" type="button" id="btWrite" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+								style="padding:12px 0px;">
+								프로젝트 등록
+							</button>
+						</div>
+						<div class="dropdown" style="float:right;padding:3px;">
+							  <button class="btn btn-default" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+							  	style="padding:12px 0px;" onclick="send('1');test('0')">
+							    전체보기
+							  </button>
 						</div>
                     </div>
                 </div>
@@ -342,7 +241,7 @@
         <div class="container">
             <div class="weekly2-wrapper">
                 <!-- section Tittle -->
-                <div class="row">
+                <div class="row" style="position: relative;left: 6%;">
                     <div class="col-lg-12">
                         <div class="section-tittle mb-30">
 
@@ -357,10 +256,6 @@
                     </div>
                 </div>
                 
-                
-                <!-- 한 페이지에 보여줄 레코드 수 8 예정 -->
-                
-                
                 <div class="row">
                     <div class="col-12">
                         <div class="dot-style d-flex dot-style">
@@ -371,9 +266,8 @@
 			                	<c:forEach var="vo" items="${list }" begin="0" end="3">
 			                		<div class="weekly2-single">
 		                                <div class="weekly2-img">
-		                                    <img src="${pageContext.request.contextPath}/project_assets/${vo.projectImage}"
-		                                    	<%-- style="width:263px; height:170px" --%>
-		                                    	>
+		                                    <img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
+		                                    	style="width:263px; height:170px">
 		                                </div>
 		                                <div class="weekly2-caption">
 		                                    <span></span>
@@ -410,9 +304,8 @@
                             <c:forEach var="vo" items="${list }" begin="4">
 			                	<div class="weekly2-single">
 		                               <div class="weekly2-img">
-		                                   <img src="${pageContext.request.contextPath}/project_assets/${vo.projectImage}"
-		                                   	<%-- style="width:263px; height:170px" --%>
-		                                   	>
+		                                   <img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
+		                                   		style="width:263px; height:170px">
 		                               </div>
 		                               <div class="weekly2-caption">
 		                                   <span></span>

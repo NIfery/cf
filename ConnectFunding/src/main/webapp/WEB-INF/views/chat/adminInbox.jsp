@@ -1,10 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../inc/adminTop.jsp"%>
-<script type="text/javascript"
-	src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/jquery-ui.css"/>
+<script type="text/javascript" 
+	src="<c:url value='/assets/js/jquery-ui.js'/>"></script>
+
+
 <script type="text/javascript">
 		$(function(){
+			$('#startD').datepicker({
+				dateFormat:'yy-mm-dd',
+				changeYear:true,
+				dayNamesMin:['일','월','화','수','목','금','토'],
+				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+			})
+			$('#endD').datepicker({
+				dateFormat:'yy-mm-dd',
+				changeYear:true,
+				dayNamesMin:['일','월','화','수','목','금','토'],
+				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+			})
+			
 			$('input[name=chkAll]').click(function(){
 				$('tbody input[type=checkbox]').prop('checked',this.checked);			
 			});
@@ -24,6 +40,8 @@
 				}
 			});
 			
+			
+			
 	});
 		
 	function chatList(curPage){
@@ -35,6 +53,10 @@
 <form name="frmPage" method="post" 
 	action="<c:url value='/chat/adminInbox'/>">
 	<input type="hidden" name="currentPage">	
+	<input type="hidden" name="searchCondition" value="${param.searchCondition }">
+	<input type="hidden" name="searchKeyword" value="${param.searchKeyword }">
+	<input type="hidden" name="startDay" value="${dateSearchVO.startDay }">
+	<input type="hidden" name="endDay" value="${dateSearchVO.endDay }">
 </form>
 <!-- 페이징 처리 form 끝 -->
 <!-- MAIN CONTENT-->
@@ -46,10 +68,52 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<h3 class="title-5 m-b-35">받은 쪽지함</h3>
+						<h1 class="title-5 m-b-35">받은 쪽지함(${pagingInfo.totalRecord })</h1>
+						<form name="frmSearch" method="post"
+							action='<c:url value="/chat/adminInbox"/>'>
+							조회기간
+							<div class="row">
+							<div class="col-md-2">
+							<input type="text" name="startDay" id="startD" class="form-control form-control-sm" 
+								 value="${searchVOChat.startDay }">
+							</div>
+							~
+							<div class="col-md-2">
+							<input type="text" name="endDay" id="endD" class="form-control form-control-sm" 
+								 value="${searchVOChat.endDay }">
+							</div>
+							<div class="col-md-2">
+							<select name="searchCondition" class="form-control form-control-sm">
+								<option value="MESSAGE_TITLE" 
+					            	<c:if test="${param.searchCondition == 'MESSAGE_TITLE' }">            	
+					            		selected="selected"
+					            	</c:if>
+					            >제목</option>
+					            <option value="MESSAGE_CONTENT" 
+					            	<c:if test="${param.searchCondition == 'MESSAGE_CONTENT' }">            	
+					            		selected="selected"
+					            	</c:if>
+					            >내용</option>
+					            <option value="USER_NO" 
+					            	<c:if test="${param.searchCondition == 'USER_NO' }">            	
+					            		selected="selected"
+					            	</c:if>
+					            >회원번호</option>
+							</select> 
+							</div>
+							<div class="col-md-4">
+							<input name="searchKeyword" class="form-control form-control-sm" type="text" value="${param.searchKeyword }">
+							</div>
+							<div class="col-md-1">
+							<input class="btn btn-warning" type="submit" value="검색">
+							</div>
+							</div>
+							
+						</form>
+						
 						<form name="frmList" >
 						<div class="table-responsive table-responsive-data2">
-						<input class="btn btn-warning m-2" type="button" id="delete" value="선택한 쪽지 삭제">
+						
 							<table class="table table-data2">
 								<thead>
 									<tr>
@@ -102,6 +166,7 @@
         					
 						</div>
 						</form>
+						<input class="btn btn-warning m-2" type="button" id="delete" value="선택한 쪽지 삭제">
 						<br>
 					  <ul class="pagination justify-content-center" >
 						<c:if test="${pagingInfo.firstPage>1 }">
@@ -135,8 +200,6 @@
 				</div>
 			</div>
 		</section>
-		<!-- END DATA TABLE-->
-		<!-- END PAGE CONTAINER-->
 	</div>
 </div>
 <%@ include file="../inc/adminBottom.jsp"%>

@@ -30,7 +30,7 @@
 						if(idx==0){
 							str+="<span class='current'>"+item.categoryName+"</span><ul class='list'><li data-value='"+item.categoryName+"' class='option selected'>"+item.categoryName+"</li>";
 						}else{
-							str+="<li data-value='"+item.categoryName+"' class='option'>"+item.categoryName+"</li>";
+							str+="<li data-value='"+item.secondCategoryNo+"' class='option'>"+item.categoryName+"</li>";
 						}
 					});
 					str+="</ul></div>";

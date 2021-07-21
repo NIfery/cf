@@ -15,10 +15,10 @@
 	
 	<script type="text/javascript">
 		$(function(){
-			$('#summernote').summernote();
+			$('#summernote').summernote()
 			
 			$('form[name=frmWrite]').submit(function(){
-				if($('#title').val().length < 1){
+				if($('#boardTitle').val().length < 1){
 					alert('제목을 입력하세요');
 					$('#title').focus();
 					event.preventDefault();
@@ -27,30 +27,34 @@
 					alert('내용을 입력하세요');
 					$('#summernote').focus();
 					event.preventDefault();
+				
+				}else if($('#boardTitle').val().length > 30) {
+					alert('제목은 30자내로 작성해주세요.');
+					$('#title').focus();
+					event.preventDefault();
 				}
 			});
 		});
 		
+		cleanText = $("#summernote").code().replace(/<\/?[^>]+(>|$)/g, "");
+		
 	</script>
-
 <style>
 body {
   padding-top: 70px;
   padding-bottom: 30px;
 }
-
 </style>
-
 </head>
 <body>
 	<article>
 		<div class="container">
 			<h2>게시글 작성</h2>
 			<br>
-			<form name="frmWrite" role="form" method="post" action="<c:url value='/board/Write'/>">
+			<form name="frmWrite" role="form" method="post" enctype="multipart/form-data" action="<c:url value='/board/Write'/>">
 				<div class="mb-3">
 					<label for="title">제목</label>
-					<input type="text" class="form-control" name="boardTitle" id="boardTitle" placeholder="제목을 입력해 주세요"
+					<input type="text" class="form-control" name="boardTitle" id="boardTitle" placeholder="제목을 입력해 주세요(30자이하)"
 						value="">
 				</div>				
 				<br>
@@ -66,7 +70,7 @@ body {
 				<br>
 				<div class="mb-3">
 					<label for="tag">업로드파일</label>
-					<input type="file" class="" name="file" id="file" placeholder="업로드 파일을 선택해 주세요">
+					<input type="file" name="upfile" id="upfile" placeholder="업로드 파일을 선택해 주세요">
 				</div>
 				
 			<div>

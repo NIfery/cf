@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="../include/top.jsp" %> 
 <!DOCTYPE html>
 <html>
@@ -29,14 +30,26 @@
 			
 			<!-- 게시글 반복 처리 -->
 			<tbody>
-				<tr>
-					<th>1</th>
-					<th>게시판 UI 테스트</th>
-					<th>Chung</th>
-					<th>2021.07.14</th>
-					<th>qwer.jpg</th>
-					<th>1</th>
-				</tr>
+				<c:if test="${empty list }">
+					<tr>
+						<td colspan="6">게시글이 없습니다.</td>
+					</tr>
+				</c:if>
+				<c:if test="${!empty list }">
+					<c:forEach var="vo" items="${list }" >
+						<tr>
+							<th>${vo.boardNo }</th>
+							<th>
+							<!--제목 클릭시 detail 이동 -->
+							<a href="<c:url value='/board/CountUpdate?boardNo=${vo.boardNo}'/>">${vo.boardTitle }</a>
+							</th>
+							<th>테스터</th>
+							<th><fmt:formatDate value="${vo.boardRegdate}" pattern="yyyy-MM-dd HH:mm:ss"/></th>
+							<th>${vo.boardOldfilename }</th>
+							<th>${vo.boardReadcount }</th>
+						</tr>
+					</c:forEach>	
+				</c:if>
 			</tbody>
 		</table>
 	

@@ -49,13 +49,8 @@ public class FileUploadUtil {
 				//업로드 경로
 				String uploadPath = getUploadPath(request,pathFlag);
 				
-				//업로드 처리하기 - 업로드 경로에 업로드 파일 저장
 				File file = new File(uploadPath, fileName);
 				tempFile.transferTo(file); //저장
-				
-				
-				//return 시에 vo에 담아서 저장해서 리턴해도 가능하지만 map에 담아서 리턴해도 가능하다.
-				//vo와 map은 같은 역할을한다. vo에는 변수들이 많기때문에 . 깔끔하게 필요한것만 사용하기위해 map 사용 
 				
 				Map<String, Object> map = new HashMap<>();
 				map.put("fileName", fileName);				

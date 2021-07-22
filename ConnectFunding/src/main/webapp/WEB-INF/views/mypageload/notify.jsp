@@ -37,12 +37,10 @@
 
 </style>
 <div>	
-<%-- 	<c:if test="${empty list }">
+	<c:if test="${empty iflist }">
 		<div class="main" style="height: 600px; margin: 0 auto;">
 			<div class="div_1">
 				<div class="div_2">
-					<img src="${pageContext.request.contextPath}/assets/img/ssong/human-resources.png"
-						style="width: 100px;">
 					<img src="${pageContext.request.contextPath}/assets/img/ssong/notification-bell.png"
 						style="width: 100px;">
 				</div>
@@ -54,8 +52,8 @@
 			</div>
 		</div>
 	</c:if>
-	<c:if test="${!empty list }">
-		<c:forEach var="" item="">
+	<c:if test="${!empty iflist }">
+		<c:forEach var="map" items="${iflist }">
 			<div class="wrap" style="height: 70px;">
 				<div class="trand-right-single d-flex">
 					<div class="trand-right-img">
@@ -64,10 +62,9 @@
 					</div>
 					<div class="trand-right-cap" style="margin: 5px 0px; width: 370px;">
 						<span class="color1">
-							<p>후원하신 <${sessionScope.userName } <p>프로젝트에 창작자의 새 게시글이 올라왔습니다.
-						</span><br> 
-						<span>안녕하세요!</span><br><br>
-						<span>36분전</span>
+						<span>알림신청하신 ${map['PROJECT_NAME'] }프로젝트가 공개되었습니다.</span>
+						</span><br><br>  
+						<span>${map['OPENDATE'] }일 전</span>
 						<span class="color2" id="accNo"> 
 						</span> 
 							<a href="<c:url value='/cfmember/deleteAcc?accountNo=${accVo.accountNo}'/>"
@@ -79,27 +76,5 @@
 				</div>
 			</div>
 		</c:forEach>
-	</c:if> --%>
-				<div class="wrap" style="height: 150px; width: 800px; margin-top: 30px; border-bottom: 1px solid #d4cece">
-				<div class="trand-right-single d-flex">
-					<div class="trand-right-img">
-						<img src="<c:url value='/assets/img/logo/user.png'/>"
-							style="width: 80px; height: 70px; margin: 40px 13px;">
-					</div>
-					<div class="trand-right-cap" style="margin: 15px 25px; width: 470px;">
-						<span class="color1">
-							<p style="font-size: 1.1em;">
-								후원하신 <&nbsp<strong>${sessionScope.userName }</strong>&nbsp>&nbsp프로젝트에 창작자의 새 게시글이 올라왔습니다.
-							</p>
-						</span>
-						<span>안녕하세요!</span><br>
-						<span style="font-size: 0.9em;"><br>36분전</span>
-							<a href="<c:url value='/cfmember/deleteAcc?accountNo=${accVo.accountNo}'/>"
-								class="trand-right-img" id="delete">
-								<img src="<c:url value='/assets/img/cancel.png'/>"
-								style="width: 20px; margin: -150px 0px 0px 610px;">
-							</a>
-					</div>
-				</div>
-			</div>
+	</c:if>
 </div> 

@@ -98,6 +98,7 @@
 		});
 		
 		$('#nav-project-tab').click(function(){
+			console.log("${iflist}");
 			$('#project').load('${pageContext.request.contextPath}/mypageload/notify');
 		});
 		

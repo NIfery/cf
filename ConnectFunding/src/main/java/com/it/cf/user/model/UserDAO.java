@@ -12,4 +12,5 @@ public interface UserDAO {
 	String selectPwd(String userEmail);
 	int updateProfile(UserVO vo);
 	int updatePwd(UserVO vo);
+	int checkEmail(String userEmail);
 }

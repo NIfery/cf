@@ -63,4 +63,18 @@ public class UserServiceImpl implements UserService {
 		return result;
 	}
 
+	@Override
+	public int checkEmail(String userEmail) {
+		int result=0;
+		
+		int count = userDao.checkEmail(userEmail);
+		if(count>0) {
+			result=UNUSABLE_EMAIL;	//2
+		}else {
+			result=USABLE_EMAIL;	//1
+		}
+		
+		return result;
+	}//
+
 }

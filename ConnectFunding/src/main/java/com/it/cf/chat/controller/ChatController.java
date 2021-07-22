@@ -17,6 +17,9 @@ import com.it.cf.chat.model.MessageSendListVO;
 import com.it.cf.chat.model.MessageReceiveVO;
 import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.chat.model.MessageService;
+import com.it.cf.common.ConstUtil;
+import com.it.cf.common.PaginationInfo;
+import com.it.cf.common.SearchVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -99,13 +102,29 @@ public class ChatController {
 		
 		int cnt=messageService.deleteReceive(messageNo);
 		cnt=messageService.deleteChat(messageNo);
-		logger.info("삭제 결과 cnt={}",cnt);
+		logger.info("쪽지 삭제 결과 cnt={}",cnt);
 		
 		String url="/chat/sent";
 		if(cnt>0) {
 			return "redirect:/chat/sent";
 		}else {
 			model.addAttribute("msg", "쪽지 삭제 실패!");
+			return "common/message";
+		}
+	}
+	
+	@RequestMapping("/deleteReceive")
+	public String deleteReceive(int messageNo,Model model) {
+		logger.info("파라미터 messageNo={}",messageNo);
+		
+		int cnt=messageService.deleteReceive(messageNo);
+		logger.info("답변 삭제 결과 cnt={}",cnt);
+		
+		String url="/chat/adminDetail?messageNo="+messageNo;
+		if(cnt>0) {
+			return "redirect:/chat/adminDetail?messageNo="+messageNo;
+		}else {
+			model.addAttribute("msg", "답변 삭제 실패!");
 			return "common/message";
 		}
 	}
@@ -170,18 +189,22 @@ public class ChatController {
 	
 	@RequestMapping("/detail")
 	public String sentDetail(int messageNo,Model model) {
-		logger.info("보낸 쪽지 상세보기 messageNo={}",messageNo);
+		logger.info("쪽지 상세보기 messageNo={}",messageNo);
 		
 		MessageSendVO sendVo=messageService.sentByMessageNo(messageNo);
 		logger.info("sendVo={}",sendVo);
 		
+		MessageReceiveVO receiveVo=messageService.receiveByMessageNo(messageNo);
+		logger.info("receiveVo={}",receiveVo);
+		
 		model.addAttribute("sendVo", sendVo);
+		model.addAttribute("receiveVo", receiveVo);
 		return "chat/detail";
 	}
 	
 	@RequestMapping("/adminDetail")
 	public String adminDetail(int messageNo,Model model) {
-		logger.info("관리자 받은 쪽지 상세보기 messageNo={}",messageNo);
+		logger.info("관리자 쪽지 상세보기 messageNo={}",messageNo);
 		
 		MessageSendVO sendVo=messageService.sentByMessageNo(messageNo);
 		logger.info("sendVo={}",sendVo);
@@ -251,13 +274,30 @@ public class ChatController {
 	}
 	
 	@RequestMapping("/adminInbox")
-	public String adminInbox(Model model) {
-		logger.info("관리자 받은 편지함");
+	public String adminInbox(@ModelAttribute SearchVO searchVo,Model model) {
+		logger.info("관리자 쪽지함, searchVo={}",searchVo);
 		
-		List<MessageSendVO> list=messageService.receiveAdmin();
+		//페이징 처리 관련
+		//[1] PaginationInfo
+		PaginationInfo pagingInfo = new PaginationInfo();
+		pagingInfo.setBlockSize(ConstUtil.BLOCK_SIZE);
+		pagingInfo.setCurrentPage(searchVo.getCurrentPage());
+		pagingInfo.setRecordCountPerPage(ConstUtil.RECORD_COUNT);
+		
+		//[2]
+		searchVo.setRecordCountPerPage(ConstUtil.RECORD_COUNT);
+		searchVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
+		logger.info("셋팅 후 searchVo={}", searchVo);
+		
+		List<MessageSendVO> list=messageService.receiveAdmin(searchVo);
 		logger.info("list.size={}",list.size());
 		
+		int totalRecord=messageService.totalReceive(searchVo);
+		logger.info("관리자 쪽지함, totalRecord={}",totalRecord);
+		pagingInfo.setTotalRecord(totalRecord);
+		
 		model.addAttribute("list", list);
+		model.addAttribute("pagingInfo", pagingInfo);
 		return "/chat/adminInbox";
 	}
 }

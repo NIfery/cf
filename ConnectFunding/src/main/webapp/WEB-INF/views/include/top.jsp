@@ -28,25 +28,12 @@
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/nice-select.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/style.css">
 <style type="text/css">
-<<<<<<< HEAD
+
 	a{
 		text-decoration: none !important;		
 	}
 	
 .btn {
-=======
-   a{
-      text-decoration: none !important;      
-   }
-   
-   .genric-btn.warning {
-    color: #787483;
-    font-size: 1.1em;
-    background: #f4e700;
-    border: 1px solid transparent;
-    }
-   .btn {
->>>>>>> branch 'main' of https://github.com/NIfery/cf.git
     background: #ff656a;
     -moz-user-select: none;
     text-transform: uppercase;
@@ -70,7 +57,7 @@
     overflow: hidden;
     margin: 0;
 }
-<<<<<<< HEAD
+
 	.genric-btn.warning {
     color: #787483;
     font-size: 1.1em;
@@ -78,8 +65,7 @@
     border: 1px solid transparent;
     }
 
-=======
->>>>>>> branch 'main' of https://github.com/NIfery/cf.git
+
 </style>   
    </head>
 

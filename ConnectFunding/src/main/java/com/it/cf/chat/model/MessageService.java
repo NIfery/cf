@@ -2,6 +2,8 @@ package com.it.cf.chat.model;
 
 import java.util.List;
 
+import com.it.cf.common.SearchVO;
+
 public interface MessageService {
 	int insertChat(MessageSendVO vo);
 	int insertAdmin(MessageReceiveVO vo);
@@ -15,7 +17,8 @@ public interface MessageService {
 	MessageSendVO sentByMessageNo(int messageNo);
 	int editMessage(MessageSendVO vo);
 	int editAdmin(MessageReceiveVO vo);
-	List<MessageSendVO> receiveAdmin();
+	List<MessageSendVO> receiveAdmin(SearchVO searchVo);
 	MessageReceiveVO receiveByMessageNo(int messageNo);
+	int totalReceive(SearchVO searchVo);
 	
 }

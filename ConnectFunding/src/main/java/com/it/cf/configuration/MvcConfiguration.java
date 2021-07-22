@@ -13,21 +13,11 @@ import com.it.cf.user.controller.LoginInterceptor;
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer{
 
-<<<<<<< HEAD
-   @Override
-   public void addInterceptors(InterceptorRegistry registry) {
-=======
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
->>>>>>> branch 'main' of https://github.com/NIfery/cf.git
 
-<<<<<<< HEAD
-      registry.addInterceptor(new LoginInterceptor())
-      .excludePathPatterns("/cfmember/cfLogin","/cfmember/register","/cfmember/jusoPopup")
-      .addPathPatterns("/cfmember/*");
-=======
 		registry.addInterceptor(new LoginInterceptor())
-		.excludePathPatterns("/cfmember/cfLogin","/cfmember/register","/cfmember/jusoPopup","/project/list","/project/alist")
+		.excludePathPatterns("/cfmember/cfLogin","/cfmember/register","/cfmember/jusoPopup","/project/list","/project/alist","/project/detail")
 		.addPathPatterns("/cfmember/*","/project/*");
 
 		registry.addInterceptor(new AdminLoginInterceptor())
@@ -35,33 +25,13 @@ public class MvcConfiguration implements WebMvcConfigurer{
 		.addPathPatterns("/admin/**");
 
 	}
->>>>>>> branch 'main' of https://github.com/NIfery/cf.git
 
-<<<<<<< HEAD
-      registry.addInterceptor(new AdminLoginInterceptor())
-      .excludePathPatterns("/admin/login")
-      .addPathPatterns("/admin/**");
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/summernoteImage/**")
+		.addResourceLocations("C:\\Users\\Chung\\Desktop\\Test");
+	}
 
-   }
-   
-   @Override
-   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-       registry.addResourceHandler("/summernoteImage/**")
-               .addResourceLocations("C:\\Users\\Chung\\Desktop\\Test");
-   }
-
-   @Bean
-   public CommonsMultipartResolver multipartResolver() {
-      CommonsMultipartResolver multipartResolver 
-      = new CommonsMultipartResolver();
-      multipartResolver.setDefaultEncoding("UTF-8"); // 파일 인코딩 설정
-      multipartResolver.setMaxUploadSizePerFile(2 * 1024 * 1024); // 파일당 업로드 크기 제한 (2MB)
-
-      return multipartResolver;
-   }
-   
-}
-=======
 	@Bean
 	public CommonsMultipartResolver multipartResolver() {
 		CommonsMultipartResolver multipartResolver 
@@ -73,4 +43,3 @@ public class MvcConfiguration implements WebMvcConfigurer{
 	}
 
 }
->>>>>>> branch 'main' of https://github.com/NIfery/cf.git

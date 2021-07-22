@@ -61,8 +61,14 @@
 							<th>
 							<!--제목 클릭시 detail 이동 -->
 							<a href="<c:url value='/board/CountUpdate?boardNo=${vo.boardNo}'/>">${vo.boardTitle } (댓글수 출력 예정)</a>
+								<c:if test="${vo.newImg < 24 }">
+									<img style="width: 20px" src="<c:url value='/resources/images/newimg.jpg'/>">
+								</c:if>
+								<c:if test="${!empty vo.boardOldfilename }">
+									<img style="width: 30px" src="<c:url value='/resources/images/upload.jpg'/>">
+								</c:if>
 							</th>
-							<th>테스터</th>
+							<th>${vo.userName }</th>
 							<th><fmt:formatDate value="${vo.boardRegdate}" pattern="yyyy-MM-dd HH:mm:ss"/></th>
 							<th>${vo.boardOldfilename }</th>
 							<th>${vo.boardReadcount }</th>
@@ -77,24 +83,19 @@
 		<div id="divSearch">
 			<form class="pull-left" action="<c:url value='/board/List'/>" method="post">
 				<select name="searchCondition">
-					<option value="BOARD_NO"
-					 <c:if test="${param.searchCondition == 'BOARD_NO' }">            	
-            		selected="selected"
-            		</c:if>
-            		>글번호</option>
 					<option value="BOARD_TITLE"
 					 <c:if test="${param.searchCondition == 'BOARD_TITLE' }">            	
             		selected="selected"
             		</c:if>
 					>제목</option>
-					<option value="id"
-				    <c:if test="${param.searchCondition == 'id' }">            	
+					<option value="USER_NAME"
+				    <c:if test="${param.searchCondition == 'USER_NAME' }">            	
             		selected="selected"
             		</c:if>
 					>작성자</option>
 				</select>
-				<input type="text" name="searchKeyword" title="검색어 입력" value="${param.searchKeyword }">
-				<input type="submit" value="검색">
+				<input class="pull-left" type="text" name="searchKeyword" title="검색어 입력" value="${param.searchKeyword }">
+				<input class="pull-left" type="submit" value="검색">
 			</form>
 		</div>		
 	

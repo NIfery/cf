@@ -3,6 +3,11 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.it.cf.chat.model.MessageDAO">
+	<sql id="searchWhere">
+		<if test="searchKeyword!=null and searchKeyword!=''">
+			where ${searchCondition}  like '%' || #{searchKeyword} || '%'
+		</if>
+	</sql>
 	<insert id="insertChat" parameterType="messageSendVo" >
 		<selectKey keyProperty="messageNo" resultType="int" order="BEFORE">
 			select MESSAGENO_SEQ.nextval from dual
@@ -61,8 +66,28 @@
 		where MESSAGE_NO=#{messageNo}
 	</update>
 	
-	<select id="receiveAdmin" resultType="messageSendVo">
-		select * from MESSAGE_SEND order by MESSAGE_REGDATE desc 
+	<select id="receiveAdmin" parameterType="searchVo" resultType="messageSendVo">
+		select *
+		from
+		(
+		    select rownum as RNUM,A.*
+		    from
+		    (
+		        select * from MESSAGE_SEND 
+		        <include refid="searchWhere"></include>
+		        order by MESSAGE_REGDATE desc
+		    )A
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="totalReceive" parameterType="SearchVo"
+		resultType="int">
+		select count(*) from MESSAGE_SEND 
+        <include refid="searchWhere"></include>
 	</select>
 	
 	<select id="receiveByMessageNo" parameterType="int" resultType="messageReceiveVo">

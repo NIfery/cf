@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.it.cf.common.SearchVO;
+
+
 @Mapper
 public interface MessageDAO {
 	int insertChat(MessageSendVO vo);
@@ -17,6 +20,7 @@ public interface MessageDAO {
 	MessageSendVO sentByMessageNo(int messageNo);
 	int editMessage(MessageSendVO vo);
 	int editAdmin(MessageReceiveVO vo);
-	List<MessageSendVO> receiveAdmin();
+	List<MessageSendVO> receiveAdmin(SearchVO searchVo);
 	MessageReceiveVO receiveByMessageNo(int messageNo);
+	int totalReceive(SearchVO searchVo);
 }

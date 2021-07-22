@@ -305,7 +305,7 @@ public class ChatController {
 		
 		String msg="답변 수정 실패!", url="/chat/adminEdit";
 		if(cnt>0) {
-			model.addAttribute("msg", "쪽지 수정 성공");
+			model.addAttribute("msg", "답변 수정 성공");
 			model.addAttribute("url", "/chat/adminDetail?messageNo="+vo.getMessageNo());
 		}
 		return "common/message";

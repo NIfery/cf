@@ -4,6 +4,7 @@
 <script src="${pageContext.request.contextPath}/admin_assets/vendor/jquery-3.2.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/admin_assets/vendor/bootstrap-4.1/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/jquery-ui.css"/>
+
 <script type="text/javascript" 
    src="<c:url value='/assets/js/jquery-ui.js'/>"></script>
 

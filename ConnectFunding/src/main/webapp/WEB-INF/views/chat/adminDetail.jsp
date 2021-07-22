@@ -9,10 +9,12 @@
 			if($('#title').val().length<1){
 				alert('제목을 입력하세요');
 				$('#title').focus();
+				event.preventDefault();
 				return false;
 			}else if($('#content').val().length<1){
 				alert('내용을 입력하세요');
 				$('#content').focus();
+				event.preventDefault();
 				return false;
 			}
 		});

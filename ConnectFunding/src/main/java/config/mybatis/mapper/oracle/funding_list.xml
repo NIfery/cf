@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.it.cf.fdList.model.FundingListDAO">
+
+	<insert id="insertFundingList" parameterType="FundingListVo">
+		<selectKey keyProperty="fundingListNo" resultType="int" order="BEFORE">
+			select FUNDING_LIST_SEQ.nextval from dual 
+		</selectKey>
+		insert into funding_list(FUNDING_LIST_NO, FUNDING_AMOUNT, PROJECT_NO, USER_NO)
+		alues(#{fundingListNo}, #{fundingAmount}, #{projectNo}, #{userNo})
+	</insert>
+
+	<select id="selectFundingList" parameterType="int" resultType="map">
+		select * from fundinglistview
+		where user_no=#{userNo}
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+

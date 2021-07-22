@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 @RequestMapping("/board")
 @Controller
 @RequiredArgsConstructor
@@ -69,8 +70,13 @@ public class BoardController {
 	
 	// Write 화면 출력 / 등록
 	@GetMapping("/Write")
-	public void Write() {
+	public String Write(HttpSession session, Model model) {
+		String userName = (String) session.getAttribute("userName");
+		model.addAttribute("userName",userName);
+		
 		logger.info("게시판 글쓰기 화면 출력");
+		
+		return "board/Write";
 	}
 	
 	@PostMapping("/Write")
@@ -137,8 +143,10 @@ public class BoardController {
 	
 	// Detail 상세보기
 	@RequestMapping("/Detail")
-	public String Detail(@RequestParam (defaultValue = "0") int boardNo,HttpServletRequest request, Model model) {
+	public String Detail(@RequestParam (defaultValue = "0") int boardNo,HttpServletRequest request,
+						HttpSession session, Model model) {
 		
+		String userName = (String) session.getAttribute("userName");
 		logger.info("detail 화면 출력 파라미터 boardNo={}", boardNo);
 		
 		BoardVO vo = boardService.selectByNo(boardNo);
@@ -150,7 +158,7 @@ public class BoardController {
 		}
 		
 		model.addAttribute("vo",vo);
-		
+		model.addAttribute("userName",userName);
 		return "board/Detail";
 	}
 	

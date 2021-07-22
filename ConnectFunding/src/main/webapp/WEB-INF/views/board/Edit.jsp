@@ -94,8 +94,8 @@ body {
 			<br>
 			<form name="frmWrite" role="form" method="post" enctype="multipart/form-data" action="<c:url value='/board/Edit'/>">
 				<div class="mb-3">
-					<input type="text" name="boardNo" value="${param.boardNo }">
-					<input type="text" name="boardOldfilename" value="${vo.boardOldfilename }">
+					<input type="hidden" name="boardNo" value="${param.boardNo }">
+					<input type="hidden" name="boardOldfilename" value="${vo.boardOldfilename }">
 					<label for="title">제목</label>
 					<input type="text" class="form-control" name="boardTitle" id="boardTitle" placeholder="수정 할 제목을 입력해 주세요(30자이하)"
 						value="${vo.boardTitle }">
@@ -103,7 +103,7 @@ body {
 				<br>
 				<div class="mb-3">
 					<label for="reg_id">작성자</label>
-					<input type="text" class="form-control" name="id" id="id" placeholder="id 출력란">
+					<input type="text" class="form-control" name="userName" id="userName" placeholder="id 출력란" value="${vo.userName }" readonly="readonly">
 				</div>		
 				<br>	
 				<div class="mb-3">

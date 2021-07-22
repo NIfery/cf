@@ -185,8 +185,16 @@
 					        </ul>
 					      </li>
 					      <c:forEach var="firstCt" items="${fList }">
-						      <li class="dropdown-submenu dropend">
-						      <a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">${firstCt.categoryName }<span class="caret"></span></a>
+						  	<li class="dropdown-submenu dropend">
+						    	<a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">${firstCt.categoryName }<span class="caret"></span></a>
+						    	<ul class="dropdown-menu">
+						          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">모든 ${firstCt.categoryName }</a></li>
+						          <c:forEach var="secondCt" items="${sList }">
+						          	<c:if test="${secondCt.firstCategoryNo==firstCt.firstCategoryNo }">
+							          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">${secondCt.categoryName }</a></li>
+						          	</c:if>
+						          </c:forEach>
+					      		</ul>
 					      </c:forEach>
 					    </ul>
 					  </div>

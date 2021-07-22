@@ -36,8 +36,6 @@ public class SearchVOChat {
     private String startDay;  //시작일
 	private String endDay; //종료일
 	
-	private String year;
-	private String month;
 	
    /**
       검색 조건을  설정한다.
@@ -54,8 +52,6 @@ public class SearchVOChat {
     	this.userNo=bean.userNo;
     	this.startDay = bean.startDay;
     	this.endDay = bean.endDay;
-    	this.year = bean.year;
-    	this.month = bean.month;
     }
 
     

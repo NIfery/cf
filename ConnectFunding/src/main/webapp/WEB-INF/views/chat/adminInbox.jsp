@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../inc/adminTop.jsp"%>
+<script src="${pageContext.request.contextPath}/admin_assets/vendor/jquery-3.2.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/admin_assets/vendor/bootstrap-4.1/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/jquery-ui.css"/>
 <script type="text/javascript" 
-	src="<c:url value='/assets/js/jquery-ui.js'/>"></script>
-
+   src="<c:url value='/assets/js/jquery-ui.js'/>"></script>
 
 <script type="text/javascript">
 		$(function(){
@@ -202,4 +203,4 @@
 		</section>
 	</div>
 </div>
-<%@ include file="../inc/adminBottom.jsp"%>
+<%@ include file="../inc/adminChatBottom.jsp"%>

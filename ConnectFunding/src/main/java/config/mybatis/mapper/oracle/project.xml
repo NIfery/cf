@@ -41,7 +41,7 @@
                 )t
                 on p.project_no=t.project_no
 				<if test="secondCategoryNo!=0">
-					and second_category_no=#{secondCategoryNo}
+					where second_category_no=#{secondCategoryNo}
 				</if>
 				order by p.PROJECT_NO desc
 			)A

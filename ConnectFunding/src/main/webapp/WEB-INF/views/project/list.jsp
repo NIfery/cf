@@ -140,6 +140,10 @@
 							//페이징처리
 						    var pageStr="";
 
+							
+//============================================이전버튼 만들어야함============================================
+							
+							
 							//[1][2][3][4][5][6][7][8][9][10]
 							for (var i = pagingInfo.firstPage; i <= pagingInfo.lastPage; i++) {
 								if (i == pagingInfo.currentPage) {
@@ -150,6 +154,11 @@
 											+ "]</a>";
 								}
 							}
+							
+							
+//============================================다음버튼 만들어야함============================================
+							
+							
 							
 							$('#divPage').html(pageStr);
 						}
@@ -314,7 +323,6 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-tittle mb-30">
-                        <br><br>
                         </div>
                     </div>
                 </div>
@@ -345,8 +353,7 @@
                 </div>
             </div>
         </div>
-    </div>           
-        <br><br>
+    </div>        
         <div id="divPage" style="text-align: center">
 			<c:if test="${pagingInfo.firstPage>1 }">
 				<a href="#" onclick="pageProc(${pagingInfo.firstPage-1})">

@@ -42,7 +42,7 @@
 						<span class="color1">${delVo.delReceiver }</span><br> <span
 							class="color2">[${delVo.delZipcode}]&nbsp
 							${delVo.delAddress}</span><br> <span class="color2">${delVo.delHp}</span>
-						<a href="<c:url value='/mypages/deleteAddress?delNo=${delVo.delNo}'/>"
+						<a href="<c:url value='/cfmember/deleteAddress?delNo=${delVo.delNo}'/>"
 							class="trand-right-img" id="delete"> <img src="<c:url value='/assets/img/cancel.png'/>"
 							style="width: 20px; margin: -90px 0px 0px 500px;">
 						</a>

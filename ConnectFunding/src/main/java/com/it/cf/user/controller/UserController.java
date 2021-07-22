@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-//@RequestMapping("/cfmember")
+@RequestMapping("/cfmember")
 public class UserController {
 	
 	private static final Logger logger
@@ -30,12 +30,12 @@ public class UserController {
 	
 	private final UserService userService;
 	
-	@GetMapping("/cfmember/register")
+	@GetMapping("/register")
 	public void insertUser() {
 		logger.info("회원가입 화면");
 	}//
 	
-	@PostMapping("/cfmember/register")
+	@PostMapping("/register")
 	public String  insertUser_post(@ModelAttribute UserVO userVo, Model model) {
 		
 		logger.info("회원가입 처리, 파라미터 userVo={}", userVo);
@@ -55,12 +55,12 @@ public class UserController {
 		return "common/message";
 	}//
 	
-	@GetMapping("/cfmember/cfLogin")
+	@GetMapping("/cfLogin")
 	public void login() {
 		logger.info("로그인 화면");
 	}
 	
-	@PostMapping("/cfmember/cfLogin")
+	@PostMapping("/cfLogin")
 	public String login_ok(@RequestParam String userEmail,
 			@RequestParam String userPwd, 
 			@RequestParam(required = false) String customCheck,
@@ -107,7 +107,7 @@ public class UserController {
 		return "common/message";
 	}//
 	
-	@RequestMapping("/cfmember/cfLogout")
+	@RequestMapping("/cfLogout")
 	public String Logout(HttpSession session) {
 		
 		logger.info("회원 로그아웃..");
@@ -118,12 +118,12 @@ public class UserController {
 		return "redirect:/";
 	}//
 	
-	@RequestMapping("/cfmember/mypage")
+	@RequestMapping("/mypage")
 	public void myPage() {
 		logger.info("마이페이지");
 	}
 	
-	@RequestMapping("/mypages/settings")
+	@RequestMapping("/settings")
 	public String Setting(HttpSession session, Model model) {
 		
 		String userEmail = (String) session.getAttribute("userEmail");
@@ -133,10 +133,10 @@ public class UserController {
 
 		model.addAttribute("vo", vo);
 		
-		return "mypages/settings";
+		return "cfmember/settings";
 	}
 	
-	@RequestMapping("/mypages/update")
+	@RequestMapping("/update")
 	public String update(@ModelAttribute UserVO userVo,
 			HttpSession session , Model model) {
 		
@@ -148,7 +148,7 @@ public class UserController {
 		int cnt = userService.updateProfile(userVo);
 		logger.info("회원수정 결과, cnt={}", cnt);
 		
-		String msg="수정 실패..", url="/mypages/settings";
+		String msg="수정 실패..", url="/cfmember/settings";
 		if(cnt>0) {
 			msg="회원정보를 수정하였습니다.";
 		}
@@ -159,7 +159,7 @@ public class UserController {
 		return "common/message";
 	}//
 	
-	@RequestMapping("/mypages/pwdUpdate")
+	@RequestMapping("/pwdUpdate")
 	public String pwdUpdate(@ModelAttribute UserVO userVo,
 			@RequestParam String oldPwd,
 			HttpSession session, Model model) {
@@ -173,7 +173,7 @@ public class UserController {
 		int result = userService.checkPwd(userEmail, oldPwd);
 		logger.info("비밀번호 체크결과, result={}", result);
 		
-		String msg="비밀번호 수정을 실패하였습니다.", url="/mypages/settings";
+		String msg="비밀번호 수정을 실패하였습니다.", url="/cfmember/settings";
 		if(result==UserService.PWD_OK) {
 			int cnt = userService.updatePwd(userVo);
 			logger.info("비밀번호 수정결과, cnt={}", cnt);

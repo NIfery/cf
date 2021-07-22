@@ -50,9 +50,6 @@ public class ProjectController {
 	public String list(@ModelAttribute ProjectVO pageVo, Model model) {
 		logger.info("프로젝트 list 화면 보여주기");
 		
-		List<FirstCategoryVO> fList = projectService.selectFirstCategory();
-		List<SecondCategoryVO> sList = projectService.selectSecondCategory("total");
-		
 		ProjectPageInfo pagingInfo = new ProjectPageInfo();
 		pagingInfo.setBlockSize(ProjectUtil.BLOCK_SIZE);
 		pagingInfo.setCurrentPage(pageVo.getCurrentPage());
@@ -69,8 +66,6 @@ public class ProjectController {
 		pagingInfo.setTotalRecord(totalRecord);
 		
 		model.addAttribute("list", list);
-		model.addAttribute("fList", fList);
-		model.addAttribute("sList", sList);
 		model.addAttribute("pagingInfo", pagingInfo);
 		
 		return "project/list";

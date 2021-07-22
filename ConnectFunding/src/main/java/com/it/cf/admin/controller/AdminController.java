@@ -16,9 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.it.cf.admin.model.AdminService;
 import com.it.cf.admin.model.AdminVO;
@@ -130,12 +128,12 @@ public class AdminController {
 		return "common/message";
 	}
 	
-	//실시간 아이디 중복 확인
-	@PostMapping("/idDuplChk")
-	public @ResponseBody String idDuplChk(@ModelAttribute AdminVO vo , Model model) throws Exception{
-	    int result = adminService.idDuplChk(vo.getAdminId());
-	    return String.valueOf(result);
-	}
+//	//실시간 아이디 중복 확인
+//	@RequestMapping(value = "/idDuplChk.do" , method = RequestMethod.POST)
+//	public @ResponseBody String idDuplChk(@ModelAttribute("vo") UserVO vo , Model model) throws Exception{
+//	    int result = joinService.idDuplChk(vo.getId());
+//	    return String.valueOf(result);
+//	}
 	
 	//회원관리 페이지
 	@RequestMapping("/membership")

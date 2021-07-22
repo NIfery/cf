@@ -28,7 +28,7 @@ public class AccountController {
 	
 	private final AccountService accountService;
 	
-	@RequestMapping("/mypages/addAcc")
+	@RequestMapping("/cfmember/addAcc")
 	public String insertAccount(@ModelAttribute AccountVO accVo, 
 			HttpSession session, Model model) {
 		
@@ -40,7 +40,7 @@ public class AccountController {
 		int cnt = accountService.insertAccount(accVo);
 		logger.info("계좌입력 결과, cnt={}", cnt);
 		
-		String msg="계좌등록 실패, 다시 시도해주세요.", url="/mypages/settings";
+		String msg="계좌등록 실패, 다시 시도해주세요.", url="/cfmember/settings";
 		if(cnt>0) {
 			msg="계좌를 등록하였습니다.";
 		}
@@ -87,7 +87,7 @@ public class AccountController {
 		return "cfmember/jusoPopup";
 	}
 	
-	@RequestMapping("/mypages/deleteAcc")
+	@RequestMapping("/cfmember/deleteAcc")
 	public String deleteAcc(@RequestParam(defaultValue = "0") String accountNo, Model model) {
 		
 		logger.info("계좌삭제, 파라미터 accountNo={}", accountNo);
@@ -97,7 +97,7 @@ public class AccountController {
 		
 		if(cnt>0) {
 			model.addAttribute("msg", "선택하신 계좌정보가 삭제되었습니다.");
-			model.addAttribute("url", "/mypages/settings");
+			model.addAttribute("url", "/mypageload/account");
 		}
 		
 		return "common/message";
@@ -105,7 +105,7 @@ public class AccountController {
 	
 	@RequestMapping("/agree")
 	public String agree_del() {
-		return "cfmember/agree";
+		return "/cfmember/agree";
 	}
 
 }

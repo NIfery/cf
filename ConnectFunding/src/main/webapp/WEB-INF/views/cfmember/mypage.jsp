@@ -24,25 +24,25 @@
 				<li><a href="#" class="d-flex">
 						<p style="color: rgb(39, 163, 255); font-size: 2em;">${sessionScope.userName} <span>님</span></p>
 				</a></li>
-				<li><a href="<c:url value='/mypages/notifications'/>" class="d-flex">
+				<li><a href="#" class="d-flex">
 						<p>알림</p>
 				</a></li>
-				<li><a href="<c:url value='/mypages/follow'/>" class="d-flex">
+				<li><a href="<c:url value='/cfmember/follow'/>" class="d-flex">
 						<p>팔로우</p>
 				</a></li>
 				<li><a href="#" class="d-flex">
 						<p>메시지</p>
 				</a></li>
-				<li><a href="<c:url value='/mypages/support'/>" class="d-flex">
+				<li><a href="#" class="d-flex">
 						<p>후원현황</p>
 				</a></li>
-				<li><a href="<c:url value='/mypages/likeProject'/>" class="d-flex">
+				<li><a href="#" class="d-flex">
 						<p>좋아한 프로젝트</p>
 				</a></li>
-				<li><a href="<c:url value='/mypages/projects'/>" class="d-flex">
+				<li><a href="#" class="d-flex">
 						<p>내가 만든 프로젝트</p>
 				</a></li>
-				<li><a href="<c:url value='/mypages/settings'/>" class="d-flex">
+				<li><a href="<c:url value='/cfmember/settings'/>" class="d-flex">
 						<p>설정</p>
 				</a></li>
 			</ul>

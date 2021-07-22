@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.it.cf.project.model.ProjectDAO">
+<mapper namespace="com.it.cf.project.model.ProjectDAO">	
 	<select id="selectAll" parameterType="pageVo" resultType="projectVo">
 		select *
 		from
@@ -60,9 +60,7 @@
 	<select id="selectSecondCategory" parameterType="string" resultType="secondCategoryVo">
 		select s.*,f.category_name from second_category s join first_category f
 		on s.first_category_no=f.first_category_no
-		<if test="firstCategory!='total'">
 		and f.category_name=#{firstCategory}
-		</if>
 		order by s.second_category_no
 	</select>
 	

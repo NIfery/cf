@@ -46,7 +46,7 @@
 								value="${accVo.accountNo }" />
 							**********${fn:substring(accNo,10,15) }
 						</span> <a
-							href="<c:url value='/mypages/deleteAcc?accountNo=${accVo.accountNo}'/>"
+							href="<c:url value='/cfmember/deleteAcc?accountNo=${accVo.accountNo}'/>"
 							class="trand-right-img" id="delete"> <img
 							src="<c:url value='/assets/img/cancel.png'/>"
 							style="width: 20px; margin: -30px 0px 0px 240px;">

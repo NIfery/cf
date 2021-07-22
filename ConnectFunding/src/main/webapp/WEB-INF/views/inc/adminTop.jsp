@@ -93,6 +93,10 @@
                                 <i class="fas fa-user"></i>회원관리</a>
                         </li>
                         <li>
+                            <a href="<c:url value='/chat/adminInbox'/>">
+                                <i class="fas  fa-comments"></i>쪽지</a>
+                        </li>
+                        <li>
                             <a href="<c:url value='/admin/register'/>">
                                 <i class="fas  fa-user-md"></i>관리자 등록</a>
                         </li>

@@ -51,7 +51,6 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public int selectTotalRecord(SearchVO searchVo) {
-		// TODO Auto-generated method stub
 		return adminDao.selectTotalRecord(searchVo);
 	}
 

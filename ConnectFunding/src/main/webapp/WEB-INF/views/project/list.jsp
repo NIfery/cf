@@ -184,12 +184,10 @@
 					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">게임 페스티벌</a></li>
 					        </ul>
 					      </li>
-					      <li class="dropdown-submenu dropend">
-					      <a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">공연<span class="caret"></span></a>
-					      </li>
-					      <li class="dropdown-submenu dropend">
-					      <a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">디자인<span class="caret"></span></a>
-					      </li>
+					      <c:forEach var="firstCt" items="${fList }">
+						      <li class="dropdown-submenu dropend">
+						      <a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">${firstCt.categoryName }<span class="caret"></span></a>
+					      </c:forEach>
 					    </ul>
 					  </div>
                     

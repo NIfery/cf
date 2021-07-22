@@ -200,7 +200,7 @@
 						          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">모든 ${firstCt.categoryName }</a></li>
 						          <c:forEach var="secondCt" items="${sList }">
 						          	<c:if test="${secondCt.firstCategoryNo==firstCt.firstCategoryNo }">
-							          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">${secondCt.categoryName }</a></li>
+							          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="send('1');test('${secondCt.secondCategoryNo}');">${secondCt.categoryName }</a></li>
 						          	</c:if>
 						          </c:forEach>
 					      		</ul>

@@ -37,6 +37,7 @@
 			.col-12{
 				margin-left: 5.5%;
 			}
+			
 		</style>
 		
 		<script type="text/javascript" 
@@ -50,9 +51,14 @@
 			$(function(){
 				$('.dropdown-submenu a.test').on("click", function(e){
 					$(this).next('ul').toggle();
+					
+					$(this).parent().siblings().find('ul').css('display','none');
+					
 					e.stopPropagation();
 					e.preventDefault();
 				});
+				
+				
 				
 				$('#btWrite').click(function(){
 					location.href="<c:url value='/project/writeMain'/>";
@@ -184,6 +190,8 @@
 					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">게임 페스티벌</a></li>
 					        </ul>
 					      </li>
+					      
+					      
 					      <c:forEach var="firstCt" items="${fList }">
 						  	<li class="dropdown-submenu dropend">
 						    	<a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">${firstCt.categoryName }<span class="caret"></span></a>

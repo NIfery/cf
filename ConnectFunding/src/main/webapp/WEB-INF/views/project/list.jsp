@@ -200,7 +200,7 @@
 					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">게임 페스티벌</a></li>
 					        </ul>
 					      </li>
-			      
+					      
 					      
 					      <c:forEach var="firstCt" items="${fList }">
 						  	<li class="dropdown-submenu dropend">
@@ -214,7 +214,6 @@
 						          </c:forEach>
 					      		</ul>
 					      </c:forEach>
-
 					    </ul>
 					  </div>
                     

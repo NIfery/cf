@@ -8,7 +8,7 @@ public interface ProjectService {
 	List<ProjectVO> selectBySecondCategoryNo(ProjectVO pageVo);
 	int selectTotalFundingAmountByFundingNo(int fundingNo);
 	int selectTotalRecord();
-	int selectTotalRecordBySecondCategoryNo(int secondCategoryNo);
+	int selectTotalRecordBySecondCategoryNo(int firstCategoryNo, int secondCategoryNo);
 	List<FirstCategoryVO> selectFirstCategory();
 	List<SecondCategoryVO> selectSecondCategory(String firstCategory);
 	int createTotalFunding();

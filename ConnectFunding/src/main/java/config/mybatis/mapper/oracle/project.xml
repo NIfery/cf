@@ -27,25 +27,32 @@
 	</select>
 	
 	<select id="selectBySecondCategoryNo" parameterType="pageVo" resultType="projectVo">
-		select *
+        select *
 		from
 		(
-			select rownum as RNUM, A.*
+        	select rownum as RNUM, C.*
 			from
 			(	
-				select * from PROJECT p
-				left join 
-                (
-                    select project_no, sum(funding_amount) as totalFundingAmount from funding_list
-                    group by project_no
-                )t
-                on p.project_no=t.project_no
+        		select * from
+        		(
+        			select p.*, s.first_category_no from PROJECT p join second_category s
+        			on p.second_category_no=s.second_category_no
+        		)A
+		        left join        
+		        (
+			        select project_no, sum(funding_amount) as totalFundingAmount from funding_list
+			        group by project_no
+        		)B
+		        on a.project_no=b.project_no
+				<if test="firstCategoryNo!=0">
+					where first_category_no=#{firstCategoryNo}
+				</if>
 				<if test="secondCategoryNo!=0">
 					where second_category_no=#{secondCategoryNo}
 				</if>
-				order by p.PROJECT_NO desc
-			)A
-		)
+		        order by a.project_no desc
+        	)C
+        )        
 		<![CDATA[
 		where RNUM > #{firstRecordIndex}
 		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
@@ -70,10 +77,14 @@
 		select count(*) from PROJECT
 	</select>
 	
-	<select id="selectTotalRecordBySecondCategoryNo" parameterType="int" resultType="int">
-		select count(*) from PROJECT
+	<select id="selectTotalRecordBySecondCategoryNo" parameterType="map" resultType="int">
+		select count(*) from PROJECT p join second_category s
+		on p.second_category_no=s.second_category_no
+		<if test="firstCategoryNo!=0">
+			where first_category_no=#{firstCategoryNo}
+		</if>
 		<if test="secondCategoryNo!=0">
-			where second_category_no=#{secondCategoryNo}
+			where p.second_category_no=#{secondCategoryNo}
 		</if>
 	</select>
 	

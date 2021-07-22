@@ -24,11 +24,15 @@
 				success:function(res){
 					var str="";
 					
-					str+="<select id='secondSelect' style='display:none;'></select>";
+					str+="<select id='secondSelect' name='secondCategoryNo' style='display:none;'>";
+					$.each(res, function(idx,item){
+						str+="<option value='"+item.secondCategoryNo+"'>"+item.categoryName+"</option>";
+					});
+					str+="</select>";
 					str+="<div class='nice-select' tabindex='0'>";
 					$.each(res, function(idx,item){
 						if(idx==0){
-							str+="<span class='current'>"+item.categoryName+"</span><ul class='list'><li data-value='"+item.categoryName+"' class='option selected'>"+item.categoryName+"</li>";
+							str+="<span class='current'>"+item.categoryName+"</span><ul class='list'><li data-value='"+item.secondCategoryNo+"' class='option selected'>"+item.categoryName+"</li>";
 						}else{
 							str+="<li data-value='"+item.secondCategoryNo+"' class='option'>"+item.categoryName+"</li>";
 						}
@@ -623,7 +627,27 @@
 										                        </div>
 									                        </div>
 										                    <div class="row row-cols-1" style="background: white">
-										                    	<textarea id="summernote" name="projectContent"></textarea>	
+										                    	<textarea id="summernote" name="projectContent"><h4 style="margin-left: 100px;"><b><span style="font-family: " arial="" black";"="">프로젝트 소개</span></b></h4><p style="margin-left: 100px;">
+
+- 무엇을 만들기 위한 프로젝트인가요? 이 프로젝트의 특별한 점은 무엇인가요?</p><p style="margin-left: 100px;">
+- 기획, 구상부터 디자인, 시제품 제작에 오기까지 그간의 고민, 시행착오 등 고유한 창작 '과정'이 잘 드러나도록 스토리를 작성해 주세요.
+</p><p style="margin-left: 100px;">- 샘플이나 콘텐츠 미리보기 이미지를 포함해 주세요. 매력적인 이미지는 후원자 참여에 중요한 역할을 합니다.<br></p><p><br></p><h4 style="margin-left: 100px;"><b>
+프로젝트 예산</b></h4><p style="margin-left: 100px;">
+
+- 설정하신 목표 금액을 제작에 어떻게 사용할 것인지 알려주세요.</p><p style="margin-left: 100px;">
+- 이번 프로젝트 제작에 필요한 비용을 '인건비', '배송비', '인쇄비', '대관료'와 같이 구체적으로 작성하셔야 합니다.</p><p style="margin-left: 100px;">
+- 이번 프로젝트 제작과 무관한 계획(예시: 기부, 다음 프로젝트에 사용, 목표 금액 초과 달성분의 활용)은 포함하지 않으셔도 됩니다.
+</p><p style="margin-left: 100px;"><br></p><h4 style="margin-left: 100px;"><b>
+제작 일정
+</b></h4><p style="margin-left: 100px;">
+- 현재 프로젝트가 어디까지 진행되었나요? 구상 단계인지, 시제품이나 파일럿 등 가안 제작 단계인지 정확히 알려주세요.
+</p><p style="margin-left: 100px;">- 펀딩에 성공한다면 어떤 일정으로 제작을 완수할 계획인가요? 완성까지 필요한 중간 단계들을 어떠한 일정으로 완수하여 선물의 '예상 전달일'을 지킬 것인지 구체적인 날짜와 함께 적어주세요.
+</p><p style="margin-left: 100px;"><br></p><h4 style="margin-left: 100px;"><b>
+후원자 안내
+</b></h4><p style="margin-left: 100px;">
+- 손상되기 쉬운 선물의 포장·전달 방법이나 행사 일정/장소, 디지털 파일 전달할 방법 등을 짚어 주세요.
+</p><p style="margin-left: 100px;">- 문의 방법(창작자에게 문의하기)이나 환불 교환 정책, 상품 정보 고시는 별도의 기능이 있으므로 스토리에 또 기재하지 않아도 됩니다.
+</p><p style="margin-left: 100px;">- 그 밖에 후원자들에게 전하고 싶은 말이 있나요?<br></p></textarea>	
 									                        </div>
 									                        <br><br>
 									                    

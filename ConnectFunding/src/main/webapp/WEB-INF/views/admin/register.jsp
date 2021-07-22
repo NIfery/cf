@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 <%@ include file="../inc/adminTop.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -36,48 +37,47 @@ function checkId(){
 
 //실시간 비밀번호 확인
 $(function(){ 
-	$("#adminPwd2").keyup(function(){ 
-		var pwd1=$("#adminPwd").val(); 
-		var pwd2=$("#adminPwd2").val(); 
-		if(pwd1 != "" || pwd2 != ""){ 
-			if(pwd1 == pwd2){ 
-				$('#chkMsg1').css('color','green','font-weight','bold').html("비밀번호가 일치합니다.");
-				$('#join').css('background-color','#63c76a').html("관리자 생성");
+   $("#adminPwd2").keyup(function(){ 
+      var pwd1=$("#adminPwd").val(); 
+      var pwd2=$("#adminPwd2").val(); 
+      if(pwd1 != "" || pwd2 != ""){ 
+         if(pwd1 == pwd2){ 
+            $('#chkMsg1').css('color','green','font-weight','bold').html("비밀번호가 일치합니다.");
+            $('#join').css('background-color','#63c76a').html("관리자 생성");
                 document.getElementById('level').disabled = false;
                 document.getElementById('join').disabled = false;
-			}else{ 
-				$('#chkMsg1').css('color','red','font-weight','bold').html("비밀번호가 일치하지 않습니다.");
-				$('#join').css('background-color','red').html("양식에 맞게 다시 입력하세요.");
-				document.getElementById('level').disabled = true;
+         }else{ 
+            $('#chkMsg1').css('color','red','font-weight','bold').html("비밀번호가 일치하지 않습니다.");
+            $('#join').css('background-color','red').html("양식에 맞게 다시 입력하세요.");
+            document.getElementById('level').disabled = true;
                 document.getElementById('join').disabled = true;
 
-			} 
-		} 
-	});
+         } 
+      } 
+   });
 });
 
 $(function(){
-	$('#join').click(function(){
-		if($('#adminId').val().length<1){
-			$('#chkMsg').css('color','red','font-weight','bold').html("아이디를 입력하세요.");
-			$('#adminId').focus();
-			event.preventDefault();
-		}else if($('#adminPwd').val().length<1){
-			$('#chkMsg1').css('color','red','font-weight','bold').html("비밀번호를 입력하세요.");
-			$('#adminPwd').focus();
-			event.preventDefault();
-		}else if($('#adminPwd2').val().length<1){
-			$('#chkMsg2').css('color','red','font-weight','bold').html("비밀번호를 입력하세요.");
-			$('#adminPwd2').focus();
-			event.preventDefault();
-		}else if($('#level').val()==''){
-			$('#chkMsg3').css('color','red','font-weight','bold').html("직책을 선택하세요.");
-			$('#level').focus();
-			event.preventDefault();
-		}
-	});
+   $('#join').click(function(){
+      if($('#adminId').val().length<1){
+         $('#chkMsg').css('color','red','font-weight','bold').html("아이디를 입력하세요.");
+         $('#adminId').focus();
+         event.preventDefault();
+      }else if($('#adminPwd').val().length<1){
+         $('#chkMsg1').css('color','red','font-weight','bold').html("비밀번호를 입력하세요.");
+         $('#adminPwd').focus();
+         event.preventDefault();
+      }else if($('#adminPwd2').val().length<1){
+         $('#chkMsg2').css('color','red','font-weight','bold').html("비밀번호를 입력하세요.");
+         $('#adminPwd2').focus();
+         event.preventDefault();
+      }else if($('#level').val()==''){
+         $('#chkMsg3').css('color','red','font-weight','bold').html("직책을 선택하세요.");
+         $('#level').focus();
+         event.preventDefault();
+      }
+   });
 });
-
 </script>
 <body class="animsition">
     <div class="page-wrapper">
@@ -101,25 +101,25 @@ $(function(){
                                     <label>비밀번호</label>
                                     <input class="au-input au-input--full" type="password" name="adminPwd" id="adminPwd" placeholder="비밀번호를 입력하세요.">
                                     <span id = "chkMsg1"></span> 
-                                	<span id = "chkPwd1"></span>
-                                	<span id = "chkPwd2"></span>
-                                	
+                                   <span id = "chkPwd1"></span>
+                                   <span id = "chkPwd2"></span>
+                                   
                                 </div>
                                 <div class="form-group">
                                     <label>비밀번호 확인</label>
                                     <input class="au-input au-input--full" type="password" name="adminPwd2" id="adminPwd2" placeholder="비밀번호를 한번 더 입력하세요.">
-                                	<span id = "chkMsg2"></span> 
+                                   <span id = "chkMsg2"></span> 
                                 </div>
                                 <div class="form-group">
-							        <label for="level">관리자 직책 :&nbsp;
-							        <select name="adminPosition" id="level">
-							            <option value="">선택하세요</option>
-								            <c:forEach var="map" items="${list }">
-									            <option value="${map['AUTHCODE']}">${map['AUTHNAME'] }</option>            	
-								            </c:forEach>                   
-							       	</select>
-							       	<span id = "chkMsg3"></span> 
-							       	</label>
+                             <label for="level">관리자 직책 :&nbsp;
+                             <select name="adminPosition" id="level">
+                                 <option value="">선택하세요</option>
+                                    <c:forEach var="map" items="${list }">
+                                       <option value="${map['AUTHCODE']}">${map['AUTHNAME'] }</option>               
+                                    </c:forEach>                   
+                               </select>
+                               <span id = "chkMsg3"></span> 
+                               </label>
                                 </div>
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" id="join">관리자 생성</button>
                             </form>

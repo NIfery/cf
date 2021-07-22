@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/mypages")
 public class DeliveryController {
 
 	private static final Logger logger
@@ -28,7 +27,7 @@ public class DeliveryController {
 	
 	private final DeliveryService deliveryService;
 	
-	@RequestMapping("/insertAddress")
+	@RequestMapping("/mypages/insertAddress")
 	public String insertAddress(@ModelAttribute DeliveryVO delVo, Model model) {
 		
 		logger.info("배송지 등록, 파라미터 delVo={}", delVo);
@@ -47,7 +46,7 @@ public class DeliveryController {
 		return "common/message";
 	}//
 	
-	@RequestMapping("/address")
+	@RequestMapping("/mypageload/address")
 	public String showAddress(HttpSession session, Model model) {
 		
 		int userNo = (int) session.getAttribute("userNo");
@@ -74,7 +73,7 @@ public class DeliveryController {
 //		return delList;
 //	}//
 	
-	@RequestMapping("/deleteAddress")
+	@RequestMapping("/mypages/deleteAddress")
 	public String deleteAddress(@RequestParam(defaultValue = "0") int delNo, Model model) {
 		
 		logger.info("배송지 삭제, 파라미터 delNo={}", delNo);
@@ -83,7 +82,7 @@ public class DeliveryController {
 		logger.info("배송지 삭제결과, cnt={}", cnt);
 		
 		if(cnt>0) {
-			model.addAttribute("msg", "선택하신 계좌정보가 삭제되었습니다.");
+			model.addAttribute("msg", "선택하신 배송지가 삭제되었습니다.");
 			model.addAttribute("url", "/mypages/settings");
 		}
 		

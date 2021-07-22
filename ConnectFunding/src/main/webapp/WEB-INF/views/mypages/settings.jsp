@@ -78,9 +78,9 @@
 												<li>
 													<div class="form-group">
 														<label class="col-form-label col-form-label-sm mt-4"
-															id="label_name"> 이름</label> <input
-															class="form-control form-control-sm" type="text"
-															name="userName" value="${vo.userName }">
+															id="label_name"> 이름</label> 
+															<input class="form-control form-control-sm" type="text"
+															name="userName" disabled="disabled" value="${vo.userName }">
 													</div>
 												</li>
 												<li>
@@ -241,8 +241,8 @@
 							<div class="row" style="margin-top: 20px;">
 								<div class="col-md-6" style="width: 10px; height: 50px;">등록된 결제수단</div>
 								<div class="col-md-6 col-md-offset-6">
-									<a href="#" data-toggle="modal" data-target="#staticBackdrop"
-										style="color: rgb(39, 163, 255); margin-left: 190px;">+추가</a>
+									<a href="#" data-toggle="modal" data-target="#myModal"
+										style="color: rgb(39, 163, 255); margin-left: 270px;">+추가</a>
 								</div>
 							</div>
 							<div class="whats-news-caption" id="three">
@@ -268,7 +268,8 @@
 													value="${sessionScope.userNo }">
 												<div class="form-group" style="width: 450px; margin: 3px;">
 													<label class="form-label mt-4">계좌번호</label> <input
-														type="text" class="form-control" name="accountNo"
+														type="text" class="form-control" 
+														name="accountNo" id="accountNo"
 														placeholder="-를 포함해서 입력해주세요.">
 												</div>
 												<div class="form-group" style="width: 450px; margin: 3px;">
@@ -294,12 +295,12 @@
 													<div class="col-md-6">
 														<label class="form-label mt-6">예금주명</label> <input
 															type="text" class="form-control" name="accountHolder"
-															placeholder="예금주 명을 입력해주세요.">
+															id="accountHolder" placeholder="예금주 명을 입력해주세요.">
 													</div>
 													<div class="col-md-6 col-md-offset-6">
 														<label class="form-label mt-6" style="color: black">예금주
-															생년월일</label> <input type="text" class="form-control" name="birth"
-															placeholder="예) 2000-01-01">
+															생년월일</label> <input type="text" class="form-control" name="birth" 
+															id="birth" placeholder="예) 2000-01-01">
 													</div>
 												</div>
 												<div class="form-group"
@@ -323,7 +324,7 @@
 											</div>
 											<div class="modal-footer">
 												<button type="submit" class="genric-btn warning circle"
-													style="width: 480px;">등록 완료</button>
+													id="addacc" style="width: 480px;">등록 완료</button>
 											</div>
 										</div>
 									</div>
@@ -336,7 +337,7 @@
 						<div class="tab-pane fade" id="nav-addresses" role="tabpanel"
 							aria-labelledby="nav-addresses-tab">
 							<div class="row" style="margin-top: 20px;">
-								<div class="col-md-6" style="width: 10px; height: 50px;">등록된 결제수단</div>
+								<div class="col-md-6" style="width: 10px; height: 50px;">등록된 배송지</div>
 								<div class="col-md-6 col-md-offset-6">
 									<a href="#" data-toggle="modal" data-target="#myModal"
 										style="color: rgb(39, 163, 255); margin-left: 270px;">+추가</a>
@@ -365,7 +366,7 @@
 												<div class="form-group" style="width: 450px; margin: 3px;">
 													<label class="form-label mt-4">받는사람</label> <input
 														type="text" class="form-control" name="delReceiver"
-														placeholder="받는 분 성함을 입력해주세요.">
+														id="delReceiver" placeholder="받는 분 성함을 입력해주세요.">
 												</div>
 												<div class="form-group" style="width: 450px; margin: 3px;">
 													<label class="form-label mt-4">주소</label>
@@ -373,7 +374,8 @@
 														<div class="input-group mb-3">
 															<span class="d-flex"> <input
 																type="text" class="form-control" placeholder="주소검색"
-																id="address" name="delAddress" style="width: 420px;">
+																id="address" name="delAddress" disabled="disabled" 
+																style="width: 420px;">
 																<button class="btns" type="button" onclick="goPopup()"
 																	style="background: none; border: 1px; color: black;">
 																	<i class="fas fa-search special-tag"></i>
@@ -385,11 +387,11 @@
 												<div class="form-group" style="width: 450px; margin: 3px;">
 													<label class="form-label mt-4">우편번호</label> <input
 														type="text" class="form-control" name="delZipcode"
-														id="zipNo">
+														id="zipNo" disabled="disabled">
 												</div>
 												<div class="form-group" style="width: 450px; margin: 3px;">
 													<label class="form-label mt-4">받는사람 휴대폰 번호</label> <input
-														type="text" class="form-control" name="delHp"
+														type="text" class="form-control" name="delHp" id="delHp"
 														placeholder="받는 분 휴대폰번호를 입력해주세요.">
 												</div>
 												<div class="form-group"
@@ -403,7 +405,7 @@
 											</div>
 											<div class="modal-footer">
 												<button type="submit" class="genric-btn warning circle"
-													style="width: 480px;">등록 완료</button>
+													id="addjuso" style="width: 480px;">등록 완료</button>
 											</div>
 										</div>
 									</div>
@@ -511,6 +513,41 @@
 				event.preventDefaulut();
 			}
 		});
+		
+		$('#addacc').on("click",function(e) {
+			e.preventDefault();
+			if ($('#accountNo').val().length < 1) {
+				alert('계좌번호를 입력하세요.');
+				$('#accountNo').focus();
+				event.preventDefaulut();
+			} else if ($('#accountHolder').val().length < 1) {
+				alert('예금주명을 입력하세요.');
+				$('#accountHolder').focus();
+				event.preventDefaulut();
+			} else if ($('#birth').val().length < 1) {
+				alert("생년월일을 입력하세요.");
+				$('#birth').focus();
+				event.preventDefaulut();
+			}
+		});
+		
+		$('#addjuso').on("click",function(e) {
+			e.preventDefault();
+			if ($('#delReceiver').val().length < 1) {
+				alert('받는사람을 입력하세요.');
+				$('#delReceiver').focus();
+				event.preventDefaulut();
+			} else if ($('#address').val().length < 1) {
+				alert('주소검색을 해주세요.');
+				$('#address').focus();
+				event.preventDefaulut();
+			} else if ($('#delHp').val().length < 1) {
+				alert("연락처를 입력하세요.");
+				$('#delHp').focus();
+				event.preventDefaulut();
+			}
+		});
+		
 	});//
 	
 	function goPopup(){

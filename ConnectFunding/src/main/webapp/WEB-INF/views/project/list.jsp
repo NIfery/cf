@@ -75,6 +75,7 @@
 			}
 			
 			function test(type){
+				$('.dropdown-submenu a.test').next('ul').css('display','none');
 				$.ajax({
 					url:"<c:url value='/project/alist'/>",
 					type:"get",

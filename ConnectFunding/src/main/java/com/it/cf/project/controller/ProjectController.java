@@ -78,7 +78,7 @@ public class ProjectController {
 	
 	@ResponseBody
 	@RequestMapping("/alist")
-	public Map<String, Object> ajaxList(@RequestParam int secondCategoryNo, @RequestParam int curPage, @ModelAttribute ProjectVO pageVo) {
+	public Map<String, Object> ajaxList(@RequestParam int firstCategoryNo, @RequestParam int secondCategoryNo, @RequestParam int curPage, @ModelAttribute ProjectVO pageVo) {
 		pageVo.setCurrentPage(curPage);
 		ProjectPageInfo pagingInfo = new ProjectPageInfo();
 		pagingInfo.setBlockSize(ProjectUtil.BLOCK_SIZE);
@@ -87,12 +87,14 @@ public class ProjectController {
 		
 		pageVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
 		pageVo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
+		pageVo.setFirstCategoryNo(firstCategoryNo);
 		pageVo.setSecondCategoryNo(secondCategoryNo);
 		
 		List<ProjectVO> list = projectService.selectBySecondCategoryNo(pageVo);
 		logger.info("프로젝트 list 화면 결과, list.size={}", list.size());
 		
-		int totalRecord = projectService.selectTotalRecordBySecondCategoryNo(secondCategoryNo);
+		int totalRecord = projectService.selectTotalRecordBySecondCategoryNo(firstCategoryNo, secondCategoryNo);
+		
 		logger.info("list 화면 결과, totalRecord={}", totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
 		

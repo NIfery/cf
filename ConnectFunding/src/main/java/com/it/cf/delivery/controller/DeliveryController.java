@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-/* @RequestMapping("/cfmember") */
+@RequestMapping("/mypages")
 public class DeliveryController {
 
 	private static final Logger logger
@@ -28,7 +28,7 @@ public class DeliveryController {
 	
 	private final DeliveryService deliveryService;
 	
-	@RequestMapping("/cfmember/insertAddress")
+	@RequestMapping("/insertAddress")
 	public String insertAddress(@ModelAttribute DeliveryVO delVo, Model model) {
 		
 		logger.info("배송지 등록, 파라미터 delVo={}", delVo);
@@ -36,7 +36,7 @@ public class DeliveryController {
 		int cnt = deliveryService.insertAddress(delVo);
 		logger.info("배송지 등록결과, cnt={}", cnt);
 		
-		String msg="배송지등록 실패", url="/cfmember/settings";
+		String msg="배송지등록 실패", url="/mypages/settings";
 		if(cnt>0) {
 			msg="배송지를 등록하였습니다.";
 		}
@@ -47,7 +47,7 @@ public class DeliveryController {
 		return "common/message";
 	}//
 	
-	@RequestMapping("/mypageload/address")
+	@RequestMapping("/address")
 	public String showAddress(HttpSession session, Model model) {
 		
 		int userNo = (int) session.getAttribute("userNo");
@@ -74,7 +74,7 @@ public class DeliveryController {
 //		return delList;
 //	}//
 	
-	@RequestMapping("/cfmember/deleteAddress")
+	@RequestMapping("/deleteAddress")
 	public String deleteAddress(@RequestParam(defaultValue = "0") int delNo, Model model) {
 		
 		logger.info("배송지 삭제, 파라미터 delNo={}", delNo);
@@ -84,7 +84,7 @@ public class DeliveryController {
 		
 		if(cnt>0) {
 			model.addAttribute("msg", "선택하신 계좌정보가 삭제되었습니다.");
-			model.addAttribute("url", "/cfmember/settings");
+			model.addAttribute("url", "/mypages/settings");
 		}
 		
 		return "common/message";

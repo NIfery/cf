@@ -54,4 +54,16 @@ public class ProjectServiceImpl implements ProjectService{
 	public int selectFundingUserCount(int projectNo) {
 		return projectDao.selectFundingUserCount(projectNo);
 	}
+	
+	public String selectFirstCategoryNo(int secondCategoryNo) {
+		return projectDao.selectFirstCategoryNo(secondCategoryNo);
+	}
+	
+	
+	public int deleteFundingList(int projectNo) {
+		return projectDao.deleteFundingList(projectNo);
+	}
+	public int deleteProject(int projectNo) {
+		return projectDao.deleteProject(projectNo);
+	}
 }

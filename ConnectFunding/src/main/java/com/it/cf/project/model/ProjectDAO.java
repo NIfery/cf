@@ -18,4 +18,8 @@ public interface ProjectDAO {
 	int insertProject(ProjectVO vo);
 	Map<String, Object> selectByNo(int projectNo);
 	int selectFundingUserCount(int projectNo);
+	String selectFirstCategoryNo(int secondCategoryNo);
+	
+	int deleteFundingList(int projectNo);
+	int deleteProject(int projectNo);
 }

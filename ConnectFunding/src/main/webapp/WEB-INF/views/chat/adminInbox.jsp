@@ -117,7 +117,7 @@
 						<form name="frmList" >
 						<div class="table-responsive table-responsive-data2">
 						
-							<table class="table table-data2">
+							<table class="table table-data2 table-hover">
 								<thead>
 									<tr>
 										<th><label class="au-checkbox"> <input
@@ -127,6 +127,7 @@
 										<th>제목</th>
 										<th>내용</th>
 										<th>보낸날짜</th>
+										<th>답변날짜</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -143,13 +144,13 @@
 														type="checkbox" name="sMessage[${idx }].messageNo" value="${vo.messageNo }"> <span class="au-checkmark"></span>
 												</label></td>
 												<td><span class="block-email">${vo.userNo }</span></td>
-												<td>
+												<td><a  href="<c:url value='/chat/adminDetail?messageNo=${vo.messageNo }'/>">
 													<c:if test="${fn:length(vo.messageTitle)>10 }">
 														${fn:substring(vo.messageTitle, 0, 10) }...
 													</c:if> 
 													<c:if test="${fn:length(vo.messageTitle)<=10 }">
 														${vo.messageTitle}
-													</c:if>
+													</c:if></a>
 													</td>
 													<td class="desc"><a  href="<c:url value='/chat/adminDetail?messageNo=${vo.messageNo }'/>">
 													<c:if test="${fn:length(vo.messageContent)>30 }">
@@ -160,6 +161,14 @@
 													</c:if></a></td>
 												<td><fmt:formatDate value="${vo.messageRegdate }"
 														type="date" pattern="yyyy-MM-dd" /></td>
+												<td>
+													<c:forEach var="voR" items="${listReceive }">
+												    	<c:if test="${vo.messageNo == voR.messageNo }">
+												    		<fmt:formatDate value="${voR.messageRegdate }" type="date" 
+												    			pattern="yyyy-MM-dd" />
+												    	</c:if>
+											    	</c:forEach>
+												</td>
 											</tr>
 											<c:set var="idx" value="${idx+1 }"/>
 										</c:forEach>

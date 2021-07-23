@@ -97,6 +97,10 @@ public class ChatController {
 		logger.info("보낸 쪽지함, totalRecord={}",totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
 		
+		List<MessageReceiveVO> listReceive=messageService.receiveAll(searchVo);
+		logger.info("listReceive.size={}",listReceive.size());
+		
+		model.addAttribute("listReceive", listReceive);
 		model.addAttribute("list", list);
 		model.addAttribute("pagingInfo", pagingInfo);
 		return "chat/sent";
@@ -344,6 +348,10 @@ public class ChatController {
 		logger.info("관리자 쪽지함, totalRecord={}",totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
 		
+		List<MessageReceiveVO> listReceive=messageService.sentAdmin(searchVo);
+		logger.info("listReceive.size={}",listReceive.size());
+		
+		model.addAttribute("listReceive", listReceive);
 		model.addAttribute("list", list);
 		model.addAttribute("pagingInfo", pagingInfo);
 		return "/chat/adminInbox";

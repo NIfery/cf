@@ -38,6 +38,11 @@
 	<div class="section__content section__content--p30">
 		<h3 class="title-5 m-b-35">받은 쪽지</h3>
 				<div class="form-group">
+					<label for="title">회원번호</label>
+					 <input type="text"
+						class="form-control" id="messageTitle" name="messageTitle" value="${sendVo.messageNo }" readonly="readonly">
+				</div>
+				<div class="form-group">
 					<label for="title">제목</label>
 					 <input type="text"
 						class="form-control" id="messageTitle" name="messageTitle" value="${sendVo.messageTitle }" readonly="readonly">

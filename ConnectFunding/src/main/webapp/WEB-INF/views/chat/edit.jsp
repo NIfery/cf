@@ -21,10 +21,9 @@
 	});
 </script>
 <title>쪽지보기</title>
-<c:import url="/chat/chatCategory"></c:import>
-		<div class="col-13 col-sm-7 col-md-6">
+		<div class="container">
 			<form name="frmChat" method="post" action="<c:url value='/chat/edit'/>">
-				<h1>쪽지 수정</h1>
+				<h1 class="m-3">쪽지 수정</h1>
 				<div class="form-group">
 					<label for="title">제목</label> <input type="text"
 						class="form-control" id="messageTitle" name="messageTitle" value="${sendVo.messageTitle }">
@@ -42,8 +41,6 @@
 				</div>
 			</form>
 		</div>
-	</div>
-</div>
 
 
 <%@ include file="../include/bottom.jsp"%>

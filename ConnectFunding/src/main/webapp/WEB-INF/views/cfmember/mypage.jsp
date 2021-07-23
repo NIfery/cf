@@ -30,7 +30,7 @@
 				<li><a href="<c:url value='/mypages/follow'/>" class="d-flex">
 						<p>팔로우</p>
 				</a></li>
-				<li><a href="<c:url value='/chat/inbox'/>" class="d-flex">
+				<li><a href="<c:url value='/chat/sent'/>" class="d-flex">
 						<p>메시지</p>
 				</a></li>
 				<li><a href="<c:url value='/mypages/support'/>" class="d-flex">

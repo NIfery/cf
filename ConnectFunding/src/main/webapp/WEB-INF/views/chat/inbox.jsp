@@ -20,15 +20,15 @@
 		$('form[name=frmPage]').submit();
 	}
 </script>
+
+<div class="container">
+<title>받은 쪽지함</title>
 <!-- 페이징 처리를 위한 form 시작-->
 <form name="frmPage" method="post" 
 	action="<c:url value='/chat/inbox'/>">
 	<input type="hidden" name="currentPage">	
 </form>
 <!-- 페이징 처리 form 끝 -->
-<title>받은 쪽지함</title>
-<c:import url="/chat/chatCategory"></c:import>
-  <div class="col-13 col-sm-7 col-md-9">
   	<table class="table table-hover">
   <thead>
     <tr  class="table-warning text-dark">
@@ -104,9 +104,7 @@
 	</c:if>
   </ul>
   </div>
-  
-</div>
-</div>
 
 
-<%@ include file="../include/bottom.jsp" %> 
+
+<%@ include file="../include/bottom.jsp" %>

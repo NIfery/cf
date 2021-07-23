@@ -16,10 +16,9 @@
 	});
 </script>
 <title>쪽지보기</title>
-<c:import url="/chat/chatCategory"></c:import>
-		<div class="col-13 col-sm-7 col-md-8">
+		<div class="container">
 			<form name="frmChat">
-				<h1>보낸 쪽지</h1>
+				<h1 class="m-3">보낸 쪽지</h1>
 				<div class="form-group">
 					<label for="title">제목</label>
 					 <input type="text"
@@ -60,8 +59,6 @@
 			</form>
 			
 		</div>
-	</div>
-</div>
 
 
 <%@ include file="../include/bottom.jsp"%>

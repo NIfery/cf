@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -217,8 +218,10 @@ public class ProjectController {
 	}
 	
 	@RequestMapping("/detail")
-	public String detail(@RequestParam(defaultValue = "0") int projectNo, Model model) {
-		logger.info("프로젝트 상세화면, 파라미터 projectNo={}", projectNo);
+	public String detail(@RequestParam(defaultValue = "0") int projectNo, 
+			HttpSession session, Model model) {
+		int userNo = (int) session.getAttribute("userNo");
+		logger.info("프로젝트 상세화면, 파라미터 projectNo={}, userNo={}", projectNo, userNo);
 		
 		Map<String, Object> map = projectService.selectByNo(projectNo);
 		int userCnt = projectService.selectFundingUserCount(projectNo);
@@ -226,7 +229,30 @@ public class ProjectController {
 		
 		model.addAttribute("map", map);
 		model.addAttribute("userCnt", userCnt);
+		model.addAttribute("userNo", userNo);
 		
 		return "project/detail";
+	}
+	
+	@GetMapping("/update")
+	public String update(@RequestParam int projectNo, Model model) {
+		Map<String, Object> map = projectService.selectByNo(projectNo);
+		
+		int secondCategoryNo = Integer.parseInt(String.valueOf(map.get("SECOND_CATEGORY_NO")));
+		String firstCategory = projectService.selectFirstCategoryNo(secondCategoryNo);
+		List<FirstCategoryVO> fList = projectService.selectFirstCategory();
+		List<SecondCategoryVO> sList = projectService.selectSecondCategory(firstCategory);
+		
+		model.addAttribute("map", map);
+		model.addAttribute("firstCategory", firstCategory);
+		model.addAttribute("fList", fList);
+		model.addAttribute("sList", sList);
+		
+		return "project/update";
+	}
+	
+	@RequestMapping("/delete")
+	public String delete() {
+		return "";
 	}
 }

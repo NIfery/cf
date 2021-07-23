@@ -73,6 +73,12 @@
 		order by s.second_category_no
 	</select>
 	
+	<select id="selectFirstCategoryNo" parameterType="int" resultType="string">
+		select f.category_name from second_category s join first_category f
+		on s.first_category_no=f.first_category_no
+		and s.second_category_no=#{secondCategoryNo}
+	</select>
+	
 	<select id="selectTotalRecord" resultType="int">
 		select count(*) from PROJECT
 	</select>
@@ -113,14 +119,14 @@
 		<result column="PROJECT_CONTENT" jdbcType="CLOB" property="PROJECT_CONTENT" javaType="java.lang.String"/>
 		<result column="PROJECT_IMAGE" jdbcType="VARCHAR" property="PROJECT_IMAGE"/>
 		<result column="PROJECT_FILENAME" jdbcType="VARCHAR" property="PROJECT_FILENAME"/>
-		<result column="TOTAL_AMOUNT" jdbcType="BIGINT" property="TOTAL_AMOUNT" javaType="double"/>
+		<result column="TOTAL_AMOUNT" jdbcType="BIGINT" property="TOTAL_AMOUNT" />
 		<result column="PROJECT_STARTDATE" jdbcType="TIMESTAMP" property="PROJECT_STARTDATE"/>
 		<result column="PROJECT_ENDDATE" jdbcType="TIMESTAMP" property="PROJECT_ENDDATE"/>
 		<result column="USER_NO" jdbcType="BIGINT" property="USER_NO"/>
 		<result column="FUNDING_NO" jdbcType="BIGINT" property="FUNDING_NO"/>
 		<result column="SECOND_CATEGORY_NO" jdbcType="BIGINT" property="SECOND_CATEGORY_NO"/>
 		<result column="USER_NAME" jdbcType="VARCHAR" property="USER_NAME"/>
-		<result column="TOTAL_FUNDING_AMOUNT" jdbcType="BIGINT" property="TOTAL_FUNDING_AMOUNT" javaType="double"/>
+		<result column="TOTAL_FUNDING_AMOUNT" jdbcType="BIGINT" property="TOTAL_FUNDING_AMOUNT"/>
 	</resultMap>
 	
 	<select id="selectByNo" parameterType="int" resultMap="DetailResultMap">
@@ -138,6 +144,15 @@
 		select count(distinct user_no) from funding_list
 		where project_no=#{projectNo}
 	</select>
+	
+	<delete id="deleteFundingList" parameterType="int">
+		delete from FUNDING_LIST
+		where project_no=#{projectNo}
+	</delete>
+	<delete id="deleteProject" parameterType="int">
+		delete from PROJECT
+		where project_no=#{projectNo}
+	</delete>
 	
 </mapper>
 

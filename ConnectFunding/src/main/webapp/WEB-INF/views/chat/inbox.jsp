@@ -42,7 +42,7 @@
   <tbody>
     <c:if test="${empty list }">
   	<tr>
-  		<td colspan="5">보낸 쪽지가 없습니다.</td>
+  		<td colspan="5">받은 쪽지가 없습니다.</td>
   	</tr>
   </c:if>
   <c:if test="${!empty list }">

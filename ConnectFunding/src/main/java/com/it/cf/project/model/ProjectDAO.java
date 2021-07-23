@@ -14,12 +14,12 @@ public interface ProjectDAO {
 	int selectTotalRecordBySecondCategoryNo(int firstCategoryNo, int secondCategoryNo);
 	List<FirstCategoryVO> selectFirstCategory();
 	List<SecondCategoryVO> selectSecondCategory(String firstCategory);
-	int createTotalFunding();
 	int insertProject(ProjectVO vo);
 	Map<String, Object> selectByNo(int projectNo);
 	int selectFundingUserCount(int projectNo);
 	String selectFirstCategoryNo(int secondCategoryNo);
-	
+	int updateProject(ProjectVO vo);
+	String selectDBPwd(int userNo);
 	int deleteFundingList(int projectNo);
 	int deleteProject(int projectNo);
 }

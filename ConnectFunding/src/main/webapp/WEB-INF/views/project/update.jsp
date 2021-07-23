@@ -345,6 +345,7 @@
 
 	<!-- Whats New Start -->
 	<form name="frmWrite" method="post" action="<c:url value='/project/update'/>" >
+	<input type="hidden" name="projectNo" value="${map['PROJECT_NO'] }">
     <section class="whats-news-area pt-50 pb-20">
         <div class="container">
             <div class="row">

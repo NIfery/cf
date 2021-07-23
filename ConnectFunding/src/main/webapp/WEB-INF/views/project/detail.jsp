@@ -6,6 +6,28 @@
 <%@ include file="../include/top.jsp" %>
 <script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var today = getFormatDate(new Date());
+		
+		$('form[name=frmDelete]').submit(function(){
+			if($('#pwd').val().length<1){
+				alert('비밀번호를 입력하세요.');
+				$('#pwd').focus();
+				event.preventDefault();
+			}		
+		});
+	});
+	
+	function getFormatDate(date){
+		var year = date.getFullYear();
+		var month = (1 + date.getMonth());
+		month = month >= 10 ? month : '0' + month;
+		var day = date.getDate();
+		day = day >= 10 ? day : '0' + day;
+		return year + '-' + month + '-' + day;
+	}
+</script>
 <style type="text/css">
 	.detailRow{
 		display:flex;
@@ -48,11 +70,22 @@
 						    	<br>
 						    	<div class="row row-cols-1">남은 기간</div>
 						    	<div class="row row-cols-1">
+									<!-- 현재날짜 -->
+							    	<c:set var="today" value="<%=new java.util.Date()%>" />
+							    	<c:set var="todayDate"><fmt:formatDate value="${today}" pattern="yyyy-MM-dd" /></c:set>
+							    	<fmt:parseDate value="${todayDate }" var="ckTodayDate" pattern="yyyy-MM-dd"/>
+									<fmt:parseNumber value="${ckTodayDate.time / (1000*60*60*24)}" integerOnly="true" var="ckTodayDate"></fmt:parseNumber>
+									<!-- 프로젝트 기간 -->
 							    	<fmt:parseDate value="${map['PROJECT_STARTDATE'] }" var="strPlanDate" pattern="yyyy-MM-dd"/>
 									<fmt:parseNumber value="${strPlanDate.time / (1000*60*60*24)}" integerOnly="true" var="strDate"></fmt:parseNumber>
 									<fmt:parseDate value="${map['PROJECT_ENDDATE'] }" var="endPlanDate" pattern="yyyy-MM-dd"/>
 									<fmt:parseNumber value="${endPlanDate.time / (1000*60*60*24)}" integerOnly="true" var="endDate"></fmt:parseNumber>
-						    		<h2 style="margin: 5px 0px 20px -10px">${endDate-strDate }일</h2>
+									<c:if test="${ckTodayDate<strDate }">
+							    		<h2 style="margin: 5px 0px 20px -10px">펀딩 시작 대기중</h2>
+									</c:if>
+									<c:if test="${ckTodayDate>=strDate }">
+							    		<h2 style="margin: 5px 0px 20px -10px">${endDate-ckTodayDate }일</h2>
+									</c:if>
 						    	</div>
 						    	<br>
 						    	<div class="row row-cols-1">후원자</div>
@@ -71,8 +104,34 @@
 						    		</c:if>
 						    		<c:if test="${userNo==map['USER_NO'] }">
 							    		<a href="<c:url value='/project/update?projectNo=${map["PROJECT_NO"] }'/>">[수정 버튼]</a> 
-							    		[삭제 버튼]
+							    		<a href="#" data-toggle="modal" data-target="#myModal">[삭제 버튼]</a>
 						    		</c:if>
+						    		<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog"
+									aria-labelledby="staticBackdropLabel" aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="staticBackdropLabel">프로젝트 삭제</h5>
+												<button type="button" class="btn-close" data-dismiss="modal"
+													aria-label="Close">
+												</button>
+											</div>
+											<form name="frmDelete" method="post" action="<c:url value='/project/delete?projectNo=${map["PROJECT_NO"] }&userNo=${map["USER_NO"] }'/>">
+												<div class="modal-body">
+													<!-- 모달 body -->
+													<div class="form-group" style="width: 450px; margin: 3px;">
+															<label class="form-label mt-4">비밀번호 확인</label> 
+															<input type="password" class="form-control" name="pwd" id="pwd" placeholder="비밀번호를 입력하세요.">
+													</div>
+												</div>
+												<div class="modal-footer">
+													<button type="submit" id="btDelete" class="genric-btn warning circle">삭제</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+								<!-- 모달 -->
 						    	</div>
 						    </div>
 						 </div>

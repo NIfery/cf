@@ -42,7 +42,7 @@
 	<div>
 		<div class="row" style="margin-top: 20px; margin-left: 5px;">
 			<div class="col-md-6" style="width: 500px; height: 50px;">
-				<strong style="color: red;">0</strong> 건의 후원 내역이 있습니다.</div>
+				<strong style="color: red;">2</strong> 건의 후원 내역이 있습니다.</div>
 			<div class="col-md-6 col-md-offset-6">
 				<div class="form-group has-search" style="">
 					<span class="fa fa-search form-control-feedback"></span> 

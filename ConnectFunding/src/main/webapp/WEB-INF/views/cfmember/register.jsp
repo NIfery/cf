@@ -61,7 +61,7 @@ $(function(){
 $(function(){
 	$('#userEmail').keyup(function(){
 		var data=$(this).val();
-		if(validateEmail(data) && data.length>=2){
+		if(validateEmail(data) && data.length>=1){
 			$.ajax({
 				url:"<c:url value='/cfmember/checkEmail'/>",
 				type:"post",

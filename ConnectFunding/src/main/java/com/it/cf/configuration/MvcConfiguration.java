@@ -15,9 +15,10 @@ public class MvcConfiguration implements WebMvcConfigurer{
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 
-      registry.addInterceptor(new LoginInterceptor())
-      .excludePathPatterns("/cfmember/cfLogin","/cfmember/register","/cfmember/jusoPopup","/project/list","/project/alist","/project/detail")
-      .addPathPatterns("/cfmember/*","/project/*");
+		registry.addInterceptor(new LoginInterceptor())
+		.excludePathPatterns("/cfmember/cfLogin","/cfmember/register","/cfmember/jusoPopup", "/cfmember/checkEmail"
+				, "/project/list","/project/alist")
+		.addPathPatterns("/cfmember/*","/project/*","/mypages/*");
 
 		registry.addInterceptor(new AdminLoginInterceptor())
 		.excludePathPatterns("/admin/login")

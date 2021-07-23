@@ -19,4 +19,5 @@ public interface AdminService {
 	int selectTotalRecord(SearchVO searchVo);
 	int idDuplChk(String adminId);
 	AdminVO selectByUserid(String adminId);
+	void deleteMember(String no);
 }

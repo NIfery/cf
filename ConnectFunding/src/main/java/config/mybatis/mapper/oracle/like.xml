@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.it.cf.like.model.likeProjectDAO">
+
+	<insert id="insertLikeProject" parameterType="likeprojectVo">
+		<selectKey keyProperty="likeNo" resultType="int" order="BEFORE">
+			select LIKE_SEQ.nextval from dual
+		</selectKey>
+		insert into like_project(like_no, project_no, user_no)
+		values(#{likeNo}, #{projectNo}, #{userNo})
+	</insert>
+	
+	<select id="selectLikeView" parameterType="int" resultType="map"> 
+		select * from likeprojectview
+		where user_no=#{userNo}
+	</select>
+	
+	<delete id="deleteLike" parameterType="int">
+		delete likeprojectview where like_no=#{likeNo}
+	</delete>
+
+</mapper>
+
+
+
+
+
+
+
+
+

@@ -32,24 +32,12 @@ public class ConnectController {
 //		return "mypageload/address";
 //	}
 	
-	@RequestMapping("/mypages/notifications")
-	public String notifications() {
-		logger.info("알림 페이지");
-		return "mypages/notifications";
-	}
-	
 	@RequestMapping("/mypageload/notify")
 	public String notifyy() {
 		logger.info("알림 tab");
 		return "mypageload/notify";
 	}
-	
-	@RequestMapping("/mypages/support")
-	public String support() {
-		logger.info("후원현황 페이지");
-		return "mypages/support";
-	}
-	
+
 	@RequestMapping("/mypageload/load_support")
 	public String load_support() {
 		logger.info("알림 tab");

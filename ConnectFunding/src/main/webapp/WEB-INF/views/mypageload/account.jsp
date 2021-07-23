@@ -24,10 +24,10 @@
 </style>
 <div>
 	<c:if test="${empty accList }">
-		<div class="wrap">
+		<div class="wrap" style="width: 580px;">
 			<img src="<c:url value='/assets/img/warning.png'/>"
-				class="align_center">
-			<div style="font-size: 0.9em; margin-left: 160px;">
+				class="align_center" style="margin: 34px 0px 20px 240px;">
+			<div style="font-size: 0.9em; margin-left: 200px;">
 				등록된 결제수단이 없습니다.<br> 결제수단을 추가해주세요.
 			</div>
 		</div>

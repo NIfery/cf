@@ -19,5 +19,7 @@ public class BoardVO {
 	private int boardDowncount;
 	private Timestamp boardRegdate;
 	private int boardReadcount;
-	private int userNo;
+	private String userName;
+	
+	private int newImg;
 }

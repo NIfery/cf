@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.it.cf.user.model.UserService;
 import com.it.cf.user.model.UserVO;
@@ -189,4 +190,23 @@ public class UserController {
       return "common/message";
    }//
    
+   @ResponseBody
+   @RequestMapping("/cfmember/checkEmail")
+   public boolean checkEmail(@RequestParam String userEmail) {
+      
+      logger.info("이메일 중복체크, userEmail={}", userEmail);
+      
+      int result=userService.checkEmail(userEmail);
+      logger.info("중복체크 결과, result={}", result);
+      //public static final int USABLE_EMAIL=1; 
+      //public static final int UNUSABLE_EMAIL=2;
+      
+      boolean bool=false;
+      if(result==UserService.USABLE_EMAIL) {
+         bool=true;
+      }
+      
+      logger.info("bool={}", bool);
+      return bool;
+   }//
 }

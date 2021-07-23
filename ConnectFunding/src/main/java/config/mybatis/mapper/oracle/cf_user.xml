@@ -41,9 +41,15 @@
 		where user_no=#{userNo}
 	</update>
 	
-	<update id="updatePwd" parameterType="userVo">
+	<update id="updatePwd" parameterType="userVo" >
 		update users
 		set user_pwd=#{userPwd}
 		where user_no=#{userNo}
 	</update>
+	
+	<select id="checkEmail" parameterType="String" resultType="int">
+		select count(*) from users
+		where user_email=#{userEmail}
+	</select>
+	
 </mapper>

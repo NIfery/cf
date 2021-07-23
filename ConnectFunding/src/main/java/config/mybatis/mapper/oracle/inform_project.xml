@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.it.cf.informProject.model.informProjectDAO">
+
+	<insert id="insertInformProject" parameterType="informProjectVo">
+		<selectKey keyProperty="informProjectNo" resultType="int" order="BEFORE">
+			select INFORM_PROJECT_SEQ.nextval from dual 
+		</selectKey>
+		insert into inform_project(INFORM_PROJECT_NO, PROJECT_NO, USER_NO)
+		values(#{informProjectNo}, #{projectNo}, #{userNo})
+	</insert>
+
+	<select id="selectInformProject" parameterType="int" resultType="map">
+		select * from informProjectView
+		where user_no=#{userNo}
+		order by opendate
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+

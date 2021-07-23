@@ -8,13 +8,13 @@
 <script type="text/javascript">
 	$(function(){
 		$('form[name=frmChat]').submit(function(){
-			if($('#title').val().length<1){
+			if($('#messageTitle').val().length<1){
 				alert('제목을 입력하세요');
-				$('#title').focus();
+				$('#messageTitle').focus();
 				return false;
-			}else if($('#content').val().length<1){
+			}else if($('#messageContent').val().length<1){
 				alert('내용을 입력하세요');
-				$('#content').focus();
+				$('#messageContent').focus();
 				return false;
 			}
 		});

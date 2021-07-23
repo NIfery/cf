@@ -65,7 +65,15 @@
 						    		</div>
 						    	</div>
 						    	<br>
-						    	<div class="row row-cols-1">[후원하기 버튼]</div>
+						    	<div class="row row-cols-1">
+						    		<c:if test="${userNo!=map['USER_NO'] }">
+							    		[후원하기 버튼]
+						    		</c:if>
+						    		<c:if test="${userNo==map['USER_NO'] }">
+							    		<a href="<c:url value='/project/update?projectNo=${map["PROJECT_NO"] }'/>">[수정 버튼]</a> 
+							    		[삭제 버튼]
+						    		</c:if>
+						    	</div>
 						    </div>
 						 </div>
 	               </div>
@@ -92,7 +100,7 @@
                                     <div class="row">
                                        <div class="weekly2-news-area weekly2-pading gray-bg" style="padding: 0px;">
 									        <div class="container" style="border-bottom: 1px solid #e4e1e1">
-									        	<div class="quote-wrapper">
+									        	<div class="quote-wrapper" style="font-style:normal;">
 								                     <div class="row" style="display:flex;flex-wrap:nowrap">
 													    <div>
 													    	${map['PROJECT_CONTENT'] }

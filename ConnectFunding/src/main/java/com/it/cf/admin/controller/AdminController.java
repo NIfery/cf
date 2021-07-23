@@ -175,4 +175,15 @@ public class AdminController {
             return "admin/membership";
    }
    
+   //게시물 선택삭제
+   @RequestMapping("/deleteMember")
+   public @ResponseBody String deleteMember(HttpServletRequest request) {
+	   String[] ajaxMsg = request.getParameterValues("valueArr");
+	   int size = ajaxMsg.length;
+	   for(int i=0; i<size; i++) {
+		   adminService.deleteMember(ajaxMsg[i]);
+	   }
+	   return "redirect:/membership";
+   }
+   
 }

@@ -86,19 +86,19 @@
                     <ul class="list-unstyled navbar__list">
                         <li>
                             <a class="js-arrow" href="<c:url value='/admin/index'/>">
-                                <i class="fas fa-tachometer-alt"></i>메인화면</a>
+                                <i class="fas fa-bar-chart-o"></i> 메인화면</a>
                         </li>
                         <li>
                             <a href="<c:url value='/admin/membership'/>">
-                                <i class="fas fa-user"></i>회원관리</a>
+                                <i class="fas fa-users"></i>회원관리</a>
                         </li>
                         <li>
                             <a href="<c:url value='/chat/adminInbox'/>">
-                                <i class="fas  fa-comments"></i>쪽지</a>
+                                <i class="fas  fa-comments"></i>문의쪽지함</a>
                         </li>
                         <li>
                             <a href="<c:url value='/admin/register'/>">
-                                <i class="fas  fa-user-md"></i>관리자 등록</a>
+                                <i class="fas  fa-user-md"></i> 관리자 등록</a>
                         </li>
 					</ul>
 				</nav>	

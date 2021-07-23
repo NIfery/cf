@@ -485,7 +485,7 @@
 					</div><!-- tab전체 -->
 				</div>
 		<!--  -->
-
+</main>
 <script type="text/javascript">
 	$(document).ready(function(){
 		

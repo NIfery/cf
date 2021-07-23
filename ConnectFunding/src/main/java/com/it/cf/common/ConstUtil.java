@@ -4,7 +4,7 @@ public interface ConstUtil {
 	
 	int BLOCK_SIZE=10;	// 블럭 크기
 	int RECORD_COUNT=10; // 페이지당 레코드 개수
-	
+
 	String FILE_UPLOAD_TYPE ="FileUp";
 	
 	String FILE_UPLOAD_PATH="boardUpload";

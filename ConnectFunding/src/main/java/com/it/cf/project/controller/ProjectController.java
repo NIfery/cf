@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -166,8 +167,7 @@ public class ProjectController {
 		vo.setProjectFilename(originalFileName);
 		
 		String msg="", url="";
-		int cnt = projectService.createTotalFunding();
-		cnt = projectService.insertProject(vo);		
+		int cnt = projectService.insertProject(vo);		
 		logger.info("프로젝트 등록 결과, cnt={}", cnt);
 		
 		
@@ -178,7 +178,6 @@ public class ProjectController {
 			msg="프로젝트 등록 실패"; 
 			url="/project/writeMain"; 
 		}
-		
 		
 		//3
 		model.addAttribute("msg", msg);
@@ -217,8 +216,10 @@ public class ProjectController {
 	}
 	
 	@RequestMapping("/detail")
-	public String detail(@RequestParam(defaultValue = "0") int projectNo, Model model) {
-		logger.info("프로젝트 상세화면, 파라미터 projectNo={}", projectNo);
+	public String detail(@RequestParam(defaultValue = "0") int projectNo, 
+			HttpSession session, Model model) {
+		int userNo = (int) session.getAttribute("userNo");
+		logger.info("프로젝트 상세화면, 파라미터 projectNo={}, userNo={}", projectNo, userNo);
 		
 		Map<String, Object> map = projectService.selectByNo(projectNo);
 		int userCnt = projectService.selectFundingUserCount(projectNo);
@@ -226,7 +227,75 @@ public class ProjectController {
 		
 		model.addAttribute("map", map);
 		model.addAttribute("userCnt", userCnt);
+		model.addAttribute("userNo", userNo);
 		
 		return "project/detail";
+	}
+
+	@GetMapping("/update")
+	public String update(@RequestParam int projectNo, Model model) {
+		Map<String, Object> map = projectService.selectByNo(projectNo);
+		
+		int secondCategoryNo = Integer.parseInt(String.valueOf(map.get("SECOND_CATEGORY_NO")));
+		String firstCategory = projectService.selectFirstCategoryNo(secondCategoryNo);
+		List<FirstCategoryVO> fList = projectService.selectFirstCategory();
+		List<SecondCategoryVO> sList = projectService.selectSecondCategory(firstCategory);
+		
+		model.addAttribute("map", map);
+		model.addAttribute("firstCategory", firstCategory);
+		model.addAttribute("fList", fList);
+		model.addAttribute("sList", sList);
+		
+		return "project/update";
+	}
+	
+	@PostMapping("/update")
+	public String update_post(@ModelAttribute ProjectVO vo, Model model) {
+		//1
+		logger.info("프로젝트 수정 처리, 파라미터 vo={}", vo);
+		
+		//2
+		String msg="", url="";
+		int cnt = projectService.updateProject(vo);		
+		logger.info("프로젝트 수정 결과, cnt={}", cnt);
+		
+		
+		if(cnt>0) { 
+			msg="프로젝트가 수정되었습니다.";
+			url="/project/detail?projectNo="+vo.getProjectNo(); 
+		} else {
+			msg="프로젝트 수정 실패"; 
+			url="/project/update?projectNo="+vo.getProjectNo(); 
+		}
+		
+		//3
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
+	
+	@Transactional
+	@RequestMapping("/delete")
+	public String delete(@RequestParam int userNo, @RequestParam int projectNo,
+			@RequestParam String pwd, Model model) {
+		logger.info("삭제 요청, 파라미터 userNo={}, projectNo={}, pwd={}", userNo, projectNo, pwd);
+		
+		String msg="", url="";
+		String dbPwd = projectService.selectDBPwd(userNo);
+		if(dbPwd.equals(pwd)) {
+			projectService.deleteFundingList(projectNo);
+			projectService.deleteProject(projectNo);
+			msg="프로젝트가 삭제되었습니다.";
+			url="/project/list"; 
+		}else {
+			msg="비밀번호가 일치하지 않습니다."; 
+			url="/project/detail?projectNo="+projectNo; 
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
 	}
 }

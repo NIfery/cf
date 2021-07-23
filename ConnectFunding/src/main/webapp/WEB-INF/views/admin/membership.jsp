@@ -1,13 +1,50 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../inc/adminTop.jsp" %>
-<script type="text/javascript" 
-	src="<c:url value='/resources/js/jquery-3.6.0.min.js'/>"></script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+<link rel="icon" type="image/png" href="http://example.com/myicon.png">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">	
 	function pageProc(curPage){
 		$('input[name=currentPage]').val(curPage);
 		$('form[name=frmPage]').submit();	
 	}
+	
+	function selectAll(selectAll)  {
+		  const checkboxes 
+		       = document.getElementsByName('checkbox');
+		  
+		  checkboxes.forEach((checkbox) => {
+		    checkbox.checked = selectAll.checked;
+		  })
+		}
+	
+	function deleteMember(){
+        var valueArr = new Array;
+        var list = $('input[name="checkbox"]');
+        for(var i=0; i<list.length; i++){
+        	if(list[i].checked){
+        		valueArr.push(list[i].value);
+        	}
+        }
+        if(valueArr.length==0){
+        	alert("선택된 회원이 없습니다.");
+        }else{
+        	var chk = confirm("정말로 삭제하시겠습니까?");
+        	$.ajax({
+        		url : "<c:url value='/admin/membership'/>",
+        		type : 'POST',
+        		data : {valueArr : valueArr},
+        		success:function(jdata){
+        			if(jdata = 1){
+        				alert("삭제 성공!");
+        			}else{
+        				alert("삭제 실패!");
+        			}
+        		}
+        	})
+        }
+    }
 	
 </script>
 <!-- 페이징 처리를 위한 form -->
@@ -24,14 +61,14 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                       	 <button class="btn btn-danger float-right">회원삭제</button>
+                         <input type="button" class="btn btn-danger float-right" onclick="deleteMember()" value="선택 삭제">
                             <div class="table-responsive table-responsive-data2">
                                 <table class="table table-data2">
                                     <thead>
                                         <tr>
                                             <th>
                                                 <label class="au-checkbox">
-                                                    <input type="checkbox">
+                                                    <input type="checkbox" name="checkbox" value="selectAll" onclick="selectAll(this)">
                                                     <span class="au-checkmark"></span>
                                                 </label>
                                             </th>
@@ -54,7 +91,7 @@
 											<tr>
 												    <td>
 		                                                <label class="au-checkbox">
-		                                                    <input type="checkbox">
+		                                                    <input type="checkbox" name="checkbox" value="${vo.userNo }">
 		                                                    <span class="au-checkmark"></span>
 		                                                </label>
 		                                            </td>
@@ -126,7 +163,13 @@
 								            		selected="selected"
 								            	</c:if>
 								            >이메일</option>
-								        </select>   
+								            <option value="user_Name" 
+								            	<c:if test="${param.searchCondition == 'userName' }">            	
+								            		selected="selected"
+								            	</c:if>
+								            >이름</option>
+								           							            
+								        </select>
 								        <input type="text" name="searchKeyword" title="검색어 입력"
 								        	value="${param.searchKeyword }">   
 										<input type="submit" value="검색">

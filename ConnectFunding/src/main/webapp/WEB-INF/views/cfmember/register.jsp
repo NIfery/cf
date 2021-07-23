@@ -61,7 +61,7 @@ $(function(){
 $(function(){
 	$('#userEmail').keyup(function(){
 		var data=$(this).val();
-		if(validateEmail(data) && data.length>=1){
+		if(data.length>=1){
 			$.ajax({
 				url:"<c:url value='/cfmember/checkEmail'/>",
 				type:"post",
@@ -79,15 +79,13 @@ $(function(){
 					alert("error 발생!!" + error);
 				}
 			});				
-		}else{
-			$('.error').text('이메일 규칙에 맞지 않습니다.');
 		}
 	});
 });
 
-function validateEmail(email){
-    var emailReg = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
-    return emailReg.test(email);
+function validateEmail(email) {
+	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return re.test(email);
 }
 </script>
     <div class="registration-form">

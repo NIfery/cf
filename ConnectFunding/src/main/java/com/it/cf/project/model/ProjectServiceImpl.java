@@ -40,9 +40,6 @@ public class ProjectServiceImpl implements ProjectService{
 		return projectDao.selectSecondCategory(firstCategory);
 	}
 	
-	public int createTotalFunding() {
-		return projectDao.createTotalFunding();
-	}
 	public int insertProject(ProjectVO vo) {
 		return projectDao.insertProject(vo);
 	}
@@ -53,5 +50,23 @@ public class ProjectServiceImpl implements ProjectService{
 	
 	public int selectFundingUserCount(int projectNo) {
 		return projectDao.selectFundingUserCount(projectNo);
+	}
+	
+	public String selectFirstCategoryNo(int secondCategoryNo) {
+		return projectDao.selectFirstCategoryNo(secondCategoryNo);
+	}
+	
+	public int updateProject(ProjectVO vo) {
+		return projectDao.updateProject(vo);
+	}
+
+	public String selectDBPwd(int userNo) {
+		return projectDao.selectDBPwd(userNo);
+	}
+	public int deleteFundingList(int projectNo) {
+		return projectDao.deleteFundingList(projectNo);
+	}
+	public int deleteProject(int projectNo) {
+		return projectDao.deleteProject(projectNo);
 	}
 }

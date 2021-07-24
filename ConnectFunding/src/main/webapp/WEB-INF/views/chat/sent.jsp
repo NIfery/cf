@@ -79,7 +79,7 @@
 			</td>
 			<td><a id="delete"
 				href="<c:url value='/chat/deleteChat?messageNo=${vo.messageNo }'/>">
-				<input class="btn btn-warning" type="button" value="삭제">
+				<input class="btn btn-warning btn-sm" type="button" value="삭제">
 				</a>
 			</td>
 		</tr>

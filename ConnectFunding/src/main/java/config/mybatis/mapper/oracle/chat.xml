@@ -125,12 +125,10 @@
 		    select rownum as RNUM,A.*
 		    from
 		    (
-		        select * from MESSAGE_RECEIVE 
-		        where MESSAGE_REGDATE>=#{startDay}
-				<![CDATA[
-				and MESSAGE_REGDATE < TO_DATE(#{endDay}) + 1
-				]]>
-				<include refid="searchWhere"></include>
+		        select * from messageView 
+				<if test="searchKeyword!=null and searchKeyword!=''">
+					where ${searchCondition}  like '%' || #{searchKeyword} || '%'
+				</if>
 		        order by MESSAGE_REGDATE desc
 		    )A
 		)

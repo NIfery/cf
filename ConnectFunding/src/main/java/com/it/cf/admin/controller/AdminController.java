@@ -22,9 +22,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.it.cf.admin.model.AdminService;
 import com.it.cf.admin.model.AdminVO;
+import com.it.cf.chat.model.MessageSendListVO;
+import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.common.AdminConstUtil;
 import com.it.cf.common.PaginationInfo;
 import com.it.cf.common.SearchVO;
+import com.it.cf.user.model.UserListVO;
 import com.it.cf.user.model.UserVO;
 
 import lombok.RequiredArgsConstructor;
@@ -130,12 +133,6 @@ public class AdminController {
       return "common/message";
    }
    
-//   //실시간 아이디 중복 확인
-//   @RequestMapping(value = "/idDuplChk.do" , method = RequestMethod.POST)
-//   public @ResponseBody String idDuplChk(@ModelAttribute("vo") UserVO vo , Model model) throws Exception{
-//       int result = joinService.idDuplChk(vo.getId());
-//       return String.valueOf(result);
-//   }
    //실시간 아이디 중복 확인
    @PostMapping("/idDuplChk")
    public @ResponseBody String idDuplChk(@ModelAttribute AdminVO vo , Model model) throws Exception{
@@ -175,15 +172,29 @@ public class AdminController {
             return "admin/membership";
    }
    
-   //게시물 선택삭제
-   @RequestMapping("/deleteMember")
-   public @ResponseBody String deleteMember(HttpServletRequest request) {
-	   String[] ajaxMsg = request.getParameterValues("valueArr");
-	   int size = ajaxMsg.length;
-	   for(int i=0; i<size; i++) {
-		   adminService.deleteMember(ajaxMsg[i]);
-	   }
-	   return "redirect:/membership";
-   }
+   //회원 선택삭제
+   @RequestMapping("/deleteMulti")
+	public String deleteMulti(@ModelAttribute UserListVO userListVo,Model model) {
+		logger.info("선택한 회원 삭제, 파라미터 userListVo={}",userListVo);
+		
+		List<UserVO> list=userListVo.getSelectUser();
+		for(int i=0;i<list.size();i++) {
+			UserVO vo=list.get(i);
+			int userNo=vo.getUserNo();
+			
+			logger.info("i={}, userNo={}", i, userNo);
+		}
+		
+		String msg="선택한 회원 삭제 중 에러 발생!", url="/admin/membership";
+		int cnt=adminService.deleteUserMulti(list);
+		if(cnt>0) {
+			msg="선택한 회원 삭제 완료";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
    
 }

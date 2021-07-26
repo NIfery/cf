@@ -10,42 +10,25 @@
 		$('form[name=frmPage]').submit();	
 	}
 	
-	function selectAll(selectAll)  {
-		  const checkboxes 
-		       = document.getElementsByName('checkbox');
-		  
-		  checkboxes.forEach((checkbox) => {
-		    checkbox.checked = selectAll.checked;
-		  })
-		}
-	
-	function deleteMember(){
-        var valueArr = new Array;
-        var list = $('input[name="checkbox"]');
-        for(var i=0; i<list.length; i++){
-        	if(list[i].checked){
-        		valueArr.push(list[i].value);
-        	}
-        }
-        if(valueArr.length==0){
-        	alert("선택된 회원이 없습니다.");
-        }else{
-        	var chk = confirm("정말로 삭제하시겠습니까?");
-        	$.ajax({
-        		url : "<c:url value='/admin/membership'/>",
-        		type : 'POST',
-        		data : {valueArr : valueArr},
-        		success:function(jdata){
-        			if(jdata = 1){
-        				alert("삭제 성공!");
-        			}else{
-        				alert("삭제 실패!");
-        			}
-        		}
-        	})
-        }
-    }
-	
+	$(function(){
+		$('input[name=chkAll]').click(function(){
+			$('tbody input[type=checkbox]').prop('checked',this.checked);			
+		});
+		
+		$('#delete').click(function(){
+			var chkLen=$('tbody input[type=checkbox]:checked').length;
+			if(chkLen==0){
+				alert('먼저 삭제할 회원을 선택하세요.');
+			}else{			
+				if(!confirm('삭제하시겠습니까?')){
+					event.preventDefault();
+					return false;
+				}
+				$('form[name="frmList"]').prop('action', '<c:url value="/admin/deleteMulti"/>');
+				$('form[name="frmList"]').submit();
+			}
+		});
+	});
 </script>
 <!-- 페이징 처리를 위한 form -->
 <form action="<c:url value='/admin/membership'/>" 
@@ -61,14 +44,15 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                         <input type="button" class="btn btn-danger float-right" onclick="deleteMember()" value="선택 삭제">
+                         <input type="button" class="btn btn-danger float-right" id="delete" value="선택 삭제">
+                         <form name="frmList" >
                             <div class="table-responsive table-responsive-data2">
                                 <table class="table table-data2">
                                     <thead>
                                         <tr>
                                             <th>
                                                 <label class="au-checkbox">
-                                                    <input type="checkbox" name="checkbox" value="selectAll" onclick="selectAll(this)">
+                                                    <input type="checkbox" name="chkAll" value="selectAll">
                                                     <span class="au-checkmark"></span>
                                                 </label>
                                             </th>
@@ -87,43 +71,46 @@
 											</tr>
 										</c:if>	
                                        <c:if test="${!empty list }">
+                                       <c:set var="idx" value="0"/>
 												<c:forEach var="vo" items="${list }">
-											<tr>
-												    <td>
-		                                                <label class="au-checkbox">
-		                                                    <input type="checkbox" name="checkbox" value="${vo.userNo }">
-		                                                    <span class="au-checkmark"></span>
-		                                                </label>
-		                                            </td>
-													<td>${vo.userNo}</td>
-													<td>
-														<c:if test="${vo.userFlag eq 0}">
-															일반회원
-														</c:if>
-														<c:if test="${vo.userFlag eq 1}">
-															사업자회원
-														</c:if>
-													</td>
-													<td>${vo.userEmail }</td>
-													<td>
-														<c:if test="${vo.userFlag eq 0}">
-															-
-														</c:if>
-														<c:if test="${vo.userFlag eq 1}">
-															${vo.businessNo }
-														</c:if>
-													</td>
-													<td>${vo.userName }</td>
-													<td>
-													<fmt:formatDate value="${vo.userJoindate }" pattern="yyyy-MM-dd"/>
-													
-													</td>
-											</tr>
+												<tr>
+													    <td>
+			                                                <label class="au-checkbox">
+			                                                    <input type="checkbox" name="selectUser[${idx }].userNo" value="${vo.userNo }">
+			                                                    <span class="au-checkmark"></span>
+			                                                </label>
+			                                            </td>
+														<td>${vo.userNo}</td>
+														<td>
+															<c:if test="${vo.userFlag eq 0}">
+																일반회원
+															</c:if>
+															<c:if test="${vo.userFlag eq 1}">
+																사업자회원
+															</c:if>
+														</td>
+														<td>${vo.userEmail }</td>
+														<td>
+															<c:if test="${vo.userFlag eq 0}">
+																-
+															</c:if>
+															<c:if test="${vo.userFlag eq 1}">
+																${vo.businessNo }
+															</c:if>
+														</td>
+														<td>${vo.userName }</td>
+														<td>
+														<fmt:formatDate value="${vo.userJoindate }" pattern="yyyy-MM-dd"/>
+														
+														</td>
+												</tr>
+												<c:set var="idx" value="${idx+1 }"/>
 												</c:forEach>
 										</c:if>	
                                     </tbody>
                                 </table>
                             </div>
+                            </form>
                           <div class="divPage" style="text-align: center"><br>
                           <ul class="pagination" style="justify-content: center;">
 							<!-- 페이지 번호 추가 -->		

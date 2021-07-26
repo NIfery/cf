@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="../include/top.jsp" %>
 <script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(function(){
@@ -17,6 +18,55 @@
 				event.preventDefault();
 			}		
 		});
+		
+		$("#btFunding").click(function(){
+			if($('#amount').val().length<1){
+				alert('후원금을 입력해주세요');
+				return false;
+			}
+			
+			$('#fdAmount').val($('#amount').val());
+			
+			var userName = $('#userName').val();
+			var userHp = $('#userHp').val();
+			var userZipcode = $('#userZipcode').val();
+			var userAddress = $('#userAddress').val();
+			var projectName = $('#projectName').val();
+			var projectNo = $('#projectNo').val();
+			var fdAmount = $('#fdAmount').val();
+			
+			var IMP = window.IMP;
+			IMP.init("imp29215346");
+			
+			// IMP.request_pay(param, callback) 호출
+			IMP.request_pay({ // param
+				pg: "html5_inicis", // PG사 선택
+			    pay_method: "card", // 지불 수단
+			    merchant_uid: 'merchant_' + new Date().getTime(), //가맹점에서 구별할 수 있는 고유한id
+			    name: projectName, // 상품명
+			    amount: fdAmount, // 가격
+			    buyer_email: "test@test.com",
+			    buyer_name: userName, // 구매자 이름
+			    buyer_tel: userHp, // 구매자 연락처 
+			    buyer_addr: userAddress,// 구매자 주소지
+			    buyer_postcode: userZipcode // 구매자 우편번호
+			}, function (rsp) { // callback
+			    if (rsp.success) {
+			        // 결제 성공 시 로직,
+			        alert('후원에 감사드립니다.');
+			        
+			        location.href="<c:url value='/project/detailFunding?projectNo="+projectNo+"&fdAmount="+fdAmount+"'/>";
+			        
+			        $('#btFundingModalClose').click();
+			        $('#amount').val('');
+			    } else {
+			        // 결제 실패 시 로직,
+			        $('#btFundingModalClose').click();
+			        $('#amount').val('');
+			    }
+			});
+		});
+
 	});
 	
 	function getFormatDate(date){
@@ -46,6 +96,16 @@
                      <img class="img-fluid" src="assets/img/blog/single_blog_1.png" alt="">
                   </div>
                   <div class="blog_details">
+                  	
+                  	<!-- hidden inform -->
+                  	<input type="hidden" id="projectNo" value="${map['PROJECT_NO']}">
+                  	<input type="hidden" id="projectName" value="${map['PROJECT_NAME']}">
+                  	<input type="hidden" id="userName" value="${userVo.userName}">
+                  	<input type="hidden" id="userHp" value="${userVo.userHp}">
+                  	<input type="hidden" id="userZipcode" value="${userVo.userZipcode}">
+                  	<input type="hidden" id="userAddress" value="${userVo.userAddress}">
+                  	<input type="hidden" id="fdAmount">
+                  	
                   	 <div style="text-align:center">
 	                     <h1 style="font-weight:bold;">${map['PROJECT_NAME']}</h1>
 	                     <!-- 작성자이름 클릭시 작성자 정보조회? 쪽지문의? -->
@@ -84,7 +144,12 @@
 							    		<h2 style="margin: 5px 0px 20px -10px">펀딩 시작 대기중</h2>
 									</c:if>
 									<c:if test="${ckTodayDate>=strDate }">
-							    		<h2 style="margin: 5px 0px 20px -10px">${endDate-ckTodayDate }일</h2>
+										<c:if test="${ckTodayDate<=endDate }">
+								    		<h2 style="margin: 5px 0px 20px -10px">${endDate-ckTodayDate }일</h2>
+										</c:if>
+										<c:if test="${ckTodayDate>endDate }">
+								    		<h2 style="margin: 5px 0px 20px -10px">종료되었습니다.</h2>
+										</c:if>
 									</c:if>
 						    	</div>
 						    	<br>
@@ -94,19 +159,56 @@
 						    	<div class="row row-cols-1">
 						    		<div style="background: white;border:2px solid #e4e1e1">
 						    			펀딩 진행중<br>
-										목표 금액인 ${map['TOTAL_AMOUNT'] }원이 모여야만 결제됩니다.
+										목표 금액 ${map['TOTAL_AMOUNT'] }원
 						    		</div>
 						    	</div>
 						    	<br>
 						    	<div class="row row-cols-1">
-						    		<c:if test="${userNo!=map['USER_NO'] }">
-							    		[후원하기 버튼]
+						    		<c:if test="${userVo.userNo!=map['USER_NO'] }">
+						    			<c:if test="${ckTodayDate<strDate }">
+								    		<h2 style="margin: 5px 0px 20px -10px">펀딩 시작 대기중</h2>
+										</c:if>
+										<c:if test="${ckTodayDate>=strDate }">
+											<c:if test="${ckTodayDate<=endDate }">
+									    		<a href="#" data-toggle="modal" data-target="#myModal">후원하기</a>
+								    			<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog"
+													aria-labelledby="staticBackdropLabel" aria-hidden="true">
+													<div class="modal-dialog" role="document">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h5 class="modal-title" id="staticBackdropLabel">후원하기</h5>
+																<button type="button" class="btn-close" data-dismiss="modal"
+																	aria-label="Close" id="btFundingModalClose">
+																</button>
+															</div>
+															<div class="modal-body">
+																<!-- 모달 body -->
+																<div class="form-group" style="width: 450px; margin: 3px;">
+																	<label class="form-label mt-4">후원하실 금액을 입력해주세요</label> 
+																	<input type="text" class="form-control" name="amount" id="amount" placeholder="후원금액을 입력하세요."
+																		oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+																</div>
+															</div>
+															<div class="modal-footer">
+																<button type="button" id="btFunding" class="genric-btn warning circle">후원하기</button>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- 모달 -->
+											</c:if>
+											<c:if test="${ckTodayDate>endDate }">
+									    		<h2 style="margin: 5px 0px 20px -10px">종료되었습니다.</h2>
+											</c:if>
+										</c:if>
+										
+										
 						    		</c:if>
-						    		<c:if test="${userNo==map['USER_NO'] }">
+						    		<c:if test="${userVo.userNo==map['USER_NO'] }">
 							    		<a href="<c:url value='/project/update?projectNo=${map["PROJECT_NO"] }'/>">[수정 버튼]</a> 
-							    		<a href="#" data-toggle="modal" data-target="#myModal">[삭제 버튼]</a>
+							    		<a href="#" data-toggle="modal" data-target="#myModal2">[삭제 버튼]</a>
 						    		</c:if>
-						    		<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog"
+						    		<div class="modal fade" id="myModal2" data-backdrop="static" tabindex="-1" role="dialog"
 									aria-labelledby="staticBackdropLabel" aria-hidden="true">
 									<div class="modal-dialog" role="document">
 										<div class="modal-content">

@@ -114,14 +114,14 @@
 		<result column="PROJECT_CONTENT" jdbcType="CLOB" property="PROJECT_CONTENT" javaType="java.lang.String"/>
 		<result column="PROJECT_IMAGE" jdbcType="VARCHAR" property="PROJECT_IMAGE"/>
 		<result column="PROJECT_FILENAME" jdbcType="VARCHAR" property="PROJECT_FILENAME"/>
-		<result column="TOTAL_AMOUNT" jdbcType="BIGINT" property="TOTAL_AMOUNT" />
+		<result column="TOTAL_AMOUNT" jdbcType="BIGINT" property="TOTAL_AMOUNT" javaType="double"/>
 		<result column="PROJECT_STARTDATE" jdbcType="TIMESTAMP" property="PROJECT_STARTDATE"/>
 		<result column="PROJECT_ENDDATE" jdbcType="TIMESTAMP" property="PROJECT_ENDDATE"/>
 		<result column="USER_NO" jdbcType="BIGINT" property="USER_NO"/>
 		<result column="FUNDING_NO" jdbcType="BIGINT" property="FUNDING_NO"/>
 		<result column="SECOND_CATEGORY_NO" jdbcType="BIGINT" property="SECOND_CATEGORY_NO"/>
 		<result column="USER_NAME" jdbcType="VARCHAR" property="USER_NAME"/>
-		<result column="TOTAL_FUNDING_AMOUNT" jdbcType="BIGINT" property="TOTAL_FUNDING_AMOUNT"/>
+		<result column="TOTAL_FUNDING_AMOUNT" jdbcType="BIGINT" property="TOTAL_FUNDING_AMOUNT" javaType="double"/>
 	</resultMap>
 	
 	<select id="selectByNo" parameterType="int" resultMap="DetailResultMap">
@@ -161,6 +161,13 @@
 		where project_no=#{projectNo}
 	</delete>
 	
+	<insert id="insertFunding" parameterType="FundingListVo">
+		<selectKey keyProperty="fundingListNo" resultType="int" order="BEFORE">
+			select FUNDING_LIST_SEQ.nextval from dual 
+		</selectKey>
+		insert into funding_list(FUNDING_LIST_NO, FUNDING_AMOUNT, PROJECT_NO, USER_NO)
+		values(#{fundingListNo}, #{fundingAmount}, #{projectNo}, #{userNo})
+	</insert>
 </mapper>
 
 

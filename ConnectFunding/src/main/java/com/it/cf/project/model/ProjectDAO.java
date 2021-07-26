@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.it.cf.fdList.model.FundingListVO;
+
 @Mapper
 public interface ProjectDAO {
 	List<ProjectVO> selectAll(ProjectVO pageVo);
@@ -22,4 +24,5 @@ public interface ProjectDAO {
 	String selectDBPwd(int userNo);
 	int deleteFundingList(int projectNo);
 	int deleteProject(int projectNo);
+	int insertFunding(FundingListVO vo);
 }

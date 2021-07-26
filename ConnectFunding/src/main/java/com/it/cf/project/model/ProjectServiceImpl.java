@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.it.cf.fdList.model.FundingListVO;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -68,5 +70,9 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 	public int deleteProject(int projectNo) {
 		return projectDao.deleteProject(projectNo);
+	}
+	
+	public int insertFunding(FundingListVO vo) {
+		return projectDao.insertFunding(vo);
 	}
 }

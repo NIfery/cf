@@ -27,6 +27,7 @@
 			
 			$('#fdAmount').val($('#amount').val());
 			
+			var userNo = $('#userNo').val();
 			var userName = $('#userName').val();
 			var userHp = $('#userHp').val();
 			var userZipcode = $('#userZipcode').val();
@@ -38,11 +39,15 @@
 			var IMP = window.IMP;
 			IMP.init("imp29215346");
 			
+			var merchantUid = 'merchant_' + userNo + '_' + new Date().getTime();
+			var customerUid = 'customer_' + userNo + '_' + new Date().getTime();
+			alert('rsp 시작');
 			// IMP.request_pay(param, callback) 호출
 			IMP.request_pay({ // param
-				pg: "html5_inicis", // PG사 선택
+				pg: "html5_inicis.INIBillTst", // PG사 선택
 			    pay_method: "card", // 지불 수단
-			    merchant_uid: 'merchant_' + new Date().getTime(), //가맹점에서 구별할 수 있는 고유한id
+			    merchant_uid: merchantUid, //가맹점에서 구별할 수 있는 고유한id
+			    customer_uid: customerUid,
 			    name: projectName, // 상품명
 			    amount: fdAmount, // 가격
 			    buyer_email: "test@test.com",
@@ -51,20 +56,82 @@
 			    buyer_addr: userAddress,// 구매자 주소지
 			    buyer_postcode: userZipcode // 구매자 우편번호
 			}, function (rsp) { // callback
+				if (rsp.success) {
+			        // 빌링키 발급 성공
+			        // jQuery로 HTTP 요청
+			        jQuery.ajax({
+			        	url: "https://www.myservice.com/billings/", // 서비스 웹서버
+			            method: "POST",
+			            headers: { "Content-Type": "application/json" },
+			            data: {
+			            	customer_uid: customerUid, // 카드(빌링키)와 1:1로 대응하는 값
+			            }
+			        });
+			        alert('후원에 감사드립니다.');
+			    } else {
+			        // 빌링키 발급 실패
+			        $('#btFundingModalClose').click();
+			        $('#amount').val('');
+			    }
+			
+				/* function (rsp) { // callback
 			    if (rsp.success) {
 			        // 결제 성공 시 로직,
-			        alert('후원에 감사드립니다.');
 			        
 			        location.href="<c:url value='/project/detailFunding?projectNo="+projectNo+"&fdAmount="+fdAmount+"'/>";
 			        
 			        $('#btFundingModalClose').click();
 			        $('#amount').val('');
 			    } else {
-			        // 결제 실패 시 로직,
-			        $('#btFundingModalClose').click();
-			        $('#amount').val('');
-			    }
+			        
+			    }  */
+			    
 			});
+			
+			 // "/billings" 에 대한 POST 요청을 처리하는 controller
+	        app.post("/billings", async (req, res) => {
+	        	alert('예약 1');
+	          try {
+	            const { customer_uid } = req.body; // req의 body에서 customer_uid 추출
+	            // 인증 토큰 발급 받기
+	            alert('예약 2');
+	            const getToken = await axios({
+	              url: "https://api.iamport.kr/users/getToken",
+	              method: "post", // POST method
+	              headers: { "Content-Type": "application/json" }, // "Content-Type": "application/json"
+	              data: {
+	                imp_key: "3444990812552056", // REST API키
+	                imp_secret: "464e004bde3f8a4c891b4654207a6fcb2302d44bd4bc55f28756e1d8623e2e739c3b95181eef1965" // REST API Secret
+	              }
+	            });
+	            alert('예약 3');
+	            const { access_token } = getToken.data.response; // 인증 토큰
+	            alert('예약 4');
+	         	// 결제 예약
+	            axios({
+		              url: "https://api.iamport.kr/subscribe/payments/schedule",
+		              method: "post",
+		              headers: { "Authorization": access_token }, // 인증 토큰 Authorization header에 추가
+		              data: {
+		                customer_uid: customerUid, // 카드(빌링키)와 1:1로 대응하는 값
+		                schedules: [
+		                  {
+		                    merchant_uid: merchantUid, // 주문 번호
+		                    schedule_at: 1519862400, // 결제 시도 시각 in Unix Time Stamp. ex. 다음 달 1일
+		                    amount: fdAmount,
+		                    name: projectName,
+		    			    buyer_name: userName, // 구매자 이름
+		    			    buyer_tel: userHp, // 구매자 연락처 
+		                    buyer_email: "test@test.com"
+		                  }
+		                ]
+		              }
+		            });
+	            
+	          } catch (e) {
+	            res.status(400).send(e);
+	          }
+	        });
 		});
 
 	});
@@ -100,6 +167,7 @@
                   	<!-- hidden inform -->
                   	<input type="hidden" id="projectNo" value="${map['PROJECT_NO']}">
                   	<input type="hidden" id="projectName" value="${map['PROJECT_NAME']}">
+                  	<input type="hidden" id="userNo" value="${userVo.userNo}">
                   	<input type="hidden" id="userName" value="${userVo.userName}">
                   	<input type="hidden" id="userHp" value="${userVo.userHp}">
                   	<input type="hidden" id="userZipcode" value="${userVo.userZipcode}">

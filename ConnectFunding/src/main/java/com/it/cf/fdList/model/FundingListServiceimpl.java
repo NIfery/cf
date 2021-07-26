@@ -25,24 +25,24 @@ public class FundingListServiceimpl implements FundingListService{
 		return fundingListDao.selectFundingList(userNo);
 	}
 
+	@Override
+	public List<Map<String, Object>> searchFundingList(FDListViewVO fdListViewVo) {
+		return fundingListDao.searchFundingList(fdListViewVo);
+	}
+
+	@Override
+	public int selectTotalRecord(FDListViewVO fdListViewVo) {
+		return fundingListDao.selectTotalRecord(fdListViewVo);
+	}
+
 //	@Override
-//	public List<Map<String, Object>> searchFundingList(FundingListVO fundinglistVo) {
-//		return fundingListDao.searchFundingList(fundinglistVo);
+//	public List<Map<String, Object>> searchFundingList(SearchVO searchVo) {
+//		return fundingListDao.searchFundingList(searchVo);
 //	}
 //
 //	@Override
-//	public int selectTotalRecord(FundingListVO fundinglistVo) {
-//		return fundingListDao.selectTotalRecord(fundinglistVo);
+//	public int selectTotalRecord(SearchVO searchVo) {
+//		return fundingListDao.selectTotalRecord(searchVo);
 //	}
-
-	@Override
-	public List<Map<String, Object>> searchFundingList(SearchVO searchVo) {
-		return fundingListDao.searchFundingList(searchVo);
-	}
-
-	@Override
-	public int selectTotalRecord(SearchVO searchVo) {
-		return fundingListDao.selectTotalRecord(searchVo);
-	}
 	
 }

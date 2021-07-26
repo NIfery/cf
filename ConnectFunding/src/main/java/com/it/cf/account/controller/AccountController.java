@@ -2,6 +2,8 @@ package com.it.cf.account.controller;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -29,8 +31,8 @@ public class AccountController {
 	private final AccountService accountService;
 	
 	@RequestMapping("/mypages/addAcc")
-	public String insertAccount(@ModelAttribute AccountVO accVo, 
-			HttpSession session, Model model) {
+	public String insertAccount(@ModelAttribute AccountVO accVo, @RequestParam(required = false) String pay, 
+			HttpServletResponse response, HttpSession session, Model model) {
 		
 		int userNo = (int) session.getAttribute("userNo");
 		accVo.setUserNo(userNo);
@@ -39,6 +41,15 @@ public class AccountController {
 		
 		int cnt = accountService.insertAccount(accVo);
 		logger.info("계좌입력 결과, cnt={}", cnt);
+		
+		Cookie cookie = new Cookie("ck_pay", pay);
+		cookie.setPath("/");
+		if(pay != null && !pay.isEmpty()) {
+			cookie.setMaxAge(100*24*60*60);
+		}else {
+			cookie.setMaxAge(0);
+		}//
+		response.addCookie(cookie);
 		
 		String msg="계좌등록 실패, 다시 시도해주세요.", url="/mypages/settings";
 		if(cnt>0) {

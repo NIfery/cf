@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/img/favicon.ico">
 <!-- CSS here -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
@@ -34,22 +34,27 @@
 	</c:if>
 	<c:if test="${!empty accList }">
 		<c:forEach var="accVo" items="${accList }">
-			<div class="wrap" style="height: 70px;">
+			<div class="wrap" style="height: 70px; width: 580px;">
 				<div class="trand-right-single d-flex">
 					<div class="trand-right-img">
 						<img src="<c:url value='/assets/img/${accVo.bankName}.png'/>"
 							style="width: 80px; height: 25px; margin: 20px 20px;">
 					</div>
-					<div class="trand-right-cap" style="margin: 5px 0px; width: 370px;">
-						<span class="color1">${accVo.bankName }</span><br> <span
-							class="color2" id="accNo"> <c:set var="accNo"
-								value="${accVo.accountNo }" />
+					<div class="trand-right-cap" style="margin: 5px 0px; width: 580px;">
+						<span class="color1">${accVo.bankName }</span>
+						<c:if test="${!empty cookie.ck_pay }">
+							<span style="background-color: red; margin-left: 5px; color: white; border-radius: 5px;">
+							&nbsp기본&nbsp</span>
+						</c:if>	
+						<br> 
+						<span class="color2" id="accNo"> 
+						<c:set var="accNo" value="${accVo.accountNo }" />
 							**********${fn:substring(accNo,10,15) }
 						</span> <a
 							href="<c:url value='/mypages/deleteAcc?accountNo=${accVo.accountNo}'/>"
 							class="trand-right-img" id="delete"> <img
 							src="<c:url value='/assets/img/cancel.png'/>"
-							style="width: 20px; margin: -30px 0px 0px 240px;">
+							style="width: 20px; margin: -30px 0px 0px 310px;">
 						</a>
 					</div>
 				</div>

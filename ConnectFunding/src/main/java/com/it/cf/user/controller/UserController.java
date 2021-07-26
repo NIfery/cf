@@ -85,7 +85,7 @@ public class UserController {
          session.setAttribute("userNo", vo.getUserNo());
       
          //쿠키저장
-         Cookie cookie = new Cookie("ck_mail", "userEmail");
+         Cookie cookie = new Cookie("ck_mail", userEmail);
          cookie.setPath("/");
          if(customCheck != null && !customCheck.isEmpty()) {
             cookie.setMaxAge(100*24*60*60);
@@ -138,8 +138,8 @@ public class UserController {
    }
    
    @RequestMapping("/mypages/update")
-   public String update(@ModelAttribute UserVO userVo,
-         HttpSession session , Model model) {
+   public String update(@ModelAttribute UserVO userVo, @RequestParam(required = false) String privacy,
+         HttpServletResponse response,HttpSession session , Model model) {
       
       int userNo = (int) session.getAttribute("userNo");
       userVo.setUserNo(userNo);
@@ -148,6 +148,17 @@ public class UserController {
       
       int cnt = userService.updateProfile(userVo);
       logger.info("회원수정 결과, cnt={}", cnt);
+      
+      //쿠키저장
+      Cookie cookie = new Cookie("ck_privacy", privacy);
+      cookie.setPath("/");
+      if(privacy != null && !privacy.isEmpty()) {
+     	 cookie.setMaxAge(100*24*60*60);
+      }else {
+     	 cookie.setMaxAge(0);
+      }//
+      response.addCookie(cookie);
+
       
       String msg="수정 실패..", url="/mypages/settings";
       if(cnt>0) {

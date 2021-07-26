@@ -33,6 +33,11 @@
 	height: 300px;
 	margin-top: 70px;
 }
+
+.page-link {
+	background-color: white; 
+}
+
 </style>
 <div class="single_sidebar_widget post_category_widget"
 	style="width: 1000px; margin-left: 200px; background: white; height: 1000px; margin-top: 50px;">
@@ -43,23 +48,34 @@
 		<div class="row" style="margin-top: 20px; margin-left: 5px;">
 			<div class="col-md-6" style="width: 500px; height: 50px;">
 				<strong style="color: red;">
-					${fn:length(fdlist)}
+					<%-- ${fn:length(fdlist)} --%>
+					${pageInfo.totalRecord}
 				</strong> 건의 후원 내역이 있습니다.</div>
 			<div class="col-md-6 col-md-offset-6">
-				<div class="form-group has-search" style="">
+				<%-- <div class="form-group has-search" style="">
 					<span class="fa fa-search form-control-feedback"></span> 
-					<input type="text" class="form-control" 
+					<form action="<c:url value='/mypages/support'/>" name="frmSearch" method="post">
+					<input type="text" class="form-control" name="projectName" value="${map['PROJECT_NAME']}"
 						placeholder="프로젝트, 창작자를 입력하세요.">
+					</form>
+				</div> --%>
+				<div class="form-group">
+					<div class="input-group mb-3">
+					<form action="<c:url value='/mypages/support'/>" name="frmSearch" method="post">
+						<span class="d-flex"> 
+						<input type="text" class="form-control" placeholder="프로젝트, 창작자를 입력하세요." 
+							name="projectName" value="${map['PROJECT_NAME']}" style="width: 250px;">
+							<button class="btns" type="submit"
+								style="background: none; border: 1px; color: black;">
+								<i class="fas fa-search special-tag"></i>
+							</button>
+						</span>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="main" style="height: 600px; margin-top: 20px;">
-		<form action="<c:url value='/mypages/support'/>" name="frmSupport"
-				method="post">
-				<input type="hidden" name="currentPage"><br> 
-				<input type="hidden" name="searchCondition" value="${param.searchCondition}"><br>
-				<input type="hidden" name="searchKeyword" value="${param.searchKeyword }"><br>
-		</form>
 			<c:if test="${empty fdlist}">
 			<div class="div_1">
 				<div class="div_2">
@@ -103,75 +119,35 @@
 				</c:forEach>
 			</c:if>
 			<!-- 페이징처리 -->
-<%-- 			<div class="pagination-area pb-45 text-center" style="margin-top: 70px;">
-				<div class="container">
-					<div class="row">
-						<div class="col-xl-12">
-							<div class="single-wrap d-flex justify-content-center">
-								<nav aria-label="Page navigation example">
-									<ul class="pagination justify-content-start">
-										<c:if test="${pageInfo.firstPage>1 }">
-										<li class="page-item">
-											<a class="page-link" href="#" onclick="setPage(${pageInfo.firstPage-1})">
-											<span class="flaticon-arrow roted"></span>
-											</a>
-										</li>
-										</c:if>
-										
-										<c:forEach var="i" begin="${pageInfo.firstPage }" end="${pageInfo.lastPage }">
-											<li class="page-item active">
-											<c:if test="${i==pageInfo.currentPage }">
-												<a class="page-link" href="#">${i}</a>
-											</c:if>
-											<c:if test="${i!=pageInfo.currentPage }">
-												<a href="#" onclick="setPage(${i})" class="page-link">
-												${i}</a>
-											</c:if>
-											</li>
-										</c:forEach>
-										
-										<c:if test="${pageInfo.lastPage < pageInfo.totalPage}">	
-										<li class="page-item">
-											<a class="page-link" href="#" onclick="setPage(${pageInfo.lastPage+1})">
-											<span class="flaticon-arrow right-arrow"></span>
-											</a>
-										</li>
-										</c:if>
-									</ul>
-								</nav>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div> --%>
-	<%-- 			<div class="paging" style="margin-left: 100px">
-		<c:if test="${pageInfo.firstPage>1 }">
-			<a href="#" onclick="setPage(${pageInfo.firstPage-1})">
-			 <img src="<c:url value='/resources/images/ll.png'/>" alt="이전">
-			</a>
-		</c:if>
-		
-		<c:forEach var="i" begin="${pageInfo.firstPage }" 
-			end="${pageInfo.lastPage }">
-			<c:if test="${i==pageInfo.currentPage }">
-				<span style="color: blue; font-weight: bold;">${i}</span>
-			</c:if>
-			<c:if test="${i!=pageInfo.currentPage }">
-				<a href="#" onclick="setPage(${i})">[${i}]</a>
-			</c:if>
-		</c:forEach>
-		
-		<c:if test="${pageInfo.lastPage < pageInfo.totalPage}">
-			<a href="#" onclick="setPage(${pageInfo.lastPage+1})">
-			 <img src="<c:url value='/resources/images/rr.png'/>" alt="다음">
-			</a>
-		</c:if>
-	
-	</div> --%>
-			<!-- 페이징처리 -->
+			<nav class="blog-pagination justify-content-center d-flex">
+				<ul class="pagination">
+					<c:if test="${pageInfo.firstPage>1 }">
+						<li class="page-item">
+						<a href="#" class="page-link" onclick="pageProc(${pageInfo.firstPage-1})" aria-label="Previous">
+						<i class="ti-angle-left"></i></a></li>
+					</c:if>	
+					
+					<c:forEach var="i" begin="${pageInfo.firstPage }" end="${pageInfo.lastPage}" >
+						<li class="page-item active"><a href="#" class="page-link">${i}</a>
+						</li>
+					</c:forEach>
+					
+					<c:if test="${pageInfo.lastPage < pageInfo.totalPage }">
+						<li class="page-item">
+							<a href="#" class="page-link" onclick="pageProc(${pageInfo.lastPage+1})"> 
+							<i class="ti-angle-right"></i></a>
+						</li>
+					</c:if>
+				</ul>
+			</nav> 
+
 		</div>
 	</div>
 </div>
+<form action="<c:url value='/mypages/support'/>" name="frmSupport" method="post">
+	<input type="hidden" name="currentPage"><br> 
+	<input type="hidden" name="projectName" value="${map['PROJECT_NAME']}"><br>
+</form>
 <script type="text/javascript">
 function pageProc(curPage){
 	$('input[name=currentPage]').val(curPage);

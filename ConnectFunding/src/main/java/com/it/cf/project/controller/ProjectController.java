@@ -29,12 +29,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.it.cf.project.model.ProjectFileUploadUtil;
+import com.it.cf.fdList.model.FundingListVO;
 import com.it.cf.project.model.FirstCategoryVO;
 import com.it.cf.project.model.ProjectPageInfo;
 import com.it.cf.project.model.ProjectService;
 import com.it.cf.project.model.ProjectUtil;
 import com.it.cf.project.model.ProjectVO;
 import com.it.cf.project.model.SecondCategoryVO;
+import com.it.cf.user.model.UserService;
+import com.it.cf.user.model.UserVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,6 +48,7 @@ public class ProjectController {
 	private static final Logger logger = LoggerFactory.getLogger(ProjectController.class);
 	
 	private final ProjectService projectService;
+	private final UserService userService;
 	private final ProjectFileUploadUtil fileUploadUtil;
 	
 	@RequestMapping("/list")
@@ -221,15 +225,36 @@ public class ProjectController {
 		int userNo = (int) session.getAttribute("userNo");
 		logger.info("프로젝트 상세화면, 파라미터 projectNo={}, userNo={}", projectNo, userNo);
 		
+		UserVO userVo = userService.selectByNo(userNo);
+		logger.info("user 정보={}", userVo);
+		
 		Map<String, Object> map = projectService.selectByNo(projectNo);
 		int userCnt = projectService.selectFundingUserCount(projectNo);
 		logger.info("프로젝트 상세화면 결과 map={}, userCnt={}", map, userCnt);
 		
 		model.addAttribute("map", map);
 		model.addAttribute("userCnt", userCnt);
-		model.addAttribute("userNo", userNo);
+		model.addAttribute("userVo", userVo);
 		
 		return "project/detail";
+	}
+	
+	@RequestMapping("/detailFunding")
+	public String detailFunding(@RequestParam(defaultValue = "0") int projectNo, 
+			@RequestParam(defaultValue = "0") int fdAmount, 
+			HttpSession session) {
+		int userNo = (int) session.getAttribute("userNo");
+		logger.info("프로젝트 펀딩 요청, 파라미터 projectNo={}, userNo={}, fdAmount={}", projectNo, userNo, fdAmount);
+		
+		FundingListVO vo = new FundingListVO();
+		vo.setProjectNo(projectNo);
+		vo.setUserNo(userNo);
+		vo.setFundingAmount(fdAmount);
+		
+		int cnt = projectService.insertFunding(vo);
+		logger.info("프로젝트 펀딩 결과, cnt={}", cnt);
+		
+		return "redirect:/project/detail?projectNo="+projectNo;
 	}
 
 	@GetMapping("/update")

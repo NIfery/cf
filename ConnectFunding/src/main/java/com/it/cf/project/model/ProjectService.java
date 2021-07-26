@@ -3,6 +3,8 @@ package com.it.cf.project.model;
 import java.util.List;
 import java.util.Map;
 
+import com.it.cf.fdList.model.FundingListVO;
+
 public interface ProjectService {
 	List<ProjectVO> selectAll(ProjectVO pageVo);
 	List<ProjectVO> selectBySecondCategoryNo(ProjectVO pageVo);
@@ -19,4 +21,5 @@ public interface ProjectService {
 	String selectDBPwd(int userNo);
 	int deleteFundingList(int projectNo);
 	int deleteProject(int projectNo);
+	int insertFunding(FundingListVO vo);
 }

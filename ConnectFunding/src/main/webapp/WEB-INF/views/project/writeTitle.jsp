@@ -540,7 +540,6 @@
 										                    <div class="row row-cols-1" style="width:60%;background:#ff00000d;font-size:0.8em;margin-left:3%;padding:3%;">
 										                    	<div class="col" style="color:red">주의사항</div>
 										                    		<ul style="margin-left:5%">
-										                    			<li style="list-style: disc">종료일까지 목표금액을 달성하지 못하면 후원자 결제가 진행되지 않습니다.</li>
 										                    			<li style="list-style: disc">종료 전 후원 취소를 대비해 10% 이상 초과 달성을 목표로 해주세요.</li>
 										                    			<li style="list-style: disc">제작비, 인건비, 예비 비용 등을 함께 고려해주세요.</li>
 										                    		</ul>

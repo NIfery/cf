@@ -114,5 +114,10 @@ public class MessageServiceImpl implements MessageService{
 		return messageDao.totalReceive(searchVo);
 	}
 
+	@Override
+	public List<MessageReceiveVO> sentAdmin(SearchVOChat searchVo) {
+		return messageDao.sentAdmin(searchVo);
+	}
+
 	
 }

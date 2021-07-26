@@ -17,6 +17,7 @@ public interface MessageService {
 	int editMessage(MessageSendVO vo);
 	int editAdmin(MessageReceiveVO vo);
 	List<MessageSendVO> receiveAdmin(SearchVOChat searchVo);
+	List<MessageReceiveVO> sentAdmin(SearchVOChat searchVo);
 	MessageReceiveVO receiveByMessageNo(int messageNo);
 	int totalReceive(SearchVOChat searchVo);
 	

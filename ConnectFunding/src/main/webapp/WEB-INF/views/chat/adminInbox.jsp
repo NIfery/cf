@@ -14,14 +14,26 @@
 			$('#startD').datepicker({
 				dateFormat:'yy-mm-dd',
 				changeYear:true,
+				changeMonth: true,
+				showMonthAfterYear:true,
+				monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
 				dayNamesMin:['일','월','화','수','목','금','토'],
-				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+				onClose:function(selectedDate){
+					$('#endD').datepicker("option","minDate",selectedDate);
+				}				
 			})
 			$('#endD').datepicker({
 				dateFormat:'yy-mm-dd',
 				changeYear:true,
+				changeMonth: true,
+				showMonthAfterYear:true,
+				monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
 				dayNamesMin:['일','월','화','수','목','금','토'],
-				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+				onClose:function(selectedDate){
+					$('#startD').datepicker("option","maxDate",selectedDate);
+				}
 			})
 			
 			$('input[name=chkAll]').click(function(){
@@ -58,8 +70,8 @@
 	<input type="hidden" name="currentPage">	
 	<input type="hidden" name="searchCondition" value="${param.searchCondition }">
 	<input type="hidden" name="searchKeyword" value="${param.searchKeyword }">
-	<input type="hidden" name="startDay" value="${dateSearchVO.startDay }">
-	<input type="hidden" name="endDay" value="${dateSearchVO.endDay }">
+	<input type="hidden" name="startDay" value="${param.startDay }">
+	<input type="hidden" name="endDay" value="${param.endDay }">
 </form>
 <!-- 페이징 처리 form 끝 -->
 <!-- MAIN CONTENT-->
@@ -71,7 +83,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<h1 class="title-5 m-b-35">받은 쪽지함(${pagingInfo.totalRecord })</h1>
+<%-- 				<h1 class="title-5 m-b-35">받은 쪽지함(${pagingInfo.totalRecord })</h1> --%>
 						<form name="frmSearch" method="post"
 							action='<c:url value="/chat/adminInbox"/>'>
 							조회기간
@@ -83,7 +95,7 @@
 							~
 							<div class="col-md-2">
 							<input type="text" name="endDay" id="endD" class="form-control form-control-sm" 
-								 value="${searchVOChat.endDay }">
+								  value="${searchVOChat.endDay }">
 							</div>
 							<div class="col-md-2">
 							<select name="searchCondition" class="form-control form-control-sm">
@@ -117,7 +129,7 @@
 						<form name="frmList" >
 						<div class="table-responsive table-responsive-data2">
 						
-							<table class="table table-data2">
+							<table class="table table-data2 table-hover">
 								<thead>
 									<tr>
 										<th><label class="au-checkbox"> <input
@@ -127,6 +139,7 @@
 										<th>제목</th>
 										<th>내용</th>
 										<th>보낸날짜</th>
+										<th>답변날짜</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -143,13 +156,13 @@
 														type="checkbox" name="sMessage[${idx }].messageNo" value="${vo.messageNo }"> <span class="au-checkmark"></span>
 												</label></td>
 												<td><span class="block-email">${vo.userNo }</span></td>
-												<td>
+												<td><a  href="<c:url value='/chat/adminDetail?messageNo=${vo.messageNo }'/>">
 													<c:if test="${fn:length(vo.messageTitle)>10 }">
 														${fn:substring(vo.messageTitle, 0, 10) }...
 													</c:if> 
 													<c:if test="${fn:length(vo.messageTitle)<=10 }">
 														${vo.messageTitle}
-													</c:if>
+													</c:if></a>
 													</td>
 													<td class="desc"><a  href="<c:url value='/chat/adminDetail?messageNo=${vo.messageNo }'/>">
 													<c:if test="${fn:length(vo.messageContent)>30 }">
@@ -160,6 +173,14 @@
 													</c:if></a></td>
 												<td><fmt:formatDate value="${vo.messageRegdate }"
 														type="date" pattern="yyyy-MM-dd" /></td>
+												<td>
+													<c:forEach var="voR" items="${listReceive }">
+												    	<c:if test="${vo.messageNo == voR.messageNo }">
+												    		<fmt:formatDate value="${voR.messageRegdate }" type="date" 
+												    			pattern="yyyy-MM-dd" />
+												    	</c:if>
+											    	</c:forEach>
+												</td>
 											</tr>
 											<c:set var="idx" value="${idx+1 }"/>
 										</c:forEach>

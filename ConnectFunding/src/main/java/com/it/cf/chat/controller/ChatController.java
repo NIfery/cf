@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.it.cf.chat.model.MessageSendListVO;
 import com.it.cf.chat.model.MessageReceiveVO;
@@ -97,6 +98,10 @@ public class ChatController {
 		logger.info("보낸 쪽지함, totalRecord={}",totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
 		
+		List<MessageReceiveVO> listReceive=messageService.receiveAll(searchVo);
+		logger.info("listReceive.size={}",listReceive.size());
+		
+		model.addAttribute("listReceive", listReceive);
 		model.addAttribute("list", list);
 		model.addAttribute("pagingInfo", pagingInfo);
 		return "chat/sent";
@@ -313,7 +318,14 @@ public class ChatController {
 	
 	@RequestMapping("/adminInbox")
 	public String adminInbox(@ModelAttribute SearchVOChat searchVo,Model model) {
-		logger.info("관리자 쪽지함, searchVo={}",searchVo);
+		int userNo=0;
+		if(searchVo.getSearchCondition().equals("USER_NO")) {
+			if(searchVo.getSearchKeyword()==null || !searchVo.getSearchKeyword().trim().equals("")) {
+				String searchKeyword=searchVo.getSearchKeyword().trim();
+				userNo=Integer.parseInt(searchKeyword);
+			}
+		}
+		logger.info("관리자 쪽지함11, searchVo={}",searchVo);
 		
 		//날짜
 		String startDay=searchVo.getStartDay();
@@ -335,6 +347,7 @@ public class ChatController {
 		//[2]
 		searchVo.setRecordCountPerPage(ConstUtil.RECORD_COUNT);
 		searchVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
+		searchVo.setUserNo(userNo);
 		logger.info("셋팅 후 searchVo={}", searchVo);
 		
 		List<MessageSendVO> list=messageService.receiveAdmin(searchVo);
@@ -344,6 +357,10 @@ public class ChatController {
 		logger.info("관리자 쪽지함, totalRecord={}",totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
 		
+		List<MessageReceiveVO> listReceive=messageService.sentAdmin(searchVo);
+		logger.info("listReceive.size={}",listReceive.size());
+		
+		model.addAttribute("listReceive", listReceive);
 		model.addAttribute("list", list);
 		model.addAttribute("pagingInfo", pagingInfo);
 		return "/chat/adminInbox";

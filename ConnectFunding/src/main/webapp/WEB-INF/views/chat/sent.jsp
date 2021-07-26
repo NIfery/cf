@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/height.css"/>
 <script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
 <script type="text/javascript">
 	$(function(){
@@ -25,16 +26,17 @@
 	<input type="hidden" name="currentPage">	
 </form>
 <!-- 페이징 처리 form 끝 -->
-<title>받은 쪽지함</title>
-<c:import url="/chat/chatCategory"></c:import>
-  <div align="left" class="col-13 col-sm-7 col-md-9">
+<div class="container">
+	<a href="<c:url value='/chat/write'/>">
+		<input class="btn btn-warning m-3" type="button" value="쪽지 보내기">
+	</a>
   	<table class="table table-hover">
   <thead>
     <tr  class="table-warning text-dark">
-      <th scope="col">no</th>
       <th scope="col">제목</th>
       <th scope="col">내용</th>
       <th scope="col">작성일</th>
+      <th scope="col">답변일</th>
       <th scope="col">삭제</th>
     </tr>
   </thead>
@@ -46,27 +48,41 @@
   </c:if>
   <c:if test="${!empty list }">
   	<c:forEach var="vo" items="${list }">
-	  	<tr>
-	      <th scope="row">${vo.messageNo }</th>
-	      <td><c:if test="${fn:length(vo.messageTitle)>5 }">
-				${fn:substring(vo.messageTitle, 0, 5) }...
-			</c:if> 
-			<c:if test="${fn:length(vo.messageTitle)<=5 }">
-				${vo.messageTitle}
-			</c:if>
-		</td>
-	      <td><a href="<c:url value='/chat/detail?messageNo=${vo.messageNo }'/>">
-	      	<c:if test="${fn:length(vo.messageContent)>10 }">
-				${fn:substring(vo.messageContent, 0, 10) }...
-			</c:if> 
-			<c:if test="${fn:length(vo.messageContent)<=10 }">
-				${vo.messageContent}
-			</c:if>
-	      </a></td>
-	      <td><fmt:formatDate value="${vo.messageRegdate }" type="date" pattern="yyyy-MM-dd"/></td>
-	      <td><a id="delete" href="<c:url value='/chat/deleteChat?messageNo=${vo.messageNo }'/>">삭제</a>
-	      </td>
-	    </tr>
+		<tr>
+			<th scope="row">
+				<c:if test="${fn:length(vo.messageTitle)>10 }">
+					${fn:substring(vo.messageTitle, 0, 10) }...
+				</c:if> 
+				<c:if test="${fn:length(vo.messageTitle)<=10 }">
+					${vo.messageTitle}
+				</c:if>
+			</th>
+			<td>
+				<a href="<c:url value='/chat/detail?messageNo=${vo.messageNo }'/>">
+					<c:if test="${fn:length(vo.messageContent)>20 }">
+						${fn:substring(vo.messageContent, 0, 20) }...
+					</c:if> 
+					<c:if test="${fn:length(vo.messageContent)<=20 }">
+						${vo.messageContent}
+					</c:if>
+				</a>
+			</td>
+			<td>
+				<fmt:formatDate value="${vo.messageRegdate }" type="date" pattern="yyyy-MM-dd" />
+			</td>
+			<td>
+				<c:forEach var="voR" items="${listReceive }">
+			    	<c:if test="${vo.messageNo == voR.messageNo }">
+			    		<fmt:formatDate value="${voR.messageRegdate }" type="date" pattern="yyyy-MM-dd" />
+			    	</c:if>
+		    	</c:forEach>
+			</td>
+			<td><a id="delete"
+				href="<c:url value='/chat/deleteChat?messageNo=${vo.messageNo }'/>">
+				<input class="btn btn-warning btn-sm" type="button" value="삭제">
+				</a>
+			</td>
+		</tr>
   	</c:forEach>
   	
   </c:if>
@@ -101,9 +117,6 @@
 		</li>
 	</c:if>
   </ul>
-  </div>
+  
 </div>
-</div>
-
-
-<%@ include file="../include/bottom.jsp" %> 
+<%@ include file="../include/bottom.jsp" %>

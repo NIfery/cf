@@ -3,18 +3,13 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.it.cf.fdList.model.FundingListDAO">
-	<sql id="searchWhere">
-		<if test="searchKeyword!=null and searchKeyword!=''">
-			where ${searchCondition} like '%' || #{searchKeyword} || '%'
-		</if>
-	</sql>
 
 	<insert id="insertFundingList" parameterType="FundingListVo">
 		<selectKey keyProperty="fundingListNo" resultType="int" order="BEFORE">
 			select FUNDING_LIST_SEQ.nextval from dual 
 		</selectKey>
 		insert into funding_list(FUNDING_LIST_NO, FUNDING_AMOUNT, PROJECT_NO, USER_NO)
-		alues(#{fundingListNo}, #{fundingAmount}, #{projectNo}, #{userNo})
+		values(#{fundingListNo}, #{fundingAmount}, #{projectNo}, #{userNo})
 	</insert>
 
 	
@@ -23,7 +18,7 @@
 		where user_no=#{userNo}
 	</select>
 
-	<select id="searchFundingList" resultType="map" parameterType="searchVo">
+	<select id="searchFundingList" resultType="map" parameterType="fdListViewVo">
 		select *
 		from
 		(
@@ -31,7 +26,10 @@
 		        from  
 		    (
 		        select * from fundingListView
-		     	<include refid="searchWhere"></include>
+		    	where user_no=#{userNo}
+		    	<if test="projectName!=null and projectName!=''">
+					and project_name like  '%'||#{projectName}||'%'
+				</if>
 		    )A   
 		)
 		<![CDATA[
@@ -40,9 +38,12 @@
 		]]>
 	</select>
 	
-	<select id="selectTotalRecord" parameterType="searchVo" resultType="int">
+	<select id="selectTotalRecord" parameterType="fdListViewVo" resultType="int">
 		select count(*) from fundingListView
-		<include refid="searchWhere"></include>
+		where user_no=#{userNo}
+		<if test="projectName!=null and projectName!=''">
+			and project_name like  '%'||#{projectName}||'%'
+		</if>
 	</select>	
 	
 </mapper>

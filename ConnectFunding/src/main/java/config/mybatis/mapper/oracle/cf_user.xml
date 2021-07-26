@@ -37,7 +37,7 @@
 	
 	<update id="updateProfile" parameterType="userVo">
 		update users
-		set user_name=#{userName} , user_email=#{userEmail}, user_hp=#{userHp}
+		set user_email=#{userEmail}, user_hp=#{userHp}
 		where user_no=#{userNo}
 	</update>
 	

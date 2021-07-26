@@ -4,7 +4,7 @@ public interface ConstUtil {
 	
 	//페이징 처리관련 상수
 	int BLOCK_SIZE=10;	// 블럭 크기
-	int RECORD_COUNT=2; // 페이지당 레코드 개수
+	int RECORD_COUNT=5; // 페이지당 레코드 개수
 	
 	//파일 업로드 처리 관련 상수
 	String FILE_UPLOAD_TYPE ="FileUp";

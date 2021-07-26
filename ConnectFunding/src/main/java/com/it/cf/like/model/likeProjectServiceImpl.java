@@ -28,4 +28,28 @@ public class likeProjectServiceImpl implements likeProjectService {
 		return likeprojectDao.deleteLike(likeNo);
 	}
 
+	@Override
+	public int selecLikeCheck(int projectNo) {
+		int result = 0;
+		
+		int cnt = likeprojectDao.selecLikeCheck(projectNo);
+		if(cnt>0) {
+			result=LIKE_OK;
+		}else {
+			result=LIKE_NO;
+		}
+		
+		return result;
+	}// 좋아요 여부 체크
+
+	@Override
+	public List<Map<String, Object>> searchlikeprojectList(likeProjectVO likeprojectVo) {
+		return likeprojectDao.searchlikeprojectList(likeprojectVo);
+	}
+
+	@Override
+	public int selectLikeListTotalRecord(likeProjectVO likeprojectVo) {
+		return likeprojectDao.selectLikeListTotalRecord(likeprojectVo);
+	}
+	
 }

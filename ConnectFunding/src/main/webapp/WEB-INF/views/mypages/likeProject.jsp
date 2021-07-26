@@ -25,7 +25,7 @@
 }
 </style>
 
-<div style="width: 1000px;  height: 1200px;">
+<div style="width: 1000px;  height: 1300px;">
 	<div class="single_sidebar_widget post_category_widget"
 		style="width: 1000px; margin-left: 200px; background: white; margin-top: 50px;">
 		<div>
@@ -37,12 +37,13 @@
 			<div class="row" style="margin-top: 20px; margin-left: 5px; margin-bottom: 45px;">
 				<div class="col-md-6" style="width: 500px; height: 50px;">
 					<strong style="color: red;">
-						${fn:length(likelist)}
+						<%-- ${fn:length(likelist)} --%>
+						${pageInfo.totalRecord}
 					</strong> 건의 후원 내역이 있습니다.
 				</div>
 				<div class="col-md-6 col-md-offset-6">
 					<div class="form-group" style="width: 450px; margin: 3px;">
-						<select class="form-select" id="exampleSelect2" name=""
+						<select class="form-select" id="exampleSelect2" name="searchCondition"
 							style="padding: 0 0;">
 							<option value="추가순">추가순</option>
 							<option value="마감 임박순">마감 임박순</option>
@@ -97,7 +98,41 @@
 					</c:forEach>
 				</div>
 			</c:if>
+			<!-- 페이징처리 -->
+			<nav class="blog-pagination justify-content-center d-flex">
+				<ul class="pagination">
+					<c:if test="${pageInfo.firstPage>1 }">
+						<li class="page-item">
+						<a href="#" class="page-link" onclick="pageProc(${pageInfo.firstPage-1})" aria-label="Previous">
+						<i class="ti-angle-left"></i></a></li>
+					</c:if>	
+					
+					<c:forEach var="i" begin="${pageInfo.firstPage }" end="${pageInfo.lastPage}" >
+						<li class="page-item active"><a href="#" class="page-link">${i}</a>
+						</li>
+					</c:forEach>
+					
+					<c:if test="${pageInfo.lastPage < pageInfo.totalPage }">
+						<li class="page-item">
+							<a href="#" class="page-link" onclick="pageProc(${pageInfo.lastPage+1})"> 
+							<i class="ti-angle-right"></i></a>
+						</li>
+					</c:if>
+				</ul>
+			</nav> 
+			<!-- 페이징처리 끝 -->
 		</div>
 	</div>
 </div>
+<form action="<c:url value='/mypages/likeProject'/>" name="frmSupport" method="post">
+	<input type="hidden" name="currentPage"><br> 
+	<input type="hidden" name="searchCondition" value="${param.searchCondition}"><br>
+</form>
+<script type="text/javascript">
+function pageProc(curPage){
+	$('input[name=currentPage]').val(curPage);
+	$('form[name=frmSupport]').submit();	
+}
+</script>
+
 <%@ include file="../include/bottom.jsp"%>

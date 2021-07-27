@@ -39,7 +39,7 @@
 
 </style>
 <div>	
-	<c:if test="${empty followlist }">
+	<c:if test="${empty followerlist }">
 		<div class="main" style="height: 600px; margin: 0 auto;">
 			<div class="div_1">
 				<div class="div_2">
@@ -48,45 +48,45 @@
 				</div>
 				<div>
 					<br>
-					<span style="font-size: 1.5em;">팔로우한 사용자가 없습니다.</span>	
+					<span style="font-size: 1.5em;">팔로워가 없습니다.</span>	
 					<br><br>
 				</div>
 			</div>
 		</div>
 	</c:if>	
-	<c:if test="${!empty followlist }">
-		<c:forEach var="followVo" items="${followlist }">
-			<div class="wrap" style="height: 115px; width: 800px; margin-top: 15px; border-bottom: 1px solid #d4cece">
+	<c:if test="${!empty followerlist }">
+		<c:forEach var="followerVo" items="${followerlist }">
+			<div class="wrap" style="height: 110px; width: 800px; margin-top: 30px; border-bottom: 1px solid #d4cece">
 				<div class="trand-right-single d-flex">
 					<div class="trand-right-img">
-						<c:if test="${empty followVo.userProfile }">
+						<c:if test="${empty followerVo.userProfile }">
 							<img src="<c:url value='/assets/img/logo/user.png'/>"
-								style="width: 80px; height: 70px; margin: 40px 13px;">
+								style="width: 65px; height: 65px; margin: 20px 20px;">
 						</c:if>
-						<c:if test="${!empty followVo.userProfile}">
+						<c:if test="${!empty followerVo.userProfile}">
 							<div class="profile" style="margin: 30px 20px;">
-								<img src="<c:url value='/profile_img/${followVo.userProfile}'/>"
+								<img src="<c:url value='/profile_img/${followerVo.userProfile}'/>"
 									style="width: 70px; height: 70px;">
 							</div>
 						</c:if>
 					</div>
 					<div class="trand-right-cap"
-						style="margin: 10px 25px; width: 470px;">
+						style="margin: 15px 25px; width: 470px;">
 						<span class="color1">
 							<p style="font-size: 1.1em;">
-								<strong>${followVo.following}</strong>
+								<strong>${followerVo.userName}</strong>
 							</p>
 						</span> 
 						<span> 
-							<c:if test="${!empty followVo.userIntro}">
-								<span style="color: black;">${followVo.userIntro}</span>
+							<c:if test="${!empty followerVo.userIntro}">
+								<span style="color: black;">${followerVo.userIntro}</span>
 							</c:if>
 						</span>
 						<span style="font-size: 0.9em;"><br>
 							팔로워 11 · 올린 프로젝트 5</span>
 					</div>
 					<button class="genric-btn info circle"
-						style="width: 100px; height: 40px; margin: 30px 0px 0px 50px;">팔로우</button>
+						style="width: 100px; height: 40px; margin: 40px 0px 0px 50px;">팔로우</button>
 				</div>
 			</div>
 		</c:forEach>

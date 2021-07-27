@@ -20,4 +20,5 @@ public class FDListViewVO extends SearchVO {
 	private int fundingAmount;
 	private Timestamp supportDate; 
 	private int userNo; 
+	private int creator;
 }

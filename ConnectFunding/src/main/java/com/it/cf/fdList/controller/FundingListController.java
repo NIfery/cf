@@ -31,18 +31,20 @@ public class FundingListController {
 
 	private final FundingListService fdlistService;
 
-		@RequestMapping("/mypages/follow") 
+		@RequestMapping("/mypages/follow")
+	/* @RequestMapping("/mypageload/creators") */
 		public String support(HttpSession session, Model model) {
 
 		int userNo = (int) session.getAttribute("userNo");
-		logger.info("후원현황 페이지, userNo={}", userNo);
+		logger.info("팔로우 - 후원한 창작자 탭, userNo={}", userNo);
 
 		List<Map<String, Object>> list = fdlistService.selectFundingList(userNo);
-		logger.info("내가 후원한 프로젝트 list.size={}", list.size());
-
+		logger.info("팔로우 - 후원한 창작자 탭 list.size={}", list.size());
+		
 		model.addAttribute("list", list);
 
-		return "mypages/follow"; 
+//		return "mypageload/creators"; 
+		return "mypages/follow";
 	}//
 
 //		@RequestMapping("/mypages/support")
@@ -108,4 +110,8 @@ public class FundingListController {
 		return "mypages/support";
 	}//
 
+//		@RequestMapping("/mypages/follow")
+//		public String follow() {
+//			return "mypages/follow";
+//		}
 }

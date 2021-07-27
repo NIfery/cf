@@ -13,9 +13,16 @@
 	</insert>
 
 	
-	<select id="selectFundingList" parameterType="int" resultType="map">
+	<!-- <select id="selectFundingList" parameterType="int" resultType="map">
 		select * from fundinglistview
 		where user_no=#{userNo}
+	</select> -->
+	
+	<select id="selectFundingList" parameterType="int" resultType="map">
+		select users.user_name, users.user_intro, users.user_profile, users.user_no
+		from funding_list right join project on project.project_no=funding_list.project_no
+		join users on project.user_no=users.user_no
+		where funding_list.user_no=#{userNo}
 	</select>
 
 	<select id="searchFundingList" resultType="map" parameterType="fdListViewVo">
@@ -45,6 +52,12 @@
 			and project_name like  '%'||#{projectName}||'%'
 		</if>
 	</select>	
+	
+	<select id="selectProjectCount" parameterType="String" resultType="int">
+		select count(*)
+		from project 
+		where user_name=#{userName};
+	</select>
 	
 </mapper>
 

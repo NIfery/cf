@@ -125,8 +125,8 @@
                                                <li><a href="<c:url value='/cfmember/cfLogout'/>">로그아웃</a></li>
                                                <li><span>${sessionScope.userName}</span></li>
                                                <li><a href="<c:url value='/cfmember/mypage'/>">
-                                                  <img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
-                                                     alt="로그인" style="width: 40px;" >
+                                                  <img src="${pageContext.request.contextPath}/profile_img/${sessionScope.userProfile}" 
+	                                            		style="width: 60px;" >
                                                   </a>
                                                </li>
                                             </c:if>

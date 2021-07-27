@@ -71,10 +71,14 @@ public class FileUploadUtil {
 		if(ConstUtil.FILE_UPLOAD_TYPE.equals("BoardUp")) {
 			if(pathFlag==ConstUtil.UPLOAD_FILE_FLAG) {
 				path = ConstUtil.FILE_UPLOAD_PATH_BOARD;
+			}else if(pathFlag==ConstUtil.UPLOAD_PROFILE_FLAG){
+				path = ConstUtil.PROFILE_FILE_UPLOAD_INFO;
 			}
 		}else {
 			if(pathFlag==ConstUtil.UPLOAD_FILE_FLAG) {
 				path = ConstUtil.FILE_UPLOAD_PATH;
+			}else if(pathFlag==ConstUtil.UPLOAD_PROFILE_FLAG) {
+				path= ConstUtil.PROFILE_FILE_UPLOAD_PATH;
 			}
 			//실제 물리적인 경로 구하기
 			path = request.getSession().getServletContext().getRealPath(path);

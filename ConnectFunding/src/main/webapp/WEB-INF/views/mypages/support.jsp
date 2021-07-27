@@ -4,8 +4,26 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../include/top.jsp"%>
+<script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/ssong.css">
+<script type="text/javascript">
+	var receipt_id;
+	function idThrow(id){
+		receipt_id=id;
+	}
+	
+	$(function(){
+		$('#btDelete').click(function(){
+			if($('#pwd').val().length<1){
+				alert('비밀번호를 입력하세요.');
+				$('#pwd').focus();
+				return false;
+			}
+			location.href="${pageContext.request.contextPath}/project/cancle?receiptId="+receipt_id+"&userNo="+$('#userNo').val()+"&pwd="+$('#pwd').val();
+		});
+	});
+</script>
 <style type="text/css">
 .has-search .form-control {
 	padding-left: 2.375rem;
@@ -106,13 +124,41 @@
 								<div style="margin-top: 10px; margin-bottom: 10px;">
 								<span class="color1" style="font-size: 1.2em;">${map['PROJECT_NAME']}</span><br> 
 								<span class="color2" style="font-weight: bold;">
-									<fmt:formatNumber value="${map['FUNDING_AMOUNT']}" pattern="#,###"/>원 결제예정
+									<fmt:formatNumber value="${map['FUNDING_AMOUNT']}" pattern="#,###"/>원<!--  결제예정 -->
 								</span><br>
 								</div>
-								<span class="color2" style="font-size: 0.8em; color: red;">
+								<%-- <span class="color2" style="font-size: 0.8em; color: red;">
 									결제 예정일 &nbsp
 									<fmt:formatDate value="${map['PAYDATE']}" type="date"/>
-								</span> 
+								</span>  --%>
+									<a onclick="idThrow($(this).next().val())" style="color:blue" href="#" data-toggle="modal" data-target="#myModal" id="btCancleModal">환불하기</a>
+									<input type="hidden" id="receiptId" value="${map['RECEIPT_ID'] }">
+									<input type="hidden" id="userNo" value="${map['USER_NO'] }">
+								    <div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog"
+									aria-labelledby="staticBackdropLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="staticBackdropLabel">환불하기</h5>
+													<button type="button" class="btn-close" data-dismiss="modal"
+														aria-label="Close">
+													</button>
+												</div>
+												<form name="frmDelete" method="post">
+													<div class="modal-body">
+														<!-- 모달 body -->
+														<div class="form-group" style="width: 450px; margin: 3px;">
+																<label class="form-label mt-4">비밀번호 확인</label> 
+																<input type="password" class="form-control" name="pwd" id="pwd" placeholder="비밀번호를 입력하세요.">
+														</div>
+													</div>
+													<div class="modal-footer">
+														<button type="button" id="btDelete" class="genric-btn warning circle">환불</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
 							</div>
 						</div>
 					</div>

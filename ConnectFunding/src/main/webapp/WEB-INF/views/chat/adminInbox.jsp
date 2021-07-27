@@ -1,10 +1,41 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@ include file="../inc/adminTop.jsp"%>
-<script type="text/javascript"
-	src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
+<script src="${pageContext.request.contextPath}/admin_assets/vendor/jquery-3.2.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/admin_assets/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/jquery-ui.css"/>
+
+<script type="text/javascript" 
+   src="<c:url value='/assets/js/jquery-ui.js'/>"></script>
+
+
 <script type="text/javascript">
 		$(function(){
+			$('#startD').datepicker({
+				dateFormat:'yy-mm-dd',
+				changeYear:true,
+				changeMonth: true,
+				showMonthAfterYear:true,
+				monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+				dayNamesMin:['일','월','화','수','목','금','토'],
+				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+				onClose:function(selectedDate){
+					$('#endD').datepicker("option","minDate",selectedDate);
+				}				
+			})
+			$('#endD').datepicker({
+				dateFormat:'yy-mm-dd',
+				changeYear:true,
+				changeMonth: true,
+				showMonthAfterYear:true,
+				monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+				dayNamesMin:['일','월','화','수','목','금','토'],
+				monthNames:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+				onClose:function(selectedDate){
+					$('#startD').datepicker("option","maxDate",selectedDate);
+				}
+			})
+			
 			$('input[name=chkAll]').click(function(){
 				$('tbody input[type=checkbox]').prop('checked',this.checked);			
 			});
@@ -24,8 +55,25 @@
 				}
 			});
 			
+			
+			
 	});
+		
+	function chatList(curPage){
+		$('input[name=currentPage]').val(curPage);
+		$('form[name=frmPage]').submit();
+	}
 </script>
+<!-- 페이징 처리를 위한 form 시작-->
+<form name="frmPage" method="post" 
+	action="<c:url value='/chat/adminInbox'/>">
+	<input type="hidden" name="currentPage">	
+	<input type="hidden" name="searchCondition" value="${param.searchCondition }">
+	<input type="hidden" name="searchKeyword" value="${param.searchKeyword }">
+	<input type="hidden" name="startDay" value="${param.startDay }">
+	<input type="hidden" name="endDay" value="${param.endDay }">
+</form>
+<!-- 페이징 처리 form 끝 -->
 <!-- MAIN CONTENT-->
 <div class="main-content">
 	<div class="section__content section__content--p30">
@@ -35,10 +83,53 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<h3 class="title-5 m-b-35">받은 쪽지함</h3>
+<%-- 				<h1 class="title-5 m-b-35">받은 쪽지함(${pagingInfo.totalRecord })</h1> --%>
+						<form name="frmSearch" method="post"
+							action='<c:url value="/chat/adminInbox"/>'>
+							조회기간
+							<div class="row">
+							<div class="col-md-2">
+							<input type="text" name="startDay" id="startD" class="form-control form-control-sm" 
+								 value="${searchVOChat.startDay }">
+							</div>
+							~
+							<div class="col-md-2">
+							<input type="text" name="endDay" id="endD" class="form-control form-control-sm" 
+								  value="${searchVOChat.endDay }">
+							</div>
+							<div class="col-md-2">
+							<select name="searchCondition" class="form-control form-control-sm">
+								<option value="MESSAGE_TITLE" 
+					            	<c:if test="${param.searchCondition == 'MESSAGE_TITLE' }">            	
+					            		selected="selected"
+					            	</c:if>
+					            >제목</option>
+					            <option value="MESSAGE_CONTENT" 
+					            	<c:if test="${param.searchCondition == 'MESSAGE_CONTENT' }">            	
+					            		selected="selected"
+					            	</c:if>
+					            >내용</option>
+					            <option value="USER_NO" 
+					            	<c:if test="${param.searchCondition == 'USER_NO' }">            	
+					            		selected="selected"
+					            	</c:if>
+					            >회원번호</option>
+							</select> 
+							</div>
+							<div class="col-md-4">
+							<input name="searchKeyword" class="form-control form-control-sm" type="text" value="${param.searchKeyword }">
+							</div>
+							<div class="col-md-1">
+							<input class="btn btn-warning" type="submit" value="검색">
+							</div>
+							</div>
+							
+						</form>
+						
 						<form name="frmList" >
 						<div class="table-responsive table-responsive-data2">
-							<table class="table table-data2">
+						
+							<table class="table table-data2 table-hover">
 								<thead>
 									<tr>
 										<th><label class="au-checkbox"> <input
@@ -48,6 +139,7 @@
 										<th>제목</th>
 										<th>내용</th>
 										<th>보낸날짜</th>
+										<th>답변날짜</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -64,26 +156,75 @@
 														type="checkbox" name="sMessage[${idx }].messageNo" value="${vo.messageNo }"> <span class="au-checkmark"></span>
 												</label></td>
 												<td><span class="block-email">${vo.userNo }</span></td>
-												<td>${vo.messageTitle }</td>
-												<td class="desc"><a  href="<c:url value='/chat/adminDetail?messageNo=${vo.messageNo }'/>">${vo.messageContent }</a></td>
+												<td><a  href="<c:url value='/chat/adminDetail?messageNo=${vo.messageNo }'/>">
+													<c:if test="${fn:length(vo.messageTitle)>10 }">
+														${fn:substring(vo.messageTitle, 0, 10) }...
+													</c:if> 
+													<c:if test="${fn:length(vo.messageTitle)<=10 }">
+														${vo.messageTitle}
+													</c:if></a>
+													</td>
+													<td class="desc"><a  href="<c:url value='/chat/adminDetail?messageNo=${vo.messageNo }'/>">
+													<c:if test="${fn:length(vo.messageContent)>30 }">
+														${fn:substring(vo.messageContent, 0, 30) }...
+													</c:if> 
+													<c:if test="${fn:length(vo.messageContent)<=30 }">
+														${vo.messageContent}
+													</c:if></a></td>
 												<td><fmt:formatDate value="${vo.messageRegdate }"
 														type="date" pattern="yyyy-MM-dd" /></td>
+												<td>
+													<c:forEach var="voR" items="${listReceive }">
+												    	<c:if test="${vo.messageNo == voR.messageNo }">
+												    		<fmt:formatDate value="${voR.messageRegdate }" type="date" 
+												    			pattern="yyyy-MM-dd" />
+												    	</c:if>
+											    	</c:forEach>
+												</td>
 											</tr>
 											<c:set var="idx" value="${idx+1 }"/>
 										</c:forEach>
 									</c:if>
 								</tbody>
 							</table>
-        					<input class="btn btn-warning m-2" type="button" id="delete" value="선택한 쪽지 삭제">
+        					
 						</div>
 						</form>
+						<input class="btn btn-warning m-2" type="button" id="delete" value="선택한 쪽지 삭제">
+						<br>
+					  <ul class="pagination justify-content-center" >
+						<c:if test="${pagingInfo.firstPage>1 }">
+							<li class="page-item">
+						      <a class="page-link" href="#" aria-label="Previous" onclick="chatList(${pagingInfo.firstPage-1})">
+						        <span aria-hidden="true">&laquo;</span>
+						        <span class="sr-only">Previous</span>
+						      </a>
+							</li>
+						</c:if>
+					    <c:forEach var="i" begin="${pagingInfo.firstPage }" end="${pagingInfo.lastPage }">
+							<li class="page-item">
+								<c:if test="${i==pagingInfo.currentPage }">
+									<span style="color:blue;font-weight:bold" class="page-link" >${i }</span>
+								</c:if>
+								<c:if test="${i!=pagingInfo.currentPage }">						
+									<a class="page-link" href="#" onclick="chatList(${i})">${i }</a>
+								</c:if>		
+							</li>
+						</c:forEach>
+						<c:if test="${pagingInfo.lastPage<pagingInfo.totalPage }">
+							<li class="page-item">
+							      <a class="page-link" href="#" aria-label="Next" onclick="chatList(${pagingInfo.lastPage+1})">
+							        <span aria-hidden="true">&raquo;</span>
+							        <span class="sr-only">Next</span>
+							      </a>
+							</li>
+						</c:if>
+					  </ul>
 					</div>
 				</div>
 			</div>
-			<br> <br> <br>
 		</section>
-		<!-- END DATA TABLE-->
-		<!-- END PAGE CONTAINER-->
 	</div>
 </div>
-<%@ include file="../inc/adminBottom.jsp"%>
+
+<%@ include file="../inc/adminChatBottom.jsp"%>

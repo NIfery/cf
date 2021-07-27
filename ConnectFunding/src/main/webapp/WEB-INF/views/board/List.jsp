@@ -12,8 +12,27 @@
 <script type="text/javascript" src="<c:url value='/resources/js/jquery-3.6.0.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/bootstrap.js'/>"></script>
 
+<script type="text/javascript">
+
+	function pageProc(curPage){
+		$('input[name=currentPage]').val(curPage);
+		$('form[name=frmPage]').submit();	
+	}
+</script>
+
 </head>
 <body>
+
+<form action="<c:url value='/board/List'/>" 
+	name="frmPage" method="post">
+	<input type="hidden" name="currentPage"><br>
+	<input type="hidden" name="lastPage" value="${pagingInfo.lastPage }">
+	<input type="hidden" name="firstPage" value="${pagingInfo.firstPage }">
+	<input type="hidden" name="blockSize" value="${pagingInfo.blockSize }">
+	<input type="hidden" name="searchCondition" value="${param.searchCondition}"><br>
+	<input type="hidden" name="searchKeyword" value="${param.searchKeyword }"><br>	
+</form>
+
 	<div class="container">
 		<table class="table table-hover">
 		<h1> 자유게시판 </h1>
@@ -41,9 +60,15 @@
 							<th>${vo.boardNo }</th>
 							<th>
 							<!--제목 클릭시 detail 이동 -->
-							<a href="<c:url value='/board/CountUpdate?boardNo=${vo.boardNo}'/>">${vo.boardTitle }</a>
+							<a href="<c:url value='/board/CountUpdate?boardNo=${vo.boardNo}'/>">${vo.boardTitle } (댓글수 출력 예정)</a>
+								<c:if test="${vo.newImg < 24 }">
+									<img style="width: 20px" src="<c:url value='/resources/images/newimg.jpg'/>">
+								</c:if>
+								<c:if test="${!empty vo.boardOldfilename }">
+									<img style="width: 30px" src="<c:url value='/resources/images/upload.jpg'/>">
+								</c:if>
 							</th>
-							<th>테스터</th>
+							<th>${vo.userName }</th>
 							<th><fmt:formatDate value="${vo.boardRegdate}" pattern="yyyy-MM-dd HH:mm:ss"/></th>
 							<th>${vo.boardOldfilename }</th>
 							<th>${vo.boardReadcount }</th>
@@ -56,27 +81,51 @@
 		<a class="btn btn-default pull-right" href="<c:url value='/board/Write'/>">게시글 작성</a>
 			
 		<div id="divSearch">
-			<form action="<c:url value='/board/List'/>" method="post">
+			<form class="pull-left" action="<c:url value='/board/List'/>" method="post">
 				<select name="searchCondition">
-					<option value="no">글번호</option>
-					<option value="title">제목</option>
-					<option value="id">작성자</option>
+					<option value="BOARD_TITLE"
+					 <c:if test="${param.searchCondition == 'BOARD_TITLE' }">            	
+            		selected="selected"
+            		</c:if>
+					>제목</option>
+					<option value="USER_NAME"
+				    <c:if test="${param.searchCondition == 'USER_NAME' }">            	
+            		selected="selected"
+            		</c:if>
+					>작성자</option>
 				</select>
-				<input type="text" name="searchKeyword" title="검색어 입력" value="">
-				<input type="submit" value="검색">
+				<input class="pull-left" type="text" name="searchKeyword" title="검색어 입력" value="${param.searchKeyword }">
+				<input class="pull-left" type="submit" value="검색">
 			</form>
 		</div>		
 	
+	<div class="text-center">
+	<!-- 이전 블럭 처리 -->
+		<c:if test="${pagingInfo.firstPage>1 }">
+			<a href="#" onclick="pageProc(${pagingInfo.firstPage-1})">
+				<img src="<c:url value='/resources/images/leftbtn.PNG'/>">
+			</a>
+		</c:if>
 	<!-- 게시판 페이징 처리 -->
-		<div class="text-center">
-			<ul class="pagination">
-				<li><a href='#'>1</a></li>
-				<li><a href='#'>2</a></li>
-				<li><a href='#'>3</a></li>
-				<li><a href='#'>4</a></li>
-				<li><a href='#'>5</a></li>
-			</ul>
-		</div>
+	<ul class="pagination">
+		<c:forEach var="i" begin="${pagingInfo.firstPage }" end="${pagingInfo.lastPage }">
+				<c:if test="${i ==pagingInfo.currentPage }">
+					<li><a>${i}</a></li>
+				</c:if>
+				
+				<c:if test="${i!=pagingInfo.currentPage }">
+					<li><a href="#" onclick="pageProc(${i})"> ${i}</a></li>
+				</c:if>
+		</c:forEach>
+	</ul> 
+	<!--다음 블럭 처리-->
+	<c:if test="${pagingInfo.lastPage < pagingInfo.totalPage }">
+		<a href="#" onclick="pageProc(${pagingInfo.lastPage+1})">
+			<img src="<c:url value='/resources/images/rightbtn.PNG'/>">
+		</a>
+	</c:if>
+	
+		 </div>
 	</div>
 </body>
 </html>

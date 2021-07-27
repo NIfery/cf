@@ -3,8 +3,14 @@ package com.it.cf.admin.model;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.jdbc.SQL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.common.SearchVO;
 import com.it.cf.user.model.UserVO;
 
@@ -14,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService{
 	
+	private static final Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
+
 	private final AdminDAO adminDao;
 	
 	@Override
@@ -51,7 +59,6 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public int selectTotalRecord(SearchVO searchVo) {
-		// TODO Auto-generated method stub
 		return adminDao.selectTotalRecord(searchVo);
 	}
 
@@ -64,6 +71,31 @@ public class AdminServiceImpl implements AdminService{
 	public AdminVO selectByUserid(String adminId) {
 		return adminDao.selectByUserid(adminId);
 	}
+
+	@Override
+	@Transactional
+	public int deleteUserMulti(List<UserVO> list) {
+		logger.info("deleteUserMulti list.size={}",list.size());
+		int cnt=0;
+		try {
+			for(UserVO vo : list) {
+				int userNo=vo.getUserNo();
+				logger.info("deleteUserMulti messageNo={}",userNo);
+				if(userNo!=0) {  //체크한 상품만 삭제
+					logger.info("deleteUserMulti, messageNo={}",userNo);
+					cnt=adminDao.deleteUser(userNo);
+					logger.info("deleteUserMulti cnt={}",cnt);
+				}
+			}
+		}catch(RuntimeException e) {
+			e.printStackTrace();
+			cnt=-1;
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		}
+		logger.info("cnt={}",cnt);
+		return cnt;
+	}
+
 
 
 

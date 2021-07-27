@@ -3,6 +3,7 @@ package com.it.cf.admin.model;
 import java.util.List;
 import java.util.Map;
 
+import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.common.SearchVO;
 import com.it.cf.user.model.UserVO;
 
@@ -19,4 +20,6 @@ public interface AdminService {
 	int selectTotalRecord(SearchVO searchVo);
 	int idDuplChk(String adminId);
 	AdminVO selectByUserid(String adminId);
+	int deleteUserMulti(List<UserVO> list);
+	
 }

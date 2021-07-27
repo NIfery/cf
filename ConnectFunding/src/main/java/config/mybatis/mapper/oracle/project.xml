@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.it.cf.project.model.ProjectDAO">	
+<mapper namespace="com.it.cf.project.model.ProjectDAO">
 	<select id="selectAll" parameterType="pageVo" resultType="projectVo">
 		select *
 		from
@@ -10,8 +10,14 @@
 			select rownum as RNUM, A.*
 			from
 			(	
-				select * from PROJECT
-				order by PROJECT_NO desc
+				select * from PROJECT p
+                left join 
+                (
+                    select project_no, sum(funding_amount) as totalFundingAmount from funding_list
+                    group by project_no
+                )t
+                on p.project_no=t.project_no
+				order by p.PROJECT_NO desc
 			)A
 		)
 		<![CDATA[
@@ -21,19 +27,32 @@
 	</select>
 	
 	<select id="selectBySecondCategoryNo" parameterType="pageVo" resultType="projectVo">
-		select *
+        select *
 		from
 		(
-			select rownum as RNUM, A.*
+        	select rownum as RNUM, C.*
 			from
 			(	
-				select * from PROJECT
+        		select * from
+        		(
+        			select p.*, s.first_category_no from PROJECT p join second_category s
+        			on p.second_category_no=s.second_category_no
+        		)A
+		        left join        
+		        (
+			        select project_no, sum(funding_amount) as totalFundingAmount from funding_list
+			        group by project_no
+        		)B
+		        on a.project_no=b.project_no
+				<if test="firstCategoryNo!=0">
+					where first_category_no=#{firstCategoryNo}
+				</if>
 				<if test="secondCategoryNo!=0">
 					where second_category_no=#{secondCategoryNo}
 				</if>
-				order by PROJECT_NO desc
-			)A
-		)
+		        order by a.project_no desc
+        	)C
+        )        
 		<![CDATA[
 		where RNUM > #{firstRecordIndex}
 		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
@@ -48,18 +67,30 @@
 	<select id="selectSecondCategory" parameterType="string" resultType="secondCategoryVo">
 		select s.*,f.category_name from second_category s join first_category f
 		on s.first_category_no=f.first_category_no
+		<if test="firstCategory!='total'">
 		and f.category_name=#{firstCategory}
+		</if>
 		order by s.second_category_no
+	</select>
+	
+	<select id="selectFirstCategoryNo" parameterType="int" resultType="string">
+		select f.category_name from second_category s join first_category f
+		on s.first_category_no=f.first_category_no
+		and s.second_category_no=#{secondCategoryNo}
 	</select>
 	
 	<select id="selectTotalRecord" resultType="int">
 		select count(*) from PROJECT
 	</select>
 	
-	<select id="selectTotalRecordBySecondCategoryNo" parameterType="int" resultType="int">
-		select count(*) from PROJECT
+	<select id="selectTotalRecordBySecondCategoryNo" parameterType="map" resultType="int">
+		select count(*) from PROJECT p join second_category s
+		on p.second_category_no=s.second_category_no
+		<if test="firstCategoryNo!=0">
+			where first_category_no=#{firstCategoryNo}
+		</if>
 		<if test="secondCategoryNo!=0">
-			where second_category_no=#{secondCategoryNo}
+			where p.second_category_no=#{secondCategoryNo}
 		</if>
 	</select>
 	
@@ -68,26 +99,78 @@
 		where FUNDING_NO=#{fundingNo}
 	</select>
 	
-	<insert id="createTotalFunding" >
-		insert into TOTAL_FUNDING(FUNDING_NO)
-		values(total_funding_seq.nextval)
-	</insert>
-	
 	<insert id="insertProject" parameterType="projectVo">
 		insert into PROJECT(PROJECT_NO,PROJECT_NAME,project_summary,project_content,PROJECT_IMAGE,
-			TOTAL_AMOUNT,PROJECT_STARTDATE,PROJECT_ENDDATE,USER_NO,FUNDING_NO,second_category_no) 
+			TOTAL_AMOUNT,PROJECT_STARTDATE,PROJECT_ENDDATE,USER_NO,second_category_no) 
 		values(project_seq.nextval,#{projectName},#{projectSummary},#{projectContent},#{projectImage},
 			#{totalAmount},#{projectStartdate},
-			#{projectEnddate},1,total_funding_seq.currval,#{secondCategoryNo})
+			#{projectEnddate},1,#{secondCategoryNo})
 	</insert>
 	
+	<resultMap id="DetailResultMap" type="HashMap">
+		<result column="PROJECT_NO" jdbcType="BIGINT" property="PROJECT_NO"/>
+		<result column="PROJECT_NAME" jdbcType="VARCHAR" property="PROJECT_NAME"/>
+		<result column="PROJECT_SUMMARY" jdbcType="CLOB" property="PROJECT_SUMMARY" javaType="java.lang.String"/>
+		<result column="PROJECT_CONTENT" jdbcType="CLOB" property="PROJECT_CONTENT" javaType="java.lang.String"/>
+		<result column="PROJECT_IMAGE" jdbcType="VARCHAR" property="PROJECT_IMAGE"/>
+		<result column="PROJECT_FILENAME" jdbcType="VARCHAR" property="PROJECT_FILENAME"/>
+		<result column="TOTAL_AMOUNT" jdbcType="BIGINT" property="TOTAL_AMOUNT" javaType="double"/>
+		<result column="PROJECT_STARTDATE" jdbcType="TIMESTAMP" property="PROJECT_STARTDATE"/>
+		<result column="PROJECT_ENDDATE" jdbcType="TIMESTAMP" property="PROJECT_ENDDATE"/>
+		<result column="USER_NO" jdbcType="BIGINT" property="USER_NO"/>
+		<result column="FUNDING_NO" jdbcType="BIGINT" property="FUNDING_NO"/>
+		<result column="SECOND_CATEGORY_NO" jdbcType="BIGINT" property="SECOND_CATEGORY_NO"/>
+		<result column="USER_NAME" jdbcType="VARCHAR" property="USER_NAME"/>
+		<result column="TOTAL_FUNDING_AMOUNT" jdbcType="BIGINT" property="TOTAL_FUNDING_AMOUNT" javaType="double"/>
+	</resultMap>
+	
+	<select id="selectByNo" parameterType="int" resultMap="DetailResultMap">
+		select A.*,t.total_funding_amount from 
+			(
+				select p.*, u.USER_NAME from PROJECT p join USERS u
+				on p.USER_NO=u.USER_NO
+			)A left join (select project_no, sum(funding_amount) as total_funding_amount from funding_list
+                group by project_no) t
+        on a.project_no=t.project_no
+        where A.PROJECT_NO=#{projectNo}
+	</select>
+	
+	<select id="selectFundingUserCount" parameterType="int" resultType="int">
+		select count(distinct user_no) from funding_list
+		where project_no=#{projectNo}
+	</select>
+	
+	<update id="updateProject" parameterType="projectVo">
+		update PROJECT
+		set PROJECT_NAME=#{projectName},project_summary=#{projectSummary},project_content=#{projectContent}
+		,TOTAL_AMOUNT=#{totalAmount},PROJECT_STARTDATE=#{projectStartdate},PROJECT_ENDDATE=#{projectEnddate}
+		,second_category_no=#{secondCategoryNo}
+		where project_no=#{projectNo}
+	</update>
+	
+	<select id="selectDBPwd" parameterType="int" resultType="string">
+		select user_pwd from users
+		where user_no=#{userNo}
+	</select>
+	<delete id="deleteFundingList" parameterType="int">
+		delete from FUNDING_LIST
+		where project_no=#{projectNo}
+	</delete>
+	<delete id="deleteProject" parameterType="int">
+		delete from PROJECT
+		where project_no=#{projectNo}
+	</delete>
+	
+	<insert id="insertFunding" parameterType="FundingListVo">
+		<selectKey keyProperty="fundingListNo" resultType="int" order="BEFORE">
+			select FUNDING_LIST_SEQ.nextval from dual 
+		</selectKey>
+		insert into funding_list(FUNDING_LIST_NO, FUNDING_AMOUNT, PROJECT_NO, USER_NO, RECEIPT_ID)
+		values(#{fundingListNo}, #{fundingAmount}, #{projectNo}, #{userNo}, #{receiptId})
+	</insert>
+	
+	<delete id="deleteFunding" parameterType="string">
+		delete from FUNDING_LIST
+		where RECEIPT_ID=#{receiptId}
+	</delete>
 </mapper>
-
-
-
-
-
-
-
-
-

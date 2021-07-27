@@ -56,7 +56,11 @@
 	
 	<select id = "idDuplChk" parameterType = "String" resultType = "int">
     	SELECT COUNT(*) FROM admin WHERE admin_id = #{adminId}
-</select>
+	</select>
+	
+	<delete id="deleteUser" parameterType="int">
+		delete from users where user_no=#{userNo}
+	</delete>
 </mapper>
 
 

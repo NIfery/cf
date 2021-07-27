@@ -6,13 +6,13 @@
 <script type="text/javascript">
 	$(function(){
 		$('form[name=frmChat]').submit(function(){
-			if($('#title').val().length<1){
+			if($('#messageTitle').val().length<1){
 				alert('제목을 입력하세요');
-				$('#title').focus();
+				$('#messageTitle').focus();
 				return false;
-			}else if($('#content').val().length<1){
+			}else if($('#messageContent').val().length<1){
 				alert('내용을 입력하세요');
-				$('#content').focus();
+				$('#messageContent').focus();
 				return false;
 			}
 		});
@@ -35,9 +35,9 @@
 				</div>
 				
 				<br>
-				<h3 class="title-5 m-b-35">답변</h3>
 				
 				<div class="border border-warning p-3">
+				<h3 class="title-5 m-b-35">답변</h3>
 				<form name="frmChat" method="post" action="<c:url value='/chat/adminEdit?messageNo=${receiveVo.messageNo }'/>">
 				<div class="form-group">
 				<input type="hidden" name="messageNo" value="${receiveVo.messageNo }">

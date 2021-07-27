@@ -3,6 +3,11 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.it.cf.chat.model.MessageDAO">
+	<sql id="searchWhere">
+		<if test="searchKeyword!=null and searchKeyword!=''">
+			and ${searchCondition}  like '%' || #{searchKeyword} || '%'
+		</if>
+	</sql>
 	<insert id="insertChat" parameterType="messageSendVo" >
 		<selectKey keyProperty="messageNo" resultType="int" order="BEFORE">
 			select MESSAGENO_SEQ.nextval from dual
@@ -16,24 +21,54 @@
 		values(#{messageNo},#{messageTitle},#{messageContent})
 	</insert>
 	
-	<select id="sentAll" parameterType="int" resultType="messageSendVo">
-		select * from MESSAGE_SEND
-		where USER_NO=#{userNo} order by MESSAGE_NO desc
+	<select id="sentAll" parameterType="searchVo" resultType="messageSendVo">
+		select *
+		from
+		(
+		    select rownum as RNUM,A.*
+		    from
+		    (
+		        select * from MESSAGE_SEND 
+		        where USER_NO=#{userNo}
+		        <include refid="searchWhere"></include>
+		        order by MESSAGE_REGDATE desc
+		    )A
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+
+	<select id="receiveAll" parameterType="searchVo" resultType="messageReceiveVo">
+		select *
+		from
+		(
+		    select rownum as RNUM,A.*
+		    from
+		    (
+		        select * from messageView 
+		        where USER_NO=#{userNo}
+		        <include refid="searchWhere"></include>
+		        order by MESSAGE_REGDATE desc
+		    )A
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
 	</select>
 	
-	<select id="receiveAll" parameterType="int" resultType="messageReceiveVo">
-		select * from messageView
-		where USER_NO=#{userNo} order by MESSAGE_NO desc
-	</select>
-	
-	<select id="sentCount" parameterType="int" resultType="int">
+	<select id="sentCount" parameterType="SearchVo" resultType="int">
 		select count(*) from MESSAGE_SEND
 		where USER_NO=#{userNo}
+		<include refid="searchWhere"></include>
 	</select>
 	
-	<select id="receiveCount" parameterType="int" resultType="int">
+	<select id="receiveCount" parameterType="SearchVo" resultType="int">
 		select count(*) from messageView
 		where USER_NO=#{userNo}
+		<include refid="searchWhere"></include>
 	</select>
 	
 	<delete id="deleteChat" parameterType="int">
@@ -61,8 +96,56 @@
 		where MESSAGE_NO=#{messageNo}
 	</update>
 	
-	<select id="receiveAdmin" resultType="messageSendVo">
-		select * from MESSAGE_SEND order by MESSAGE_REGDATE desc 
+	<select id="receiveAdmin" parameterType="searchVo" resultType="messageSendVo">
+		select *
+		from
+		(
+		    select rownum as RNUM,A.*
+		    from
+		    (
+		        select * from MESSAGE_SEND 
+		        where MESSAGE_REGDATE>=#{startDay}
+				<![CDATA[
+				and MESSAGE_REGDATE < TO_DATE(#{endDay}) + 1
+				]]>
+				<include refid="searchWhere"></include>
+		        order by MESSAGE_REGDATE desc
+		    )A
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="sentAdmin" parameterType="searchVo" resultType="messageReceiveVo">
+		select *
+		from
+		(
+		    select rownum as RNUM,A.*
+		    from
+		    (
+		        select * from messageView 
+				<if test="searchKeyword!=null and searchKeyword!=''">
+					where ${searchCondition}  like '%' || #{searchKeyword} || '%'
+				</if>
+		        order by MESSAGE_REGDATE desc
+		    )A
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="totalReceive" parameterType="SearchVo"
+		resultType="int">
+		select count(*) from MESSAGE_SEND 
+        where MESSAGE_REGDATE>=#{startDay}
+		<![CDATA[
+		and MESSAGE_REGDATE < TO_DATE(#{endDay}) + 1
+		]]>
+		<include refid="searchWhere"></include>
 	</select>
 	
 	<select id="receiveByMessageNo" parameterType="int" resultType="messageReceiveVo">

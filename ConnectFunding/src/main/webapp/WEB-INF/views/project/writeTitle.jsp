@@ -24,13 +24,17 @@
 				success:function(res){
 					var str="";
 					
-					str+="<select id='secondSelect' style='display:none;'></select>";
+					str+="<select id='secondSelect' name='secondCategoryNo' style='display:none;'>";
+					$.each(res, function(idx,item){
+						str+="<option value='"+item.secondCategoryNo+"'>"+item.categoryName+"</option>";
+					});
+					str+="</select>";
 					str+="<div class='nice-select' tabindex='0'>";
 					$.each(res, function(idx,item){
 						if(idx==0){
-							str+="<span class='current'>"+item.categoryName+"</span><ul class='list'><li data-value='"+item.categoryName+"' class='option selected'>"+item.categoryName+"</li>";
+							str+="<span class='current'>"+item.categoryName+"</span><ul class='list'><li data-value='"+item.secondCategoryNo+"' class='option selected'>"+item.categoryName+"</li>";
 						}else{
-							str+="<li data-value='"+item.categoryName+"' class='option'>"+item.categoryName+"</li>";
+							str+="<li data-value='"+item.secondCategoryNo+"' class='option'>"+item.categoryName+"</li>";
 						}
 					});
 					str+="</ul></div>";
@@ -60,8 +64,10 @@
 		
 		$('#totalAmount').keyup(function(){
 			var totalAmount = $(this).val();
-			$('#taxAmount').html(Math.round(totalAmount*0.05));
-			$('#realAmount').html(Math.round(totalAmount-$('#taxAmount').html()));
+			var taxAmount = AddComma(Math.round(totalAmount*0.05));
+			var realAmount = AddComma(Math.round(totalAmount-Math.round(totalAmount*0.05)));
+			$('#taxAmount').html(taxAmount);
+			$('#realAmount').html(realAmount);
 		});
 		
 		var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
@@ -102,6 +108,35 @@
 		       	}
 		    }
 		});
+		
+		$('form[name=frmWrite]').submit(function(){
+			var lenghtSummary = $('#taSummary').val().length;
+			if($('#projectName').val().length<1){
+				alert('제목을 입력하세요.');
+				$('#nav-home-tab').click();
+				return false;
+			}else if(lenghtSummary<10 || lenghtSummary>50){
+				alert('요약 내용은 10~50자만 입력이 가능합니다.');
+				$('#nav-home-tab').click();
+				return false;
+			}else if($('#totalAmount').val().length<1){
+				alert('펀딩 금액을 입력하세요.');
+				$('#nav-profile-tab').click();
+				return false;
+			}else if($('#projectStartdate').val().length<1){
+				alert('시작일을 입력하세요.');
+				$('#nav-profile-tab').click();
+				return false;
+			}else if($('#projectEnddate').val().length<1){
+				alert('종료일을 입력하세요.');
+				$('#nav-profile-tab').click();
+				return false;
+			}else if($('#summernote').val().length<1){
+				alert('상세내용을 입력하세요.');
+				$('#nav-contact-tab').click();
+				return false;
+			}
+		});
 	});
 	
 	function sendFile(file, el) {
@@ -117,13 +152,14 @@
 			processData : false,
 			success : function(img_name) {
 				var ttt="<img src='${pageContext.request.contextPath}/"+img_name+"'>";
-				alert(ttt);
-				$('#summernote').html(ttt);
-				$(el).summernote('editor.insertImage', ttt);
 				$(el).summernote('editor.insertImage', img_name);
-				$(el).summernote('editor.insertImage', img_name.url);
 			}
 		});
+	}
+	
+	function AddComma(num) {
+		var regexp = /\B(?=(\d{3})+(?!\d))/g;
+		return num.toString().replace(regexp, ',');
 	}
 </script>
 
@@ -330,10 +366,8 @@
                                     <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">기본정보</a>
                                     <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">펀딩 계획</a>
                                     <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">내용</a>
-                                    <a class="nav-item nav-link" id="nav-last-tab" data-toggle="tab" href="#nav-last" role="tab" aria-controls="nav-contact" aria-selected="false">Fashion</a>
-                                    <a class="nav-item nav-link" id="nav-Sports" data-toggle="tab" href="#nav-nav-Sport" role="tab" aria-controls="nav-contact" aria-selected="false">Sports</a>
-                                    <a class="nav-item nav-link" id="nav-technology" data-toggle="tab" href="#nav-techno" role="tab" aria-controls="nav-contact" aria-selected="false">Technology</a>
-                                </div>
+									<input class="btn btn-default" type="submit" value="등록"/>
+								</div>
                             </nav>
                             <!--End Nav Button  -->
                     </div>
@@ -413,8 +447,8 @@
 															    <div class="col">카테고리</div>
 															</div> -->
 										                    <div class="row row-cols-1">
-																<input type="text" name="projectName" placeholder="제목을 입력하세요"
-																	onfocus="this.placeholder = ''" onblur="this.placeholder = '제목을 입력하세요'" required
+																<input type="text" name="projectName" id="projectName" placeholder="제목을 입력하세요"
+																	onfocus="this.placeholder = ''" onblur="this.placeholder = '제목을 입력하세요'"
 																	class="single-input" style="background-color: #fff;border-radius: 5px;border: solid 1px #e8e8e8;">
 															</div>
 									                    </div>
@@ -467,7 +501,6 @@
 											                        <h6 style="color:gray">후원자들이 프로젝트의 내용을 쉽게 파악하고<br>
 											                        좋은 인상을 받을 수 있도록 대표 이미지를 설정해주세요.</h6>
 											                        <br><br>
-											                        <input type="submit" value="테스트"/>
 									                            </div>
 									                        </div>
 									                    </div>
@@ -507,7 +540,6 @@
 										                    <div class="row row-cols-1" style="width:60%;background:#ff00000d;font-size:0.8em;margin-left:3%;padding:3%;">
 										                    	<div class="col" style="color:red">주의사항</div>
 										                    		<ul style="margin-left:5%">
-										                    			<li style="list-style: disc">종료일까지 목표금액을 달성하지 못하면 후원자 결제가 진행되지 않습니다.</li>
 										                    			<li style="list-style: disc">종료 전 후원 취소를 대비해 10% 이상 초과 달성을 목표로 해주세요.</li>
 										                    			<li style="list-style: disc">제작비, 인건비, 예비 비용 등을 함께 고려해주세요.</li>
 										                    		</ul>
@@ -520,7 +552,7 @@
 															</div>
 										                    <div class="row row-cols-1">
 										                    	<input type="text" name="totalAmount" id="totalAmount" placeholder="목표금액을 입력하세요"
-										                    		onfocus="this.placeholder = ''" onblur="this.placeholder = '목표금액을 입력하세요'" required
+										                    		onfocus="this.placeholder = ''" onblur="this.placeholder = '목표금액을 입력하세요'" 
 										                    		oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
 										                    		class="single-input" style="background-color: #fff;border-radius: 5px;border: solid 1px #e8e8e8;text-align:right;">
 															</div>
@@ -593,7 +625,27 @@
 										                        </div>
 									                        </div>
 										                    <div class="row row-cols-1" style="background: white">
-										                    	<textarea id="summernote" name="projectContent"></textarea>	
+										                    	<textarea id="summernote" name="projectContent"><h4 style="margin-left: 100px;"><b><span style="font-family: " arial="" black";"="">프로젝트 소개</span></b></h4><p style="margin-left: 100px;">
+
+- 무엇을 만들기 위한 프로젝트인가요? 이 프로젝트의 특별한 점은 무엇인가요?</p><p style="margin-left: 100px;">
+- 기획, 구상부터 디자인, 시제품 제작에 오기까지 그간의 고민, 시행착오 등 고유한 창작 '과정'이 잘 드러나도록 스토리를 작성해 주세요.
+</p><p style="margin-left: 100px;">- 샘플이나 콘텐츠 미리보기 이미지를 포함해 주세요. 매력적인 이미지는 후원자 참여에 중요한 역할을 합니다.<br></p><p><br></p><h4 style="margin-left: 100px;"><b>
+프로젝트 예산</b></h4><p style="margin-left: 100px;">
+
+- 설정하신 목표 금액을 제작에 어떻게 사용할 것인지 알려주세요.</p><p style="margin-left: 100px;">
+- 이번 프로젝트 제작에 필요한 비용을 '인건비', '배송비', '인쇄비', '대관료'와 같이 구체적으로 작성하셔야 합니다.</p><p style="margin-left: 100px;">
+- 이번 프로젝트 제작과 무관한 계획(예시: 기부, 다음 프로젝트에 사용, 목표 금액 초과 달성분의 활용)은 포함하지 않으셔도 됩니다.
+</p><p style="margin-left: 100px;"><br></p><h4 style="margin-left: 100px;"><b>
+제작 일정
+</b></h4><p style="margin-left: 100px;">
+- 현재 프로젝트가 어디까지 진행되었나요? 구상 단계인지, 시제품이나 파일럿 등 가안 제작 단계인지 정확히 알려주세요.
+</p><p style="margin-left: 100px;">- 펀딩에 성공한다면 어떤 일정으로 제작을 완수할 계획인가요? 완성까지 필요한 중간 단계들을 어떠한 일정으로 완수하여 선물의 '예상 전달일'을 지킬 것인지 구체적인 날짜와 함께 적어주세요.
+</p><p style="margin-left: 100px;"><br></p><h4 style="margin-left: 100px;"><b>
+후원자 안내
+</b></h4><p style="margin-left: 100px;">
+- 손상되기 쉬운 선물의 포장·전달 방법이나 행사 일정/장소, 디지털 파일 전달할 방법 등을 짚어 주세요.
+</p><p style="margin-left: 100px;">- 문의 방법(창작자에게 문의하기)이나 환불 교환 정책, 상품 정보 고시는 별도의 기능이 있으므로 스토리에 또 기재하지 않아도 됩니다.
+</p><p style="margin-left: 100px;">- 그 밖에 후원자들에게 전하고 싶은 말이 있나요?<br></p></textarea>	
 									                        </div>
 									                        <br><br>
 									                    
@@ -601,159 +653,6 @@
 									    		</div>   
 									    	</div>   
 									    </div> 
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- card fure -->
-                            <div class="tab-pane fade" id="nav-last" role="tabpanel" aria-labelledby="nav-last-tab">
-                                <div class="whats-news-caption">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews1.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews2.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews3.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews4.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- card Five -->
-                            <div class="tab-pane fade" id="nav-nav-Sport" role="tabpanel" aria-labelledby="nav-Sports">
-                                <div class="whats-news-caption">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews1.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews2.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews3.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews4.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- card Six -->
-                            <div class="tab-pane fade" id="nav-techno" role="tabpanel" aria-labelledby="nav-technology">
-                                <div class="whats-news-caption">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews1.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews2.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews3.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div class="single-what-news mb-100">
-                                                <div class="what-img">
-                                                    <img src="assets/img/news/whatNews4.jpg" alt="">
-                                                </div>
-                                                <div class="what-cap">
-                                                    <span class="color1">Night party</span>
-                                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

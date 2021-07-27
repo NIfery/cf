@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.common.SearchVO;
 import com.it.cf.user.model.UserVO;
 
@@ -18,4 +19,6 @@ public interface AdminDAO {
 	int selectTotalRecord(SearchVO searchVo);
 	int idDuplChk(String adminId);
 	AdminVO selectByUserid(String adminId);
+	void deleteMember(String no);
+	int deleteUser(int userNo);
 }

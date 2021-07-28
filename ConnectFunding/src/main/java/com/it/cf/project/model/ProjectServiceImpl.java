@@ -75,4 +75,8 @@ public class ProjectServiceImpl implements ProjectService{
 	public int insertFunding(FundingListVO vo) {
 		return projectDao.insertFunding(vo);
 	}
+	
+	public int deleteFunding(String receiptId) {
+		return projectDao.deleteFunding(receiptId);
+	}
 }

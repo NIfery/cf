@@ -5,7 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="../include/top.jsp" %>
 <script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
-<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<script src="https://cdn.bootpay.co.kr/js/bootpay-3.3.2.min.js" type="application/javascript"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(function(){
@@ -19,6 +19,13 @@
 			}		
 		});
 		
+		$('#btFundingModal').click(function(){
+			if($('#userNo').val().length<1){
+				alert('먼저 로그인하세요');
+				return false;
+			}
+		});
+		
 		$("#btFunding").click(function(){
 			if($('#amount').val().length<1){
 				alert('후원금을 입력해주세요');
@@ -27,6 +34,7 @@
 			
 			$('#fdAmount').val($('#amount').val());
 			
+			var userNo = $('#userNo').val();
 			var userName = $('#userName').val();
 			var userHp = $('#userHp').val();
 			var userZipcode = $('#userZipcode').val();
@@ -35,14 +43,65 @@
 			var projectNo = $('#projectNo').val();
 			var fdAmount = $('#fdAmount').val();
 			
-			var IMP = window.IMP;
-			IMP.init("imp29215346");
+			
+			var merchantUid = 'merchant_' + userNo + '_' + new Date().getTime();
+			var customerUid = 'customer_' + userNo + '_' + new Date().getTime();
+			
+			
+			BootPay.request({
+				price: fdAmount, //실제 결제되는 가격
+				application_id: "60ffa2837b5ba400237bda10",
+				name: projectName, //결제창에서 보여질 이름
+				pg: 'inicis',
+				method: 'card', //결제수단, 입력하지 않으면 결제수단 선택부터 화면이 시작합니다.
+				show_agree_window: 0, // 부트페이 정보 동의 창 보이기 여부
+				user_info: {
+					username: userName,
+					addr: userAddress,
+					phone: userHp
+				},
+				order_id: merchantUid, //고유 주문번호로, 생성하신 값을 보내주셔야 합니다.
+				params: {callback1: '그대로 콜백받을 변수 1', callback2: '그대로 콜백받을 변수 2', customvar1234: '변수명도 마음대로'}
+			}).error(function (data) {
+				//결제 진행시 에러가 발생하면 수행됩니다.
+				console.log(data);
+			}).cancel(function (data) {
+				//결제가 취소되면 수행됩니다.
+				console.log(data);
+			}).ready(function (data) {
+				// 가상계좌 입금 계좌번호가 발급되면 호출되는 함수입니다.
+				console.log(data);
+			}).confirm(function (data) {
+				//결제가 실행되기 전에 수행되며, 주로 재고를 확인하는 로직이 들어갑니다.
+				//주의 - 카드 수기결제일 경우 이 부분이 실행되지 않습니다.
+				console.log(data);
+				var enable = true; // 재고 수량 관리 로직 혹은 다른 처리
+				if (enable) {
+					BootPay.transactionConfirm(data); // 조건이 맞으면 승인 처리를 한다.
+				} else {
+					BootPay.removePaymentWindow(); // 조건이 맞지 않으면 결제 창을 닫고 결제를 승인하지 않는다.
+				}
+			}).close(function (data) {
+			    // 결제창이 닫힐때 수행됩니다. (성공,실패,취소에 상관없이 모두 수행됨)
+			    console.log(data);  
+			    
+			    $('#btFundingModalClose').click();
+			    $('#amount').val('');
+			}).done(function (data) {
+				//결제가 정상적으로 완료되면 수행됩니다
+				//비즈니스 로직을 수행하기 전에 결제 유효성 검증을 하시길 추천합니다.
+				location.href="<c:url value='/project/detailFunding?projectNo="+projectNo+"&fdAmount="+fdAmount+"&receiptId="+data.receipt_id+"'/>";
+			    
+				console.log(data);
+			});
+			
 			
 			// IMP.request_pay(param, callback) 호출
-			IMP.request_pay({ // param
+			/* IMP.request_pay({ // param
 				pg: "html5_inicis", // PG사 선택
 			    pay_method: "card", // 지불 수단
-			    merchant_uid: 'merchant_' + new Date().getTime(), //가맹점에서 구별할 수 있는 고유한id
+			    merchant_uid: merchantUid, //가맹점에서 구별할 수 있는 고유한id
+			    customer_uid: customerUid,
 			    name: projectName, // 상품명
 			    amount: fdAmount, // 가격
 			    buyer_email: "test@test.com",
@@ -53,20 +112,26 @@
 			}, function (rsp) { // callback
 			    if (rsp.success) {
 			        // 결제 성공 시 로직,
-			        alert('후원에 감사드립니다.');
+			        jQuery.ajax({
+				        url: "https://www.myservice.com/billings/", // 서비스 웹서버
+				        method: "POST",
+				        headers: { "Content-Type": "application/json" },
+				        data: {
+				        	customer_uid: customerUid, // 카드(빌링키)와 1:1로 대응하는 값
+				        }
+				    });
 			        
-			        location.href="<c:url value='/project/detailFunding?projectNo="+projectNo+"&fdAmount="+fdAmount+"'/>";
+			        alert('빌링성공');
+			        //location.href="<c:url value='/project/detailFunding?projectNo="+projectNo+"&fdAmount="+fdAmount+"'/>";
 			        
 			        $('#btFundingModalClose').click();
 			        $('#amount').val('');
 			    } else {
-			        // 결제 실패 시 로직,
 			        $('#btFundingModalClose').click();
 			        $('#amount').val('');
 			    }
-			});
+			}); */
 		});
-
 	});
 	
 	function getFormatDate(date){
@@ -100,6 +165,7 @@
                   	<!-- hidden inform -->
                   	<input type="hidden" id="projectNo" value="${map['PROJECT_NO']}">
                   	<input type="hidden" id="projectName" value="${map['PROJECT_NAME']}">
+                  	<input type="hidden" id="userNo" value="${userVo.userNo}">
                   	<input type="hidden" id="userName" value="${userVo.userName}">
                   	<input type="hidden" id="userHp" value="${userVo.userHp}">
                   	<input type="hidden" id="userZipcode" value="${userVo.userZipcode}">
@@ -159,7 +225,7 @@
 						    	<div class="row row-cols-1">
 						    		<div style="background: white;border:2px solid #e4e1e1">
 						    			펀딩 진행중<br>
-										목표 금액 ${map['TOTAL_AMOUNT'] }원
+										목표 금액 <fmt:formatNumber value="${map['TOTAL_AMOUNT']}" pattern="#,###"/>원
 						    		</div>
 						    	</div>
 						    	<br>
@@ -170,7 +236,7 @@
 										</c:if>
 										<c:if test="${ckTodayDate>=strDate }">
 											<c:if test="${ckTodayDate<=endDate }">
-									    		<a href="#" data-toggle="modal" data-target="#myModal">후원하기</a>
+									    		<a href="#" data-toggle="modal" data-target="#myModal" id="btFundingModal">후원하기</a>
 								    			<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog"
 													aria-labelledby="staticBackdropLabel" aria-hidden="true">
 													<div class="modal-dialog" role="document">

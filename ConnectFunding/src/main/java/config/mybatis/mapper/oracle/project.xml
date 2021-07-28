@@ -165,16 +165,12 @@
 		<selectKey keyProperty="fundingListNo" resultType="int" order="BEFORE">
 			select FUNDING_LIST_SEQ.nextval from dual 
 		</selectKey>
-		insert into funding_list(FUNDING_LIST_NO, FUNDING_AMOUNT, PROJECT_NO, USER_NO)
-		values(#{fundingListNo}, #{fundingAmount}, #{projectNo}, #{userNo})
+		insert into funding_list(FUNDING_LIST_NO, FUNDING_AMOUNT, PROJECT_NO, USER_NO, RECEIPT_ID)
+		values(#{fundingListNo}, #{fundingAmount}, #{projectNo}, #{userNo}, #{receiptId})
 	</insert>
+	
+	<delete id="deleteFunding" parameterType="string">
+		delete from FUNDING_LIST
+		where RECEIPT_ID=#{receiptId}
+	</delete>
 </mapper>
-
-
-
-
-
-
-
-
-

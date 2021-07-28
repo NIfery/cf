@@ -3,17 +3,16 @@ package com.it.cf.project.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -23,14 +22,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.it.cf.project.model.ProjectFileUploadUtil;
+import com.it.cf.bootpay.BootpayApi;
+import com.it.cf.bootpay.model.request.Cancel;
 import com.it.cf.fdList.model.FundingListVO;
 import com.it.cf.project.model.FirstCategoryVO;
+import com.it.cf.project.model.ProjectFileUploadUtil;
 import com.it.cf.project.model.ProjectPageInfo;
 import com.it.cf.project.model.ProjectService;
 import com.it.cf.project.model.ProjectUtil;
@@ -50,6 +50,8 @@ public class ProjectController {
 	private final ProjectService projectService;
 	private final UserService userService;
 	private final ProjectFileUploadUtil fileUploadUtil;
+	
+	static BootpayApi api;
 	
 	@RequestMapping("/list")
 	public String list(@ModelAttribute ProjectVO pageVo, Model model) {
@@ -222,7 +224,10 @@ public class ProjectController {
 	@RequestMapping("/detail")
 	public String detail(@RequestParam(defaultValue = "0") int projectNo, 
 			HttpSession session, Model model) {
-		int userNo = (int) session.getAttribute("userNo");
+		int userNo=0;
+		if(session.getAttribute("userNo")!=null && session.getAttribute("userNo")!="") {
+			userNo = (int) session.getAttribute("userNo");
+		}
 		logger.info("프로젝트 상세화면, 파라미터 projectNo={}, userNo={}", projectNo, userNo);
 		
 		UserVO userVo = userService.selectByNo(userNo);
@@ -241,20 +246,63 @@ public class ProjectController {
 	
 	@RequestMapping("/detailFunding")
 	public String detailFunding(@RequestParam(defaultValue = "0") int projectNo, 
-			@RequestParam(defaultValue = "0") int fdAmount, 
+			@RequestParam(defaultValue = "0") int fdAmount, @RequestParam String receiptId,
 			HttpSession session) {
 		int userNo = (int) session.getAttribute("userNo");
-		logger.info("프로젝트 펀딩 요청, 파라미터 projectNo={}, userNo={}, fdAmount={}", projectNo, userNo, fdAmount);
+		logger.info("프로젝트 펀딩 요청, 파라미터 projectNo={}, userNo={}, fdAmount={}, receiptId={}", projectNo, userNo, fdAmount, receiptId);
 		
 		FundingListVO vo = new FundingListVO();
 		vo.setProjectNo(projectNo);
 		vo.setUserNo(userNo);
 		vo.setFundingAmount(fdAmount);
+		vo.setReceiptId(receiptId);
 		
 		int cnt = projectService.insertFunding(vo);
 		logger.info("프로젝트 펀딩 결과, cnt={}", cnt);
 		
 		return "redirect:/project/detail?projectNo="+projectNo;
+	}
+	
+	@RequestMapping("/cancle")
+	public String cancle(@RequestParam int userNo, @RequestParam String receiptId,
+			@RequestParam String pwd, Model model) {
+		logger.info("환불 요청 파라미터, userNo={}, pwd={}, receiptId={}", userNo,pwd,receiptId);
+		
+		
+		String msg="", url="/mypages/support";
+		String dbPwd = projectService.selectDBPwd(userNo);
+		if(dbPwd.equals(pwd)) {
+			api = new BootpayApi("60ffa2837b5ba400237bda13", "aAx7mTvRBnDZtARKP/FlAH3GjL6KmRyqFpH8k+8fzmg=");  // application_id, private key 
+			try {
+				api.getAccessToken();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Cancel cancel = new Cancel();
+	        cancel.receipt_id = receiptId;
+	        cancel.name = "관리자 테스트";
+	        cancel.reason = "취소요청 테스트";
+
+	        try {
+	            HttpResponse res = api.cancel(cancel);
+	            String str = IOUtils.toString(res.getEntity().getContent(), "UTF-8");
+	            System.out.println(str);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        
+	        int cnt = projectService.deleteFunding(receiptId);
+	        logger.info("환불 결과, cnt={}", cnt);
+	        
+			msg="환불되었습니다.";
+		}else {
+			msg="비밀번호가 일치하지 않습니다."; 
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
 	}
 
 	@GetMapping("/update")

@@ -113,7 +113,10 @@
 									str+="<h4><a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'>"+item.projectName+"</a></h4>";
 									str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
 									str+="<h6>"+item.projectSummary+"</h6>";
-									str+="<hr style='margin:5px 0px 8px 0px;'>";
+									
+									str+="<div class='percentage'><div class='progress' style='background:#eceff8;height: 0.3em;'>";
+									str+="<div class='progress-bar color-1' role='progressbar' style='width: "+(item.totalFundingAmount/+item.totalAmount*100).toFixed(2)+"%' aria-valuenow='80' aria-valuemin='0' aria-valuemax='100'></div></div></div>";
+									
 									str+="<h6>"+AddComma(item.totalFundingAmount)+"원<span style='color:red;font-size:0.8em'>"+(item.totalFundingAmount/+item.totalAmount*100).toFixed(2)+"%</span></h6>";
 									str+="</div></div>";
 								}
@@ -121,7 +124,7 @@
 							str+="</div></div></div></div></div>";
 							if(list.length>4){
 								str+="<div class='container'><div class='weekly2-wrapper'><div class='row'>";
-								str+="<div class='col-lg-12'><div class='section-tittle mb-30'><br><br></div></div></div>";
+								str+="<div class='col-lg-12'><div class='section-tittle mb-30'></div></div></div>";
 								str+="<div class='row'><div class='col-12'>";
 								str+="<div class='dot-style d-flex dot-style'>";
 								$.each(list, function(idx,item){
@@ -132,7 +135,10 @@
 										str+="<h4><a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'>"+item.projectName+"</a></h4>";
 										str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
 										str+="<h6>"+item.projectSummary+"</h6>";
-										str+="<hr style='margin:5px 0px 8px 0px;'>";
+
+										str+="<div class='percentage'><div class='progress' style='background:#eceff8;height: 0.3em;'>";
+										str+="<div class='progress-bar color-1' role='progressbar' style='width: "+(item.totalFundingAmount/+item.totalAmount*100).toFixed(2)+"%' aria-valuenow='80' aria-valuemin='0' aria-valuemax='100'></div></div></div>";
+										
 										str+="<h6>"+AddComma(item.totalFundingAmount)+"원<span style='color:red;font-size:0.8em'>"+(item.totalFundingAmount/+item.totalAmount*100).toFixed(2)+"%</span></h6>";
 										str+="</div></div>";
 									}
@@ -142,26 +148,40 @@
 							
 							//페이징처리
 						    var pageStr="";
-
 							
-//============================================이전버튼 만들어야함============================================
-							
+							pageStr += "<br><br><br><div class='pagination-area pb-45 text-center'><div class='container'>";
+							pageStr += "<div class='row'><div class='col-xl-12'><div class='single-wrap d-flex justify-content-center'>";
+							pageStr += "<nav aria-label='Page navigation example'><ul class='pagination justify-content-start'>";
+							if(pagingInfo.firstPage>1){
+								pageStr += "<li class='page-item'><a class='page-link' href='#' onclick='pageProc("+(pagingInfo.firstPage-1)+")'><span class='flaticon-arrow roted'></span></a></li>";
+							}
 							
 							//[1][2][3][4][5][6][7][8][9][10]
 							for (var i = pagingInfo.firstPage; i <= pagingInfo.lastPage; i++) {
 								if (i == pagingInfo.currentPage) {
-									pageStr += "<span style='color:blue;font-weight: bold'>" + i
-											+ "</span>";
+									pageStr += "<li class='page-item active'><a class='page-link'>";
+									if(i<10){
+										pageStr += "0"+i;
+									}else{
+										pageStr += i;
+									}
+									pageStr += "</a></li>";
 								} else {
-									pageStr += "<a style='color:black;text-decoration: none' href='#' onclick='send("+i+");test("+type1+","+type2+")'>[" + i
-											+ "]</a>";
+									pageStr += "<li class='page-item'><a class='page-link' href='#' onclick='send("+i+");test("+type1+","+type2+")'>";
+									if(i<10){
+										pageStr += "0"+i;
+									}else{
+										pageStr += i;
+									}
+									pageStr += "</a></li>";
 								}
 							}
 							
+							if(pagingInfo.lastPage < pagingInfo.totalPage){
+								pageStr += "<li class='page-item'><a class='page-link' href='#' onclick='pageProc("+(pagingInfo.lastPage+1)+")'><span class='flaticon-arrow right-arrow'></span></a></li>";
+							}
 							
-//============================================다음버튼 만들어야함============================================
-							
-							
+							pageStr += "</ul></nav></div></div></div></div></div>";
 							
 							$('#divPage').html(pageStr);
 						}
@@ -180,7 +200,7 @@
 			}
 
 		</script>   
-
+<br>
     <div class="weekly-news-area pt-50">
         <div class="container">
            <div class="weekly-wrapper">
@@ -294,7 +314,12 @@
 		                                    <h4><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
 		                                    <p><fmt:formatDate value="${vo.projectStartdate }" pattern="yyyy-MM-dd"/></p>
 		                                    <h6>${vo.projectSummary }</h6>
-		                                    <hr style="margin:5px 0px 8px 0px;">
+		                                    <div class="percentage">
+												<div class="progress" style="background:#eceff8;height: 0.3em; ">
+													<div class="progress-bar color-1" role="progressbar" style="width: ${vo.totalFundingAmount/vo.totalAmount*100 }%" 
+														aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
+											</div>
 		                                    <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
 		                                    <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
 		                                </div>
@@ -331,7 +356,12 @@
 		                                   <h4><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
 		                                   <p><fmt:formatDate value="${vo.projectStartdate }" pattern="yyyy-MM-dd"/></p>
 		                                   <h6>${vo.projectSummary }</h6>
-		                                   <hr style="margin:5px 0px 8px 0px;">
+		                                   <div class="percentage">
+												<div class="progress" style="background:#eceff8;height: 0.3em; ">
+													<div class="progress-bar color-1" role="progressbar" style="width: ${vo.totalFundingAmount/vo.totalAmount*100 }%" 
+														aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
+											</div>
 		                                   <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
 		                                   <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
 		                               </div>
@@ -345,29 +375,70 @@
         </div>
     </div>        
         <div id="divPage" style="text-align: center">
-			<c:if test="${pagingInfo.firstPage>1 }">
-				<a href="#" onclick="pageProc(${pagingInfo.firstPage-1})">
-					<img src="<c:url value='/resources/images/first.JPG'/>" alt="이전 블럭으로">
-				</a>
-			</c:if>
-								
-			<!-- [1][2][3][4][5][6][7][8][9][10] -->
-			<c:forEach var="i" begin="${pagingInfo.firstPage }" 
-				end="${pagingInfo.lastPage }">
-				<c:if test="${i==pagingInfo.currentPage }">
-					<span style="color:blue;font-weight: bold">${i}</span>
-				</c:if>
-				<c:if test="${i!=pagingInfo.currentPage }">
-					<a style="color:black;text-decoration: none" href="#" onclick="pageProc(${i})">[${i}]</a>
-				</c:if>
-			</c:forEach>
-			
-			<c:if test="${pagingInfo.lastPage < pagingInfo.totalPage }">
-				<a href="#" onclick="pageProc(${pagingInfo.lastPage+1})">
-					<img src="<c:url value='/resources/images/last.JPG'/>" alt="다음 블럭으로">
-				</a>
-			</c:if>
+        	<br><br><br>
+            <!--Start pagination -->
+		    <div class="pagination-area pb-45 text-center">
+		        <div class="container">
+		            <div class="row">
+		                <div class="col-xl-12">
+		                    <div class="single-wrap d-flex justify-content-center">
+		                        <nav aria-label="Page navigation example">
+		                            <ul class="pagination justify-content-start">
+		                            
+			                            <c:if test="${pagingInfo.firstPage>1 }">
+			                           		<li class="page-item">
+												<a class="page-link" href="#" onclick="pageProc(${pagingInfo.firstPage-1})">
+													<span class="flaticon-arrow roted"></span>
+												</a>
+											</li>
+										</c:if>
+									
+		                                <!-- [1][2][3][4][5][6][7][8][9][10] -->
+										<c:forEach var="i" begin="${pagingInfo.firstPage }" 
+											end="${pagingInfo.lastPage }">
+											<c:if test="${i==pagingInfo.currentPage }">
+												<li class="page-item active">
+													<a class="page-link">
+														<c:if test="${i<10 }">
+															0${i}
+														</c:if>
+														<c:if test="${i>=10 }">
+															${i}
+														</c:if>
+													</a>
+												</li>
+											</c:if>
+											<c:if test="${i!=pagingInfo.currentPage }">
+												<li class="page-item">
+													<a class="page-link" href="#" onclick="pageProc(${i})">
+														<c:if test="${i<10 }">
+															0${i}
+														</c:if>
+														<c:if test="${i>=10 }">
+															${i}
+														</c:if>
+													</a>
+												</li>
+											</c:if>
+										</c:forEach>
+		                               
+		                                <c:if test="${pagingInfo.lastPage < pagingInfo.totalPage }">
+		                               		<li class="page-item">
+												<a class="page-link" href="#" onclick="pageProc(${pagingInfo.lastPage+1})">
+													<span class="flaticon-arrow right-arrow"></span>
+												</a>
+											</li>
+										</c:if> 
+		                            </ul>
+		                          </nav>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		    <!-- End pagination  -->
 		</div>
+		<br><br><br>
     <form action="<c:url value='/project/list'/>" 
 		name="frmPage" method="post">
 		<input type="hidden" name="currentPage" id="currentPage"><br>

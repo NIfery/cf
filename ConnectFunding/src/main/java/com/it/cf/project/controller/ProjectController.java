@@ -268,7 +268,6 @@ public class ProjectController {
 			@RequestParam String pwd, Model model) {
 		logger.info("환불 요청 파라미터, userNo={}, pwd={}, receiptId={}", userNo,pwd,receiptId);
 		
-		
 		String msg="", url="/mypages/support";
 		String dbPwd = projectService.selectDBPwd(userNo);
 		if(dbPwd.equals(pwd)) {
@@ -280,8 +279,8 @@ public class ProjectController {
 			}
 			Cancel cancel = new Cancel();
 	        cancel.receipt_id = receiptId;
-	        cancel.name = "관리자 테스트";
-	        cancel.reason = "취소요청 테스트";
+	        cancel.name = "userNo="+userNo;
+	        cancel.reason = "취소요청";
 
 	        try {
 	            HttpResponse res = api.cancel(cancel);
@@ -305,6 +304,40 @@ public class ProjectController {
 		return "common/message";
 	}
 
+	@ResponseBody
+	@RequestMapping("/cancleAll")
+	public void cancleAll(@RequestParam int projectNo) {
+		logger.info("기간 종료 전체 환불 요청, 파라미터 projectNo={}", projectNo);
+		
+		List<FundingListVO> list = projectService.selectFundingListByProjectNo(projectNo);
+		
+		if(list.size()!=0) {
+			for(int i=0;i<list.size();i++) {
+				api = new BootpayApi("60ffa2837b5ba400237bda13", "aAx7mTvRBnDZtARKP/FlAH3GjL6KmRyqFpH8k+8fzmg=");  // application_id, private key 
+				try {
+					api.getAccessToken();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				Cancel cancel = new Cancel();
+		        cancel.receipt_id = list.get(i).getReceiptId();
+		        cancel.name = "관리자";
+		        cancel.reason = "펀딩실패";
+
+		        try {
+		            HttpResponse res = api.cancel(cancel);
+		            String str = IOUtils.toString(res.getEntity().getContent(), "UTF-8");
+		            System.out.println(str);
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		        
+		        int cnt = projectService.deleteFunding(list.get(i).getReceiptId());
+		        logger.info("환불 결과, cnt={}", cnt);
+			}
+		}
+	}
+	
 	@GetMapping("/update")
 	public String update(@RequestParam int projectNo, Model model) {
 		Map<String, Object> map = projectService.selectByNo(projectNo);

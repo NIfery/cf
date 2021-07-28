@@ -79,4 +79,8 @@ public class ProjectServiceImpl implements ProjectService{
 	public int deleteFunding(String receiptId) {
 		return projectDao.deleteFunding(receiptId);
 	}
+	
+	public List<FundingListVO> selectFundingListByProjectNo(int projectNo) {
+		return projectDao.selectFundingListByProjectNo(projectNo);
+	}
 }

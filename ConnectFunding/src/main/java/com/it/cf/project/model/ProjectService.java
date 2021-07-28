@@ -23,4 +23,5 @@ public interface ProjectService {
 	int deleteProject(int projectNo);
 	int insertFunding(FundingListVO vo);
 	int deleteFunding(String receiptId);
+	List<FundingListVO> selectFundingListByProjectNo(int projectNo);
 }

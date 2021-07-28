@@ -22,9 +22,10 @@
 .col-12 {
 	margin-left: 20px;
 }
+
 </style>
 	<div class="single_sidebar_widget post_category_widget"
-		style="width:980px; margin-left: 200px; background: white; height: 1000px; margin-top: 50px;">
+		style="width:980px; margin-left: 200px; background: white; height: 1300px; margin-top: 50px;">
 		<span class="widget_title"
 			style="text-align: left; font-size: 2.5em; margin-left: 10px;">설정</span>
 		<br>
@@ -66,21 +67,52 @@
 						<div class="tab-pane fade show active" id="nav-profiles"
 							role="tabpanel" aria-labelledby="nav-profiles-tab">
 							<div class="whats-news-caption" id="one">
-								<form method="post" action="<c:url value='/mypages/update?userNo=${sessionScope.userNo}'/>">
+								<form method="post" action="<c:url value='/mypages/update?userNo=${sessionScope.userNo}'/>"
+									enctype="multipart/form-data">
 								<div class="col-lg-4">
 									<div class="blog_right_sidebar">
 										<div class="single_sidebar_widget post_category_widget"
 											style="width: 800px; margin-left: -20px; background: white; height: 700px;">
 											<ul class="list cat-list">
-												<li><img
-													src="${pageContext.request.contextPath}/assets/img/logo/user.png"
-													alt="로그인" style="width: 40px;"></li>
+												<li>
+													<div class="form-group" style="width: 500px;">
+													<div class="row">
+														<div class="col-md-6" id="div_md">
+															<c:if test="${empty vo.userProfile }">
+																<img src="<c:url value='/assets/img/logo/user.png'/>" style="width: 40px;">
+															</c:if>
+															<c:if test="${!empty vo.userProfile }">
+																<div class="profile">
+																<img src="<c:url value='/profile_img/${vo.userProfile }'/>" 
+																	style="width: 70px; height: 70px;">
+																</div>
+															</c:if>
+														</div>
+														<div class="col-md-6 col-md-offset-6" style="margin-top: 25px;">
+															<input type="button" id="btn2" class="genric-btn link-border circle"
+																style="text-decoration: none;" value="+변경하기">
+														</div>
+														<div class="collapse2" id="collapseExample">
+															<input class="form-control" type="file" id="formFile" name="file"
+																style="width: 330px;">
+														</div>
+													</div>
+												</div>
+											</li>
 												<li>
 													<div class="form-group">
 														<label class="col-form-label col-form-label-sm mt-4"
 															id="label_name"> 이름</label> 
 															<input class="form-control form-control-sm" type="text"
 															name="userName" disabled="disabled" value="${vo.userName }">
+													</div>
+												</li>
+												<li>
+													<div class="form-group">
+														<label class="col-form-label col-form-label-sm mt-4"
+															id="label_name"> 닉네임</label> 
+															<input class="form-control form-control-sm" type="text"
+															name="userNickname" value="${vo.userNickname }">
 													</div>
 												</li>
 												<li>
@@ -106,8 +138,13 @@
 														<div class="row">
 															<div class="col-md-6" id="div_md">등록된 소개가 없습니다.</div>
 															<div class="col-md-6 col-md-offset-6">
-																<a href="#">+추가</a>
-															</div>
+																<input type="button" id="btn" class="genric-btn link-border circle" 
+																	style="text-decoration: none;" value="+추가">
+														</div>
+																<div class="collapse" id="collapseExample">
+																	<textarea rows="4" cols="15" name="userIntro"
+																		class="form-control" id="exampleTextarea">${vo.userIntro }</textarea>
+																</div>
 														</div>
 													</div>
 												</li>
@@ -118,8 +155,10 @@
 														<div class="row">
 															<div class="col-md-6" id="div_md">등록된 웹사이트가 없습니다.</div>
 															<div class="col-md-6 col-md-offset-6">
-																<a href="#">+추가</a>
-															</div>
+															<input type="button" id="btn"
+																class="genric-btn link-border circle"
+																style="text-decoration: none;" value="+추가">
+														</div>
 														</div>
 													</div>
 												</li>
@@ -568,6 +607,26 @@
 				$('#delHp').focus();
 				event.preventDefaulut();
 			}
+		});
+		
+		$(function() {
+			$('#btn2').on('click', function () { 						
+				let collapses = $('div.row').find('.collapse2');	
+				
+				collapses.each(function () { 
+					$(this).collapse('toggle');							
+				}); 													
+			});
+		});
+		
+		$(function() {
+			$('#btn').on('click', function () { 						
+				let collapses = $('div.row').find('.collapse');	
+				
+				collapses.each(function () { 
+					$(this).collapse('toggle');							
+				}); 													
+			});
 		});
 		
 	});//

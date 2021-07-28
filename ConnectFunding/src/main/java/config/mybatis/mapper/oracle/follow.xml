@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.it.cf.follow.model.FollowDAO">
+
+	<insert id="insertFollow" parameterType="followVo">
+		insert into follow(following, following_user_no, user_no)
+		values(#{following}, #{followingUserNo}, #{userNo})
+	</insert>
+
+	<select id="selectFollowing" parameterType="int" resultType="followVo">
+		select f.following, f.following_user_no, f.add_day, u.user_profile, u.user_intro
+		from follow f join users u
+		on f.user_no=u.user_no
+		where f.user_no=#{userNo}
+	</select>
+	
+	<select id="projectCount" parameterType="int" resultType="int">
+		select count(distinct p.project_no) as count
+		from project p  join follow f
+		on f. following_user_no=p.user_no
+		where f.following_user_no=#{followingUserNo}
+	</select>
+	
+	<select id="selectFollower" resultType="followVo" parameterType="int">
+		select user_name, user_profile, user_intro
+		from users
+		where user_no in
+		(
+			select user_no
+			from follow
+			where following_user_no=#{followingUserNo}
+		)
+	</select>
+	
+	<select id="checkFollow" resultType="int" parameterType="int">
+		select count(*)
+		from follow
+		where following_user_no=#{followingUserNo}
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+

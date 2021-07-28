@@ -255,3 +255,14 @@ body{
     margin-bottom: 17px;
     color: #888;
 } 
+
+/* 프로필사진 */
+
+.profile{
+	width: 70px;
+    height: 70px;
+    border: 1px solid #dadee3;
+    border-radius: 30px;
+    margin: 10px 10px;
+    overflow: hidden;
+}

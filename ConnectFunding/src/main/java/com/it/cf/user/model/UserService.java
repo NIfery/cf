@@ -13,6 +13,10 @@ public interface UserService {
 	//이메일주소 중복확인
 	public static final int USABLE_EMAIL=1; 
 	public static final int UNUSABLE_EMAIL=2; 
+	
+	//닉네임 중복확인
+	public static final int USABLE_NICKNAME=1; 
+	public static final int UNUSABLE_NICKNAME=2; 
 
 	int insertUser(UserVO vo);
 	UserVO selectByEmail(String userEmail);
@@ -22,4 +26,5 @@ public interface UserService {
 	int updatePwd(UserVO vo);
 	int checkPwd(String userEmail, String userPwd);
 	int checkEmail(String userEmail);
+	int checkNickname(String userNickname);
 }

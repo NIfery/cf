@@ -22,8 +22,8 @@ public class FundingListVO extends SearchVO {
 	@Override
 	public String toString() {
 		return "FundingListVO [fundingListNo=" + fundingListNo + ", fundingAmount=" + fundingAmount + ", projectNo="
-				+ projectNo + ", userNo=" + userNo + ", supportDate=" + supportDate + ", toString()=" + super.toString()
-				+ "]";
-	}
-
+				+ projectNo + ", userNo=" + userNo + ", supportDate=" + supportDate + ", receiptId=" + receiptId
+				+ ", toString()=" + super.toString() + "]";
+	} 
+	
 }

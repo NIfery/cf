@@ -17,8 +17,8 @@
 		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
 			select USERS_SEQ.nextval from dual
 		</selectKey>
-		insert into users(user_no, user_flag, user_email, user_pwd, user_name) 
-		values(#{userNo}, #{userFlag}, #{userEmail}, #{userPwd}, #{userName})
+		insert into users(user_no, user_flag, user_email, user_pwd, user_name, user_nickname) 
+		values(#{userNo}, #{userFlag}, #{userEmail}, #{userPwd}, #{userName}, #{userNickname})
 	</insert>
 	
 	<select id="selectByEmail" resultType="userVo" parameterType="String">
@@ -37,7 +37,8 @@
 	
 	<update id="updateProfile" parameterType="userVo">
 		update users
-		set user_email=#{userEmail}, user_hp=#{userHp}
+		set user_email=#{userEmail}, user_hp=#{userHp}, user_nickname=#{userNickname},
+		user_intro=#{userIntro}, user_profile=#{userProfile}
 		where user_no=#{userNo}
 	</update>
 	
@@ -50,6 +51,11 @@
 	<select id="checkEmail" parameterType="String" resultType="int">
 		select count(*) from users
 		where user_email=#{userEmail}
+	</select>
+	
+	<select id="checkNickname" parameterType="String" resultType="int">
+		select count(*) from users 
+		where user_nickname=#{userNickname}
 	</select>
 	
 </mapper>

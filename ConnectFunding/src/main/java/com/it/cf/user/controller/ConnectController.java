@@ -23,12 +23,7 @@ public class ConnectController {
 	 * @RequestMapping("/mypages/follow") public String follow() {
 	 * logger.info("팔로우 페이지"); return "mypages/follow"; }
 	 */
-	
-	@RequestMapping("/mypageload/following")
-	public String following() {
-		logger.info("팔로우 탭");
-		return "mypageload/following";
-	}
+
 	
 //	@RequestMapping("/mypageload/address")
 //	public String address() {

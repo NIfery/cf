@@ -25,6 +25,11 @@
 		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
 		]]>
 	</select>
+	<select id="selectAllAdmin" parameterType="pageVo" resultType="map">
+		select p.*, u.user_email from PROJECT p join USERS u
+        on p.user_no=u.user_no
+        order by p.PROJECT_NO desc
+	</select>
 	
 	<select id="selectBySecondCategoryNo" parameterType="pageVo" resultType="projectVo">
         select *

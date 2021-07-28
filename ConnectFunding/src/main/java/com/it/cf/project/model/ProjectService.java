@@ -7,6 +7,7 @@ import com.it.cf.fdList.model.FundingListVO;
 
 public interface ProjectService {
 	List<ProjectVO> selectAll(ProjectVO pageVo);
+	List<Map<String, Object>> selectAllAdmin(ProjectVO pageVo);
 	List<ProjectVO> selectBySecondCategoryNo(ProjectVO pageVo);
 	int selectTotalFundingAmountByFundingNo(int fundingNo);
 	int selectTotalRecord();

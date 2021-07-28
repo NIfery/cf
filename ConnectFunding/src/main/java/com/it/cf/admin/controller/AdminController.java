@@ -32,6 +32,12 @@ import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.common.AdminConstUtil;
 import com.it.cf.common.PaginationInfo;
 import com.it.cf.common.SearchVO;
+import com.it.cf.project.model.FirstCategoryVO;
+import com.it.cf.project.model.ProjectPageInfo;
+import com.it.cf.project.model.ProjectService;
+import com.it.cf.project.model.ProjectUtil;
+import com.it.cf.project.model.ProjectVO;
+import com.it.cf.project.model.SecondCategoryVO;
 import com.it.cf.user.model.UserListVO;
 import com.it.cf.user.model.UserVO;
 
@@ -45,6 +51,8 @@ public class AdminController {
    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
    private final AdminService adminService;
+   private final ProjectService projectService;
+   
    @RequestMapping("/index")
    public void index() {
       
@@ -203,7 +211,11 @@ public class AdminController {
 	}
    
    @RequestMapping("/confirm")
-   public void confirm() {
-      
+   public String confirm(@ModelAttribute ProjectVO pageVo, Model model) {
+	   List<Map<String, Object>> map = projectService.selectAllAdmin(pageVo);
+
+	   model.addAttribute("map", map);
+
+	   return "admin/confirm";
    }
 }

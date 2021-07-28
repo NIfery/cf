@@ -111,7 +111,7 @@
 									str+="<a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'><img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></a></div>";
 									str+="<div class='weekly2-caption'><span></span>";
 									str+="<h4><a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'>"+item.projectName+"</a></h4>";
-									str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
+									str+="<p>"+moment(item.projectRegdate).format("YYYY-MM-DD")+"</p>";
 									str+="<h6>"+item.projectSummary+"</h6>";
 									
 									str+="<div class='percentage'><div class='progress' style='background:#eceff8;height: 0.3em;'>";
@@ -133,7 +133,7 @@
 										str+="<a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'><img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></a></div>";
 										str+="<div class='weekly2-caption'><span></span>";
 										str+="<h4><a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'>"+item.projectName+"</a></h4>";
-										str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
+										str+="<p>"+moment(item.projectRegdate).format("YYYY-MM-DD")+"</p>";
 										str+="<h6>"+item.projectSummary+"</h6>";
 
 										str+="<div class='percentage'><div class='progress' style='background:#eceff8;height: 0.3em;'>";
@@ -312,7 +312,7 @@
 		                                <div class="weekly2-caption">
 		                                    <span></span>
 		                                    <h4><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
-		                                    <p><fmt:formatDate value="${vo.projectStartdate }" pattern="yyyy-MM-dd"/></p>
+		                                    <p><fmt:formatDate value="${vo.projectRegdate }" pattern="yyyy-MM-dd"/></p>
 		                                    <h6>${vo.projectSummary }</h6>
 		                                    <div class="percentage">
 												<div class="progress" style="background:#eceff8;height: 0.3em; ">
@@ -354,7 +354,7 @@
 		                               <div class="weekly2-caption">
 		                                   <span></span>
 		                                   <h4><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
-		                                   <p><fmt:formatDate value="${vo.projectStartdate }" pattern="yyyy-MM-dd"/></p>
+		                                   <p><fmt:formatDate value="${vo.projectRegdate }" pattern="yyyy-MM-dd"/></p>
 		                                   <h6>${vo.projectSummary }</h6>
 		                                   <div class="percentage">
 												<div class="progress" style="background:#eceff8;height: 0.3em; ">

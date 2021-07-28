@@ -2,6 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../inc/adminTop.jsp"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!-- DATA TABLE-->
 <div class="page-content--bge5">
 	<div class="container">
@@ -25,125 +27,44 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr class="tr-shadow">
-									<td><label class="au-checkbox"> <input
-											type="checkbox"> <span class="au-checkmark"></span>
-									</label></td>
-									<td><span class="block-email">lori@example.com</span></td>
-									<td class="desc">삼성 세탁기</td>
-									<td>2018-09-27 02:12</td>
-									<td>$679.00</td>
-									<td>
-										<div class="table-data-feature">
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="Send">
-												<i class="zmdi zmdi-mail-send"></i>
-											</button>
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="Edit">
-												<i class="zmdi zmdi-edit"></i>
-											</button>
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="Delete">
-												<i class="zmdi zmdi-delete"></i>
-											</button>
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="More">
-												<i class="zmdi zmdi-more"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr class="spacer"></tr>
-								<tr class="tr-shadow">
-									<td><label class="au-checkbox"> <input
-											type="checkbox"> <span class="au-checkmark"></span>
-									</label></td>
-									<td><span class="block-email">john@example.com</span></td>
-									<td class="desc">iPhone X 64Gb Grey</td>
-									<td>2018-09-29 05:57</td>
-									<td>$999.00</td>
-									<td>
-										<div class="table-data-feature">
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="Send">
-												<i class="zmdi zmdi-mail-send"></i>
-											</button>
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="Edit">
-												<i class="zmdi zmdi-edit"></i>
-											</button>
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="Delete">
-												<i class="zmdi zmdi-delete"></i>
-											</button>
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="More">
-												<i class="zmdi zmdi-more"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr class="spacer"></tr>
-								<tr class="tr-shadow">
-									<td><label class="au-checkbox"> <input
-											type="checkbox"> <span class="au-checkmark"></span>
-									</label></td>
-									<td><span class="block-email">lyn@example.com</span></td>
-									<td class="desc">iPhone X 256Gb Black</td>
-									<td>2018-09-25 19:03</td>
-									<td>$1199.00</td>
-									<td>
-										<div class="table-data-feature">
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="Send">
-												<i class="zmdi zmdi-mail-send"></i>
-											</button>
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="Edit">
-												<i class="zmdi zmdi-edit"></i>
-											</button>
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="Delete">
-												<i class="zmdi zmdi-delete"></i>
-											</button>
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="More">
-												<i class="zmdi zmdi-more"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr class="spacer"></tr>
-								<tr class="tr-shadow">
-									<td><label class="au-checkbox"> <input
-											type="checkbox"> <span class="au-checkmark"></span>
-									</label></td>
-									<td><span class="block-email">doe@example.com</span></td>
-									<td class="desc">Camera C430W 4k</td>
-									<td>2018-09-24 19:10</td>
-									<td>$699.00</td>
-									<td>
-										<div class="table-data-feature">
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="Send">
-												<i class="zmdi zmdi-mail-send"></i>
-											</button>
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="Edit">
-												<i class="zmdi zmdi-edit"></i>
-											</button>
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="Delete">
-												<i class="zmdi zmdi-delete"></i>
-											</button>
-											<button class="item" data-toggle="tooltip"
-												data-placement="top" title="More">
-												<i class="zmdi zmdi-more"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
+								<c:if test="${empty map }">
+									<tr>
+										<td colspan="6">데이터가 없습니다.</td>
+									</tr>
+								</c:if>
+								<c:if test="${!empty map }">
+									<c:forEach var="vo" items="${map }">
+										<tr>
+											<td><label class="au-checkbox"> <input
+													type="checkbox"> <span class="au-checkmark"></span>
+											</label></td>
+											<td><span class="block-email">${vo["USER_EMAIL"] }</span></td>
+											<td class="desc">${vo["PROJECT_NAME"] }</td>
+											<td>${vo["PROJECT_REGDATE"] }</td>
+											<td>&#8361;<fmt:formatNumber value="${vo['TOTAL_AMOUNT'] }" pattern="#,###"/></td>
+											<td>
+												<div class="table-data-feature">
+													<button class="item" data-toggle="tooltip"
+														data-placement="top" title="Send">
+														<i class="zmdi zmdi-mail-send"></i>
+													</button>
+													<button class="item" data-toggle="tooltip"
+														data-placement="top" title="Edit">
+														<i class="zmdi zmdi-edit"></i>
+													</button>
+													<button class="item" data-toggle="tooltip"
+														data-placement="top" title="Delete">
+														<i class="zmdi zmdi-delete"></i>
+													</button>
+													<button class="item" data-toggle="tooltip"
+														data-placement="top" title="More">
+														<i class="zmdi zmdi-more"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+									</c:forEach>
+								</c:if>
 							</tbody>
 						</table>
 					</div>

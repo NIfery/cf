@@ -17,6 +17,9 @@ public class ProjectServiceImpl implements ProjectService{
 	public List<ProjectVO> selectAll(ProjectVO pageVo) {
 		return projectDao.selectAll(pageVo);
 	}
+	public List<Map<String, Object>> selectAllAdmin(ProjectVO pageVo) {
+		return projectDao.selectAllAdmin(pageVo);
+	}
 	
 	public List<ProjectVO> selectBySecondCategoryNo(ProjectVO pageVo) {
 		return projectDao.selectBySecondCategoryNo(pageVo);

@@ -80,9 +80,9 @@ public class AdminServiceImpl implements AdminService{
 		try {
 			for(UserVO vo : list) {
 				int userNo=vo.getUserNo();
-				logger.info("deleteUserMulti messageNo={}",userNo);
+				logger.info("deleteUserMulti userNo={}",userNo);
 				if(userNo!=0) {  //체크한 상품만 삭제
-					logger.info("deleteUserMulti, messageNo={}",userNo);
+					logger.info("deleteUserMulti, userNo={}",userNo);
 					cnt=adminDao.deleteUser(userNo);
 					logger.info("deleteUserMulti cnt={}",cnt);
 				}

@@ -10,4 +10,5 @@ public interface AccountDAO {
 	int insertAccount(AccountVO accountVo); 
 	List<AccountVO> selectAccount(int userNo);
 	int deleteAccount(String accountNo);
+	int updateUserFlag(int userNo);
 }

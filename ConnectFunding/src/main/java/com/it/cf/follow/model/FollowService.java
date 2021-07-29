@@ -13,4 +13,8 @@ public interface FollowService {
 	int projectCount(int followingUserNo);
 	List<FollowVO> selectFollower(int followingUserNo);
 	int checkFollow(int followingUserNo);
+	int deleteFollow(int followingUserNo);
+	int followCheck(int followingUserNo);
+	int updateCheck(int userNo, int followingUserNo);
+	int updateFollow(int userNo);
 }

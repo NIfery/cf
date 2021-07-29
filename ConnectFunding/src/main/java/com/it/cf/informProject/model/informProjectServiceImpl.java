@@ -22,4 +22,9 @@ public class informProjectServiceImpl implements informProjectService {
 	public List<Map<String, Object>> selectInformProject(int userNo) {
 		return informPjecDao.selectInformProject(userNo);
 	}
+
+	@Override
+	public int deleteinformProject(int projectNo) {
+		return informPjecDao.deleteinformProject(projectNo);
+	}
 }

@@ -195,4 +195,5 @@
 		delete from FUNDING_LIST
 		where RECEIPT_ID=#{receiptId}
 	</delete>
+	
 </mapper>

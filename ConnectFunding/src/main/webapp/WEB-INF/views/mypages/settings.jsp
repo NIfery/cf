@@ -330,7 +330,7 @@
 												<div class="form-group" style="margin-left: 10px;"width: 450px; margin: 3px;">
 													<div class="form-check">
 														<input class="form-check-input" type="checkbox"
-															id="flexCheckDefault"> <label
+															id="flexCheckDefault" name="business"> <label
 															class="form-check-label" for="flexCheckDefault"
 															style="font-size: 0.9em;"> 사업자 계좌입니다. </label>
 													</div>
@@ -349,13 +349,13 @@
 												</div>
 												<div class="form-group"
 													style="width: 400px; margin: 10px 5px;">
-													<div class="form-check" style="position: relative;">
-														<input class="form-check-input" type="checkbox">
+													<div class="form-check" style="position: relative;" id="accagree" >
+														<input class="form-check-input" type="checkbox" >
 														<label class="form-check-label" for="flexCheckDefault"
 															style="font-size: 0.9em;"> 결제사 정보제공 동의</label> <span
 															style="position: absolute; right: -40px; font-size: 0.9em; color: rgb(39, 163, 255);">
-															<a target="_blank"
-															href="<c:url value='/cfmember/agree'/>"> 내용보기</a>
+															<a target="_blank" style="color: rgb(39, 163, 255);"
+															href="<c:url value='/cfmember/agree'/>">내용보기</a>
 														</span>
 													</div>
 													<div class="form-check">
@@ -558,54 +558,55 @@
 			$('#four').load('${pageContext.request.contextPath}/mypageload/address');
 		});
 
-		$('#change').on("click",function(e) {
-			e.preventDefault();
+		$('form[name=frmPwd]').submit(function(){
 			if ($('#oldPwd').val().length < 1) {
 				alert('비밀번호를 입력하세요.');
 				$('#oldPwd').focus();
-				event.preventDefaulut();
+				event.preventDefault();
 			} else if ($('#userPwd').val().length < 1) {
 				alert('변경할 비밀번호를 입력하세요.');
 				$('#userPwd').focus();
-				event.preventDefaulut();
+				event.preventDefault();
 			} else if ($('#userPwd').val() != $('#userPwd2').val()) {
 				alert("비밀번호가 일치하지 않습니다.");
 				$('#userPwd2').focus();
-				event.preventDefaulut();
+				event.preventDefault();
 			}
 		});
 		
-		$('#addacc').on("click",function(e) {
-			e.preventDefault();
+		$('#addacc').on("click",function() {
+			var leng = $('#accagree input[type=checkbox]:checked').length;
 			if ($('#accountNo').val().length < 1) {
 				alert('계좌번호를 입력하세요.');
 				$('#accountNo').focus();
-				event.preventDefaulut();
+				event.preventDefault();
 			} else if ($('#accountHolder').val().length < 1) {
 				alert('예금주명을 입력하세요.');
 				$('#accountHolder').focus();
-				event.preventDefaulut();
+				event.preventDefault();
 			} else if ($('#birth').val().length < 1) {
 				alert("생년월일을 입력하세요.");
 				$('#birth').focus();
-				event.preventDefaulut();
+				event.preventDefault();
+			}else if(leng==0){
+				alert('결제사 정보제공에 동의해주세요.');
+				event.preventDefault();
 			}
 		});
 		
-		$('#addjuso').on("click",function(e) {
-			e.preventDefault();
+		$('#addjuso').on("click",function() {
 			if ($('#delReceiver').val().length < 1) {
 				alert('받는사람을 입력하세요.');
 				$('#delReceiver').focus();
-				event.preventDefaulut();
+				event.preventDefault();
 			} else if ($('#address').val().length < 1) {
 				alert('주소검색을 해주세요.');
 				$('#address').focus();
-				event.preventDefaulut();
+				event.preventDefault();
 			} else if ($('#delHp').val().length < 1) {
 				alert("연락처를 입력하세요.");
 				$('#delHp').focus();
-				event.preventDefaulut();
+				event.preventDefault();
 			}
 		});
 		

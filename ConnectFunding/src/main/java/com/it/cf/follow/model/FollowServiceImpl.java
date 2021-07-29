@@ -44,5 +44,25 @@ public class FollowServiceImpl implements FollowService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int deleteFollow(int followingUserNo) {
+		return followDao.deleteFollow(followingUserNo);
+	}
+
+	@Override
+	public int followCheck(int followingUserNo) {
+		return followDao.followCheck(followingUserNo);
+	}
+
+	@Override
+	public int updateCheck(int userNo, int followingUserNo) {
+		return followDao.updateCheck(userNo,followingUserNo);
+	}
+
+	@Override
+	public int updateFollow(int userNo) {
+		return followDao.updateFollow(userNo);
 	}//
 }

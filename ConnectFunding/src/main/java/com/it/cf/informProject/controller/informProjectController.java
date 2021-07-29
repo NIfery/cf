@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.it.cf.informProject.model.informProjectService;
 
@@ -36,6 +37,24 @@ public class informProjectController {
 		model.addAttribute("iflist", iflist);
 		
 		return "mypages/notifications";
+	}
+	
+	@RequestMapping("/mypages/deleteInformView")
+	public String deleteView(@RequestParam(defaultValue = "0") int no, Model model) {
+		logger.info("알림 페이지 삭제, projectNo={}", no);
+		
+		int cnt = informServie.deleteinformProject(no);
+		logger.info("삭제 결과, cnt={}", cnt);
+		
+		String msg="삭제 실패, 다시 시도해주세요.", url="/mypages/notifications";
+		if(cnt>0) {
+			msg="알림이 삭제되었습니다.";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
 	}
 	
 }

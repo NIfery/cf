@@ -84,7 +84,7 @@
 								<c:forEach var="map" items="${list }">
 									<form method="post" action="<c:url value='/mypageload/AddFollow'/>">
 										<input type="hidden" name="following" value="${map['USER_NAME'] }">
-										<input type="hidden" id="fuserNo" name="followingUserNo" value="${map['USER_NO'] }"> 
+										<input type="hidden" id="followingUserNo" name="followingUserNo" value="${map['USER_NO'] }"> 
 										<input type="hidden" name="userNo" value="${sessionScope.userNo}">
 										<div class="wrap"
 											style="height: 130px; width: 800px; margin-top: 20px; border-bottom: 1px solid #f0f2f3">
@@ -113,11 +113,14 @@
 														<span style="color: black;">${map['USER_INTRO'] }</span>
 														<br>
 													</c:if>
-													<span style="font-size: 0.9em;"> 팔로워 11 · 올린 프로젝트 5</span>
+													<span style="font-size: 0.9em;" class="count"></span>
 												</div>
-												<div class="follow">
-													<button class="genric-btn info circle" type="submit" id="followcheck"
+												<div class="followw">
+												<button class="genric-btn info circle" id="followcheck"
 														style="width: 110px; height: 40px; margin: 40px 0px 0px 30px;">+팔로우</button>
+												<!-- <input type="submit" class="genric-btn info circle" id="followcheck"
+													style="width: 110px; height: 40px; margin: 40px 0px 0px 30px;"
+													value="팔로우"> -->
 												</div>
 											</div>
 										</div>
@@ -162,27 +165,31 @@
 		}); 
 
 	});//
-	
+
 	$(function(){
 		$('#followcheck').click(function(){
-			var data = $('#fuserNo').val();
-			alert(data);			
+			var data = $('#followingUserNo').val();
 			$.ajax({
 				url:"<c:url value='/mypageload/checkFollow'/>",
 				type:"post",
 				data:"followingUserNo="+data,
-				success:function(res){
-					if(res){
-						$('.follow').html('<button class="genric-btn info circle" type="submit" id="followcheck" style="width: 110px; height: 40px; margin: 40px 0px 0px 30px;">팔로우</button>');
-					}else{
-						$('.follow').html('<button class="genric-btn info circle" type="submit" id="followcheck" style="width: 110px; height: 40px; margin: 40px 0px 0px 30px;">팔로잉</button>');
+				success:function(ress){
+					alert(ress);
+					var result="";
+					if(ress){
+						result="안녕";
+						$('#followcheck').text(result);
+					}else {
+						result="바보";
+						$('#followcheck').text(result);
 					}
+					alert(result);
 				},
 				error:function(xhr, status, error){
 					alert("error 발생..." + error);
 				}
 			});
 		});
-	});
+	}); 
 </script>	
 <%@ include file="../include/bottom.jsp"%>

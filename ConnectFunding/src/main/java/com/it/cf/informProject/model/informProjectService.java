@@ -6,4 +6,5 @@ import java.util.Map;
 public interface informProjectService {
 	int insertInformProject(informProjectVO informProjectVo);
 	List<Map<String, Object>> selectInformProject(int userNo);
+	int deleteinformProject(int projectNo);
 }

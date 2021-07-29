@@ -15,4 +15,5 @@ public class FollowVO extends UserVO {
 	private String followers;	//나를 팔로우한 사람들
 	private int followingUserNo;	//내가 팔로우한 사람 userNo
 	private int userNo;	//내 userNo
+	private int followCheck;
 }

@@ -17,6 +17,7 @@ public class FundingListVO extends SearchVO {
 	private int projectNo;
 	private int userNo;
 	private Timestamp supportDate;
+	private String userName;
 	private String receiptId;
 	
 	@Override

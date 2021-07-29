@@ -72,14 +72,14 @@
 							</div>
 							<div class="trand-right-cap"
 								style="margin: 20px 10px; width: 450px;">
-								<div style="margin-top: 10px; margin-bottom: 10px;">
+								<div style="margin-bottom: 10px;">
 								<span class="color1" style="font-size: 1em;">
 								알림신청하신 ${map['PROJECT_NAME'] } 프로젝트가 공개되었습니다.
 								</span><br><br>
 								</div>
 								<span class="color2" style="font-size: 0.8em;">
 									${map['OPENDATE'] }일 전</span> 
-								<a href="<c:url value='/cfmember/deleteAcc?accountNo=${accVo.accountNo}'/>"
+								<a href="<c:url value='/mypages/deleteInformView?no=${map["PROJECT_NO"]}'/>"
 									class="trand-right-img" id="delete"> 
 								<img src="<c:url value='/assets/img/cancel.png'/>"
 									style="width: 20px; margin: -135px 0px 0px 620px;">

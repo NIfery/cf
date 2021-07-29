@@ -60,11 +60,13 @@
 				<div class="trand-right-single d-flex">
 					<div class="trand-right-img">
 						<c:if test="${empty followVo.userProfile }">
-							<img src="<c:url value='/assets/img/logo/user.png'/>"
-								style="width: 80px; height: 70px; margin: 40px 13px;">
+							<div class="profile" style="margin: 20px 20px;">
+								<img src="<c:url value='/assets/img/logo/user.png'/>"
+									style="width: 60px; height: 60px; margin: 5px 5px;">
+							</div>
 						</c:if>
 						<c:if test="${!empty followVo.userProfile}">
-							<div class="profile" style="margin: 30px 20px;">
+							<div class="profile" style="margin: 20px 20px;">
 								<img src="<c:url value='/profile_img/${followVo.userProfile}'/>"
 									style="width: 70px; height: 70px;">
 							</div>
@@ -74,7 +76,7 @@
 						style="margin: 10px 25px; width: 470px;">
 						<span class="color1">
 							<p style="font-size: 1.1em;">
-								<strong>${followVo.following}</strong>
+								<strong>${followVo.userName}</strong>
 							</p>
 						</span> 
 						<span> 
@@ -83,10 +85,29 @@
 							</c:if>
 						</span>
 						<span style="font-size: 0.9em;"><br>
-							팔로워 11 · 올린 프로젝트 5</span>
+							<!-- 팔로워 11 · 올린 프로젝트 5</span> -->
 					</div>
-					<button class="genric-btn info circle"
-						style="width: 100px; height: 40px; margin: 30px 0px 0px 50px;">팔로우</button>
+					<button class="genric-btn info circle" data-toggle="modal" data-target="#myModal"
+						style="width: 110px; height: 40px; margin: 30px 0px 0px 40px;">√ 팔로잉</button>
+					<!-- Modal -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content" style="width: 352px;">
+								<div class="modal-body">
+								팔로우를 취소하시면 더 이상 프로젝트 공개 알림을 받으실 수 없습니다. 
+								취소하시겠습니까?
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="genric-btn primary-border circle arrow" 
+										data-dismiss="modal">취소</button>
+									<button type="button" class="genric-btn danger-border circle arrow"
+										onclick="location.href='<c:url value="/mypageload/unfollow?no=${followVo.userNo }"/>'">
+									확인</button>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</c:forEach>

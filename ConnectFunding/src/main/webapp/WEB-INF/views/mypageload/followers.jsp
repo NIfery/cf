@@ -56,12 +56,18 @@
 	</c:if>	
 	<c:if test="${!empty followerlist }">
 		<c:forEach var="followerVo" items="${followerlist }">
-			<div class="wrap" style="height: 110px; width: 800px; margin-top: 30px; border-bottom: 1px solid #d4cece">
+		<form method="post">
+		<input type="hidden" name="following" value="${followerVo.userName}">
+		<input type="hidden" id="followNo" name="followingUserNo" value="${followerVo.userNo}"> 
+		<input type="hidden" name="userNo" value="${sessionScope.userNo}">
+			<div class="wrap" style="height: 115px; width: 800px; margin-top: 30px; border-bottom: 1px solid #d4cece">
 				<div class="trand-right-single d-flex">
 					<div class="trand-right-img">
 						<c:if test="${empty followerVo.userProfile }">
-							<img src="<c:url value='/assets/img/logo/user.png'/>"
-								style="width: 65px; height: 65px; margin: 20px 20px;">
+							<div class="profile" style="margin: 20px 20px;">
+								<img src="<c:url value='/assets/img/logo/user.png'/>"
+									style="width: 60px; height: 60px; margin: 5px 5px;">
+							</div>
 						</c:if>
 						<c:if test="${!empty followerVo.userProfile}">
 							<div class="profile" style="margin: 30px 20px;">
@@ -83,12 +89,35 @@
 							</c:if>
 						</span>
 						<span style="font-size: 0.9em;"><br>
-							팔로워 11 · 올린 프로젝트 5</span>
+							<!-- 팔로워 11 · 올린 프로젝트 5</span> -->
 					</div>
-					<button class="genric-btn info circle"
-						style="width: 100px; height: 40px; margin: 40px 0px 0px 50px;">팔로우</button>
+					<c:if test="${followerVo.followCheck=='0' }">
+						<button class="genric-btn info-border circle arrow" id="follow"
+							style="width: 110px; height: 40px; margin: 40px 0px 0px 40px;">+ 팔로우</button>
+					</c:if>
+					<c:if test="${followerVo.followCheck=='1' }">
+						<button class="genric-btn info circle" id="unfollow"
+							style="width: 110px; height: 40px; margin: 40px 0px 0px 40px;">√ 팔로잉</button>	
+					</c:if>
 				</div>
 			</div>
+			</form>
 		</c:forEach>
 	</c:if>	
 </div>
+<script type="text/javascript">
+	$(function(){
+		
+		$('#follow').click(function(){
+			$('form').attr('action','<c:url value="/mypageload/AddFollow"/>');
+			$('form').submit();
+		});
+		
+		$('#unfollow').click(function(){
+		var no = $('#followNo').val();
+		alert(no);
+			$('form').attr('action',"<c:url value='/mypageload/unfollow?no="+no+"'/>");
+			$('form').submit();
+		});
+	});
+</script>

@@ -270,9 +270,21 @@ public class AdminController {
    
    @RequestMapping("/confirm")
    public String confirm(@ModelAttribute ProjectVO pageVo, Model model) {
-	   List<Map<String, Object>> map = projectService.selectAllAdmin(pageVo);
+	   ProjectPageInfo pagingInfo = new ProjectPageInfo();
+	   pagingInfo.setBlockSize(ProjectUtil.BLOCK_SIZE);
+	   pagingInfo.setCurrentPage(pageVo.getCurrentPage());
+	   pagingInfo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
 
+	   pageVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
+	   pageVo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
+
+	   int totalRecord = projectService.selectTotalRecord();
+	   pagingInfo.setTotalRecord(totalRecord);
+	   
+	   List<Map<String, Object>> map = projectService.selectAllAdmin(pageVo);
+	   
 	   model.addAttribute("map", map);
+	   model.addAttribute("pagingInfo", pagingInfo);
 
 	   return "admin/confirm";
    }

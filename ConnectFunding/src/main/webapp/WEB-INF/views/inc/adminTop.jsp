@@ -93,16 +93,20 @@
                                 <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
                         </li>
                         <li>
-                            <a href="<c:url value='/admin/membership'/>">
-                                <i class="fas fa-users"></i>회원관리</a>
-                        </li>
-                        <li>
                             <a href="<c:url value='/chat/adminInbox'/>">
                                 <i class="fas  fa-comments"></i>문의쪽지함</a>
                         </li>
                         <li>
+                            <a href="<c:url value='/admin/membership'/>">
+                                <i class="fas fa-users"></i>회원관리</a>
+                        </li>
+                        <li>
+                            <a href="<c:url value='/admin/adminship'/>">
+                                <i class="fas fa-sitemap"></i>운영자 관리</a>
+                        </li>
+                        <li>
                             <a href="<c:url value='/admin/register'/>">
-                                <i class="fas  fa-user-md"></i> 관리자 등록</a>
+                                <i class="fas  fa-user-md"></i> 운영자 등록</a>
                         </li>
 					</ul>
 				</nav>	

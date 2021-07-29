@@ -54,12 +54,40 @@
         <include refid="searchWhere"></include>
 	</select>
 	
+	<select id="selectAllAdmin" parameterType="searchVo" resultType="adminVo" >
+		select *
+		from
+		(
+		    select rownum as RNUM,A.*
+		    from
+		    (
+		    	select * from admin 
+		    	<include refid="searchWhere"></include>
+		    	order by admin_no desc
+		    )A
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="selectTotalRecord2" parameterType="SearchVo"
+		resultType="int">
+		select count(*) from admin 
+        <include refid="searchWhere"></include>
+	</select>
+	
 	<select id = "idDuplChk" parameterType = "String" resultType = "int">
     	SELECT COUNT(*) FROM admin WHERE admin_id = #{adminId}
 	</select>
 	
 	<delete id="deleteUser" parameterType="int">
 		delete from users where user_no=#{userNo}
+	</delete>
+	
+	<delete id="deleteAdmin" parameterType="int">
+		delete from admin where admin_no=#{adminNo}
 	</delete>
 </mapper>
 

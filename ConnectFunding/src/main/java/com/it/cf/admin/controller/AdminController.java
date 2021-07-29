@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.JsonArray;
+import com.it.cf.admin.model.AdminListVO;
 import com.it.cf.admin.model.AdminService;
 import com.it.cf.admin.model.AdminVO;
 import com.it.cf.chat.model.MessageSendListVO;
@@ -152,6 +153,63 @@ public class AdminController {
        int result = adminService.idDuplChk(vo.getAdminId());
        return String.valueOf(result);
    }
+   
+   //운영자 관리 페이지
+   @RequestMapping("/adminship")
+   public String adminship(@ModelAttribute SearchVO searchVo, HttpSession session, Model model) {
+            logger.info("글 목록 페이지, 파라미터 searchVo={}", searchVo);
+            
+            //페이징 처리
+            //[1] PaginationInfo 객체 생성
+            PaginationInfo pagingInfo = new PaginationInfo();
+            pagingInfo.setCurrentPage(searchVo.getCurrentPage());
+            pagingInfo.setBlockSize(AdminConstUtil.BLOCK_SIZE);
+            pagingInfo.setRecordCountPerPage(AdminConstUtil.RECORD_COUNT);
+            
+            //[2] SearchVo에 paging관련 변수값 셋팅
+            searchVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
+            searchVo.setRecordCountPerPage(AdminConstUtil.RECORD_COUNT);
+            logger.info("페이지번호 관련 셋팅 후 searchVo={}", searchVo);
+            
+            //2
+            List<AdminVO> list=adminService.selectAllAdmin(searchVo);
+            logger.info("글 전체 조회 결과, list.size={}", list.size());
+            
+            int totalRecord=adminService.selectTotalRecord2(searchVo);
+            logger.info("totalRecord="+totalRecord);
+            pagingInfo.setTotalRecord(totalRecord);
+            
+            //3
+            model.addAttribute("list", list);
+            model.addAttribute("pagingInfo", pagingInfo);
+            
+            return "admin/adminship";
+   }
+   
+   //운영자 선택삭제
+   @RequestMapping("/adminDeleteMulti")
+	public String adminDeleteMulti(@ModelAttribute AdminListVO adminListVo,Model model) {
+		logger.info("선택한 회원 삭제, 파라미터 adminListVo={}",adminListVo);
+		
+		List<AdminVO> list=adminListVo.getSelectAdmin();
+		for(int i=0;i<list.size();i++) {
+			AdminVO vo=list.get(i);
+			int adminNo=vo.getAdminNo();
+			
+			logger.info("i={}, adminNo={}", i, adminNo);
+		}
+		
+		String msg="선택한 회원 삭제 중 에러 발생!", url="/admin/adminship";
+		int cnt=adminService.deleteAdminMulti(list);
+		if(cnt>0) {
+			msg="선택한 회원 삭제 완료";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
    
    //회원관리 페이지
    @RequestMapping("/membership")

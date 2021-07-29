@@ -23,5 +23,7 @@ public class ProjectVO extends PageVO{
 	private int fundingNo; /* 투자금액번호 */
 	private int secondCategoryNo;
 	
+	private int firstCategoryNo;
+	
 	private int totalFundingAmount;
 }

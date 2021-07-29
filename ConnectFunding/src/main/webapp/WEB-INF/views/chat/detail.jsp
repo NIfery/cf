@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="../incChat/top.jsp"%>
+<%@ include file="../include/top.jsp"%>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <script type="text/javascript"
@@ -16,7 +16,7 @@
 	});
 </script>
 <title>쪽지보기</title>
-
+<c:import url="/chat/chatCategory"></c:import>
 		<div class="col-13 col-sm-7 col-md-8">
 			<form name="frmChat">
 				<h1>보낸 쪽지</h1>

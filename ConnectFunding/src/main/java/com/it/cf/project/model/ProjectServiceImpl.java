@@ -28,8 +28,8 @@ public class ProjectServiceImpl implements ProjectService{
 		return projectDao.selectTotalRecord();
 	}
 	
-	public int selectTotalRecordBySecondCategoryNo(int secondCategoryNo) {
-		return projectDao.selectTotalRecordBySecondCategoryNo(secondCategoryNo);
+	public int selectTotalRecordBySecondCategoryNo(int firstCategoryNo, int secondCategoryNo) {
+		return projectDao.selectTotalRecordBySecondCategoryNo(firstCategoryNo, secondCategoryNo);
 	}
 	
 	public List<FirstCategoryVO> selectFirstCategory() {
@@ -49,5 +49,9 @@ public class ProjectServiceImpl implements ProjectService{
 	
 	public Map<String, Object> selectByNo(int projectNo) {
 		return projectDao.selectByNo(projectNo);
+	}
+	
+	public int selectFundingUserCount(int projectNo) {
+		return projectDao.selectFundingUserCount(projectNo);
 	}
 }

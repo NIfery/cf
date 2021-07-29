@@ -37,6 +37,7 @@
 			.col-12{
 				margin-left: 5.5%;
 			}
+			
 		</style>
 		
 		<script type="text/javascript" 
@@ -50,9 +51,14 @@
 			$(function(){
 				$('.dropdown-submenu a.test').on("click", function(e){
 					$(this).next('ul').toggle();
+					
+					$(this).parent().siblings().find('ul').css('display','none');
+					
 					e.stopPropagation();
 					e.preventDefault();
 				});
+				
+				
 				
 				$('#btWrite').click(function(){
 					location.href="<c:url value='/project/writeMain'/>";
@@ -68,12 +74,14 @@
 				$('form[name=frmPage]').submit();	
 			}
 			
-			function test(type){
+			function test(type1, type2){
+				$('.dropdown-submenu a.test').next('ul').css('display','none');
 				$.ajax({
 					url:"<c:url value='/project/alist'/>",
 					type:"get",
 					data:{
-							secondCategoryNo:type,
+							firstCategoryNo:type1,
+							secondCategoryNo:type2,
 							curPage:$('#currentPage').val()
 						},
 					dataType:"json",
@@ -85,6 +93,7 @@
 						totalCount = pagingInfo.totalRecord;
 						
 						$('#test').empty();
+						$('#divPage').empty();
 						
 						var str="";
 						str+="<div class='container'><div class='weekly2-wrapper'><div class='row'>";
@@ -94,6 +103,7 @@
 						str+="<div class='dot-style d-flex dot-style'>";
 						if(list==''){
 							str+="데이터가 없습니다.";
+							str+="</div></div></div></div></div><br><br><br><br><br><br><br>";
 						}else{
 							$.each(list, function(idx,item){
 								if(idx<4){
@@ -104,7 +114,7 @@
 									str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
 									str+="<h6>"+item.projectSummary+"</h6>";
 									str+="<hr style='margin:5px 0px 8px 0px;'>";
-									str+="<h6>"+AddComma(item.totalFundingAmount)+"원<span style='color:red;font-size:0.8em'>"+(item.totalFundingAmount/+item.totalAmount*100).toFixed(1)+"%</span></h6>";
+									str+="<h6>"+AddComma(item.totalFundingAmount)+"원<span style='color:red;font-size:0.8em'>"+(item.totalFundingAmount/+item.totalAmount*100).toFixed(2)+"%</span></h6>";
 									str+="</div></div>";
 								}
 							});
@@ -123,7 +133,7 @@
 										str+="<p>"+moment(item.projectStartdate).format("YYYY-MM-DD")+"</p>";
 										str+="<h6>"+item.projectSummary+"</h6>";
 										str+="<hr style='margin:5px 0px 8px 0px;'>";
-										str+="<h6>"+AddComma(item.totalFundingAmount)+"원<span style='color:red;font-size:0.8em'>"+(item.totalFundingAmount/+item.totalAmount*100).toFixed(1)+"%</span></h6>";
+										str+="<h6>"+AddComma(item.totalFundingAmount)+"원<span style='color:red;font-size:0.8em'>"+(item.totalFundingAmount/+item.totalAmount*100).toFixed(2)+"%</span></h6>";
 										str+="</div></div>";
 									}
 								});
@@ -133,16 +143,25 @@
 							//페이징처리
 						    var pageStr="";
 
+							
+//============================================이전버튼 만들어야함============================================
+							
+							
 							//[1][2][3][4][5][6][7][8][9][10]
 							for (var i = pagingInfo.firstPage; i <= pagingInfo.lastPage; i++) {
 								if (i == pagingInfo.currentPage) {
 									pageStr += "<span style='color:blue;font-weight: bold'>" + i
 											+ "</span>";
 								} else {
-									pageStr += "<a style='color:black;text-decoration: none' href='#' onclick='send("+i+");test("+type+")'>[" + i
+									pageStr += "<a style='color:black;text-decoration: none' href='#' onclick='send("+i+");test("+type1+","+type2+")'>[" + i
 											+ "]</a>";
 								}
 							}
+							
+							
+//============================================다음버튼 만들어야함============================================
+							
+							
 							
 							$('#divPage').html(pageStr);
 						}
@@ -173,23 +192,18 @@
 					    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">카테고리
 					    <span class="caret"></span></button>
 					    <ul class="dropdown-menu">
-					      <li class="dropdown-submenu dropend">
-					        <a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">게임<span class="caret"></span></a>
-					        <ul class="dropdown-menu">
-					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">모든 게임</a></li>
-					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="send('1');test('1');">모바일 게임</a></li>
-					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">보드 게임</a></li>
-					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">비디오 게임</a></li>
-					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">카드 게임</a></li>
-					          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="">게임 페스티벌</a></li>
-					        </ul>
-					      </li>
-					      <li class="dropdown-submenu dropend">
-					      <a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">공연<span class="caret"></span></a>
-					      </li>
-					      <li class="dropdown-submenu dropend">
-					      <a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">디자인<span class="caret"></span></a>
-					      </li>
+					      <c:forEach var="firstCt" items="${fList }">
+						  	<li class="dropdown-submenu dropend">
+						    	<a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">${firstCt.categoryName }<span class="caret"></span></a>
+						    	<ul class="dropdown-menu">
+						          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="send('1');test(${firstCt.firstCategoryNo},'0')">모든 ${firstCt.categoryName }</a></li>
+						          <c:forEach var="secondCt" items="${sList }">
+						          	<c:if test="${secondCt.firstCategoryNo==firstCt.firstCategoryNo }">
+							          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="send('1');test('0','${secondCt.secondCategoryNo}');">${secondCt.categoryName }</a></li>
+						          	</c:if>
+						          </c:forEach>
+					      		</ul>
+					      </c:forEach>
 					    </ul>
 					  </div>
                     
@@ -232,7 +246,7 @@
 						</div>
 						<div class="dropdown" style="float:right;padding:3px;">
 							  <button class="btn btn-default" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-							  	style="padding:12px 0px;" onclick="send('1');test('0')">
+							  	style="padding:12px 0px;" onclick="send('1');test('0','0')">
 							    전체보기
 							  </button>
 						</div>
@@ -281,7 +295,8 @@
 		                                    <p><fmt:formatDate value="${vo.projectStartdate }" pattern="yyyy-MM-dd"/></p>
 		                                    <h6>${vo.projectSummary }</h6>
 		                                    <hr style="margin:5px 0px 8px 0px;">
-		                                    <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">${vo.totalFundingAmount/vo.totalAmount*100 }%</span></h6>
+		                                    <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
+		                                    <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
 		                                </div>
 		                            </div> 
 			                	</c:forEach>
@@ -298,7 +313,6 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-tittle mb-30">
-                        <br><br>
                         </div>
                     </div>
                 </div>
@@ -318,7 +332,8 @@
 		                                   <p><fmt:formatDate value="${vo.projectStartdate }" pattern="yyyy-MM-dd"/></p>
 		                                   <h6>${vo.projectSummary }</h6>
 		                                   <hr style="margin:5px 0px 8px 0px;">
-		                                   <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">${vo.totalFundingAmount/vo.totalAmount*100 }%</span></h6>
+		                                   <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
+		                                   <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
 		                               </div>
 		                           </div> 
 			                </c:forEach>
@@ -328,8 +343,7 @@
                 </div>
             </div>
         </div>
-    </div>           
-        <br><br>
+    </div>        
         <div id="divPage" style="text-align: center">
 			<c:if test="${pagingInfo.firstPage>1 }">
 				<a href="#" onclick="pageProc(${pagingInfo.firstPage-1})">

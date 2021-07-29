@@ -90,7 +90,7 @@ body {
 <body>
 	<article>
 		<div class="container">
-			<h2>게시글 작성</h2>
+			<h2><span class="glyphicon glyphicon-edit"></span>게시글 작성</h2>
 			<br>
 			<form name="frmWrite" role="form" method="post" enctype="multipart/form-data" action="<c:url value='/board/Write'/>">
 				<div class="mb-3">

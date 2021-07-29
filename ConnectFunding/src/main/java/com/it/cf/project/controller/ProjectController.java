@@ -50,6 +50,9 @@ public class ProjectController {
 	public String list(@ModelAttribute ProjectVO pageVo, Model model) {
 		logger.info("프로젝트 list 화면 보여주기");
 		
+		List<FirstCategoryVO> fList = projectService.selectFirstCategory();
+		List<SecondCategoryVO> sList = projectService.selectSecondCategory("total");
+		
 		ProjectPageInfo pagingInfo = new ProjectPageInfo();
 		pagingInfo.setBlockSize(ProjectUtil.BLOCK_SIZE);
 		pagingInfo.setCurrentPage(pageVo.getCurrentPage());
@@ -65,12 +68,9 @@ public class ProjectController {
 		logger.info("list 화면 결과, totalRecord={}", totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
 		
-		for(int i=0;i<list.size();i++) {
-			int currentAmount = projectService.selectTotalFundingAmountByFundingNo(list.get(i).getFundingNo());
-			list.get(i).setTotalFundingAmount(currentAmount);
-		}
-		
 		model.addAttribute("list", list);
+		model.addAttribute("fList", fList);
+		model.addAttribute("sList", sList);
 		model.addAttribute("pagingInfo", pagingInfo);
 		
 		return "project/list";
@@ -78,7 +78,7 @@ public class ProjectController {
 	
 	@ResponseBody
 	@RequestMapping("/alist")
-	public Map<String, Object> ajaxList(@RequestParam int secondCategoryNo, @RequestParam int curPage, @ModelAttribute ProjectVO pageVo) {
+	public Map<String, Object> ajaxList(@RequestParam int firstCategoryNo, @RequestParam int secondCategoryNo, @RequestParam int curPage, @ModelAttribute ProjectVO pageVo) {
 		pageVo.setCurrentPage(curPage);
 		ProjectPageInfo pagingInfo = new ProjectPageInfo();
 		pagingInfo.setBlockSize(ProjectUtil.BLOCK_SIZE);
@@ -87,19 +87,16 @@ public class ProjectController {
 		
 		pageVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
 		pageVo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
+		pageVo.setFirstCategoryNo(firstCategoryNo);
 		pageVo.setSecondCategoryNo(secondCategoryNo);
 		
 		List<ProjectVO> list = projectService.selectBySecondCategoryNo(pageVo);
 		logger.info("프로젝트 list 화면 결과, list.size={}", list.size());
 		
-		int totalRecord = projectService.selectTotalRecordBySecondCategoryNo(secondCategoryNo);
+		int totalRecord = projectService.selectTotalRecordBySecondCategoryNo(firstCategoryNo, secondCategoryNo);
+		
 		logger.info("list 화면 결과, totalRecord={}", totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
-		
-		for(int i=0;i<list.size();i++) {
-			int currentAmount = projectService.selectTotalFundingAmountByFundingNo(list.get(i).getFundingNo());
-			list.get(i).setTotalFundingAmount(currentAmount);
-		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
@@ -224,9 +221,11 @@ public class ProjectController {
 		logger.info("프로젝트 상세화면, 파라미터 projectNo={}", projectNo);
 		
 		Map<String, Object> map = projectService.selectByNo(projectNo);
-		logger.info("프로젝트 상세화면 결과 map={}", map);
+		int userCnt = projectService.selectFundingUserCount(projectNo);
+		logger.info("프로젝트 상세화면 결과 map={}, userCnt={}", map, userCnt);
 		
 		model.addAttribute("map", map);
+		model.addAttribute("userCnt", userCnt);
 		
 		return "project/detail";
 	}

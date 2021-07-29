@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ConnectFunding 게시판</title>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/nice-select2.css">
 <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.css'/>">
 <script type="text/javascript" src="<c:url value='/resources/js/jquery-3.6.0.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/bootstrap.js'/>"></script>
@@ -35,7 +36,7 @@
 
 	<div class="container">
 		<table class="table table-hover">
-		<h1> 자유게시판 </h1>
+		<h1><span class="glyphicon glyphicon-list-alt"></span> 자유게시판 </h1>
 			<thead>
 				<tr>
 					<th>번호</th>
@@ -54,11 +55,15 @@
 						<td colspan="6">게시글이 없습니다.</td>
 					</tr>
 				</c:if>
+				
+				<c:set var="delChk" value="Y"/>
+				
 				<c:if test="${!empty list }">
 					<c:forEach var="vo" items="${list }" >
 						<tr>
 							<th>${vo.boardNo }</th>
 							<th>
+							<c:if test="${vo.delFlag == 'N'}">
 							<!--제목 클릭시 detail 이동 -->
 							<a href="<c:url value='/board/CountUpdate?boardNo=${vo.boardNo}'/>">${vo.boardTitle } (댓글수 출력 예정)</a>
 								<c:if test="${vo.newImg < 24 }">
@@ -67,6 +72,11 @@
 								<c:if test="${!empty vo.boardOldfilename }">
 									<img style="width: 30px" src="<c:url value='/resources/images/upload.jpg'/>">
 								</c:if>
+							</c:if>
+							
+							<c:if test="${vo.delFlag == 'Y'}">
+								해당 글은 작성자에 의하여 삭제된 게시글입니다.	
+							</c:if>
 							</th>
 							<th>${vo.userName }</th>
 							<th><fmt:formatDate value="${vo.boardRegdate}" pattern="yyyy-MM-dd HH:mm:ss"/></th>
@@ -94,8 +104,9 @@
             		</c:if>
 					>작성자</option>
 				</select>
-				<input class="pull-left" type="text" name="searchKeyword" title="검색어 입력" value="${param.searchKeyword }">
-				<input class="pull-left" type="submit" value="검색">
+				&nbsp;
+				<input style="margin-top: 7px; height: 30px;" type="text" name="searchKeyword" title="검색어 입력" value="${param.searchKeyword }">
+				<input type="submit" value="검색">
 			</form>
 		</div>		
 	
@@ -124,9 +135,8 @@
 			<img src="<c:url value='/resources/images/rightbtn.PNG'/>">
 		</a>
 	</c:if>
-	
 		 </div>
 	</div>
 </body>
 </html>
-<%@ include file="../include/bottom.jsp" %> 
+<%@ include file="../include/bottom2.jsp" %> 

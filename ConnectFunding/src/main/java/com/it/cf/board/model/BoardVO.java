@@ -22,4 +22,6 @@ public class BoardVO {
 	private String userName;
 	
 	private int newImg;
+	private String delFlag;
+	private int CommentCount;
 }

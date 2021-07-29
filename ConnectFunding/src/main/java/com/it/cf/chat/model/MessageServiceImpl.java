@@ -8,9 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import com.it.cf.chat.controller.ChatController;
-import com.it.cf.common.SearchVO;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -25,8 +22,8 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	@Override
-	public List<MessageSendVO> sentAll(int userNo) {
-		return messageDao.sentAll(userNo);
+	public List<MessageSendVO> sentAll(SearchVOChat searchVo) {
+		return messageDao.sentAll(searchVo);
 	}
 
 	@Override
@@ -38,13 +35,13 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	@Override
-	public int sentCount(int userNo) {
-		return messageDao.sentCount(userNo);
+	public int sentCount(SearchVOChat searchVo) {
+		return messageDao.sentCount(searchVo);
 	}
 
 	@Override
-	public int receiveCount(int userNo) {
-		return messageDao.receiveCount(userNo);
+	public int receiveCount(SearchVOChat searchVo) {
+		return messageDao.receiveCount(searchVo);
 	}
 
 	@Override
@@ -98,8 +95,8 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	@Override
-	public List<MessageReceiveVO> receiveAll(int userNo) {
-		return messageDao.receiveAll(userNo);
+	public List<MessageReceiveVO> receiveAll(SearchVOChat searchVo) {
+		return messageDao.receiveAll(searchVo);
 	}
 
 	@Override
@@ -108,12 +105,12 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	@Override
-	public List<MessageSendVO> receiveAdmin(SearchVO searchVo) {
+	public List<MessageSendVO> receiveAdmin(SearchVOChat searchVo) {
 		return messageDao.receiveAdmin(searchVo);
 	}
 
 	@Override
-	public int totalReceive(SearchVO searchVo) {
+	public int totalReceive(SearchVOChat searchVo) {
 		return messageDao.totalReceive(searchVo);
 	}
 

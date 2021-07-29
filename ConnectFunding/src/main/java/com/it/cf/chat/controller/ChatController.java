@@ -1,5 +1,7 @@
 package com.it.cf.chat.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -17,9 +19,9 @@ import com.it.cf.chat.model.MessageSendListVO;
 import com.it.cf.chat.model.MessageReceiveVO;
 import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.chat.model.MessageService;
+import com.it.cf.chat.model.SearchVOChat;
 import com.it.cf.common.ConstUtil;
 import com.it.cf.common.PaginationInfo;
-import com.it.cf.common.SearchVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -71,27 +73,62 @@ public class ChatController {
 	}
 	
 	@RequestMapping("/sent")
-	public String sentAll(HttpSession session,Model model) {
+	public String sentAll(HttpSession session,@ModelAttribute SearchVOChat searchVo,Model model) {
 		int userNo=(int) session.getAttribute("userNo");
-		logger.info("보낸 쪽지함, userNo={}",userNo);
+		logger.info("보낸 쪽지함, userNo={}, searchVo={}",userNo, searchVo);
 		
-		List<MessageSendVO> list=messageService.sentAll(userNo);
+		//페이징 처리 관련
+		//[1] PaginationInfo
+		PaginationInfo pagingInfo = new PaginationInfo();
+		pagingInfo.setBlockSize(ConstUtil.BLOCK_SIZE);
+		pagingInfo.setCurrentPage(searchVo.getCurrentPage());
+		pagingInfo.setRecordCountPerPage(ConstUtil.RECORD_COUNT);
+		
+		//[2]
+		searchVo.setRecordCountPerPage(ConstUtil.RECORD_COUNT);
+		searchVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
+		searchVo.setUserNo(userNo);
+		logger.info("셋팅 후 searchVo={}", searchVo);
+		
+		List<MessageSendVO> list=messageService.sentAll(searchVo);
 		logger.info("list.size={}",list.size());
 		
-		model.addAttribute("list", list);
+		int totalRecord=messageService.sentCount(searchVo);
+		logger.info("보낸 쪽지함, totalRecord={}",totalRecord);
+		pagingInfo.setTotalRecord(totalRecord);
 		
+		model.addAttribute("list", list);
+		model.addAttribute("pagingInfo", pagingInfo);
 		return "chat/sent";
 	}
 	
 	@RequestMapping("/inbox")
-	public String receiveAll(HttpSession session,Model model) {
+	public String receiveAll(HttpSession session,@ModelAttribute SearchVOChat searchVo,Model model) {
 		int userNo=(int) session.getAttribute("userNo");
-		logger.info("받은 쪽지함, userNo={}",userNo);
+		logger.info("받은 쪽지함, userNo={}, searchVo={}",userNo, searchVo);
 		
-		List<MessageReceiveVO> list=messageService.receiveAll(userNo);
+		//페이징 처리 관련
+		//[1] PaginationInfo
+		PaginationInfo pagingInfo = new PaginationInfo();
+		pagingInfo.setBlockSize(ConstUtil.BLOCK_SIZE);
+		pagingInfo.setCurrentPage(searchVo.getCurrentPage());
+		pagingInfo.setRecordCountPerPage(ConstUtil.RECORD_COUNT);
+		
+		//[2]
+		searchVo.setRecordCountPerPage(ConstUtil.RECORD_COUNT);
+		searchVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
+		searchVo.setUserNo(userNo);
+		logger.info("셋팅 후 searchVo={}", searchVo);
+		
+		List<MessageReceiveVO> list=messageService.receiveAll(searchVo);
 		logger.info("list.size={}",list.size());
 		
+		int totalRecord=messageService.receiveCount(searchVo);
+		logger.info("보낸 쪽지함, totalRecord={}",totalRecord);
+		pagingInfo.setTotalRecord(totalRecord);
+		
 		model.addAttribute("list", list);
+		model.addAttribute("pagingInfo", pagingInfo);
 		
 		return "chat/inbox";
 	}
@@ -171,14 +208,15 @@ public class ChatController {
 	}
 	
 	@RequestMapping("/chatCategory")
-	public String countMessage(HttpSession session,Model model) {
+	public String countMessage(HttpSession session,@ModelAttribute SearchVOChat searchVo,Model model) {
 		int userNo=(int) session.getAttribute("userNo");
-		logger.info("보낸 쪽지, 받은 쪽지 수, userNo={}",userNo);
+		logger.info("보낸 쪽지, 받은 쪽지 수, userNo={}, searchVo={}",userNo,searchVo);
+		searchVo.setUserNo(userNo);
 		
-		int sentCount=messageService.sentCount(userNo);
+		int sentCount=messageService.sentCount(searchVo);
 		logger.info("보낸 쪽지 수 sentCount={}",sentCount);
 		
-		int receiveCount=messageService.receiveCount(userNo);
+		int receiveCount=messageService.receiveCount(searchVo);
 		logger.info("받은 쪽지 수 receiveCount={}",receiveCount);
 		
 		model.addAttribute("sentCount", sentCount);
@@ -274,8 +312,18 @@ public class ChatController {
 	}
 	
 	@RequestMapping("/adminInbox")
-	public String adminInbox(@ModelAttribute SearchVO searchVo,Model model) {
+	public String adminInbox(@ModelAttribute SearchVOChat searchVo,Model model) {
 		logger.info("관리자 쪽지함, searchVo={}",searchVo);
+		
+		//날짜
+		String startDay=searchVo.getStartDay();
+		if(startDay==null || startDay.isEmpty()) {
+			Date today=new Date();
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			String str=sdf.format(today);
+			searchVo.setEndDay(str);
+			searchVo.setStartDay(str);
+		}
 		
 		//페이징 처리 관련
 		//[1] PaginationInfo

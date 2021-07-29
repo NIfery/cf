@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="../incChat/top.jsp"%>
+<%@ include file="../include/top.jsp"%>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <script type="text/javascript"
@@ -21,7 +21,7 @@
 	});
 </script>
 <title>쪽지보기</title>
-
+<c:import url="/chat/chatCategory"></c:import>
 		<div class="col-13 col-sm-7 col-md-6">
 			<form name="frmChat" method="post" action="<c:url value='/chat/edit'/>">
 				<h1>쪽지쓰기</h1>
@@ -33,9 +33,12 @@
 				<div class="form-group">
 					<label for="content">내용</label>
 					<textarea class="form-control" id="messageContent" name="messageContent" rows="3">${sendVo.messageContent }</textarea>
-					<input class="btn btn-warning m-4" type="submit" value="수정">
+					<div class="text-center m-3">
+					<input class="btn btn-warning " type="submit" value="수정">
 					<input type="hidden" name="messageNo" value="${sendVo.messageNo }">
-					<a href="<c:url value='/chat/sent'/>"><input class="btn btn-warning m-2" type="button" value="목록"></a>	
+					<a href="<c:url value='/chat/detail?messageNo=${sendVo.messageNo }'/>"><input class="btn btn-warning " type="button" value="수정 취소"></a>
+					<a href="<c:url value='/chat/sent'/>"><input class="btn btn-warning " type="button" value="목록"></a>	
+					</div>
 				</div>
 			</form>
 		</div>

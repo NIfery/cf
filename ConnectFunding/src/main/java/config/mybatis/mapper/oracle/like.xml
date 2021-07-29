@@ -38,6 +38,12 @@
 		    	<if test="searchKeyword!=null and searchKeyword!=''">
 				and (${searchCondition} like '%' || #{searchKeyword} || '%')
 				</if>
+				order by
+				<choose>
+					<when test="searchCondition == 'like_no'">like_no</when>	<!-- 추가순 -->
+					<when test="searchCondition == 'restday'">restday</when>
+					<otherwise>like_no</otherwise>
+				</choose>
 		    )A   
 		)
 		<![CDATA[

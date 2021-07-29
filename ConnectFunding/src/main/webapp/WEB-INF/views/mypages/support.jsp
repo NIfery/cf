@@ -115,12 +115,12 @@
 			<c:if test="${!empty fdlist}">
 				<c:forEach var="map" items="${fdlist }">
 					<div class="wrap"
-						style="height: 160px; margin-bottom: 20px; border-radius: 0; border: none; border-bottom: 1px solid #ced4da; width: 700px;">
+						style="height: 180px; margin-bottom: 20px; border-radius: 0; border: none; border-bottom: 1px solid #ced4da; width: 700px;">
 						<div class="trand-right-single d-flex">
 							<div class="trand-right-img">
 								<img
 									src="<c:url value='/project_assets/projectImg/${map["PROJECT_IMAGE"]}'/>"
-									style="width: 180px; height: 110px; margin: 20px 20px;">
+									style="width: 180px; height: 130px; margin: 30px 20px; border-radius: 20px;">
 							</div>
 							<div class="trand-right-cap"
 								style="margin: 20px 10px; width: 450px;">
@@ -130,6 +130,7 @@
 								</span><br>
 								<div style="margin-top: 10px; margin-bottom: 10px;">
 									<span class="color1" style="font-size: 1.2em;">${map['PROJECT_NAME']}</span><br>
+									<span class="color2" style="font-size: 0.9em;">${map['USER_NAME']}</span><br>
 									<span class="color2" style="font-weight: bold;"> <fmt:formatNumber
 											value="${map['FUNDING_AMOUNT']}" pattern="#,###" />원<!--  결제예정 -->
 									</span><br>
@@ -204,8 +205,9 @@
 </div>
 <form action="<c:url value='/mypages/support'/>" name="frmSupport"
 	method="post">
-	<input type="hidden" name="currentPage"><br> <input
-		type="hidden" name="projectName" value="${map['PROJECT_NAME']}"><br>
+	<input type="hidden" name="currentPage"><br> 
+	<input type="hidden" name="projectName" value="${map['PROJECT_NAME']}"><br>
+	<input type="hidden" name="userName" value="${map['USER_NAME']}"><br>
 </form>
 <script type="text/javascript">
 function pageProc(curPage){

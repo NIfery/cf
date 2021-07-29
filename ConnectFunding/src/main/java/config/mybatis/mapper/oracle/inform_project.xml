@@ -18,6 +18,9 @@
 		order by opendate
 	</select>
 	
+	<delete id="deleteinformProject" parameterType="int">
+		delete informProjectView where project_no=#{projectNo}
+	</delete>
 </mapper>
 
 

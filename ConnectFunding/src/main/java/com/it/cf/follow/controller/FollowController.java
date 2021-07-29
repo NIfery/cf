@@ -43,34 +43,31 @@ public class FollowController {
 	}//
 	
 	@RequestMapping("/mypageload/AddFollow")
-	public String addFollow(@ModelAttribute FollowVO followVo,
-			Model model) {
+	public String addFollow(@ModelAttribute FollowVO followVo, Model model) {
 		
 		int cnt = followservice.insertFollow(followVo);
 		logger.info("팔로우 결과, followVo={}", followVo);
-		int fuserNo=followVo.getFollowingUserNo();
-		
-		int count = followservice.projectCount(fuserNo);
 		
 		String msg="팔로우 실패, 다시 시도해주세요.", url="/mypages/follow";
 		if(cnt>0) {
+			int checkcount = followservice.updateCheck(followVo.getFollowingUserNo(), followVo.getFollowingUserNo());
+			logger.info("followCheck 변경 결과, checkcount={}", checkcount);
 			msg="성공적으로 팔로우 되었습니다.";
 		}
 		
 		model.addAttribute("msg", msg);
 		model.addAttribute("url", url);
-		logger.info("count={}", count);
 		
 		return "common/message";
 	}//
 	
 	@RequestMapping("/mypageload/followers")
-	public String followers(@ModelAttribute FollowVO followVo, HttpSession session,
-			Model model) {
+	public String followers(HttpSession session, Model model) {
 		
 		int followingUserNo = (int) session.getAttribute("userNo");
 		
 		List<FollowVO> followerlist = followservice.selectFollower(followingUserNo);
+		
 		logger.info("나를 팔로워한 목록 조회, 팔로워 list.size={}", followerlist.size());
 		
 		model.addAttribute("followerlist", followerlist);
@@ -95,6 +92,38 @@ public class FollowController {
 		logger.info("bool={}", bool);
 		
 		return bool;
+	}//
+	
+	@RequestMapping("/mypageload/unfollow")
+	public String unfollow(@RequestParam(defaultValue = "0") int no, Model model) {
+		
+		logger.info("팔로우 취소, 파라미터 no={}", no);
+		
+		int cnt = followservice.deleteFollow(no);
+		logger.info("팔로우 삭제결과, cnt={}", cnt);
+		
+		String msg="팔로우 취소 실패, 다시 시도해주세요.", url="/mypages/follow";
+		if(cnt>0) {
+			int unfollow = followservice.updateFollow(no);
+			logger.info("followCheck 0으로 변경, unfollow={}", unfollow);
+			msg="팔로우가 취소되었습니다.";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}//
+	
+	@ResponseBody
+	@RequestMapping("/mypageload/checkCount")
+	public int checkCount(int followingUserNo) {
+		logger.info("프로젝트수 구하기");
+		
+		int cnt = followservice.projectCount(followingUserNo);
+		logger.info("프로젝트 수, cnt={}", cnt);
+		
+		return cnt;
 	}
 	
 }

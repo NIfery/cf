@@ -18,6 +18,12 @@
 		delete account
 		where account_no=#{accountNo}
 	</delete>
+	
+	<update id="updateUserFlag" parameterType="int">
+		update users set user_flag=1
+		where user_no=#{userNo}
+	</update>
+	
 </mapper>
 
 

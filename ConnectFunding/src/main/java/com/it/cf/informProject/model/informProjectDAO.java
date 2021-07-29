@@ -10,4 +10,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface informProjectDAO {
 	int insertInformProject(informProjectVO informProjectVo);
 	List<Map<String, Object>> selectInformProject(int userNo);
+	int deleteinformProject(int projectNo);
 }

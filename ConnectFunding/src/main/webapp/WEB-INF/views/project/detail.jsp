@@ -24,7 +24,6 @@
 						alert("Error 발생 : " + error);
 					}
 				});
-				//location.href="<c:url value='/project/cancleAll?projectNo="+projectNo+"'/>";
 			}
 		}
 		

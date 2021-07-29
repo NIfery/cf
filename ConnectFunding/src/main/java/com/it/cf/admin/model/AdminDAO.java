@@ -16,9 +16,12 @@ public interface AdminDAO {
 	int insertAdmin(AdminVO vo);
 	List<Map<String, Object>> selectPosition();
 	List<UserVO> selectAllUser(SearchVO searchVo);
+	List<AdminVO> selectAllAdmin(SearchVO searchVo);
 	int selectTotalRecord(SearchVO searchVo);
+	int selectTotalRecord2(SearchVO searchVo);
 	int idDuplChk(String adminId);
 	AdminVO selectByUserid(String adminId);
 	void deleteMember(String no);
 	int deleteUser(int userNo);
+	int deleteAdmin(int adminNo);
 }

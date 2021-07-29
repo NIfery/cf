@@ -1,5 +1,7 @@
 package com.it.cf.admin.model;
 
+import java.sql.Timestamp;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,4 +14,6 @@ public class AdminVO {
 	private String adminId;
 	private String adminPwd;
 	private String adminPosition;
+	private String adminName;
+	private Timestamp regdate;
 }

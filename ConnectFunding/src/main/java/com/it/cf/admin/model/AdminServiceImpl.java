@@ -81,10 +81,44 @@ public class AdminServiceImpl implements AdminService{
 			for(UserVO vo : list) {
 				int userNo=vo.getUserNo();
 				logger.info("deleteUserMulti userNo={}",userNo);
-				if(userNo!=0) {  //체크한 상품만 삭제
+				if(userNo!=0) {  //체크한 회원만 삭제
 					logger.info("deleteUserMulti, userNo={}",userNo);
 					cnt=adminDao.deleteUser(userNo);
 					logger.info("deleteUserMulti cnt={}",cnt);
+				}
+			}
+		}catch(RuntimeException e) {
+			e.printStackTrace();
+			cnt=-1;
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		}
+		logger.info("cnt={}",cnt);
+		return cnt;
+	}
+
+	@Override
+	public List<AdminVO> selectAllAdmin(SearchVO searchVo) {
+		return adminDao.selectAllAdmin(searchVo);
+	}
+
+	@Override
+	public int selectTotalRecord2(SearchVO searchVo) {
+		return adminDao.selectTotalRecord2(searchVo);
+	}
+
+	@Override
+	@Transactional
+	public int deleteAdminMulti(List<AdminVO> list) {
+		logger.info("deleteAdminMulti list.size={}",list.size());
+		int cnt=0;
+		try {
+			for(AdminVO vo : list) {
+				int adminNo=vo.getAdminNo();
+				logger.info("deleteAdminMulti adminNo={}",adminNo);
+				if(adminNo!=0) {  //체크한 운영자만 삭제
+					logger.info("deleteAdminMulti, adminNo={}",adminNo);
+					cnt=adminDao.deleteAdmin(adminNo);
+					logger.info("deleteAdminMulti cnt={}",cnt);
 				}
 			}
 		}catch(RuntimeException e) {

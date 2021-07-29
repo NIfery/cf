@@ -40,7 +40,7 @@
                      
                             <div class="form-label-group"> 
                             	<input type="email" id="inputEmail" class="form-control" name="userEmail"
-                            		placeholder="이메일주소를 입력하세요" required autofocus> 
+                            		value="${cookie.ck_mail.value }" placeholder="이메일주소를 입력하세요" required autofocus> 
                             </div>
                             <div class="form-label-group">
                             	<input type="password" id="inputPassword" class="form-control" name="userPwd"
@@ -48,8 +48,12 @@
                             </div>
 
                             <div class="custom-control custom-checkbox mb-3"> 
-                            	<input type="checkbox" class="custom-control-input" id="customCheck1" name="customCheck"> 
-                            	<label class="custom-control-label" for="customCheck1">아이디저장</label> 
+                            	<input type="checkbox" class="custom-control-input" id="customCheck1" name="customCheck"
+                            		<c:if test="${!empty cookie.ck_mail }">
+									checked="checked"
+									</c:if>
+                            	> 
+                            	<label class="custom-control-label" for="customCheck1">이메일저장</label> 
                             </div> 
                             
                            		<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit"

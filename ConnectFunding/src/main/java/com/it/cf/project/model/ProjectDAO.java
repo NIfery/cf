@@ -5,9 +5,12 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.it.cf.fdList.model.FundingListVO;
+
 @Mapper
 public interface ProjectDAO {
 	List<ProjectVO> selectAll(ProjectVO pageVo);
+	List<Map<String, Object>> selectAllAdmin(ProjectVO pageVo);
 	List<ProjectVO> selectBySecondCategoryNo(ProjectVO pageVo);
 	int selectTotalFundingAmountByFundingNo(int fundingNo);
 	int selectTotalRecord();
@@ -22,4 +25,7 @@ public interface ProjectDAO {
 	String selectDBPwd(int userNo);
 	int deleteFundingList(int projectNo);
 	int deleteProject(int projectNo);
+	int insertFunding(FundingListVO vo);
+	int deleteFunding(String receiptId);
+	List<FundingListVO> selectFundingListByProjectNo(int projectNo);
 }

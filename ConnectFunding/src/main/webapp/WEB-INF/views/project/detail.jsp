@@ -5,10 +5,28 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="../include/top.jsp" %>
 <script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
+<script src="https://cdn.bootpay.co.kr/js/bootpay-3.3.2.min.js" type="application/javascript"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		var today = getFormatDate(new Date());
+		var today = new Date().getTime();
+		var ckEndDate = new Date($('#endDateFrm').val()).getTime();
+		var projectNo = $('#projectNo').val();
+		
+		if(today>ckEndDate){
+			if($('#fundingPercent').val()<100){
+				$.ajax({
+					url:"<c:url value='/project/cancleAll?projectNo="+projectNo+"'/>",
+					type:"get",
+					success:function(res){
+					
+					},error:function(xhr, status, error){
+						alert("Error 발생 : " + error);
+					}
+				});
+				//location.href="<c:url value='/project/cancleAll?projectNo="+projectNo+"'/>";
+			}
+		}
 		
 		$('form[name=frmDelete]').submit(function(){
 			if($('#pwd').val().length<1){
@@ -16,6 +34,82 @@
 				$('#pwd').focus();
 				event.preventDefault();
 			}		
+		});
+		
+		$('#btFundingModal').click(function(){
+			if($('#userNo').val().length<1){
+				alert('먼저 로그인하세요');
+				return false;
+			}
+		});
+		
+		$("#btFunding").click(function(){
+			if($('#amount').val().length<1){
+				alert('후원금을 입력해주세요');
+				return false;
+			}
+			
+			$('#fdAmount').val($('#amount').val());
+			
+			var userNo = $('#userNo').val();
+			var userName = $('#userName').val();
+			var userHp = $('#userHp').val();
+			var userZipcode = $('#userZipcode').val();
+			var userAddress = $('#userAddress').val();
+			var projectName = $('#projectName').val();
+			var fdAmount = $('#fdAmount').val();
+			
+			
+			var merchantUid = 'merchant_' + userNo + '_' + new Date().getTime();
+			var customerUid = 'customer_' + userNo + '_' + new Date().getTime();
+			
+			
+			BootPay.request({
+				price: fdAmount, //실제 결제되는 가격
+				application_id: "60ffa2837b5ba400237bda10",
+				name: projectName, //결제창에서 보여질 이름
+				pg: 'inicis',
+				method: 'card', //결제수단, 입력하지 않으면 결제수단 선택부터 화면이 시작합니다.
+				show_agree_window: 0, // 부트페이 정보 동의 창 보이기 여부
+				user_info: {
+					username: userName,
+					addr: userAddress,
+					phone: userHp
+				},
+				order_id: merchantUid, //고유 주문번호로, 생성하신 값을 보내주셔야 합니다.
+				params: {callback1: '그대로 콜백받을 변수 1', callback2: '그대로 콜백받을 변수 2', customvar1234: '변수명도 마음대로'}
+			}).error(function (data) {
+				//결제 진행시 에러가 발생하면 수행됩니다.
+				console.log(data);
+			}).cancel(function (data) {
+				//결제가 취소되면 수행됩니다.
+				console.log(data);
+			}).ready(function (data) {
+				// 가상계좌 입금 계좌번호가 발급되면 호출되는 함수입니다.
+				console.log(data);
+			}).confirm(function (data) {
+				//결제가 실행되기 전에 수행되며, 주로 재고를 확인하는 로직이 들어갑니다.
+				//주의 - 카드 수기결제일 경우 이 부분이 실행되지 않습니다.
+				console.log(data);
+				var enable = true; // 재고 수량 관리 로직 혹은 다른 처리
+				if (enable) {
+					BootPay.transactionConfirm(data); // 조건이 맞으면 승인 처리를 한다.
+				} else {
+					BootPay.removePaymentWindow(); // 조건이 맞지 않으면 결제 창을 닫고 결제를 승인하지 않는다.
+				}
+			}).close(function (data) {
+			    // 결제창이 닫힐때 수행됩니다. (성공,실패,취소에 상관없이 모두 수행됨)
+			    console.log(data);  
+			    
+			    $('#btFundingModalClose').click();
+			    $('#amount').val('');
+			}).done(function (data) {
+				//결제가 정상적으로 완료되면 수행됩니다
+				//비즈니스 로직을 수행하기 전에 결제 유효성 검증을 하시길 추천합니다.
+				location.href="<c:url value='/project/detailFunding?projectNo="+projectNo+"&fdAmount="+fdAmount+"&receiptId="+data.receipt_id+"'/>";
+			    
+				console.log(data);
+			});
 		});
 	});
 	
@@ -46,6 +140,17 @@
                      <img class="img-fluid" src="assets/img/blog/single_blog_1.png" alt="">
                   </div>
                   <div class="blog_details">
+                  	
+                  	<!-- hidden inform -->
+                  	<input type="hidden" id="projectNo" value="${map['PROJECT_NO']}">
+                  	<input type="hidden" id="projectName" value="${map['PROJECT_NAME']}">
+                  	<input type="hidden" id="userNo" value="${userVo.userNo}">
+                  	<input type="hidden" id="userName" value="${userVo.userName}">
+                  	<input type="hidden" id="userHp" value="${userVo.userHp}">
+                  	<input type="hidden" id="userZipcode" value="${userVo.userZipcode}">
+                  	<input type="hidden" id="userAddress" value="${userVo.userAddress}">
+                  	<input type="hidden" id="fdAmount">
+                  	
                   	 <div style="text-align:center">
 	                     <h1 style="font-weight:bold;">${map['PROJECT_NAME']}</h1>
 	                     <!-- 작성자이름 클릭시 작성자 정보조회? 쪽지문의? -->
@@ -61,10 +166,12 @@
 						    	<div class="row row-cols-1">
 						    		<c:if test="${empty map['TOTAL_FUNDING_AMOUNT']}">
 								    	<h2 style="margin: 5px 0px 20px -10px">0원 0.00%</h2>
+								    	<input type="hidden" value="0" id="fundingPercent">
 						    		</c:if>
 						    		<c:if test="${!empty map['TOTAL_FUNDING_AMOUNT']}">
 								    	<h2 style="margin: 5px 0px 20px -10px">
 							    		<fmt:formatNumber value="${map['TOTAL_FUNDING_AMOUNT'] }" pattern="#,###"/>원 <fmt:formatNumber value="${map['TOTAL_FUNDING_AMOUNT']/map['TOTAL_AMOUNT']*100.0 }" pattern="0.00"/>%</h2>
+								    	<input type="hidden" value="<fmt:formatNumber value='${map["TOTAL_FUNDING_AMOUNT"]/map["TOTAL_AMOUNT"]*100.0 }' pattern='0.00'/>" id="fundingPercent">
 						    		</c:if>
 						    	</div>
 						    	<br>
@@ -80,11 +187,17 @@
 									<fmt:parseNumber value="${strPlanDate.time / (1000*60*60*24)}" integerOnly="true" var="strDate"></fmt:parseNumber>
 									<fmt:parseDate value="${map['PROJECT_ENDDATE'] }" var="endPlanDate" pattern="yyyy-MM-dd"/>
 									<fmt:parseNumber value="${endPlanDate.time / (1000*60*60*24)}" integerOnly="true" var="endDate"></fmt:parseNumber>
+									<input type="hidden" value="${map['PROJECT_ENDDATE'] }" id="endDateFrm">
 									<c:if test="${ckTodayDate<strDate }">
 							    		<h2 style="margin: 5px 0px 20px -10px">펀딩 시작 대기중</h2>
 									</c:if>
 									<c:if test="${ckTodayDate>=strDate }">
-							    		<h2 style="margin: 5px 0px 20px -10px">${endDate-ckTodayDate }일</h2>
+										<c:if test="${ckTodayDate<=endDate }">
+								    		<h2 style="margin: 5px 0px 20px -10px">${endDate-ckTodayDate }일</h2>
+										</c:if>
+										<c:if test="${ckTodayDate>endDate }">
+								    		<h2 style="margin: 5px 0px 20px -10px">종료되었습니다.</h2>
+										</c:if>
 									</c:if>
 						    	</div>
 						    	<br>
@@ -94,19 +207,56 @@
 						    	<div class="row row-cols-1">
 						    		<div style="background: white;border:2px solid #e4e1e1">
 						    			펀딩 진행중<br>
-										목표 금액인 ${map['TOTAL_AMOUNT'] }원이 모여야만 결제됩니다.
+										목표 금액 <fmt:formatNumber value="${map['TOTAL_AMOUNT']}" pattern="#,###"/>원
 						    		</div>
 						    	</div>
 						    	<br>
 						    	<div class="row row-cols-1">
-						    		<c:if test="${userNo!=map['USER_NO'] }">
-							    		[후원하기 버튼]
+						    		<c:if test="${userVo.userNo!=map['USER_NO'] }">
+						    			<c:if test="${ckTodayDate<strDate }">
+								    		<h2 style="margin: 5px 0px 20px -10px">펀딩 시작 대기중</h2>
+										</c:if>
+										<c:if test="${ckTodayDate>=strDate }">
+											<c:if test="${ckTodayDate<=endDate }">
+									    		<a href="#" data-toggle="modal" data-target="#myModal" id="btFundingModal">후원하기</a>
+								    			<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog"
+													aria-labelledby="staticBackdropLabel" aria-hidden="true">
+													<div class="modal-dialog" role="document">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h5 class="modal-title" id="staticBackdropLabel">후원하기</h5>
+																<button type="button" class="btn-close" data-dismiss="modal"
+																	aria-label="Close" id="btFundingModalClose">
+																</button>
+															</div>
+															<div class="modal-body">
+																<!-- 모달 body -->
+																<div class="form-group" style="width: 450px; margin: 3px;">
+																	<label class="form-label mt-4">후원하실 금액을 입력해주세요</label> 
+																	<input type="text" class="form-control" name="amount" id="amount" placeholder="후원금액을 입력하세요."
+																		oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+																</div>
+															</div>
+															<div class="modal-footer">
+																<button type="button" id="btFunding" class="genric-btn warning circle">후원하기</button>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- 모달 -->
+											</c:if>
+											<c:if test="${ckTodayDate>endDate }">
+									    		<h2 style="margin: 5px 0px 20px -10px">종료되었습니다.</h2>
+											</c:if>
+										</c:if>
+										
+										
 						    		</c:if>
-						    		<c:if test="${userNo==map['USER_NO'] }">
+						    		<c:if test="${userVo.userNo==map['USER_NO'] }">
 							    		<a href="<c:url value='/project/update?projectNo=${map["PROJECT_NO"] }'/>">[수정 버튼]</a> 
-							    		<a href="#" data-toggle="modal" data-target="#myModal">[삭제 버튼]</a>
+							    		<a href="#" data-toggle="modal" data-target="#myModal2">[삭제 버튼]</a>
 						    		</c:if>
-						    		<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog"
+						    		<div class="modal fade" id="myModal2" data-backdrop="static" tabindex="-1" role="dialog"
 									aria-labelledby="staticBackdropLabel" aria-hidden="true">
 									<div class="modal-dialog" role="document">
 										<div class="modal-content">

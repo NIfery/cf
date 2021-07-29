@@ -22,4 +22,7 @@ public class UserVO {
 	private Timestamp userJoindate;
 	private Timestamp userOutdate;  
 	private String outFlag; 
+	private String userNickname;
+	private String userIntro;
+	private String userProfile;
 }

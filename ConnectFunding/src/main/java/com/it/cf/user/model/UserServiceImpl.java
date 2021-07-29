@@ -75,6 +75,20 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int checkNickname(String userNickname) {
+		int result=0;
+		
+		int cnt = userDao.checkNickname(userNickname);
+		if(cnt>0) {
+			result=UNUSABLE_NICKNAME;	//2
+		}else {
+			result=USABLE_NICKNAME;	//1
+		}
+		
+		return result;
 	}//
 
 }

@@ -86,7 +86,11 @@
                     <ul class="list-unstyled navbar__list">
                         <li>
                             <a class="js-arrow" href="<c:url value='/admin/index'/>">
-                                <i class="fas fa-bar-chart-o"></i> 메인화면</a>
+                                <i class="fas fa-bar-chart-o"></i> 통계</a>
+                        </li>
+                        <li>
+                            <a class="js-arrow" href="<c:url value='/admin/confirm'/>">
+                                <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
                         </li>
                         <li>
                             <a href="<c:url value='/admin/membership'/>">

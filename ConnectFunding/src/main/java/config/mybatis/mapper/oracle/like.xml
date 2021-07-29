@@ -20,6 +20,39 @@
 	<delete id="deleteLike" parameterType="int">
 		delete likeprojectview where like_no=#{likeNo}
 	</delete>
+	
+	<select id="selecLikeCheck" parameterType="int" resultType="int">
+		select count(*) from like_project
+		where project_no=#{projectNo}
+	</select>
+	
+	<select id="searchlikeprojectList" resultType="map" parameterType="likeprojectVo">
+		select *
+		from
+		(
+		        select rownum as RNUM , A.* 
+		        from  
+		    (
+		        select * from likeprojectview
+		    	where user_no=#{userNo}
+		    	<if test="searchKeyword!=null and searchKeyword!=''">
+				and (${searchCondition} like '%' || #{searchKeyword} || '%')
+				</if>
+		    )A   
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="selectLikeListTotalRecord" parameterType="likeprojectVo" resultType="int">
+		select count(*) from likeprojectview
+		where user_no=#{userNo}
+		<if test="searchKeyword!=null and searchKeyword!=''">
+			and (${searchCondition} like '%' || #{searchKeyword} || '%')
+		</if>
+	</select>
 
 </mapper>
 

@@ -1,5 +1,6 @@
  package com.it.cf.admin.controller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,9 +11,12 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,11 +24,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.JsonArray;
 import com.it.cf.admin.model.AdminService;
 import com.it.cf.admin.model.AdminVO;
+import com.it.cf.chat.model.MessageSendListVO;
+import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.common.AdminConstUtil;
 import com.it.cf.common.PaginationInfo;
 import com.it.cf.common.SearchVO;
+import com.it.cf.project.model.FirstCategoryVO;
+import com.it.cf.project.model.ProjectPageInfo;
+import com.it.cf.project.model.ProjectService;
+import com.it.cf.project.model.ProjectUtil;
+import com.it.cf.project.model.ProjectVO;
+import com.it.cf.project.model.SecondCategoryVO;
+import com.it.cf.user.model.UserListVO;
 import com.it.cf.user.model.UserVO;
 
 import lombok.RequiredArgsConstructor;
@@ -37,6 +51,8 @@ public class AdminController {
    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
    private final AdminService adminService;
+   private final ProjectService projectService;
+   
    @RequestMapping("/index")
    public void index() {
       
@@ -130,12 +146,6 @@ public class AdminController {
       return "common/message";
    }
    
-//   //실시간 아이디 중복 확인
-//   @RequestMapping(value = "/idDuplChk.do" , method = RequestMethod.POST)
-//   public @ResponseBody String idDuplChk(@ModelAttribute("vo") UserVO vo , Model model) throws Exception{
-//       int result = joinService.idDuplChk(vo.getId());
-//       return String.valueOf(result);
-//   }
    //실시간 아이디 중복 확인
    @PostMapping("/idDuplChk")
    public @ResponseBody String idDuplChk(@ModelAttribute AdminVO vo , Model model) throws Exception{
@@ -175,15 +185,49 @@ public class AdminController {
             return "admin/membership";
    }
    
-   //게시물 선택삭제
-   @RequestMapping("/deleteMember")
-   public @ResponseBody String deleteMember(HttpServletRequest request) {
-	   String[] ajaxMsg = request.getParameterValues("valueArr");
-	   int size = ajaxMsg.length;
-	   for(int i=0; i<size; i++) {
-		   adminService.deleteMember(ajaxMsg[i]);
-	   }
-	   return "redirect:/membership";
-   }
+   //회원 선택삭제
+   @RequestMapping("/deleteMulti")
+	public String deleteMulti(@ModelAttribute UserListVO userListVo,Model model) {
+		logger.info("선택한 회원 삭제, 파라미터 userListVo={}",userListVo);
+		
+		List<UserVO> list=userListVo.getSelectUser();
+		for(int i=0;i<list.size();i++) {
+			UserVO vo=list.get(i);
+			int userNo=vo.getUserNo();
+			
+			logger.info("i={}, userNo={}", i, userNo);
+		}
+		
+		String msg="선택한 회원 삭제 중 에러 발생!", url="/admin/membership";
+		int cnt=adminService.deleteUserMulti(list);
+		if(cnt>0) {
+			msg="선택한 회원 삭제 완료";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
    
+   @RequestMapping("/confirm")
+   public String confirm(@ModelAttribute ProjectVO pageVo, Model model) {
+	   ProjectPageInfo pagingInfo = new ProjectPageInfo();
+	   pagingInfo.setBlockSize(ProjectUtil.BLOCK_SIZE);
+	   pagingInfo.setCurrentPage(pageVo.getCurrentPage());
+	   pagingInfo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
+
+	   pageVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
+	   pageVo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
+
+	   int totalRecord = projectService.selectTotalRecord();
+	   pagingInfo.setTotalRecord(totalRecord);
+	   
+	   List<Map<String, Object>> map = projectService.selectAllAdmin(pageVo);
+	   
+	   model.addAttribute("map", map);
+	   model.addAttribute("pagingInfo", pagingInfo);
+
+	   return "admin/confirm";
+   }
 }

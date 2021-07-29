@@ -2,6 +2,8 @@ package com.it.cf.delivery.controller;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -28,12 +30,22 @@ public class DeliveryController {
 	private final DeliveryService deliveryService;
 	
 	@RequestMapping("/mypages/insertAddress")
-	public String insertAddress(@ModelAttribute DeliveryVO delVo, Model model) {
+	public String insertAddress(@ModelAttribute DeliveryVO delVo, HttpServletResponse response,
+			@RequestParam(required = false) String address, Model model) {
 		
 		logger.info("배송지 등록, 파라미터 delVo={}", delVo);
 		
 		int cnt = deliveryService.insertAddress(delVo);
 		logger.info("배송지 등록결과, cnt={}", cnt);
+		
+		Cookie cookie = new Cookie("ck_address", address);
+		cookie.setPath("/");
+		if(address != null && !address.isEmpty()) {
+			cookie.setMaxAge(100*24*60*60);
+		}else {
+			cookie.setMaxAge(0);
+		}//
+		response.addCookie(cookie);
 		
 		String msg="배송지등록 실패", url="/mypages/settings";
 		if(cnt>0) {

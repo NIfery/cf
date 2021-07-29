@@ -9,8 +9,8 @@ public interface FundingListService {
 	
 	int insertFundingList(FundingListVO FundingListVo);
 	List<Map<String, Object>> selectFundingList(int userNo);
-	List<Map<String, Object>> searchFundingList(SearchVO searchVo);
-	int selectTotalRecord(SearchVO searchVo);
-//	List<Map<String, Object>> searchFundingList(FundingListVO fundinglistVo);
-//	int selectTotalRecord(FundingListVO fundinglistVo);
+//	List<Map<String, Object>> searchFundingList(SearchVO searchVo);
+//	int selectTotalRecord(SearchVO searchVo);
+	List<Map<String, Object>> searchFundingList(FDListViewVO fdListViewVo);
+	int selectTotalRecord(FDListViewVO fdListViewVo);
 }

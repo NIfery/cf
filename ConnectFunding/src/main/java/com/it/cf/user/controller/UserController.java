@@ -1,5 +1,9 @@
 package com.it.cf.user.controller;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.it.cf.common.ConstUtil;
+import com.it.cf.common.FileUploadUtil;
 import com.it.cf.user.model.UserService;
 import com.it.cf.user.model.UserVO;
 
@@ -30,6 +36,7 @@ public class UserController {
       = LoggerFactory.getLogger(UserController.class);
    
    private final UserService userService;
+   private final FileUploadUtil fileuploadUtil;
    
    @GetMapping("/cfmember/register")
    public void insertUser() {
@@ -83,9 +90,10 @@ public class UserController {
          session.setAttribute("userEmail", userEmail);
          session.setAttribute("userName", vo.getUserName());
          session.setAttribute("userNo", vo.getUserNo());
+         session.setAttribute("userProfile", vo.getUserProfile());
       
          //쿠키저장
-         Cookie cookie = new Cookie("ck_mail", "userEmail");
+         Cookie cookie = new Cookie("ck_mail", userEmail);
          cookie.setPath("/");
          if(customCheck != null && !customCheck.isEmpty()) {
             cookie.setMaxAge(100*24*60*60);
@@ -138,14 +146,42 @@ public class UserController {
    }
    
    @RequestMapping("/mypages/update")
-   public String update(@ModelAttribute UserVO userVo,
-         HttpSession session , Model model) {
+   public String update(@ModelAttribute UserVO userVo, @RequestParam(required = false) String privacy,
+         HttpServletResponse response, HttpServletRequest request, 
+         	HttpSession session , Model model) {
       
       int userNo = (int) session.getAttribute("userNo");
       userVo.setUserNo(userNo);
       
       logger.info("프로필 수정화면, 파라미터 userVo={}", userVo);
       
+      //쿠키저장
+      Cookie cookie = new Cookie("ck_privacy", privacy);
+      cookie.setPath("/");
+      if(privacy != null && !privacy.isEmpty()) {
+     	 cookie.setMaxAge(100*24*60*60);
+      }else {
+     	 cookie.setMaxAge(0);
+      }//
+      response.addCookie(cookie);
+      
+      //프로필 사진 업로드
+      String profile = "";
+      try {
+    	  List<Map<String, Object>> list =
+    			  fileuploadUtil.fileUpload(request, ConstUtil.UPLOAD_PROFILE_FLAG);
+
+    	  for(Map<String, Object> map : list) {
+    		  profile=(String) map.get("fileName");
+    	  }
+      } catch (IllegalStateException e) {
+    	  e.printStackTrace();
+      } catch (IOException e) {
+    	  e.printStackTrace();
+      }
+      
+      userVo.setUserProfile(profile);
+
       int cnt = userService.updateProfile(userVo);
       logger.info("회원수정 결과, cnt={}", cnt);
       
@@ -209,4 +245,23 @@ public class UserController {
       logger.info("bool={}", bool);
       return bool;
    }//
+   
+   @ResponseBody
+   @RequestMapping("/cfmember/checkNickname")
+   public boolean checkNickname(@RequestParam String userNickname) {
+	   
+	   logger.info("닉네임 중복체크, userNickname={}", userNickname);
+	   
+	   int result = userService.checkNickname(userNickname);
+	   logger.info("닉네임 중복체크 결과, result={}", result);
+	   
+	   boolean bool=false;
+	   if(result==UserService.USABLE_NICKNAME) {
+		   bool=true;
+	   }
+	   
+	   logger.info("bool={}", bool);
+	   
+	   return bool;
+   }
 }

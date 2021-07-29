@@ -32,9 +32,8 @@
 
 $(function(){
 	$('#userEmail').keyup(function(){
-		var data=$('#userEmail').val();
-		console.log(data);
-		if(data.length>=2){
+		var data=$(this).val();
+		if(data.length>=1){
 			$.ajax({
 				url:"<c:url value='/cfmember/checkEmail'/>",
 				type:"post",
@@ -52,28 +51,26 @@ $(function(){
 					alert("error 발생!!" + error);
 				}
 			});				
-		}else{
-			$('.error').text('이메일을 입력하세요.');
 		}
 	});
 });
 
 $(function(){
-	$('#userEmail').keyup(function(){
-		var data=$(this).val();
-		if(data.length>=1){
+	$('#userNickname').keyup(function(){
+		var data2=$(this).val();
+		if(data2.length>=1){
 			$.ajax({
-				url:"<c:url value='/cfmember/checkEmail'/>",
+				url:"<c:url value='/cfmember/checkNickname'/>",
 				type:"post",
-				data:"userEmail="+data,
-				success:function(res){
-					var result="";
-					if(res){
-						result="사용가능한 이메일입니다.";
+				data:"userNickname="+data2,
+				success:function(res2){
+					var result2="";
+					if(res2){
+						result2="사용가능한 닉네임입니다.";
 					}else{
-						result="이미 가입된 이메일입니다.";
+						result2="이미 등록된 닉네임입니다.";
 					}
-					$('.error').html(result);
+					$('.error2').html(result2);
 				},
 				error:function(xhr, status, error){
 					alert("error 발생!!" + error);
@@ -100,8 +97,15 @@ function validateEmail(email) {
             </div>
             <div class="form-group">
          	   <label>이메일 주소</label>
-                <input type="text" class="form-control item" id="userEmail" name="userEmail">
+                <input type="text" class="form-control item" id="userEmail" name="userEmail"
+                	placeholder="이메일주소를 입력하세요.">
                 <span class="error" style="color: red;"></span>	
+            </div>
+            <div class="form-group">
+         	   <label>닉네임</label>
+                <input type="text" class="form-control item" id="userNickname" name="userNickname"
+                placeholder="사용하실 닉네임을 입력하세요.">
+                <span class="error2" style="color: red;"></span>	
             </div>
             <div class="form-group">
             	<label>비밀번호</label>
@@ -126,4 +130,5 @@ function validateEmail(email) {
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
     <script src="assets/js/script.js"></script>
+
 <%@ include file="../include/bottom.jsp" %> 

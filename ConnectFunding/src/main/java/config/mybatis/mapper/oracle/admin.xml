@@ -58,7 +58,7 @@
     	SELECT COUNT(*) FROM admin WHERE admin_id = #{adminId}
 	</select>
 	
-	<delete id="deleteMember" parameterType="int" >
+	<delete id="deleteUser" parameterType="int">
 		delete from users where user_no=#{userNo}
 	</delete>
 </mapper>

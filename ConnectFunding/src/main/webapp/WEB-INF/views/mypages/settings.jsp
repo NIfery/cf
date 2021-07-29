@@ -22,9 +22,10 @@
 .col-12 {
 	margin-left: 20px;
 }
+
 </style>
 	<div class="single_sidebar_widget post_category_widget"
-		style="width:980px; margin-left: 200px; background: white; height: 1000px; margin-top: 50px;">
+		style="width:980px; margin-left: 200px; background: white; height: 1300px; margin-top: 50px;">
 		<span class="widget_title"
 			style="text-align: left; font-size: 2.5em; margin-left: 10px;">설정</span>
 		<br>
@@ -66,21 +67,52 @@
 						<div class="tab-pane fade show active" id="nav-profiles"
 							role="tabpanel" aria-labelledby="nav-profiles-tab">
 							<div class="whats-news-caption" id="one">
-								<form method="post" action="<c:url value='/mypages/update?userNo=${sessionScope.userNo}'/>">
+								<form method="post" action="<c:url value='/mypages/update?userNo=${sessionScope.userNo}'/>"
+									enctype="multipart/form-data">
 								<div class="col-lg-4">
 									<div class="blog_right_sidebar">
 										<div class="single_sidebar_widget post_category_widget"
 											style="width: 800px; margin-left: -20px; background: white; height: 700px;">
 											<ul class="list cat-list">
-												<li><img
-													src="${pageContext.request.contextPath}/assets/img/logo/user.png"
-													alt="로그인" style="width: 40px;"></li>
+												<li>
+													<div class="form-group" style="width: 500px;">
+													<div class="row">
+														<div class="col-md-6" id="div_md">
+															<c:if test="${empty vo.userProfile }">
+																<img src="<c:url value='/assets/img/logo/user.png'/>" style="width: 40px;">
+															</c:if>
+															<c:if test="${!empty vo.userProfile }">
+																<div class="profile">
+																<img src="<c:url value='/profile_img/${vo.userProfile }'/>" 
+																	style="width: 70px; height: 70px;">
+																</div>
+															</c:if>
+														</div>
+														<div class="col-md-6 col-md-offset-6" style="margin-top: 25px;">
+															<input type="button" id="btn2" class="genric-btn link-border circle"
+																style="text-decoration: none;" value="+변경하기">
+														</div>
+														<div class="collapse2" id="collapseExample">
+															<input class="form-control" type="file" id="formFile" name="file"
+																style="width: 330px;">
+														</div>
+													</div>
+												</div>
+											</li>
 												<li>
 													<div class="form-group">
 														<label class="col-form-label col-form-label-sm mt-4"
 															id="label_name"> 이름</label> 
 															<input class="form-control form-control-sm" type="text"
 															name="userName" disabled="disabled" value="${vo.userName }">
+													</div>
+												</li>
+												<li>
+													<div class="form-group">
+														<label class="col-form-label col-form-label-sm mt-4"
+															id="label_name"> 닉네임</label> 
+															<input class="form-control form-control-sm" type="text"
+															name="userNickname" value="${vo.userNickname }">
 													</div>
 												</li>
 												<li>
@@ -106,8 +138,13 @@
 														<div class="row">
 															<div class="col-md-6" id="div_md">등록된 소개가 없습니다.</div>
 															<div class="col-md-6 col-md-offset-6">
-																<a href="#">+추가</a>
-															</div>
+																<input type="button" id="btn" class="genric-btn link-border circle" 
+																	style="text-decoration: none;" value="+추가">
+														</div>
+																<div class="collapse" id="collapseExample">
+																	<textarea rows="4" cols="15" name="userIntro"
+																		class="form-control" id="exampleTextarea">${vo.userIntro }</textarea>
+																</div>
 														</div>
 													</div>
 												</li>
@@ -118,8 +155,10 @@
 														<div class="row">
 															<div class="col-md-6" id="div_md">등록된 웹사이트가 없습니다.</div>
 															<div class="col-md-6 col-md-offset-6">
-																<a href="#">+추가</a>
-															</div>
+															<input type="button" id="btn"
+																class="genric-btn link-border circle"
+																style="text-decoration: none;" value="+추가">
+														</div>
 														</div>
 													</div>
 												</li>
@@ -128,7 +167,12 @@
 														<label class="col-form-label col-form-label-sm mt-4"
 															id="label_name"> 프라이버시</label>
 														<div class="form-check" style="margin-left: 5px;">
-															<input class="form-check-input" type="checkbox" checked>
+															<!-- <input class="form-check-input" type="checkbox" checked> -->
+															<input class="form-check-input" type="checkbox" name="privacy"
+																<c:if test="${!empty cookie.ck_privacy }">
+																checked="checked"
+																</c:if>
+															>
 															<label class="form-check-label" style="font-size: 0.9em;">
 																밀어준 프로젝트 목록을 공개합니다.</label>
 														</div>
@@ -241,7 +285,7 @@
 							<div class="row" style="margin-top: 20px;">
 								<div class="col-md-6" style="width: 10px; height: 50px;">등록된 결제수단</div>
 								<div class="col-md-6 col-md-offset-6">
-									<a href="#" data-toggle="modal" data-target="#myModal"
+									<a href="#" data-toggle="modal" data-target="#staticBackdrop"
 										style="color: rgb(39, 163, 255); margin-left: 270px;">+추가</a>
 								</div>
 							</div>
@@ -315,7 +359,7 @@
 														</span>
 													</div>
 													<div class="form-check">
-														<input class="form-check-input" type="checkbox"
+														<input class="form-check-input" type="checkbox" name="pay"
 															id="flexCheckChecked" checked> <label
 															class="form-check-label" for="flexCheckChecked"
 															style="font-size: 0.9em;"> 기본 결제수단으로 등록</label>
@@ -374,7 +418,7 @@
 														<div class="input-group mb-3">
 															<span class="d-flex"> <input
 																type="text" class="form-control" placeholder="주소검색"
-																id="address" name="delAddress" disabled="disabled" 
+																id="address" name="delAddress" 
 																style="width: 420px;">
 																<button class="btns" type="button" onclick="goPopup()"
 																	style="background: none; border: 1px; color: black;">
@@ -387,7 +431,7 @@
 												<div class="form-group" style="width: 450px; margin: 3px;">
 													<label class="form-label mt-4">우편번호</label> <input
 														type="text" class="form-control" name="delZipcode"
-														id="zipNo" disabled="disabled">
+														id="zipNo">
 												</div>
 												<div class="form-group" style="width: 450px; margin: 3px;">
 													<label class="form-label mt-4">받는사람 휴대폰 번호</label> <input
@@ -397,7 +441,7 @@
 												<div class="form-group"
 													style="width: 400px; margin: 10px 5px;">
 													<div class="form-check">
-														<input class="form-check-input" type="checkbox" checked>
+														<input class="form-check-input" type="checkbox" name="address">
 														<label class="form-check-label" style="font-size: 0.9em;">
 															기본 배송지로 등록</label>
 													</div>
@@ -419,6 +463,7 @@
 							aria-labelledby="nav-notifications-tab">
 							<div class="whats-news-caption" id="five">
 									<div class="blog_right_sidebar">
+									<form method="post" action="<c:url value='/mypages/alarmsetting'/>">
 										<div class="single_sidebar_widget post_category_widget"
 											style="width: 800px; margin-left: -30px; background: white; height: 800px;">
 											<ul class="list cat-list">
@@ -427,7 +472,11 @@
 														<label class="col-form-label col-form-label-sm mt-4"
 															id="label_name"> 메시지</label>
 														<div class="form-check" style="margin-left: 5px;">
-															<input class="form-check-input" type="checkbox" checked>
+															<input class="form-check-input" type="checkbox" name="message"
+																<c:if test="${!empty cookie.ck_message }">
+																	checked="checked"
+																</c:if>
+															>
 															<label class="form-check-label" style="font-size: 0.9em;">
 																새 메시지 알림을 이메일로 수신합니다.</label>
 														</div>
@@ -438,7 +487,11 @@
 														<label class="col-form-label col-form-label-sm mt-4"
 															id="label_name"> 프로젝트 업데이트</label>
 														<div class="form-check" style="margin-left: 5px;">
-															<input class="form-check-input" type="checkbox" checked>
+															<input class="form-check-input" type="checkbox" name="pjupdate"
+																<c:if test="${!empty cookie.ck_pjupdate }">
+																	checked="checked"
+																</c:if>
+															>
 															<label class="form-check-label" style="font-size: 0.9em;">
 																프로젝트 업데이트 알림을 이메일로 수신합니다.</label>
 														</div>
@@ -449,7 +502,11 @@
 														<label class="col-form-label col-form-label-sm mt-4"
 															id="label_name"> 팔로우</label>
 														<div class="form-check" style="margin-left: 5px;">
-															<input class="form-check-input" type="checkbox" checked>
+															<input class="form-check-input" type="checkbox" name="follow"
+																<c:if test="${!empty cookie.ck_follow }">
+																	checked="checked"
+																</c:if>
+															>
 															<label class="form-check-label" style="font-size: 0.9em;">
 																팔로우한 사용자의 프로젝트 공개 알림을 이메일로 수신합니다.</label>
 														</div>
@@ -460,8 +517,12 @@
 														<label class="col-form-label col-form-label-sm mt-4"
 															id="label_name"> 마케팅</label>
 														<div class="form-check" style="margin-left: 5px;">
-															<input class="form-check-input" type="checkbox"> <label
-																class="form-check-label" for="flexCheckDefault"
+															<input class="form-check-input" type="checkbox" name="marketing"
+																<c:if test="${!empty cookie.ck_marketing }">
+																	checked="checked"
+																</c:if>
+															> 
+															<label class="form-check-label" for="flexCheckDefault"
 																style="font-size: 0.9em;"> 텀블벅 신규 콘텐츠 및 프로젝트 추천
 																알림을 이메일로 수신하지 않습니다.</label>
 														</div>
@@ -470,12 +531,13 @@
 												<li>
 													<div class="form-group">
 														<button type="submit" class="genric-btn link-border circle"
-															id="change" style="margin-left: -25px; font-size: initial;">
+															 style="margin-left: -25px; font-size: initial;">
 															변경하기</button>
 													</div>
 												</li>
 											</ul>
 										</div>
+										</form>
 									</div>
 								</div>
 							</div>
@@ -485,7 +547,6 @@
 					</div><!-- tab전체 -->
 				</div>
 		<!--  -->
-</main>
 <script type="text/javascript">
 	$(document).ready(function(){
 		
@@ -548,6 +609,26 @@
 			}
 		});
 		
+		$(function() {
+			$('#btn2').on('click', function () { 						
+				let collapses = $('div.row').find('.collapse2');	
+				
+				collapses.each(function () { 
+					$(this).collapse('toggle');							
+				}); 													
+			});
+		});
+		
+		$(function() {
+			$('#btn').on('click', function () { 						
+				let collapses = $('div.row').find('.collapse');	
+				
+				collapses.each(function () { 
+					$(this).collapse('toggle');							
+				}); 													
+			});
+		});
+		
 	});//
 	
 	function goPopup(){
@@ -566,3 +647,4 @@
 	}	// 주소 API
 </script>	
 <%@ include file="../include/bottom.jsp"%>
+	

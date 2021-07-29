@@ -91,7 +91,7 @@ body{
 
 .registration-form form{
     background-color: white;
-    max-width: 600px;
+    max-width: 440px;
     margin: auto;
     padding: 50px 70px;
     border-top-left-radius: 30px;
@@ -130,7 +130,7 @@ body{
 }
 
 .registration-form .social-media{
-    max-width: 600px;
+    max-width: 440px;
     background-color: #fff;
     margin: auto;
     padding: 35px 0;
@@ -255,3 +255,14 @@ body{
     margin-bottom: 17px;
     color: #888;
 } 
+
+/* 프로필사진 */
+
+.profile{
+	width: 70px;
+    height: 70px;
+    border: 1px solid #dadee3;
+    border-radius: 30px;
+    margin: 10px 10px;
+    overflow: hidden;
+}

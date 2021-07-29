@@ -39,8 +39,13 @@
 				<div class="trand-right-single d-flex">
 					<div class="trand-right-cap"
 						style="margin: 15px 25px; width: 470px;">
-						<span class="color1">${delVo.delReceiver }</span><br> <span
-							class="color2">[${delVo.delZipcode}]&nbsp
+						<span class="color1">${delVo.delReceiver }</span>
+						<c:if test="${!empty cookie.ck_address }">
+							<span style="background-color: red; margin-left: 5px; color: white; border-radius: 5px;">
+							&nbsp기본&nbsp</span>
+						</c:if>	
+						<br> 
+						<span class="color2">[${delVo.delZipcode}]&nbsp
 							${delVo.delAddress}</span><br> <span class="color2">${delVo.delHp}</span>
 						<a href="<c:url value='/mypages/deleteAddress?delNo=${delVo.delNo}'/>"
 							class="trand-right-img" id="delete"> <img src="<c:url value='/assets/img/cancel.png'/>"

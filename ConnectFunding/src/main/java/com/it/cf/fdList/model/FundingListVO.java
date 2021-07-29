@@ -17,12 +17,13 @@ public class FundingListVO extends SearchVO {
 	private int projectNo;
 	private int userNo;
 	private Timestamp supportDate;
+	private String receiptId;
 	
 	@Override
 	public String toString() {
 		return "FundingListVO [fundingListNo=" + fundingListNo + ", fundingAmount=" + fundingAmount + ", projectNo="
-				+ projectNo + ", userNo=" + userNo + ", supportDate=" + supportDate + ", toString()=" + super.toString()
-				+ "]";
-	}
-
+				+ projectNo + ", userNo=" + userNo + ", supportDate=" + supportDate + ", receiptId=" + receiptId
+				+ ", toString()=" + super.toString() + "]";
+	} 
+	
 }

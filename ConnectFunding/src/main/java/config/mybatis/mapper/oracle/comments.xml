@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.it.cf.comments.model.CommentsDAO">
+ 	<select id="selectCommentsList" resultType="CommentsVO" parameterType="int">
+		select * from comments
+		where Board_No =#{BoardNo}
+		order by COMMENT_GROUPNO desc,COMMENT_SORTNO
+	</select>
+	
+<!-- 	<select id="selectCommentsList" resultType="CommentsVO" parameterType="int">
+		select *
+		from
+		(
+		    select rownum as RNUM,A.*
+		    from
+		    (
+		        select c.*
+		        from comments c
+		        order by COMMENT_GROUPNO desc, COMMENT_SORTNO
+		    )A
+		)
+		where Board_No =#{BoardNo}
+	</select> -->
+	
+	<insert id="CommentsWrite" parameterType="CommentsVO">
+			<selectKey resultType="int" keyProperty="CommentNo" order="BEFORE">
+			select comments_seq.nextval from dual
+			</selectKey>
+		insert into comments(comment_no,user_name,comment_content,comment_regdate,board_no,COMMENT_GROUPNO)
+		values(#{CommentNo},#{UserName},#{CommentContent},sysdate,#{BoardNo},#{CommentNo})
+	</insert>
+	
+	<update id="CommentsUpdate" parameterType="CommentsVO">
+		update comments
+ 		set comment_content=#{CommentContent}
+ 		where comment_no=#{CommentNo}
+	</update>
+	
+	<delete id="CommentsDelete" parameterType="int">
+		delete comments
+		where comment_no = #{CommentNo}
+	</delete>
+	
+	<select id="CommentsCount" parameterType="int" resultType="int">
+		select count(*)
+		from comments
+		where board_no=#{BoardNo}
+	</select>
+	
+	<insert id="CommentsReply" parameterType="CommentsVO">
+		insert into comments(comment_no,user_name,comment_content,comment_regdate,board_no,COMMENT_STEP,COMMENT_SORTNO,COMMENT_GROUPNO)
+		values(comments_seq.nextval,#{UserName},#{CommentContent},sysdate,#{BoardNo},#{CommentStep}+1,#{CommentSortNo}+1,#{CommentGroupNo})
+	</insert>
+	
+	<update id="UpdateSortNo" parameterType="CommentsVO">
+	 	update comments
+	 	set COMMENT_SORTNO=COMMENT_SORTNO+1
+	 	where COMMENT_GROUPNO=#{CommentGroupNo} and COMMENT_SORTNO > #{CommentSortNo}
+	 </update>
+</mapper>
+
+
+
+
+
+
+
+
+

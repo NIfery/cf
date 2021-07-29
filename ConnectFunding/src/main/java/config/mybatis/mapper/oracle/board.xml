@@ -18,14 +18,14 @@
    
    <insert id="boardWrite" parameterType="boardVo">
    <!--<selectKey keyColumn="boardNo" resultType="int" order="BEFORE">
-         select board2_seq.nextval from dual
+          select board2_seq.nextval from dual
       </selectKey> -->
       insert into board2(board_No,USER_NAME,board_Title,board_Content,board_Filename,board_Oldfilename,board_Filesize)
       values(board2_seq.nextval,#{userName},#{boardTitle},#{boardContent},#{boardFilename},#{boardOldfilename},#{boardFilesize})
    </insert>
    
    <select id="selectAll" parameterType="SearchVO" resultType="boardVo">
-      select *
+     select *
       from
       (
           select rownum as RNUM,A.*
@@ -72,6 +72,12 @@
           ,board_Filename=#{boardFilename},board_Oldfilename=#{boardOldfilename}
           ,board_Filesize=#{boardFilesize}
        </if>
+       where BOARD_NO=#{boardNo}
+    </update>
+    
+    <update id="DeleteBoard" parameterType="boardVo">
+       update board2
+       set delFlag ='Y'
        where BOARD_NO=#{boardNo}
     </update>
 </mapper>

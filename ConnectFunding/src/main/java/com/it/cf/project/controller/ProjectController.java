@@ -310,6 +310,7 @@ public class ProjectController {
 		logger.info("기간 종료 전체 환불 요청, 파라미터 projectNo={}", projectNo);
 		
 		List<FundingListVO> list = projectService.selectFundingListByProjectNo(projectNo);
+		logger.info("영수증 list={}", list);
 		
 		if(list.size()!=0) {
 			for(int i=0;i<list.size();i++) {

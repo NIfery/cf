@@ -30,7 +30,7 @@
 			</div>
 			<div>
 				<br> <span style="font-size: 1.5em;">작성한 프로젝트가 없습니다.</span>
-				<br> <br> <a href="#"
+				<br> <br> <a href="<c:url value='/project/writeMain'/>"
 					class="genric-btn primary-border circle" style="margin-left: 80px;">
 					프로젝트 올리기</a>
 			</div>

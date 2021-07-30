@@ -124,7 +124,7 @@
 							</div>
 							<div class="trand-right-cap"
 								style="margin: 20px 10px; width: 450px;">
-								<span class="color2" style="font-size: 0.9em;">후원일 &nbsp
+								<span class="color2" style="font-size: 0.9em;">후원일 &nbsp;
 									<fmt:formatDate value="${map['SUPPORT_DATE']}"
 										pattern="yyyy-MM-dd" />
 								</span><br>
@@ -135,42 +135,45 @@
 											value="${map['FUNDING_AMOUNT']}" pattern="#,###" />원<!--  결제예정 -->
 									</span><br>
 								</div>
-								<%-- <span class="color2" style="font-size: 0.8em; color: red;">
-                           결제 예정일 &nbsp
-                           <fmt:formatDate value="${map['PAYDATE']}" type="date"/>
-                        </span>  --%>
-								<a onclick="idThrow($(this).next().val())" style="color: blue"
-									href="#" data-toggle="modal" data-target="#myModal"
-									id="btCancleModal">환불하기</a> <input type="hidden" id="receiptId"
-									value="${map['RECEIPT_ID'] }"> <input type="hidden"
-									id="userNo" value="${map['USER_NO'] }">
-								<div class="modal fade" id="myModal" data-backdrop="static"
-									tabindex="-1" role="dialog"
-									aria-labelledby="staticBackdropLabel" aria-hidden="true">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="staticBackdropLabel">환불하기</h5>
-												<button type="button" class="btn-close" data-dismiss="modal"
-													aria-label="Close"></button>
-											</div>
-											<form name="frmDelete" method="post">
-												<div class="modal-body">
-													<!-- 모달 body -->
-													<div class="form-group" style="width: 450px; margin: 3px;">
-														<label class="form-label mt-4">비밀번호 확인</label> <input
-															type="password" class="form-control" name="pwd" id="pwd"
-															placeholder="비밀번호를 입력하세요.">
+								<c:set var="today" value="<%=new java.util.Date()%>" />
+							    <c:set var="todayDate"><fmt:formatDate value="${today}" pattern="yyyy-MM-dd hh:mm:ss" /></c:set>
+								<c:if test="${todayDate > map['PROJECT_ENDDATE']}">
+									펀딩 종료
+								</c:if>
+								<c:if test="${todayDate <= map['PROJECT_ENDDATE']}">
+									<a onclick="idThrow($(this).next().val())" style="color: blue"
+										href="#" data-toggle="modal" data-target="#myModal"
+										id="btCancleModal">환불하기</a> <input type="hidden" id="receiptId"
+										value="${map['RECEIPT_ID'] }"> <input type="hidden"
+										id="userNo" value="${map['USER_NO'] }">
+									<div class="modal fade" id="myModal" data-backdrop="static"
+										tabindex="-1" role="dialog"
+										aria-labelledby="staticBackdropLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="staticBackdropLabel">환불하기</h5>
+													<button type="button" class="btn-close" data-dismiss="modal"
+														aria-label="Close"></button>
+												</div>
+												<form name="frmDelete" method="post">
+													<div class="modal-body">
+														<!-- 모달 body -->
+														<div class="form-group" style="width: 450px; margin: 3px;">
+															<label class="form-label mt-4">비밀번호 확인</label> <input
+																type="password" class="form-control" name="pwd" id="pwd"
+																placeholder="비밀번호를 입력하세요.">
+														</div>
 													</div>
-												</div>
-												<div class="modal-footer">
-													<button type="button" id="btDelete"
-														class="genric-btn warning circle">환불</button>
-												</div>
-											</form>
+													<div class="modal-footer">
+														<button type="button" id="btDelete"
+															class="genric-btn warning circle">환불</button>
+													</div>
+												</form>
+											</div>
 										</div>
 									</div>
-								</div>
+								</c:if>
 							</div>
 						</div>
 					</div>

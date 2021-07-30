@@ -17,8 +17,17 @@ public class ProjectServiceImpl implements ProjectService{
 	public List<ProjectVO> selectAll(ProjectVO pageVo) {
 		return projectDao.selectAll(pageVo);
 	}
-	public List<Map<String, Object>> selectAllAdmin(ProjectVO pageVo) {
+	
+	public List<ProjectVO> selectAllConfirm(ProjectVO pageVo) {
+		return projectDao.selectAllConfirm(pageVo);
+	}
+	
+	public List<ProjectVO> selectAllAdmin(ProjectVO pageVo) {
 		return projectDao.selectAllAdmin(pageVo);
+	}
+	
+	public int confirmProject(int projectNo) {
+		return projectDao.confirmProject(projectNo);
 	}
 	
 	public List<ProjectVO> selectBySecondCategoryNo(ProjectVO pageVo) {
@@ -31,6 +40,10 @@ public class ProjectServiceImpl implements ProjectService{
 	
 	public int selectTotalRecord() {
 		return projectDao.selectTotalRecord();
+	}
+	
+	public int selectTotalRecordConfirm() {
+		return projectDao.selectTotalRecordConfirm();
 	}
 	
 	public int selectTotalRecordBySecondCategoryNo(int firstCategoryNo, int secondCategoryNo) {

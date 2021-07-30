@@ -68,10 +68,10 @@ public class ProjectController {
 		pageVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
 		pageVo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
 		
-		List<ProjectVO> list = projectService.selectAll(pageVo);
+		List<ProjectVO> list = projectService.selectAllConfirm(pageVo);
 		logger.info("프로젝트 list 화면 결과, list.size={}", list.size());
 		
-		int totalRecord = projectService.selectTotalRecord();
+		int totalRecord = projectService.selectTotalRecordConfirm();
 		logger.info("list 화면 결과, totalRecord={}", totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
 		
@@ -146,9 +146,11 @@ public class ProjectController {
 	@Transactional
 	@PostMapping("/writeTitleSecond")
 	public String write_post(@ModelAttribute ProjectVO vo, 
-			HttpServletRequest request, Model model) {
+			HttpServletRequest request, HttpSession session, Model model) {
 		//1
-		logger.info("프로젝트 등록 처리, 파라미터 vo={}", vo);
+		int userNo = (int) session.getAttribute("userNo");
+		vo.setUserNo(userNo);
+		logger.info("프로젝트 등록 처리, 파라미터 vo={}, userNo={}", vo, userNo);
 		
 		//2
 		//파일 업로드 처리

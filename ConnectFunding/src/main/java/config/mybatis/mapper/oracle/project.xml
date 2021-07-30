@@ -160,7 +160,6 @@
 	<update id="updateProject" parameterType="projectVo">
 		update PROJECT
 		set PROJECT_NAME=#{projectName},project_summary=#{projectSummary},project_content=#{projectContent}
-		,TOTAL_AMOUNT=#{totalAmount},PROJECT_STARTDATE=#{projectStartdate},PROJECT_ENDDATE=#{projectEnddate}
 		,second_category_no=#{secondCategoryNo}
 		where project_no=#{projectNo}
 	</update>

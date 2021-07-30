@@ -256,8 +256,8 @@
 										
 						    		</c:if>
 						    		<c:if test="${userVo.userNo==map['USER_NO'] }">
-							    		<a href="<c:url value='/project/update?projectNo=${map["PROJECT_NO"] }'/>">[수정 버튼]</a> 
-							    		<a href="#" data-toggle="modal" data-target="#myModal2">[삭제 버튼]</a>
+							    		<a href="<c:url value='/project/update?projectNo=${map["PROJECT_NO"] }'/>">[수정]</a> 
+							    		<a href="#" data-toggle="modal" data-target="#myModal2">[삭제]</a>
 						    		</c:if>
 						    		<div class="modal fade" id="myModal2" data-backdrop="static" tabindex="-1" role="dialog"
 									aria-labelledby="staticBackdropLabel" aria-hidden="true">

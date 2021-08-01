@@ -50,7 +50,7 @@ public class ConnectController {
 		List<ProjectVO> list = projectService.selectAll(pageVo);
 		logger.info("내가 만든 프로젝트 페이지 결과, list.size={}", list.size());
 		
-		int totalRecord = projectService.selectTotalRecord();
+		int totalRecord = projectService.selectTotalRecordByUserNo(userNo);
 		logger.info("내가 만든 프로젝트 페이지 결과, totalRecord={}", totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
 		

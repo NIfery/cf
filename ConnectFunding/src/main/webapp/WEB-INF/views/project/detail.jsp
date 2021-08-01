@@ -269,7 +269,7 @@
 													aria-label="Close">
 												</button>
 											</div>
-											<form name="frmDelete" method="post" action="<c:url value='/project/delete?projectNo=${map["PROJECT_NO"] }&userNo=${map["USER_NO"] }'/>">
+											<form name="frmDelete" method="post" action="<c:url value='/project/delete?projectNo=${map["PROJECT_NO"] }&userNo=${map["USER_NO"] }&type=detail'/>">
 												<div class="modal-body">
 													<!-- 모달 body -->
 													<div class="form-group" style="width: 450px; margin: 3px;">

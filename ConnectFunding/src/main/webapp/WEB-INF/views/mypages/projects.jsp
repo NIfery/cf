@@ -78,30 +78,64 @@
 						</div>
 						<div class="trand-right-cap"
 							style="margin: 20px 10px; width: 450px;">
-							<span class="color2" style="font-size: 0.9em;">
-								<c:if test="${vo.confirm=='Y' }">
-									펀딩중
-								</c:if>
-								<c:if test="${vo.confirm!='Y' }">
-									심사중
-								</c:if>
-							&nbsp;</span><br>
-							<div style="margin-top: 10px; margin-bottom: 10px;">
-								<span class="color1" style="font-size: 1.2em;">
-									<a style="color: black" href="#" data-toggle="modal" data-target="#myModal${vo.projectNo }" id="btCancleModal">
-										${vo.projectName}
-									</a>
-								</span><br>
-								<p><fmt:formatDate value="${vo.projectRegdate }" pattern="yyyy-MM-dd"/></p>
-		                        <h6>${vo.projectSummary }</h6>
-		                        <div class="percentage">
-									<div class="progress" style="background:#eceff8;height: 0.3em;width:50%; ">
-										<div class="progress-bar color-1" role="progressbar" style="width: ${vo.totalFundingAmount/vo.totalAmount*100 }%" 
-											aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+							<div class="row">
+								<div class="col">
+									<span class="color2" style="font-size: 0.9em;">
+										<c:if test="${vo.confirm=='Y' }">
+											펀딩중
+										</c:if>
+										<c:if test="${vo.confirm!='Y' }">
+											심사중
+										</c:if>
+									&nbsp;</span><br>
+									<div style="margin-top: 10px; margin-bottom: 10px;">
+										<span class="color1" style="font-size: 1.2em;">
+											<a style="color: black" href="#" data-toggle="modal" data-target="#myModal${vo.projectNo }" id="btCancleModal">
+												${vo.projectName}
+											</a>
+										</span><br>
+										<p><fmt:formatDate value="${vo.projectRegdate }" pattern="yyyy-MM-dd"/></p>
+				                        <h6>${vo.projectSummary }</h6>
+				                        <div class="percentage">
+											<div class="progress" style="background:#eceff8;height: 0.3em;width:50%; ">
+												<div class="progress-bar color-1" role="progressbar" style="width: ${vo.totalFundingAmount/vo.totalAmount*100 }%" 
+													aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+											</div>
+										</div>
+				                        <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
+				                        <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
 									</div>
 								</div>
-		                        <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
-		                        <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
+								<div class="col" style="display: flex;flex-direction: column;justify-content: center;">
+									<a style="color:blue" href="<c:url value='/project/update?projectNo=${vo.projectNo }'/>">[수정]</a>
+							    	<a style="color:blue" href="#" data-toggle="modal" data-target="#deleteModal${vo.projectNo }">[삭제]</a>
+								</div>
+							</div>
+							
+							<div class="modal fade" id="deleteModal${vo.projectNo }" data-backdrop="static" tabindex="-1" role="dialog"
+									aria-labelledby="staticBackdropLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="staticBackdropLabel">프로젝트 삭제</h5>
+											<button type="button" class="btn-close" data-dismiss="modal"
+												aria-label="Close">
+											</button>
+										</div>
+										<form name="frmDelete" method="post" action="<c:url value='/project/delete?projectNo=${vo.projectNo }&userNo=${vo.userNo }&type=projects'/>">
+											<div class="modal-body">
+												<!-- 모달 body -->
+												<div class="form-group" style="width: 450px; margin: 3px;">
+														<label class="form-label mt-4">비밀번호 확인</label> 
+														<input type="password" class="form-control" name="pwd" id="pwd" placeholder="비밀번호를 입력하세요.">
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="submit" id="btDelete" class="genric-btn warning circle">삭제</button>
+											</div>
+										</form>
+									</div>
+								</div>
 							</div>
 
 							<div class="modal fade" id="myModal${vo.projectNo }" data-backdrop="static"

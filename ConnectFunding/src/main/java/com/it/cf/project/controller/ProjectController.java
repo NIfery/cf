@@ -15,6 +15,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -387,8 +388,8 @@ public class ProjectController {
 	@Transactional
 	@RequestMapping("/delete")
 	public String delete(@RequestParam int userNo, @RequestParam int projectNo,
-			@RequestParam String pwd, Model model) {
-		logger.info("삭제 요청, 파라미터 userNo={}, projectNo={}, pwd={}", userNo, projectNo, pwd);
+			@RequestParam String pwd, @RequestParam String type, Model model) {
+		logger.info("삭제 요청, 파라미터 userNo={}, projectNo={}, pwd={}, type={}", userNo, projectNo, pwd, type);
 		
 		String msg="", url="";
 		String dbPwd = projectService.selectDBPwd(userNo);
@@ -424,10 +425,18 @@ public class ProjectController {
 			projectService.deleteFundingList(projectNo);
 			projectService.deleteProject(projectNo);
 			msg="프로젝트가 삭제되었습니다.";
-			url="/project/list"; 
+			if(type.equals("detail")) {
+				url="/project/list"; 
+			}else {
+				url="/mypages/projects"; 
+			}
 		}else {
-			msg="비밀번호가 일치하지 않습니다."; 
-			url="/project/detail?projectNo="+projectNo; 
+			msg="비밀번호가 일치하지 않습니다.";
+			if(type.equals("detail")) {
+				url="/project/detail?projectNo="+projectNo;
+			}else {
+				url="/mypages/projects"; 
+			}
 		}
 		
 		model.addAttribute("msg", msg);

@@ -42,6 +42,10 @@ public class ProjectServiceImpl implements ProjectService{
 		return projectDao.selectTotalRecord();
 	}
 	
+	public int selectTotalRecordByUserNo(int userNo) {
+		return projectDao.selectTotalRecordByUserNo(userNo);
+	}
+	
 	public int selectTotalRecordConfirm() {
 		return projectDao.selectTotalRecordConfirm();
 	}

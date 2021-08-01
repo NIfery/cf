@@ -16,6 +16,7 @@ public interface ProjectDAO {
 	List<ProjectVO> selectBySecondCategoryNo(ProjectVO pageVo);
 	int selectTotalFundingAmountByFundingNo(int fundingNo);
 	int selectTotalRecord();
+	int selectTotalRecordByUserNo(int userNo);
 	int selectTotalRecordConfirm();
 	int selectTotalRecordBySecondCategoryNo(int firstCategoryNo, int secondCategoryNo);
 	List<FirstCategoryVO> selectFirstCategory();

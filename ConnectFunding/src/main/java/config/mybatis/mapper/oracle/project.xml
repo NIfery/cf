@@ -132,6 +132,10 @@
 	<select id="selectTotalRecord" resultType="int">
 		select count(*) from PROJECT
 	</select>
+	<select id="selectTotalRecordByUserNo" parameterType="int" resultType="int">
+		select count(*) from PROJECT
+		where user_no=#{userNo}
+	</select>
 	
 	<select id="selectTotalRecordConfirm" resultType="int">
 		select count(*) from PROJECT

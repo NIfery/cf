@@ -123,6 +123,7 @@ public class UserController {
       
       session.removeAttribute("userEmail");
       session.removeAttribute("userName");
+      session.removeAttribute("userNo");
       
       return "redirect:/";
    }//

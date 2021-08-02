@@ -15,7 +15,7 @@ public interface ProjectService {
 	int selectTotalRecord();
 	int selectTotalRecordByUserNo(int userNo);
 	int selectTotalRecordConfirm();
-	int selectTotalRecordBySecondCategoryNo(int firstCategoryNo, int secondCategoryNo);
+	int selectTotalRecordBySecondCategoryNo(int firstCategoryNo, int secondCategoryNo, int ingType);
 	List<FirstCategoryVO> selectFirstCategory();
 	List<SecondCategoryVO> selectSecondCategory(String firstCategory);
 	int insertProject(ProjectVO vo);

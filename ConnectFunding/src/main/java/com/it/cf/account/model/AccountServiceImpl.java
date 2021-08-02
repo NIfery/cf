@@ -30,6 +30,6 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public int updateUserFlag(int userNo) {
 		return accountDao.updateUserFlag(userNo);
-	}//
+	}
 
 }

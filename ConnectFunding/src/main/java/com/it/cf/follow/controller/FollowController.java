@@ -1,6 +1,7 @@
 package com.it.cf.follow.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -43,7 +44,10 @@ public class FollowController {
 	}//
 	
 	@RequestMapping("/mypageload/AddFollow")
-	public String addFollow(@ModelAttribute FollowVO followVo, Model model) {
+	public String addFollow(@ModelAttribute FollowVO followVo, Model model, 
+			HttpSession session) {
+		
+		int userNo = (int) session.getAttribute("userNo");
 		
 		int cnt = followservice.insertFollow(followVo);
 		logger.info("팔로우 결과, followVo={}", followVo);

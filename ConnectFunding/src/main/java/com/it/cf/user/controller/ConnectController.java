@@ -84,4 +84,5 @@ public class ConnectController {
 	public void agree() {
 		logger.info("결제수단 등록 중 내용보기 페이지");
 	}//
+
 }

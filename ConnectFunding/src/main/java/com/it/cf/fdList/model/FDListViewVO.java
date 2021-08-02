@@ -22,4 +22,5 @@ public class FDListViewVO extends SearchVO {
 	private int userNo; 
 	private String userName;
 	private String receiptId;
+	private int followCheck;
 }

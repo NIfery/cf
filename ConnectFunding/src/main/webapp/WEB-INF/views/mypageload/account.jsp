@@ -50,13 +50,15 @@
 						<span class="color2" id="accNo"> 
 						<c:set var="accNo" value="${accVo.accountNo }" />
 							**********${fn:substring(accNo,10,15) }
-						</span> <a
-							href="<c:url value='/mypages/deleteAcc?accountNo=${accVo.accountNo}'/>"
-							class="trand-right-img" id="delete"> <img
-							src="<c:url value='/assets/img/cancel.png'/>"
+						</span>
+					</div>
+					<div class="trand-right-cap" style="position: absolute; margin: 33px 200px;">
+						<a href="<c:url value='/mypages/deleteAcc?accountNo=${accVo.accountNo}'/>"
+							class="trand-right-img" id="delete"> 
+						<img src="<c:url value='/assets/img/cancel.png'/>"
 							style="width: 20px; margin: -30px 0px 0px 310px;">
 						</a>
-					</div>
+					</div>	 
 				</div>
 			</div>
 		</c:forEach>

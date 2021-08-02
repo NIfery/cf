@@ -17,13 +17,19 @@
 		select * from fundinglistview
 		where user_no=#{userNo}
 	</select> -->
-	
 	<select id="selectFundingList" parameterType="int" resultType="map">
 		select users.user_name, users.user_intro, users.user_profile, users.user_no
 		from funding_list right join project on project.project_no=funding_list.project_no
 		join users on project.user_no=users.user_no
 		where funding_list.user_no=#{userNo}
 	</select>
+	
+<!-- 	<select id="selectFundingList" parameterType="int" resultType="map">
+		select users.user_name, users.user_intro, users.user_profile, users.user_no, follow.follow_check
+		from funding_list join project on project.project_no=funding_list.project_no
+		join users on project.user_no=users.user_no join follow on follow.following_user_no=users.user_no
+		where funding_list.user_no=#{userNo}
+	</select> -->
 
 	<select id="searchFundingList" resultType="map" parameterType="fdListViewVo">
 		select *
@@ -65,4 +71,10 @@
 		where user_name=#{userName};
 	</select>
 	
+	<select id="selectFollowCheck" parameterType="String" resultType="int">
+		select follow_check
+		from follow
+		where following=#{userName}
+	</select>
+
 </mapper>

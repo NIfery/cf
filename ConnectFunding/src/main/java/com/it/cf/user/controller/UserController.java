@@ -147,7 +147,7 @@ public class UserController {
    
    @RequestMapping("/mypages/update")
    public String update(@ModelAttribute UserVO userVo, @RequestParam(required = false) String privacy,
-         HttpServletResponse response, HttpServletRequest request, 
+         HttpServletResponse response, HttpServletRequest request,
          	HttpSession session , Model model) {
       
       int userNo = (int) session.getAttribute("userNo");
@@ -181,7 +181,7 @@ public class UserController {
       }
       
       userVo.setUserProfile(profile);
-
+      
       int cnt = userService.updateProfile(userVo);
       logger.info("회원수정 결과, cnt={}", cnt);
       

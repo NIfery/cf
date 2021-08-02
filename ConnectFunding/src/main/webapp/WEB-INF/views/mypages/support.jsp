@@ -85,7 +85,7 @@
 						<form action="<c:url value='/mypages/support'/>" name="frmSearch"
 							method="post">
 							<span class="d-flex"> <input type="text"
-								class="form-control" placeholder="프로젝트, 창작자를 입력하세요."
+								class="form-control" placeholder="프로젝트명을입력하세요."
 								name="projectName" value="${map['PROJECT_NAME']}"
 								style="width: 250px;">
 								<button class="btns" type="submit"
@@ -186,10 +186,15 @@
 						</a></li>
 					</c:if>
 
-					<c:forEach var="i" begin="${pageInfo.firstPage }"
-						end="${pageInfo.lastPage}">
-						<li class="page-item active"><a href="#" class="page-link">${i}</a>
+					<c:forEach var="i" begin="${pageInfo.firstPage }" end="${pageInfo.lastPage}">
+						<c:if test="${i==pageInfo.currentPage }">
+						<li class="page-item active">
+							<a href="#" class="page-link">${i}</a>
 						</li>
+						</c:if>
+						<c:if test="${i!=pageInfo.currentPage }">
+							<a href="#"  onclick="pageProc(${i})" class="page-link">${i}</a>
+						</c:if>
 					</c:forEach>
 
 					<c:if test="${pageInfo.lastPage < pageInfo.totalPage }">
@@ -207,7 +212,6 @@
 	method="post">
 	<input type="hidden" name="currentPage"><br> 
 	<input type="hidden" name="projectName" value="${map['PROJECT_NAME']}"><br>
-	<input type="hidden" name="userName" value="${map['USER_NAME']}"><br>
 </form>
 <script type="text/javascript">
 function pageProc(curPage){

@@ -28,8 +28,12 @@ function commentList(){
                 a += '<div class="commentArea" style="border-bottom:1px solid darkgray; margin-bottom: 15px;">';
                 
                 if(value.CommentStep > 0) {
+               	for(var i=0; i < value.CommentStep; i++ ) {
+               		a +='&nbsp&nbsp&nbsp';
+               	}
                 a += '<img src="<c:url value='/resources/images/re.gif'/>">';
                 }
+                
                 a += '<div class="commentInfo'+value.CommentNo+'">'+'작성자 : '+value.UserName;
                 a += '<div class="commentContent'+value.CommentNo+'"> <p>'+value.CommentContent +'</p>';
                 a += '<a data-toggle="collapse" href="#collapseExample'+value.CommentNo+'" aria-expanded="false" aria-controls="collapseExample">답글쓰기</a>';
@@ -42,17 +46,19 @@ function commentList(){
                 
                 a += '<div class="collapse" id="collapseExample'+value.CommentNo+'"><form name="ReplyForm'+value.CommentNo+'"><div class="well">';
                 a += '<div class="input-group">';
+                a += '<input type="hidden" name="CommentGroupNo" value="'+value.CommentGroupNo+'" />';
+                a += '<input type="hidden" name="CommentStep" value="'+value.CommentStep+'" />';
+                a += '<input type="hidden" name="CommentSortNo" value="'+value.CommentSortNo+'" />';
                 a += '<input type="hidden" name="BoardNo" value="'+value.BoardNo+'" />';
                 a += '<input type="hidden" name="CommentNo" value="'+value.CommentNo+'" />';
 				a += '<input type="hidden" name="UserName" value="'+${'UserName'}+'"/>';
-                if(!${'UserName'}) {
+               
                 a += '<span>'+${'UserName'}+'</span>';
+                
                 a += '<input type="text" class="form-control" id="Reply" name="CommentReply" placeholder="댓글 내용을 입력하세요.">';	
-                }
-                else {
-                a += '<input type="text" class="form-control" id="Reply" name="CommentReply" placeholder="로그인후 댓글을 작성해보세요.">';
-                }
-                a += '<span class="input-group-btn"><button class="btn btn-default" type="button" name="ReplyBtn" id="ReplyBtn"><a onclick="commentReply('+value.CommentNo+')">등록</a></button></span>';
+                
+                a += '<span class="input-group-btn"><button class="btn btn-default" style="margin-top: 20px" type="button" name="ReplyBtn" id="ReplyBtn"><a onclick="commentReply('+value.CommentNo+')">등록</a></button></span>';
+               	
                 a += '</div>';
                 a += '</div></form></div>';
                
@@ -75,9 +81,12 @@ function commentInsert(insertData){
         success : function(data){
             if(data == 1) {
                 commentList(); //reload
-                $('[name=content]').val('');
+                $('[name=CommentContent]').val('');
             }
-        }
+        },
+        error:function(xhr, status,error) {
+			alert("댓글 내용을 입력하세요.");
+		}
     });
 }
 
@@ -88,7 +97,7 @@ function commentUpdate(CommentNo, CommentContent){
     a += '<div class="input-group">';
     a += '<input type="text" class="form-control" name="content_'+CommentNo+'" value="'+CommentContent+'"/>';
     a += '<span class="input-group-btn"><button class="btn btn-primary" type="button" onclick="commentUpdateProc('+CommentNo+');">수정</button> </span>';
-    a += '<span class="input-group-btn"><button class="btn btn-default" type="button" onclick="UpdateCancel();">취소</button> </span>';
+    a += '<span class="input-group-btn"><button class="btn btn-default" type="button" onclick="UpdateCancel('+CommentNo+');">취소</button> </span>';
     a += '</div>';
     
     $('.commentContent'+CommentNo).html(a);
@@ -113,7 +122,7 @@ function commentUpdateProc(CommentNo){
 function UpdateCancel(){
     var check = confirm('댓글 수정을 취소하시겠습니까?');
     if (check){
-        history.back();
+    	commentList(boardNo);
     }
 }
  
@@ -135,8 +144,6 @@ function commentDelete(CommentNo){
 function commentReply(CommentNo) {
 	var Reply =$('[name=ReplyForm'+CommentNo+']').serialize();
 	
-	alert(Reply);
-	
 	$.ajax({
         url : "<c:url value='/Comments/Reply'/>",
         type : 'post',
@@ -146,7 +153,10 @@ function commentReply(CommentNo) {
                 commentList(); //reload
                 $('[name=CommentContent]').val('');
             }
-        }
+        },
+        error:function(xhr, status,error) {
+			alert("댓글 내용을 입력하세요.");
+		}
     });
 }
 

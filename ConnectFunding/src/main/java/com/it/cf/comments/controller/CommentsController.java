@@ -77,7 +77,9 @@ public class CommentsController {
 	@RequestMapping("/Reply")
 	@ResponseBody
 	public int Reply(@RequestParam (defaultValue = "0") int BoardNo, @RequestParam String UserName,
-			@RequestParam (required = false) String CommentReply, @RequestParam (defaultValue = "0") int CommentNo) {
+			@RequestParam (required = false) String CommentReply, @RequestParam (defaultValue = "0") int CommentNo,
+			@RequestParam (defaultValue = "0") int CommentGroupNo, @RequestParam (defaultValue = "0") int CommentStep,
+			@RequestParam (defaultValue = "0") int CommentSortNo) {
 		
 		logger.info("답변 작성 파라미터 BoardNo={},UserName={},CommentReply={},CommentNo={}", BoardNo,UserName,CommentReply,CommentNo);
 		
@@ -87,6 +89,9 @@ public class CommentsController {
 		vo.setCommentNo(CommentNo);
 		vo.setUserName(UserName);
 		vo.setCommentContent(CommentReply);
+		vo.setCommentGroupNo(CommentGroupNo);
+		vo.setCommentStep(CommentStep);
+		vo.setCommentSortNo(CommentSortNo);
 		
 		
 		return commentsService.CommentsReply(vo);

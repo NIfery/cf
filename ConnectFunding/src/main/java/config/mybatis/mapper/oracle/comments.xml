@@ -6,10 +6,10 @@
  	<select id="selectCommentsList" resultType="CommentsVO" parameterType="int">
 		select * from comments
 		where Board_No =#{BoardNo}
-		order by COMMENT_GROUPNO desc,COMMENT_SORTNO
+		order by COMMENT_REGDATE,COMMENT_GROUPNO,COMMENT_SORTNO
 	</select>
 	
-<!-- 	<select id="selectCommentsList" resultType="CommentsVO" parameterType="int">
+<!--  	<select id="selectCommentsList" resultType="CommentsVO" parameterType="int">
 		select *
 		from
 		(
@@ -43,10 +43,9 @@
 		where comment_no = #{CommentNo}
 	</delete>
 	
-	<select id="CommentsCount" parameterType="int" resultType="int">
-		select count(*)
-		from comments
-		where board_no=#{BoardNo}
+	<select id="CommentsCount" resultType="map">
+		select count,board_No
+		from Count
 	</select>
 	
 	<insert id="CommentsReply" parameterType="CommentsVO">

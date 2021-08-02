@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.it.cf.notice.model.NoticeDAO">
+
+	<insert id="insertNotice" parameterType="noticeVo">
+		<selectKey keyProperty="noticeNo" resultType="int" order="BEFORE">
+			select NOTICE_SEQ.nextval from dual
+		</selectKey>
+		insert into notice(NOTICE_NO, ADMIN_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_CATEGORY, NOTICE_FILENAME)
+		values(#{noticeNo}, #{adminNo}, #{noticeTitle}, #{noticeContent}, #{noticeCategory}, #{noticeFilename})
+	</insert>
+	
+	<select id="selectNotice" parameterType="String" resultType="noticeVo">
+		select * from notice
+		where notice_category=#{noticeCategory}
+		order by notice_no desc
+	</select>
+	
+	<select id="selectEvent" parameterType="String" resultType="noticeVo">
+		select * from notice
+		where notice_category=#{noticeCategory}
+		order by notice_no desc
+	</select>
+	
+	<select id="selectNews" parameterType="String" resultType="noticeVo">
+		select * from notice
+		where notice_category=#{noticeCategory}
+		order by notice_no desc
+	</select>
+	
+	<select id="selectByNoticeNo" parameterType="int" resultType="noticeVo">
+		select * from notice
+		where notice_no=#{noticeNo}
+	</select>
+
+	<update id="updateNotice" parameterType="noticeVo">
+		update notice
+		set NOTICE_TITLE=#{noticeTitle}, ADMIN_NO=#{adminNo}, NOTICE_CONTENT=#{noticeContent}, NOTICE_CATEGORY=#{noticeCategory}
+		where notice_no=#{noticeNo}
+	</update>
+	
+	<delete id="deleteNotice" parameterType="int">
+		delete notice where notice_no=#{noticeNo}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+

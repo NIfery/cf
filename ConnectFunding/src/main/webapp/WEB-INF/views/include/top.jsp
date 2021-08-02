@@ -116,7 +116,7 @@
                                                <li><a href="<c:url value='/cfmember/register'/>">회원가입</a></li>
                                                <li><a href="<c:url value='/cfmember/mypage'/>">
                                                   <img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
-                                                     alt="로그인" style="width: 30px;" >
+                                                     alt="로그인" style="width: 40px;" >
                                                   </a>
                                                </li>
                                             </c:if>
@@ -126,11 +126,11 @@
                                                <li><a href="<c:url value='/cfmember/mypage'/>">
                                                		<c:if test="${!empty sessionScope.userProfile }">
 	                                            		<img src="${pageContext.request.contextPath}/profile_img/${sessionScope.userProfile}" 
-	                                            			style="width: 30px;" >
+	                                            			style="width: 50px;" >
 	                                            	</c:if>
 	                                            	<c:if test="${empty sessionScope.userProfile }">
 	                                            		<img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
-	                                            		alt="로그인" style="width: 30px;">
+	                                            		alt="로그인" style="width: 40px;">
 	                                            	</c:if>
                                                   </a>
                                                </li>

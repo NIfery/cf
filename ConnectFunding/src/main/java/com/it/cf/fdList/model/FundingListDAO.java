@@ -16,4 +16,5 @@ public interface FundingListDAO {
 //	int selectTotalRecord(SearchVO searchVo);
 	List<Map<String, Object>> searchFundingList(FDListViewVO fdListViewVo);
 	int selectTotalRecord(FDListViewVO fdListViewVo);
+	int selectFollowCheck(String userName);
 }

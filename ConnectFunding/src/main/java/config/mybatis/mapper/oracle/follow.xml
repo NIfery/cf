@@ -10,28 +10,25 @@
 	</insert>
 
 	<select id="selectFollowing" parameterType="int" resultType="followVo">
-		select f.following, f.following_user_no, f.add_day, u.user_profile, u.user_intro
-		from follow f join users u
-		on f.user_no=u.user_no
-		where f.user_no=#{userNo}
-	</select>
-	
-	<select id="projectCount" parameterType="int" resultType="int">
-		select count(distinct p.project_no) as count
-		from project p  join follow f
-		on f. following_user_no=p.user_no
-		where f.following_user_no=#{followingUserNo}
-	</select>
-	
-	<select id="selectFollower" resultType="followVo" parameterType="int">
-		select user_name, user_profile, user_intro
+		select user_name, user_profile, user_intro, user_no
 		from users
 		where user_no in
 		(
-			select user_no
-			from follow
-			where following_user_no=#{followingUserNo}
-		)
+		select  following_user_no
+		from follow
+		where user_no=#{userNo})
+	</select>
+	
+	<select id="projectCount" parameterType="int" resultType="int">
+		select count(*) from project 
+		where user_no=#{userNo}
+	</select>
+	
+	<select id="selectFollower" resultType="followVo" parameterType="int">
+		select u.user_name, u.user_no,  u.user_profile, u.user_intro, f.follow_check
+		from follow f join users u
+		on f.user_no=u.user_no
+		where following_user_no=#{followingUserNo}
 	</select>
 	
 	<select id="checkFollow" resultType="int" parameterType="int">
@@ -40,13 +37,24 @@
 		where following_user_no=#{followingUserNo}
 	</select>
 
+	<delete id="deleteFollow" parameterType="int">
+		delete follow where following_user_no=#{followingUserNo}
+	</delete>
+
+	<select id="followCheck" parameterType="int" resultType="int">
+		select follow_check
+		from follow
+		where following_user_no=#{followingUserNo}
+	</select>
+	
+	<update id="updateCheck" parameterType="int">
+		update follow set follow_check=1
+		where user_no=#{userNo} or following_user_no=#{followingUserNo}
+	</update>
+	
+	<update id="updateFollow" parameterType="int">
+		update follow 
+		set follow_check=0
+		where user_no=#{userNo}
+	</update>
 </mapper>
-
-
-
-
-
-
-
-
-

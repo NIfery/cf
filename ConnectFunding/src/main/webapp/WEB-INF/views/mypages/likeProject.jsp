@@ -37,18 +37,43 @@
 			<div class="row" style="margin-top: 20px; margin-left: 5px; margin-bottom: 45px;">
 				<div class="col-md-6" style="width: 500px; height: 50px;">
 					<strong style="color: red;">
-						<%-- ${fn:length(likelist)} --%>
 						${pageInfo.totalRecord}
 					</strong> 건의 후원 내역이 있습니다.
 				</div>
 				<div class="col-md-6 col-md-offset-6">
-					<div class="form-group" style="width: 450px; margin: 3px;">
+					<!-- <div class="form-group" style="width: 150px; margin-left: 250px;">
 						<select class="form-select" id="exampleSelect2" name="searchCondition"
-							style="padding: 0 0;">
+							style="padding: 0px 10px;">
 							<option value="추가순">추가순</option>
 							<option value="마감 임박순">마감 임박순</option>
 						</select>
+					</div> -->
+				<div class="form-group" style="width: 250px; margin-left: 250px;">
+					<div class="input-group mb-3">
+						<form action="<c:url value='/mypages/likeProject'/>" name="frmSearch"
+							method="post">
+							<span class="d-flex"> 
+							<select class="form-select" id="exampleSelect2" name="searchCondition"
+								style="padding: 0px 10px; width: 120px;">
+									<option value="like_no"
+										<c:if test="${param.searchCondition == 'like_no' }">            	
+            								selected="selected"
+            							</c:if>
+									>추가순</option>
+									<option value="restday"
+										<c:if test="${param.searchCondition == 'restday' }">            	
+            								selected="selected"
+            							</c:if>
+									>마감 임박순</option>
+							</select>
+								<button class="btns" type="submit"
+									style="background: none; border: 1px; color: black;">
+									&nbsp<i class="fas fa-search special-tag"></i>
+								</button>
+							</span>
+						</form>
 					</div>
+				</div>
 				</div>
 			</div>
 			<c:if test="${empty likelist }">
@@ -73,13 +98,16 @@
 							<div class="weekly2-img" style="margin: 0px 0px 84px;">
 								<div style="position: relative;">
 									<img src="<c:url value='/project_assets/projectImg/${map["PROJECT_IMAGE"]}'/>"
-										style="width: 290px; border-radius: 20px;">
+										style="width: 290px; height:210px; border-radius: 20px;">
 									<br><br>
-									<div style="border-bottom: 2px solid #f7e332; margin-bottom: 10px;">
-									<span class="color1" style="font-size: 1.4em;">${map['PROJECT_NAME']}</span><br><br> 
-									<span class="color2" style="font-weight: bold;">
-									${map['PROJECT_INSHORT']}
-									</span><br><br>
+									<div style="border-bottom: 2px solid #f7e332; margin-bottom: 10px; height: 180px;">
+										<div class="color1" style="font-size: 1.4em;">${map['PROJECT_NAME']}</div> 
+										<div class="color2" style="font-weight: bold; margin-top: 10px; color: #b5b3b3">
+										${map['USER_NAME']}
+										</div>
+										<div class="color2" style="font-weight: bold; margin-top: 10px;">
+										${map['PROJECT_INSHORT']}
+										</div>
 									</div>
 									<div style="margin-left: 15px;">
 									<a href="<c:url value='/mypages/deletelike?likeNo=${map["LIKE_NO"] }'/>"

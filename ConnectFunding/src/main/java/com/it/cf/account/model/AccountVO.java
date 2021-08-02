@@ -1,5 +1,7 @@
 package com.it.cf.account.model;
 
+import java.sql.Timestamp;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,4 +16,5 @@ public class AccountVO {
 	private String bankName;
 	private String birth;
 	private int userNo;
+	private Timestamp addDay;
 }

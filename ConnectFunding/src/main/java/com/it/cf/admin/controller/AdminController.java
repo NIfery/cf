@@ -268,7 +268,7 @@ public class AdminController {
 		model.addAttribute("url", url);
 		
 		return "common/message";
-	}
+   }
    
    //펀딩 심사하기 
    @RequestMapping("/confirm")
@@ -283,15 +283,16 @@ public class AdminController {
 
 	   int totalRecord = projectService.selectTotalRecord();
 	   pagingInfo.setTotalRecord(totalRecord);
-	   
-	   List<Map<String, Object>> map = projectService.selectAllAdmin(pageVo);
-	   
-	   model.addAttribute("map", map);
+
+	   List<ProjectVO> list = projectService.selectAllAdmin(pageVo);
+
+	   model.addAttribute("list", list);
 	   model.addAttribute("pagingInfo", pagingInfo);
 
 	   return "admin/confirm";
    }
    
+
    //관리자 비밀번호 변경
    @RequestMapping("/changePwd")
    public String changePwd(@ModelAttribute AdminVO adminVo, @RequestParam String beforePwd, HttpSession session, Model model) {
@@ -318,5 +319,35 @@ public class AdminController {
 	      model.addAttribute("url", url);
 	      
 	      return "common/message";
+   }
+   
+   @RequestMapping("/confirmProject")
+   public String confirmProject(@ModelAttribute ProjectVO pageVo, @RequestParam int projectNo, Model model) {
+	   ProjectPageInfo pagingInfo = new ProjectPageInfo();
+	   pagingInfo.setBlockSize(ProjectUtil.BLOCK_SIZE);
+	   pagingInfo.setCurrentPage(pageVo.getCurrentPage());
+	   pagingInfo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
+
+	   pageVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
+	   pageVo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
+
+	   int totalRecord = projectService.selectTotalRecord();
+	   pagingInfo.setTotalRecord(totalRecord);
+	   
+	   List<ProjectVO> list = projectService.selectAllAdmin(pageVo);
+	   
+	   model.addAttribute("list", list);
+	   model.addAttribute("pagingInfo", pagingInfo);
+
+	   String msg="프로젝트 승인 실패", url="/admin/confirm";
+	   int cnt = projectService.confirmProject(projectNo);
+	   if(cnt>0) {
+		   msg="프로젝트가 승인되었습니다.";
+	   }
+		
+	   model.addAttribute("msg", msg);
+	   model.addAttribute("url", url);
+		
+	   return "common/message";
    }
 }

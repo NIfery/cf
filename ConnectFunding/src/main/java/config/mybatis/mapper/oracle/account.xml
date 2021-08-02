@@ -12,19 +12,17 @@
 	<select id="selectAccount" parameterType="int" resultType="accountVo">
 		select * from account 
 		where user_no=#{userNo}
+		order by add_day desc
 	</select>
 	
 	<delete id="deleteAccount" parameterType="String">
 		delete account
 		where account_no=#{accountNo}
 	</delete>
+	
+	<update id="updateUserFlag" parameterType="int">
+		update users set user_flag=1 , business_no=#{birth}
+		where user_no=#{userNo}
+	</update>
+	
 </mapper>
-
-
-
-
-
-
-
-
-

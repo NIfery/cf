@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.it.cf.account.model.AccountService;
 import com.it.cf.account.model.AccountVO;
+import com.it.cf.user.model.UserVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +33,7 @@ public class AccountController {
 	
 	@RequestMapping("/mypages/addAcc")
 	public String insertAccount(@ModelAttribute AccountVO accVo, @RequestParam(required = false) String pay, 
+			@RequestParam(required = false) String business,
 			HttpServletResponse response, HttpSession session, Model model) {
 		
 		int userNo = (int) session.getAttribute("userNo");
@@ -50,6 +52,11 @@ public class AccountController {
 			cookie.setMaxAge(0);
 		}//
 		response.addCookie(cookie);
+		
+		if(business!=null && !business.isEmpty()) {
+			int flagcnt = accountService.updateUserFlag(userNo);
+			logger.info("userFlag 변경, 결과 flagcnt={}", flagcnt);
+		}
 		
 		String msg="계좌등록 실패, 다시 시도해주세요.", url="/mypages/settings";
 		if(cnt>0) {

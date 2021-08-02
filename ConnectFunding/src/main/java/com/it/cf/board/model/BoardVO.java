@@ -22,4 +22,12 @@ public class BoardVO {
 	private String userName;
 	
 	private int newImg;
+	private String delFlag;
+	private int CommentCount;
+	
+	//이전글 다음글
+	private int nextNo;
+	private String nextTitle;
+	private int preNo;
+	private String preTitle;
 }

@@ -18,14 +18,14 @@
    
    <insert id="boardWrite" parameterType="boardVo">
    <!--<selectKey keyColumn="boardNo" resultType="int" order="BEFORE">
-         select board2_seq.nextval from dual
+          select board2_seq.nextval from dual
       </selectKey> -->
       insert into board2(board_No,USER_NAME,board_Title,board_Content,board_Filename,board_Oldfilename,board_Filesize)
       values(board2_seq.nextval,#{userName},#{boardTitle},#{boardContent},#{boardFilename},#{boardOldfilename},#{boardFilesize})
    </insert>
    
    <select id="selectAll" parameterType="SearchVO" resultType="boardVo">
-      select *
+     select *
       from
       (
           select rownum as RNUM,A.*
@@ -74,4 +74,25 @@
        </if>
        where BOARD_NO=#{boardNo}
     </update>
+    
+    <update id="DeleteBoard" parameterType="boardVo">
+       update board2
+       set delFlag ='Y'
+       where BOARD_NO=#{boardNo}
+    </update>
+    
+    <select id="SelectNextAndPre" parameterType="int" resultType="boardVo">
+	    	SELECT A.*
+	FROM (
+	    SELECT
+	        board_no, board_title,
+	        LEAD(BOARD_NO, 1) OVER (ORDER BY BOARD_NO DESC) AS nextNo,
+	        LEAD(BOARD_TITLE, 1, '이전글이 없습니다.') OVER (ORDER BY BOARD_NO desc) AS nextTitle,
+	        LAG(BOARD_NO, 1) OVER (ORDER BY BOARD_NO DESC) AS preNo,
+	        LAG(BOARD_TITLE, 1, '다음글이 없습니다.') OVER (ORDER BY BOARD_NO desc) AS preTitle   
+	    FROM BOARD2
+	    where delflag='N'
+	) A
+	WHERE A.BOARD_no=#{boardNo}
+    </select>
 </mapper>

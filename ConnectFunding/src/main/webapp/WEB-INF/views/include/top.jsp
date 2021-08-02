@@ -124,8 +124,14 @@
                                                <li><a href="<c:url value='/cfmember/cfLogout'/>">로그아웃</a></li>
                                                <li><span>${sessionScope.userName}</span></li>
                                                <li><a href="<c:url value='/cfmember/mypage'/>">
-                                                  <img src="${pageContext.request.contextPath}/profile_img/${sessionScope.userProfile}" 
-	                                            		style="width: 60px;" >
+                                               		<c:if test="${!empty sessionScope.userProfile }">
+	                                            		<img src="${pageContext.request.contextPath}/profile_img/${sessionScope.userProfile}" 
+	                                            			style="width: 50px;" >
+	                                            	</c:if>
+	                                            	<c:if test="${empty sessionScope.userProfile }">
+	                                            		<img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
+	                                            		alt="로그인" style="width: 40px;">
+	                                            	</c:if>
                                                   </a>
                                                </li>
                                             </c:if>

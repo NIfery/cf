@@ -11,6 +11,12 @@
 		$('input[name=currentPage]').val(curPage);
 		$('form[name=frmPage]').submit();	
 	}
+	
+	function accept(projectNo){
+		if(window.confirm("승인 하시겠습니까?")){
+			location.href="<c:url value='/admin/confirmProject?projectNo="+projectNo+"'/>";
+		}
+	}
 </script>
 <!-- 페이징 처리를 위한 form -->
 <form action="<c:url value='/admin/confirm'/>" 
@@ -33,28 +39,44 @@
 									<th>펀딩명</th>
 									<th>펀딩 신청일</th>
 									<th>목표 금액</th>
+									<th>심사 여부</th>
 									<th class="text-center">심사하기</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:if test="${empty map }">
+								<c:if test="${empty list }">
 									<tr>
-										<td colspan="5">데이터가 없습니다.</td>
+										<td colspan="6">데이터가 없습니다.</td>
 									</tr>
 								</c:if>
-								<c:if test="${!empty map }">
-									<c:forEach var="vo" items="${map }">
+								<c:if test="${!empty list }">
+									<c:forEach var="vo" items="${list }">
 										<tr>
-											<td><span class="block-email">${vo["USER_EMAIL"] }</span></td>
-											<td class="desc">${vo["PROJECT_NAME"] }</td>
-											<td>${vo["PROJECT_REGDATE"] }</td>
-											<td>&#8361;<fmt:formatNumber value="${vo['TOTAL_AMOUNT'] }" pattern="#,###"/></td>
+											<td><span class="block-email">${vo.userEmail }</span></td>
+											<td class="desc">
+												<a href="#" data-toggle="modal" data-target="#myModal${vo.projectNo }" id="btCancleModal">
+													${vo.projectName }
+												</a>
+											</td>
+											<td>${vo.projectRegdate }</td>
+											<td>&#8361;<fmt:formatNumber value="${vo.totalAmount }" pattern="#,###"/></td>
+											<td>
+												<c:if test="${vo.confirm=='N' }">
+													심사대기
+												</c:if>
+												<c:if test="${vo.confirm!='N' }">
+													심사완료
+												</c:if>
+											</td>
 											<td>
 												<div class="table-data-feature">
-													<button class="item" data-toggle="tooltip"
-														data-placement="top" title="Accept">
-														<i class="zmdi zmdi-mail-send"></i>
-													</button>
+													<c:if test="${vo.confirm=='N' }">
+														<button class="item" data-toggle="tooltip"
+															data-placement="top" title="Accept" onclick="accept(${vo.projectNo})">
+															<i class="zmdi zmdi-mail-send"></i>
+														</button>
+													</c:if>
+													
 													<button class="item" data-toggle="tooltip"
 														data-placement="top" title="Delete">
 														<i class="zmdi zmdi-delete"></i>
@@ -62,6 +84,53 @@
 												</div>
 											</td>
 										</tr>
+										<div class="modal fade" id="myModal${vo.projectNo }" data-backdrop="static"
+										tabindex="-1" role="dialog"
+										aria-labelledby="staticBackdropLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document" style="position: absolute;left: 30%;">
+											<div class="modal-content" style="width:170%">
+												<div class="modal-header">
+													<h5 class="modal-title" id="staticBackdropLabel">프로젝트 상세보기</h5>
+													<button type="button" class="btn-close" data-dismiss="modal"
+														aria-label="Close">X</button>
+												</div>
+												<div class="modal-body">
+													<!-- 모달 body -->
+													<div class="form-group" style="width: 450px; margin: 3px;position: relative;left: 20%;">
+														<span style="color:black; font-size:1.2em">${vo.projectName}</span> <br><br>
+														${vo.projectSummary }
+														<div class="row">
+															<div class="col">
+																<img src="<c:url value='/project_assets/projectImg/${vo.projectImage}'/>"
+																	style="width: 180px; height: 130px; margin: 30px 20px; border-radius: 20px;">
+															</div>
+															<div class="col" style="display: flex;flex-direction: column;justify-content: center;">
+																<div class="row">
+																	<div class="col">목표금액</div>
+																	<div class="col"><fmt:formatNumber value="${vo.totalAmount}" pattern="#,###"/>원</div>
+																</div>
+																<div class="row">
+																	<div class="col">등록일</div>
+																	<div class="col"><fmt:formatDate value="${vo.projectRegdate }" pattern="yyyy-MM-dd"/></div>
+																</div>
+																<div class="row">
+																	<div class="col">시작일</div>
+																	<div class="col"><fmt:formatDate value="${vo.projectStartdate}" pattern="yyyy-MM-dd"/></div>
+																</div>
+																<div class="row">
+																	<div class="col">종료일</div>
+																	<div class="col"><fmt:formatDate value="${vo.projectEnddate}" pattern="yyyy-MM-dd"/></div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div style="border-top: 1px solid #eceeef;padding:20px 80px 20px 0px">
+													${vo.projectContent }
+												</div>
+											</div>
+										</div>
+									</div>
 									</c:forEach>
 								</c:if>
 							</tbody>

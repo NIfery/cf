@@ -15,6 +15,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -68,10 +69,10 @@ public class ProjectController {
 		pageVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
 		pageVo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
 		
-		List<ProjectVO> list = projectService.selectAll(pageVo);
+		List<ProjectVO> list = projectService.selectAllConfirm(pageVo);
 		logger.info("프로젝트 list 화면 결과, list.size={}", list.size());
 		
-		int totalRecord = projectService.selectTotalRecord();
+		int totalRecord = projectService.selectTotalRecordConfirm();
 		logger.info("list 화면 결과, totalRecord={}", totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
 		
@@ -146,9 +147,11 @@ public class ProjectController {
 	@Transactional
 	@PostMapping("/writeTitleSecond")
 	public String write_post(@ModelAttribute ProjectVO vo, 
-			HttpServletRequest request, Model model) {
+			HttpServletRequest request, HttpSession session, Model model) {
 		//1
-		logger.info("프로젝트 등록 처리, 파라미터 vo={}", vo);
+		int userNo = (int) session.getAttribute("userNo");
+		vo.setUserNo(userNo);
+		logger.info("프로젝트 등록 처리, 파라미터 vo={}, userNo={}", vo, userNo);
 		
 		//2
 		//파일 업로드 처리
@@ -200,7 +203,7 @@ public class ProjectController {
 		PrintWriter out = response.getWriter();
 		
 		// 업로드할 폴더 경로
-		String realFolder = request.getSession().getServletContext().getRealPath("project_assets/projectImg/projectMainImg");;
+		String realFolder = request.getSession().getServletContext().getRealPath("project_assets/projectImg/projectMainImg");
 
 		// 업로드할 파일 이름
 		String org_filename = file.getOriginalFilename();
@@ -310,6 +313,7 @@ public class ProjectController {
 		logger.info("기간 종료 전체 환불 요청, 파라미터 projectNo={}", projectNo);
 		
 		List<FundingListVO> list = projectService.selectFundingListByProjectNo(projectNo);
+		logger.info("영수증 list={}", list);
 		
 		if(list.size()!=0) {
 			for(int i=0;i<list.size();i++) {
@@ -384,19 +388,55 @@ public class ProjectController {
 	@Transactional
 	@RequestMapping("/delete")
 	public String delete(@RequestParam int userNo, @RequestParam int projectNo,
-			@RequestParam String pwd, Model model) {
-		logger.info("삭제 요청, 파라미터 userNo={}, projectNo={}, pwd={}", userNo, projectNo, pwd);
+			@RequestParam String pwd, @RequestParam String type, Model model) {
+		logger.info("삭제 요청, 파라미터 userNo={}, projectNo={}, pwd={}, type={}", userNo, projectNo, pwd, type);
 		
 		String msg="", url="";
 		String dbPwd = projectService.selectDBPwd(userNo);
 		if(dbPwd.equals(pwd)) {
+			List<FundingListVO> list = projectService.selectFundingListByProjectNo(projectNo);
+			
+			if(list.size()!=0) {
+				for(int i=0;i<list.size();i++) {
+					api = new BootpayApi("60ffa2837b5ba400237bda13", "aAx7mTvRBnDZtARKP/FlAH3GjL6KmRyqFpH8k+8fzmg=");  // application_id, private key 
+					try {
+						api.getAccessToken();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					Cancel cancel = new Cancel();
+			        cancel.receipt_id = list.get(i).getReceiptId();
+			        cancel.name = "userNo="+userNo;
+			        cancel.reason = "프로젝트 삭제";
+
+			        try {
+			            HttpResponse res = api.cancel(cancel);
+			            String str = IOUtils.toString(res.getEntity().getContent(), "UTF-8");
+			            System.out.println(str);
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+			        
+			        int cnt = projectService.deleteFunding(list.get(i).getReceiptId());
+			        logger.info("환불 결과, cnt={}", cnt);
+				}
+			}
+			
 			projectService.deleteFundingList(projectNo);
 			projectService.deleteProject(projectNo);
 			msg="프로젝트가 삭제되었습니다.";
-			url="/project/list"; 
+			if(type.equals("detail")) {
+				url="/project/list"; 
+			}else {
+				url="/mypages/projects"; 
+			}
 		}else {
-			msg="비밀번호가 일치하지 않습니다."; 
-			url="/project/detail?projectNo="+projectNo; 
+			msg="비밀번호가 일치하지 않습니다.";
+			if(type.equals("detail")) {
+				url="/project/detail?projectNo="+projectNo;
+			}else {
+				url="/mypages/projects"; 
+			}
 		}
 		
 		model.addAttribute("msg", msg);

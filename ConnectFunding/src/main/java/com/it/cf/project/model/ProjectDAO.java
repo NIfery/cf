@@ -10,10 +10,14 @@ import com.it.cf.fdList.model.FundingListVO;
 @Mapper
 public interface ProjectDAO {
 	List<ProjectVO> selectAll(ProjectVO pageVo);
-	List<Map<String, Object>> selectAllAdmin(ProjectVO pageVo);
+	List<ProjectVO> selectAllConfirm(ProjectVO pageVo);
+	List<ProjectVO> selectAllAdmin(ProjectVO pageVo);
+	int confirmProject(int projectNo);
 	List<ProjectVO> selectBySecondCategoryNo(ProjectVO pageVo);
 	int selectTotalFundingAmountByFundingNo(int fundingNo);
 	int selectTotalRecord();
+	int selectTotalRecordByUserNo(int userNo);
+	int selectTotalRecordConfirm();
 	int selectTotalRecordBySecondCategoryNo(int firstCategoryNo, int secondCategoryNo);
 	List<FirstCategoryVO> selectFirstCategory();
 	List<SecondCategoryVO> selectSecondCategory(String firstCategory);

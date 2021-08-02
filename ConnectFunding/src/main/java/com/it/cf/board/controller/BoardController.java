@@ -13,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.it.cf.board.model.BoardService;
 import com.it.cf.board.model.BoardVO;
+import com.it.cf.comments.model.CommentsService;
+import com.it.cf.comments.model.CommentsVO;
 import com.it.cf.common.ConstUtil;
 import com.it.cf.common.FileUploadUtil;
 import com.it.cf.common.PaginationInfo;
@@ -39,6 +41,7 @@ public class BoardController {
 		= LoggerFactory.getLogger(BoardController.class);
 	
 	private final BoardService boardService;
+	private final CommentsService commentsService;
 	private final FileUploadUtil fileUploadUtil;
 	
 	// List 화면 출력
@@ -63,8 +66,11 @@ public class BoardController {
 		logger.info("게시판 레코드 수 TotalRecord ={}",TotalRecord);
 		pagingInfo.setTotalRecord(TotalRecord);
 		
+		List<Map<Object, Object>> countList = commentsService.CommentsCount();
+		
 		model.addAttribute("list",list);
 		model.addAttribute("pagingInfo",pagingInfo);
+		 model.addAttribute("countList",countList);
 		return "board/List";
 	}
 	
@@ -157,8 +163,11 @@ public class BoardController {
 			model.addAttribute("fileInfo",fileInfo);
 		}
 		
+		BoardVO vo2 = boardService.SelectNextAndPre(boardNo);
+		
 		model.addAttribute("vo",vo);
 		model.addAttribute("userName",userName);
+		model.addAttribute("vo2",vo2);
 		return "board/Detail";
 	}
 	
@@ -257,4 +266,38 @@ public class BoardController {
         return "common/message";
 	}
 
+	
+	@RequestMapping("/DeleteOk")
+	public String DeleteOk(@ModelAttribute BoardVO vo, HttpServletRequest request,
+						  Model model) {
+		
+		logger.info("boardVO={}",vo);
+		
+		String msg ="게시글 삭제에 실패하였습니다 다시 시도해주세요.";
+		String url ="/board/Detail?"+vo.getBoardNo();
+		
+		logger.info("게시글 삭제 파라미터 vo={}",vo);
+		int result = boardService.DeleteBoard(vo);
+		
+		if(result > 0) {
+			msg ="게시글 삭제 완료.";
+			url ="/board/List";
+		}
+		
+		String fileName = vo.getBoardOldfilename();
+		
+		logger.info("fileName={}",fileName);
+        if(fileName != null && !fileName.isEmpty()) {
+        	File file = new File(fileUploadUtil.getUploadPath(request,ConstUtil.UPLOAD_FILE_FLAG),fileName);
+    		if(file.exists()) {
+    			boolean bool = file.delete();
+    			logger.info("파일 삭제 여부 :{}", bool);
+    		}
+        }
+		
+		model.addAttribute("msg",msg);
+		model.addAttribute("url",url);
+		
+		return "common/message";
+	}
 }

@@ -28,10 +28,7 @@ public class MessageServiceImpl implements MessageService{
 
 	@Override
 	public int deleteChat(int messageNo) {
-		logger.info("deleteChat, messageNo={}",messageNo);
-		int cnt=messageDao.deleteChat(messageNo);
-		logger.info("deleteChat, deleteChat cnt={}",cnt);
-		return cnt;
+		return messageDao.deleteChat(messageNo);
 	}
 
 	@Override

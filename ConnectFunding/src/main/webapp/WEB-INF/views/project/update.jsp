@@ -371,7 +371,7 @@
                             <nav>                                                                     
                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                     <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">기본정보</a>
-                                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">펀딩 계획</a>
+                                    <!-- <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">펀딩 계획</a> -->
                                     <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">내용</a>
 									<input type="submit" value="수정"/>
                                 </div>
@@ -408,13 +408,15 @@
 																    <div class="col">세부 카테고리</div>
 																    	<div class="col">
 																    		<div id="first">
-														                		<select id="firstSelect">
+														                		<!-- <select id="firstSelect"> -->
 														                      		<c:forEach var="vo" items="${fList }">
-														                       			<option
-															                       		<c:if test="${firstCategory==vo.categoryName }">selected="selected"</c:if>
-															                       		>${vo.categoryName }</option>
+															                       		<c:if test="${firstCategory==vo.categoryName }">
+														                       				<%-- <option selected="selected">${vo.categoryName }</option> --%>
+														                       				<input type="text" readonly value="${vo.categoryName }"
+														                       				class="single-input" style="width:60%; background-color: #fff;border-radius: 5px;border: solid 1px #e8e8e8;">
+														                       			</c:if>
 															                       	</c:forEach>
-															                    </select>
+															                    <!-- </select> -->
 													                    	</div>
 													                    </div>
 																	    <div class="col">
@@ -499,7 +501,7 @@
                                 </div>
                             </div>
                             <!-- Card two -->
-                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" style="">
+                            <%-- <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" style="">
                                 <div class="whats-news-caption">
                                     <div class="row">
                                        <div class="weekly2-news-area weekly2-pading gray-bg" style="padding-bottom: 0px;">
@@ -592,7 +594,7 @@
 									    </div> 
                                     </div>
                                 </div>
-                            </div>
+                            </div> --%>
                             <!-- Card three -->
                             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                                 <div class="whats-news-caption">

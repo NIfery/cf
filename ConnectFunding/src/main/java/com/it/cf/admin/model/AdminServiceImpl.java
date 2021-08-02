@@ -130,6 +130,24 @@ public class AdminServiceImpl implements AdminService{
 		return cnt;
 	}
 
+	@Override
+	public int checkPwd(String adminId, String adminPwd) {
+		String dbPwd = adminDao.selectPwd(adminId);
+		
+		int result=0;
+		if(adminPwd.equals(dbPwd)) {
+			result= PWD_OK;
+		}else {
+			result= PWD_NO;
+		}
+		return result;
+	}
+
+	@Override
+	public int updatePwd(AdminVO vo) {
+		return adminDao.updatePwd(vo);
+	}
+
 
 
 

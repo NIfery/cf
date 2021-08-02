@@ -83,7 +83,9 @@
 														<td>${vo.adminPosition }</td>
 														<td>${vo.adminId}</td>
 														<td>${vo.adminName }</td>
-														<td>${vo.regdate }</td>
+														<td><fmt:formatDate value="${vo.regdate }" pattern="yyyy-MM-dd"/>
+														
+														</td>
 												</tr>
 												<c:set var="idx" value="${idx+1 }"/>
 												</c:forEach>

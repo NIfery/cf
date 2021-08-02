@@ -16,4 +16,5 @@ public interface BoardDAO {
 	int TotalRecord(SearchVO searchVo);
 	int EditBoard(BoardVO vo);
 	int DeleteBoard(BoardVO vo);
+	BoardVO SelectNextAndPre(int boardNo);
 }

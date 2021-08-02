@@ -75,7 +75,6 @@ body {
 				</c:if>
 			<!-- end -->
 			
-			<!-- 모달테스트 시작 -->
 				<!-- 모달 영역 -->
 			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
 				aria-labelledby="exampleModalLabel" aria-hidden="true"
@@ -97,11 +96,26 @@ body {
 				</div>
 			</div>
 			
-				<!-- 모달테스트 종료 -->
+				<!-- 모달 종료 -->
 			
 				<a href="<c:url value='/board/List'/>">
 					<button type="button" class="btn btn-sm btn-primary" id="btnList">목록</button>
 				</a>
+				<hr>
+				<!-- 이전글 다음글  -->
+				<c:if test="${vo2.preTitle =='다음글이 없습니다.' }">
+					<div>▲ 다음글 ${vo2.preTitle }</div>
+				</c:if>
+				<c:if test="${vo2.preTitle !='다음글이 없습니다.' }">
+					<div>▲ 다음글 <a href="<c:url value='/board/CountUpdate?boardNo=${vo2.preNo }'/>">${vo2.preTitle } </a></div>
+				</c:if>
+				<c:if test="${vo2.nextTitle =='이전글이 없습니다.' }">
+					<div>▼ 이전글 ${vo2.nextTitle }</div>
+				</c:if>
+				<c:if test="${vo2.nextTitle !='이전글이 없습니다.' }">
+					<div>▼ 이전글 <a href="<c:url value='/board/CountUpdate?boardNo=${vo2.nextNo }'/>">${vo2.nextTitle} </a></div>
+				</c:if>
+				<!--  -->
 			</div>
 				<br>
 				<c:if test="${vo.userName != userName }">

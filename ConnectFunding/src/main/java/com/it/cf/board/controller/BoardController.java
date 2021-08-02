@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.it.cf.board.model.BoardService;
 import com.it.cf.board.model.BoardVO;
 import com.it.cf.comments.model.CommentsService;
+import com.it.cf.comments.model.CommentsVO;
 import com.it.cf.common.ConstUtil;
 import com.it.cf.common.FileUploadUtil;
 import com.it.cf.common.PaginationInfo;
@@ -65,12 +66,11 @@ public class BoardController {
 		logger.info("게시판 레코드 수 TotalRecord ={}",TotalRecord);
 		pagingInfo.setTotalRecord(TotalRecord);
 		
-		
-		
-		int count = commentsService.CommentsCount(TotalRecord);
+		List<Map<Object, Object>> countList = commentsService.CommentsCount();
 		
 		model.addAttribute("list",list);
 		model.addAttribute("pagingInfo",pagingInfo);
+		 model.addAttribute("countList",countList);
 		return "board/List";
 	}
 	
@@ -163,8 +163,11 @@ public class BoardController {
 			model.addAttribute("fileInfo",fileInfo);
 		}
 		
+		BoardVO vo2 = boardService.SelectNextAndPre(boardNo);
+		
 		model.addAttribute("vo",vo);
 		model.addAttribute("userName",userName);
+		model.addAttribute("vo2",vo2);
 		return "board/Detail";
 	}
 	

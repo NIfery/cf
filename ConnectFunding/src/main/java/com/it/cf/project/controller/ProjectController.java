@@ -203,7 +203,7 @@ public class ProjectController {
 		PrintWriter out = response.getWriter();
 		
 		// 업로드할 폴더 경로
-		String realFolder = request.getSession().getServletContext().getRealPath("project_assets/projectImg/projectMainImg");;
+		String realFolder = request.getSession().getServletContext().getRealPath("project_assets/projectImg/projectMainImg");
 
 		// 업로드할 파일 이름
 		String org_filename = file.getOriginalFilename();

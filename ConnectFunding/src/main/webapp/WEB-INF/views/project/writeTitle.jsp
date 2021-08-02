@@ -151,7 +151,6 @@
 			enctype : 'multipart/form-data',
 			processData : false,
 			success : function(img_name) {
-				var ttt="<img src='${pageContext.request.contextPath}/"+img_name+"'>";
 				$(el).summernote('editor.insertImage', img_name);
 			}
 		});
@@ -625,7 +624,7 @@
 										                        </div>
 									                        </div>
 										                    <div class="row row-cols-1" style="background: white">
-										                    	<textarea id="summernote" name="projectContent"><h4 style="margin-left: 100px;"><b><span style="font-family: " arial="" black";"="">프로젝트 소개</span></b></h4><p style="margin-left: 100px;">
+										                    	<textarea id="summernote" name="projectContent"><h4 style="margin-left: 100px;"><b><span style="font-family: arial">프로젝트 소개</span></b></h4><p style="margin-left: 100px;">
 
 - 무엇을 만들기 위한 프로젝트인가요? 이 프로젝트의 특별한 점은 무엇인가요?</p><p style="margin-left: 100px;">
 - 기획, 구상부터 디자인, 시제품 제작에 오기까지 그간의 고민, 시행착오 등 고유한 창작 '과정'이 잘 드러나도록 스토리를 작성해 주세요.

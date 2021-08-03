@@ -36,22 +36,29 @@
 
     <!-- Main CSS-->
     <link href="${pageContext.request.contextPath}/admin_assets/css/theme.css" rel="stylesheet" media="all">
+    
+    <!-- Jquery JS-->
+    <script src="${pageContext.request.contextPath}/admin_assets/vendor/jquery-3.2.1.min.js"></script>
 </head>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#change').on("click",function() {
+		var regex = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
 		if($('#beforePwd').val().length<1){
 			alert('비밀번호를 입력하세요.');
 			$('#beforePwd').focus();
 			event.preventDefault();
-		}else if($('#adminPwd').val().length<1){
+		}else if($('#newPwd').val().length<1){
 			alert('변경하실 비밀번호를 입력하세요.');
-			$('#adminPwd').focus();
+			$('#newPwd').focus();
 			event.preventDefault();
-		}else if($('#adminPwd').val() != $('#adminPwd2').val()) {
+		}else if($('#newPwd').val() != $('#newPwd2').val()) {
 			alert("비밀번호가 일치하지 않습니다.");
-			$('#adminPwd2').focus();
+			$('#newPwd2').focus();
+			event.preventDefault();
+		}else if(!regex.test($("#newPwd").val())){
+			alert("영문자, 숫자, 특수문자를 포함한 8~15자 이내이어야합니다.");
 			event.preventDefault();
 		}
 	});
@@ -93,7 +100,7 @@ $(document).ready(function(){
                         </li>
                         <li>
                             <a href="<c:url value='/chat/adminInbox'/>">
-                                <i class="fas  fa-comments"></i>공지사항 관리</a>
+                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
                         </li>
                         <li>
                             <a href="<c:url value='/admin/membership'/>">
@@ -162,6 +169,10 @@ $(document).ready(function(){
                                 <i class="fas  fa-comments"></i>문의쪽지함</a>
                         </li>
                         <li>
+                            <a href="<c:url value='/chat/adminInbox'/>">
+                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
+                        </li>
+                        <li>
                             <a href="<c:url value='/admin/membership'/>">
                                 <i class="fas fa-users"></i>회원관리</a>
                         </li>
@@ -184,6 +195,10 @@ $(document).ready(function(){
                             <a href="<c:url value='/chat/adminInbox'/>">
                                 <i class="fas  fa-comments"></i>문의쪽지함</a>
                         </li>
+                        <li>
+                            <a href="<c:url value='/chat/adminInbox'/>">
+                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
+                        </li>
                     </c:if>
                     <c:if test="${adminPosition eq 'FUNDING_CHECK_Admin'}">
                         <li>
@@ -193,6 +208,10 @@ $(document).ready(function(){
                         <li>
                             <a href="<c:url value='/admin/confirm'/>">
                                 <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
+                        </li>
+                        <li>
+                            <a href="<c:url value='/chat/adminInbox'/>">
+                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
                         </li>
                     </c:if>
 				</c:if>
@@ -252,8 +271,8 @@ $(document).ready(function(){
 					</div>
 					<div class="modal-body">
 						<label>기존 비밀번호</label><input class="au-input au-input--full" type="password" name="beforePwd" id="beforePwd"><br>
-						<label>변경할 비밀번호</label><input class="au-input au-input--full" type="password" name="adminPwd" id="adminPwd"><br>
-						<label>변경할 비밀번호 확인</label><input class="au-input au-input--full" type="password" name="adminPwd2" id="adminPwd2">
+						<label>변경할 비밀번호</label><input class="au-input au-input--full" type="password" name="adminPwd" id="newPwd"><br>
+						<label>변경할 비밀번호 확인</label><input class="au-input au-input--full" type="password" name="adminPwd2" id="newPwd2">
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-primary" id="change">변경하기</button>

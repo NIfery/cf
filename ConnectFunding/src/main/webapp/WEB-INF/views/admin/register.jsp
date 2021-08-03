@@ -2,8 +2,31 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../inc/adminTop.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">
+//이름 검사
+$(function(){ 
+	 $("#adminName").keyup(function(){ 
+	       var nameReg = /^[가-힣]{2,10}$/g;
+	       if(!nameReg.test( $("#adminName").val())) {
+	                $('#chkMsg4').css('color','red','font-weight','bold').html("이름은 한글로만 2~10자 이내여아 합니다.").show();
+	                document.getElementById('adminId').disabled = true;
+	                document.getElementById('adminPwd').disabled = true;
+	                document.getElementById('adminPwd2').disabled = true;
+	                document.getElementById('level').disabled = true;
+	                document.getElementById('join').disabled = true;
+	                $('#join').css('background-color','red').html("양식에 맞게 다시 입력하세요.");
+	      }else{
+	                $('#chkMsg4').hide();
+	                document.getElementById('adminId').disabled = false;
+	                document.getElementById('adminPwd').disabled = false;
+	                document.getElementById('adminPwd2').disabled = false;
+	                document.getElementById('level').disabled = false;
+	                document.getElementById('join').disabled = false;
+	                $('#join').css('background-color','#63c76a').html("관리자 생성");
+	      }
+	});
+});
+
 //ajax - 아이디 실시간 중복체크
 function checkId(){
     var id = $('#adminId').val();
@@ -42,78 +65,58 @@ function checkId(){
                 alert("아이디 중복확인 에러입니다");
         }
     });
-};
+}; 
+
+
 
 //실시간 비밀번호 확인
 $(function(){ 
+	$("#adminPwd").keyup(function(){
+		var regex = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+		if(!regex.test($("#adminPwd").val())){
+			$('#chkMsg1').css('color','red','font-weight','bold').html("영문자, 숫자, 특수문자를 포함한 8~15자 이내어야합니다.");
+	        $('#join').css('background-color','red').html("양식에 맞게 다시 입력하세요.");
+	        document.getElementById('adminPwd2').disabled = true;
+	        document.getElementById('level').disabled = true;
+	        document.getElementById('join').disabled = true;
+	        event.preventDefault();
+		 }else{
+			 $('#join').css('background-color','#63c76a').html("관리자 생성");
+			 document.getElementById('adminPwd2').disabled = false;
+		     document.getElementById('level').disabled = false;
+		     document.getElementById('join').disabled = false;
+		 }
+	});
+    
    $("#adminPwd2").keyup(function(){ 
+	  
       var pwd1=$("#adminPwd").val(); 
       var pwd2=$("#adminPwd2").val(); 
       if(pwd1 != "" || pwd2 != ""){ 
          if(pwd1 == pwd2){ 
-            $('#chkMsg1').css('color','green','font-weight','bold').html("비밀번호가 일치합니다.");
-            $('#join').css('background-color','#63c76a').html("관리자 생성");
-                document.getElementById('level').disabled = false;
-                document.getElementById('join').disabled = false;
+             $('#chkMsg1').css('color','green','font-weight','bold').html("비밀번호가 일치합니다.");
+             $('#chkMsg2').hide();
+             $('#join').css('background-color','#63c76a').html("관리자 생성");
+                 document.getElementById('level').disabled = false;
+                 document.getElementById('join').disabled = false;
          }else{ 
-            $('#chkMsg1').css('color','red','font-weight','bold').html("비밀번호가 일치하지 않습니다.");
-            $('#join').css('background-color','red').html("양식에 맞게 다시 입력하세요.");
-            document.getElementById('level').disabled = true;
-            document.getElementById('join').disabled = true;
-         } 
+              $('#chkMsg1').css('color','red','font-weight','bold').html("비밀번호가 일치하지 않습니다.");
+              $('#join').css('background-color','red').html("양식에 맞게 다시 입력하세요.");
+              document.getElementById('level').disabled = true;
+              document.getElementById('join').disabled = true;
+        } 
       } 
    });
-});
-
-//실시간 이름 유효성 검사
-$(function(){ 
-   $("#adminName").keyup(function(){ 
-	   for (var i=0; i<$("#adminName").val().length; i++)  { 
-
-		    var chk = $("#adminName").val().substring(i,i+1); 
-
-		    if($("#adminName").val().length <= 1){
-		    	$('#chkMsg4').css('color', 'red', 'font-weight', 'bold').html("한글 2 ~ 20자만 입력가능합니다.");
-		    	$('#adminName').focus();
-		    	document.getElementById('adminId').disabled = true;
-		    	document.getElementById('adminPwd').disabled = true;
-                document.getElementById('adminPwd2').disabled = true;
-                document.getElementById('level').disabled = true;
-                document.getElementById('join').disabled = true;
-                $('#join').css('background-color','red').html("양식에 맞게 다시 입력하세요.");
-		    }else if(chk.match(/([^[가-힣]{2,4}$])/i)){
-		    	$('#chkMsg4').css('color', 'red', 'font-weight', 'bold').html("한글로만 20자까지 입력가능합니다.");
-		    	$('#adminName').focus();
-		    	document.getElementById('adminId').disabled = true;
-		    	document.getElementById('adminPwd').disabled = true;
-                document.getElementById('adminPwd2').disabled = true;
-                document.getElementById('level').disabled = true;
-                document.getElementById('join').disabled = true;
-                $('#join').css('background-color','red').html("양식에 맞게 다시 입력하세요.");
-		    }else if($("#adminName").val().indexOf(" ") >= 0){
-		    	$('#chkMsg4').css('color', 'red', 'font-weight', 'bold').html("공백은 사용할 수 없습니다.");
-		    	$('#adminName').focus();
-		    	document.getElementById('adminId').disabled = true;
-		    	document.getElementById('adminPwd').disabled = true;
-                document.getElementById('adminPwd2').disabled = true;
-                document.getElementById('level').disabled = true;
-                document.getElementById('join').disabled = true;
-                $('#join').css('background-color','red').html("양식에 맞게 다시 입력하세요.");
-		    }else{
-		    	$('#chkMsg4').hide();
-		    	document.getElementById('adminId').disabled = false;
-		    	document.getElementById('adminPwd').disabled = false;
-                document.getElementById('adminPwd2').disabled = false;
-                document.getElementById('level').disabled = false;
-                document.getElementById('join').disabled = false;
-                $('#join').css('background-color','#63c76a').html("관리자 생성");
-		    }
-		} 
+   
+   $('#level').click(function(){
+	   if ($('#level').val() != '') {
+			$('#chkMsg3').hide();						
+		}
    });
-});
+   
+}); 
 
-
-	$(function() {
+$(function() {
 		$('#join').click(
 				function() {
 					if ($('#adminName').val().length < 1) {
@@ -140,12 +143,12 @@ $(function(){
 					} else if ($('#level').val() == '') {
 						$('#chkMsg3')
 								.css('color', 'red', 'font-weight', 'bold')
-								.html("직책을 선택하세요.");
+								.html("직책을 선택하세요.").show();
 						$('#level').focus();
 						event.preventDefault();
 					}
 				});
-	});
+});
 </script>
 <body class="animsition">
     <div class="page-wrapper">
@@ -173,10 +176,7 @@ $(function(){
                                 <div class="form-group">
                                     <label>비밀번호</label>
                                     <input class="au-input au-input--full" type="password" name="adminPwd" id="adminPwd" placeholder="비밀번호를 입력하세요.">
-                                    <span id = "chkMsg1"></span> 
-                                   <span id = "chkPwd1"></span>
-                                   <span id = "chkPwd2"></span>
-                                   
+                                    <span id = "chkMsg1"></span>                
                                 </div>
                                 <div class="form-group">
                                     <label>비밀번호 확인</label>

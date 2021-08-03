@@ -80,4 +80,19 @@
        set delFlag ='Y'
        where BOARD_NO=#{boardNo}
     </update>
+    
+    <select id="SelectNextAndPre" parameterType="int" resultType="boardVo">
+	    	SELECT A.*
+	FROM (
+	    SELECT
+	        board_no, board_title,
+	        LEAD(BOARD_NO, 1) OVER (ORDER BY BOARD_NO DESC) AS nextNo,
+	        LEAD(BOARD_TITLE, 1, '이전글이 없습니다.') OVER (ORDER BY BOARD_NO desc) AS nextTitle,
+	        LAG(BOARD_NO, 1) OVER (ORDER BY BOARD_NO DESC) AS preNo,
+	        LAG(BOARD_TITLE, 1, '다음글이 없습니다.') OVER (ORDER BY BOARD_NO desc) AS preTitle   
+	    FROM BOARD2
+	    where delflag='N'
+	) A
+	WHERE A.BOARD_no=#{boardNo}
+    </select>
 </mapper>

@@ -35,6 +35,11 @@ public class FundingListServiceimpl implements FundingListService{
 		return fundingListDao.selectTotalRecord(fdListViewVo);
 	}
 
+	@Override
+	public int selectFollowCheck(String userName) {
+		return fundingListDao.selectFollowCheck(userName);
+	}
+
 //	@Override
 //	public List<Map<String, Object>> searchFundingList(SearchVO searchVo) {
 //		return fundingListDao.searchFundingList(searchVo);

@@ -1,9 +1,12 @@
 package com.it.cf.comments.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.it.cf.common.SearchVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,10 +36,7 @@ public class CommentsServiceImpl implements CommentsService {
 		return CommentsDao.CommentsDelete(CommentNo);
 	}
 
-	@Override
-	public int CommentsCount(int BoardNo) {
-		return CommentsDao.CommentsCount(BoardNo);
-	}
+
 
 	@Override
 	@Transactional
@@ -45,6 +45,14 @@ public class CommentsServiceImpl implements CommentsService {
 		cnt = CommentsDao.CommentsReply(vo);
 		return cnt;
 	}
+
+	
+	  @Override public List<Map<Object, Object>> CommentsCount() {
+	  return CommentsDao.CommentsCount();
+	  }
+	 
+
+
 	
 
 

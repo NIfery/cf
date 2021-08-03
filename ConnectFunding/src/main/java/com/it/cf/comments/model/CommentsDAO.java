@@ -1,6 +1,7 @@
 package com.it.cf.comments.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,7 +11,7 @@ public interface CommentsDAO {
 	int CommentsWrite(CommentsVO vo);
 	int CommentsUpdate(CommentsVO vo);
 	int CommentsDelete(int CommentNo);
-	int CommentsCount(int BoardNo);
+	List<Map<Object, Object>> CommentsCount();
 	int CommentsReply(CommentsVO vo);
 	int UpdateSortNo(CommentsVO vo);
 }

@@ -65,7 +65,12 @@
 							<th>
 							<c:if test="${vo.delFlag == 'N'}">
 							<!--제목 클릭시 detail 이동 -->
-							<a href="<c:url value='/board/CountUpdate?boardNo=${vo.boardNo}'/>">${vo.boardTitle } (댓글수 출력 예정)</a>
+							<a href="<c:url value='/board/CountUpdate?boardNo=${vo.boardNo}'/>">${vo.boardTitle }
+							<c:forEach var="map" items="${countList}">
+							<c:if test="${vo.boardNo == map['BOARD_NO']}">
+								[${map['COUNT']}]
+							</c:if> 
+							</c:forEach>  </a>
 								<c:if test="${vo.newImg < 24 }">
 									<img style="width: 20px" src="<c:url value='/resources/images/newimg.jpg'/>">
 								</c:if>

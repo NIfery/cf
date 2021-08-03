@@ -74,7 +74,21 @@
 				$('form[name=frmPage]').submit();	
 			}
 			
-			function test(type1, type2){
+			var fType=0;
+			var sType=0;
+			var vIType=0;
+			
+			function cate(type1, type2){
+				filter(type1, type2, vIType);
+			}
+			function ingT(iType){
+				filter(fType, sType, iType);
+			}
+			
+			function filter(type1, type2, iType){
+				fType=type1;
+				sType=type2;
+				vIType=iType;
 				$('.dropdown-submenu a.test').next('ul').css('display','none');
 				$.ajax({
 					url:"<c:url value='/project/alist'/>",
@@ -82,13 +96,13 @@
 					data:{
 							firstCategoryNo:type1,
 							secondCategoryNo:type2,
+							ingType:iType,
 							curPage:$('#currentPage').val()
 						},
 					dataType:"json",
 					success:function(res){
 						var list = res.list;
 						var pagingInfo = res.pagingInfo;
-						
 						
 						totalCount = pagingInfo.totalRecord;
 						
@@ -167,7 +181,7 @@
 									}
 									pageStr += "</a></li>";
 								} else {
-									pageStr += "<li class='page-item'><a class='page-link' href='#' onclick='send("+i+");test("+type1+","+type2+")'>";
+									pageStr += "<li class='page-item'><a class='page-link' href='#' onclick='send("+i+");filter("+type1+","+type2+","+iType+")'>";
 									if(i<10){
 										pageStr += "0"+i;
 									}else{
@@ -216,48 +230,27 @@
 						  	<li class="dropdown-submenu dropend">
 						    	<a class="test dropdown-item dropdown-toggle" tabindex="-1" href="#">${firstCt.categoryName }<span class="caret"></span></a>
 						    	<ul class="dropdown-menu">
-						          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="send('1');test(${firstCt.firstCategoryNo},'0')">모든 ${firstCt.categoryName }</a></li>
+						          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="send('1');cate(${firstCt.firstCategoryNo},'0')">모든 ${firstCt.categoryName }</a></li>
 						          <c:forEach var="secondCt" items="${sList }">
 						          	<c:if test="${secondCt.firstCategoryNo==firstCt.firstCategoryNo }">
-							          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="send('1');test('0','${secondCt.secondCategoryNo}');">${secondCt.categoryName }</a></li>
+							          <li><a tabindex="-1" href="#" class="dropdown-item" onclick="send('1');cate('0','${secondCt.secondCategoryNo}');">${secondCt.categoryName }</a></li>
 						          	</c:if>
 						          </c:forEach>
 					      		</ul>
 					      </c:forEach>
 					    </ul>
 					  </div>
-                    
-                    	
-						<div class="dropdown">
+					  <div class="dropdown">
 						  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						    상태
 						  </button>
 						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						    <a class="dropdown-item" href="#">Action</a>
-						    <a class="dropdown-item" href="#">Another action</a>
-						    <a class="dropdown-item" href="#">Something else here</a>
+						    <a class="dropdown-item" href="#" onclick="send('1');ingT('1')">진행중인 프로젝트</a>
+						    <a class="dropdown-item" href="#" onclick="send('1');ingT('2')">기간종료된 프로젝트</a>
+						    <a class="dropdown-item" href="#" onclick="send('1');ingT('3')">대기중인 프로젝트</a>
 						  </div>
 						</div>
-						<div class="dropdown">
-						  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						    달성률
-						  </button>
-						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						    <a class="dropdown-item" href="#">Action</a>
-						    <a class="dropdown-item" href="#">Another action</a>
-						    <a class="dropdown-item" href="#">Something else here</a>
-						  </div>
-						</div>
-						<div class="dropdown">
-						  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						    모인금액
-						  </button>
-						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						    <a class="dropdown-item" href="#">Action</a>
-						    <a class="dropdown-item" href="#">Another action</a>
-						    <a class="dropdown-item" href="#">Something else here</a>
-						  </div>
-						</div>
+                    
 						<div class="dropdown" style="float:right;padding:3px;">
 							<button class="btn btn-default" type="button" id="btWrite" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 								style="padding:12px 0px;">
@@ -266,7 +259,7 @@
 						</div>
 						<div class="dropdown" style="float:right;padding:3px;">
 							  <button class="btn btn-default" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-							  	style="padding:12px 0px;" onclick="send('1');test('0','0')">
+							  	style="padding:12px 0px;" onclick="send('1');filter('0','0','0')">
 							    전체보기
 							  </button>
 						</div>

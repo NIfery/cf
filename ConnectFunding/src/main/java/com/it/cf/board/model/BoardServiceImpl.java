@@ -54,4 +54,9 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.DeleteBoard(vo);
 	}
 
+	@Override
+	public BoardVO SelectNextAndPre(int boardNo) {
+		return boardDao.SelectNextAndPre(boardNo);
+	}
+
 }

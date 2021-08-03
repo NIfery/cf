@@ -107,6 +107,7 @@
 									</div>
 								</div>
 								<div class="col" style="display: flex;flex-direction: column;justify-content: center;">
+									<a style="color:blue" href="<c:url value='/answer/answerList?projectNo=${vo.projectNo }'/>">[받은 문의함]</a>
 									<a style="color:blue" href="<c:url value='/project/update?projectNo=${vo.projectNo }'/>">[수정]</a>
 							    	<a style="color:blue" href="#" data-toggle="modal" data-target="#deleteModal${vo.projectNo }">[삭제]</a>
 								</div>

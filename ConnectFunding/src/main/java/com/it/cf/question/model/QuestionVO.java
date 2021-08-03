@@ -13,7 +13,7 @@ public class QuestionVO {
 	private int questionNo;
 	private String questionTitle;
 	private String questionContent;
-	private String questionFlag;
+	private char questionFlag;
 	private Timestamp questionRegdate;
 	private int userNo;
 	private int projectNo;

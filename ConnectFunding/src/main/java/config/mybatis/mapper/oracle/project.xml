@@ -100,6 +100,19 @@
 				<if test="secondCategoryNo!=0">
 					and second_category_no=#{secondCategoryNo}
 				</if>
+				<if test="ingType==1">
+					<![CDATA[
+					and project_startdate<=sysdate and project_enddate>sysdate
+					]]>
+				</if>
+				<if test="ingType==2">
+					<![CDATA[
+					and project_enddate<=sysdate
+					]]>
+				</if>
+				<if test="ingType==3">
+					and project_startdate>sysdate
+				</if>
 		        order by a.project_no desc
         	)C
         )        
@@ -151,6 +164,19 @@
 		</if>
 		<if test="secondCategoryNo!=0">
 			and p.second_category_no=#{secondCategoryNo}
+		</if>
+		<if test="ingType==1">
+			<![CDATA[
+			and project_startdate<=sysdate and project_enddate>sysdate
+			]]>
+		</if>
+		<if test="ingType==2">
+			<![CDATA[
+			and project_enddate<=sysdate
+			]]>
+		</if>
+		<if test="ingType==3">
+			and project_startdate>sysdate
 		</if>
 	</select>
 	

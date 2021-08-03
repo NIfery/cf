@@ -42,6 +42,14 @@
 			}
 		});
 		
+		$('#btFundingModalQuestion').click(function(){
+			if($('#userNo').val().length<1){
+				alert('먼저 로그인하세요');
+				return false;
+			}
+		});
+		
+		
 		$("#btFunding").click(function(){
 			if($('#amount').val().length<1){
 				alert('후원금을 입력해주세요');
@@ -110,6 +118,19 @@
 				console.log(data);
 			});
 		});
+		
+		$("#btQuestion").click(function(){
+			if($('#questionTitle').val().length<1){
+				alert('제목을 입력하세요');
+				$('#questionTitle').focus();
+				return false;
+			}else if($('#questionContent').val().length<1){
+				alert('내용을 입력하세요');
+				$('#questionContent').focus();
+				return false;
+			}
+		});
+		
 	});
 	
 	function getFormatDate(date){
@@ -252,7 +273,35 @@
 									    		<h2 style="margin: 5px 0px 20px -10px">종료되었습니다.</h2>
 											</c:if>
 										</c:if>
-										
+										<a href="#" data-toggle="modal" data-target="#myModalQustion" id="btFundingModalQuestion">창작자에게 문의하기</a>
+								    			<div class="modal fade" id="myModalQustion" data-backdrop="static" tabindex="-1" role="dialog"
+													aria-labelledby="staticBackdropLabelQuestion" aria-hidden="true">
+													<div class="modal-dialog" role="document">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h5 class="modal-title" id="staticBackdropLabelQuestion">창작자에게 문의하기</h5>
+																<button type="button" class="btn-close" data-dismiss="modal"
+																	aria-label="Close" id="btFundingModalClose">
+																</button>
+															</div>
+															<form name="frmQuestion" method="post" action="<c:url value='/question/wrtie?projectNo=${map["PROJECT_NO"] }&userNo=${userVo.userNo }'/>">
+																<div class="modal-body">
+																	<!-- 모달 body -->
+																	<div class="form-group" style="width: 450px; margin: 3px;">
+																		<label class="form-label mt-4">제목</label> 
+																		<input type="text" class="form-control" name="questionTitle" id="questionTitle" placeholder="제목을 입력하세요.">
+																		<label class="form-label mt-4">내용</label> 
+																		<textarea class="form-control" id="questionContent" name="questionContent" rows="3"
+																			placeholder="내용을 입력하세요"></textarea>
+																	</div>
+																</div>
+															<div class="modal-footer">
+																<button type="submit" id="btQuestion" class="genric-btn warning circle">문의하기</button>
+															</div>
+															</form>
+														</div>
+													</div>
+												</div>
 										
 						    		</c:if>
 						    		<c:if test="${userVo.userNo==map['USER_NO'] }">

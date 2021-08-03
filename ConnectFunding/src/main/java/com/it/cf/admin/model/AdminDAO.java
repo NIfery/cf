@@ -24,4 +24,6 @@ public interface AdminDAO {
 	void deleteMember(String no);
 	int deleteUser(int userNo);
 	int deleteAdmin(int adminNo);
+	int checkPwd(String adminId, String adminPwd);
+	int updatePwd(AdminVO vo);
 }

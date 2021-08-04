@@ -26,8 +26,8 @@
 		<selectKey keyProperty="adminNo" resultType="int" order="BEFORE">
 			select admin_seq.nextval from dual
 		</selectKey>
-		INSERT INTO admin(admin_No, admin_Id, admin_Pwd, admin_Position) 
-		VALUES (#{adminNo}, #{adminId}, #{adminPwd}, #{adminPosition})
+		INSERT INTO admin(admin_No, admin_Id, admin_Pwd, admin_Name, admin_Position) 
+		VALUES (#{adminNo}, #{adminId}, #{adminPwd}, #{adminName}, #{adminPosition})
 	</insert>
 	
 	<select id="selectAllUser" parameterType="searchVo" resultType="userVo" >
@@ -89,6 +89,18 @@
 	<delete id="deleteAdmin" parameterType="int">
 		delete from admin where admin_no=#{adminNo}
 	</delete>
+	
+	<update id="updatePwd" parameterType="adminVo" >
+		update admin
+		set admin_pwd=#{adminPwd}
+		where admin_id=#{adminId}
+	</update>
+	
+	<select id="getJuly" parameterType="userVo" resultType="int">
+		select count(*)
+		from users 
+		where to_char(user_joindate, 'mm')='07'
+	</select>
 </mapper>
 
 

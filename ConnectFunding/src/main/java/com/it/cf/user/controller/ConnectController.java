@@ -31,28 +31,28 @@ public class ConnectController {
    
    @RequestMapping("/mypages/projects")
    public String projects(HttpSession session, @ModelAttribute ProjectVO pageVo, Model model) {
-      int userNo = (int) session.getAttribute("userNo");
-      logger.info("내가 만든 프로젝트 페이지, userno={}", userNo);
-      
-      ProjectPageInfo pagingInfo = new ProjectPageInfo();
-      pagingInfo.setBlockSize(3);
-      pagingInfo.setCurrentPage(pageVo.getCurrentPage());
-      pagingInfo.setRecordCountPerPage(3);
-      
-      pageVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
-      pageVo.setRecordCountPerPage(3);
-      pageVo.setUserNo(userNo);
-      List<ProjectVO> list = projectService.selectAll(pageVo);
-      logger.info("내가 만든 프로젝트 페이지 결과, list.size={}", list.size());
-      
-      int totalRecord = projectService.selectTotalRecord();
-      logger.info("내가 만든 프로젝트 페이지 결과, totalRecord={}", totalRecord);
-      pagingInfo.setTotalRecord(totalRecord);
-      
-      model.addAttribute("list", list);
-      model.addAttribute("pagingInfo", pagingInfo);
-      
-      return "mypages/projects";
+	   int userNo = (int) session.getAttribute("userNo");
+	   logger.info("내가 만든 프로젝트 페이지, userno={}", userNo);
+
+	   ProjectPageInfo pagingInfo = new ProjectPageInfo();
+	   pagingInfo.setBlockSize(3);
+	   pagingInfo.setCurrentPage(pageVo.getCurrentPage());
+	   pagingInfo.setRecordCountPerPage(3);
+
+	   pageVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
+	   pageVo.setRecordCountPerPage(3);
+	   pageVo.setUserNo(userNo);
+	   List<ProjectVO> list = projectService.selectAll(pageVo);
+	   logger.info("내가 만든 프로젝트 페이지 결과, list.size={}", list.size());
+
+	   int totalRecord = projectService.selectTotalRecordByUserNo(userNo);
+	   logger.info("내가 만든 프로젝트 페이지 결과, totalRecord={}", totalRecord);
+	   pagingInfo.setTotalRecord(totalRecord);
+
+	   model.addAttribute("list", list);
+	   model.addAttribute("pagingInfo", pagingInfo);
+
+	   return "mypages/projects";
    }
    
    @RequestMapping("/mypages/alarmsetting")

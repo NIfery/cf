@@ -1,7 +1,8 @@
  package com.it.cf.admin.controller;
 
-import java.util.LinkedHashMap;
+
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -40,6 +41,7 @@ import com.it.cf.project.model.ProjectUtil;
 import com.it.cf.project.model.ProjectVO;
 import com.it.cf.project.model.SecondCategoryVO;
 import com.it.cf.user.model.UserListVO;
+import com.it.cf.user.model.UserService;
 import com.it.cf.user.model.UserVO;
 
 import lombok.RequiredArgsConstructor;
@@ -53,11 +55,6 @@ public class AdminController {
 
    private final AdminService adminService;
    private final ProjectService projectService;
-   
-   @RequestMapping("/index")
-   public void index() {
-      
-   }
    
    @RequestMapping("/login")
    public void login() {
@@ -84,6 +81,7 @@ public class AdminController {
          
          request.getSession().setAttribute("adminId", vo.getAdminId());
          request.getSession().setAttribute("adminPosition", vo.getAdminPosition());
+         request.getSession().setAttribute("adminName", vo.getAdminName());
          
          logger.info("adminPosition={}",vo.getAdminPosition());
          
@@ -199,10 +197,10 @@ public class AdminController {
 			logger.info("i={}, adminNo={}", i, adminNo);
 		}
 		
-		String msg="선택한 회원 삭제 중 에러 발생!", url="/admin/adminship";
+		String msg="선택한 관리자 삭제 중 에러 발생!", url="/admin/adminship";
 		int cnt=adminService.deleteAdminMulti(list);
 		if(cnt>0) {
-			msg="선택한 회원 삭제 완료";
+			msg="선택한 관리자 삭제 완료";
 		}
 		
 		model.addAttribute("msg", msg);
@@ -267,7 +265,36 @@ public class AdminController {
 		
 		return "common/message";
    }
+
+   //관리자 비밀번호 변경
+   @RequestMapping("/changePwd")
+   public String changePwd(@ModelAttribute AdminVO adminVo, @RequestParam String beforePwd, HttpSession session, Model model) {
+	      String adminId = (String) session.getAttribute("adminId");
+	      adminVo.setAdminId(adminId);
+	      logger.info("adminId={}", adminId);
+	      
+	      logger.info("비밀번호 변경 페이지, 파라미터 adminVo={}, beforePwd={}", adminVo , beforePwd);
+	      
+	      int result = adminService.checkPwd(adminId, beforePwd);
+	      logger.info("비밀번호 체크결과, result={}", result);
+	      
+	      String msg="비밀번호 수정을 실패하였습니다.", url="/admin/index";
+	      if(result==AdminService.PWD_OK) {
+	         int cnt = adminService.updatePwd(adminVo);
+	         logger.info("비밀번호 수정결과, cnt={}", cnt);
+	         
+	         msg="비밀번호를 수정하였습니다.";
+	      }else if(result==AdminService.PWD_NO) {
+	         msg="비밀번호 불일치";
+	      }
+	      
+	      model.addAttribute("msg", msg);
+	      model.addAttribute("url", url);
+	      
+	      return "common/message";
+   }
    
+   //펀딩 심사하기 페이징처리
    @RequestMapping("/confirm")
    public String confirm(@ModelAttribute ProjectVO pageVo, Model model) {
 	   ProjectPageInfo pagingInfo = new ProjectPageInfo();
@@ -289,8 +316,7 @@ public class AdminController {
 	   return "admin/confirm";
    }
    
-
-   
+   //펀딩 심사 처리
    @RequestMapping("/confirmProject")
    public String confirmProject(@ModelAttribute ProjectVO pageVo, @RequestParam int projectNo, Model model) {
 	   ProjectPageInfo pagingInfo = new ProjectPageInfo();
@@ -320,4 +346,14 @@ public class AdminController {
 		
 	   return "common/message";
    }
+   
+   @RequestMapping("/index")
+ 	public String home(Locale locale, UserVO vo, Model model)throws Exception {
+ 		int jul = adminService.getJuly(vo);
+ 		logger.info("jul={}",jul);
+ 		model.addAttribute("jul", jul);
+
+ 		return "/admin/index";
+
+ 	}
 }

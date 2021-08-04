@@ -36,9 +36,42 @@
 
     <!-- Main CSS-->
     <link href="${pageContext.request.contextPath}/admin_assets/css/theme.css" rel="stylesheet" media="all">
+    
+    <!-- Jquery JS-->
+    <script src="${pageContext.request.contextPath}/admin_assets/vendor/jquery-3.2.1.min.js"></script>
+    
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
 
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 </head>
 
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#change').on("click",function() {
+		var regex = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+		if($('#beforePwd').val().length<1){
+			alert('비밀번호를 입력하세요.');
+			$('#beforePwd').focus();
+			event.preventDefault();
+		}else if($('#newPwd').val().length<1){
+			alert('변경하실 비밀번호를 입력하세요.');
+			$('#newPwd').focus();
+			event.preventDefault();
+		}else if($('#newPwd').val() != $('#newPwd2').val()) {
+			alert("비밀번호가 일치하지 않습니다.");
+			$('#newPwd2').focus();
+			event.preventDefault();
+		}else if(!regex.test($("#newPwd").val())){
+			alert("영문자, 숫자, 특수문자를 포함한 8~15자 이내이어야합니다.");
+			event.preventDefault();
+		}
+	});
+});
+</script>
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
@@ -60,14 +93,56 @@
             <nav class="navbar-mobile">
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
-                        <li class="has-sub">
-                            <a class="js-arrow" href="<c:url value='/admin/index'/>">
-                                <i class="fas fa-tachometer-alt"></i>메인화면</a>
+                    <c:if test="${adminPosition eq 'ADMIN'}">
+                        <li>
+                            <a href="<c:url value='/admin/index'/>">
+                                <i class="fas fa-bar-chart-o"></i> 통계</a>
+                        </li>
+                        <li>
+                            <a href="<c:url value='/admin/confirm'/>">
+                                <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
+                        </li>
+                        <li>
+                            <a href="<c:url value='/chat/adminInbox'/>">
+                                <i class="fas  fa-comments"></i>문의쪽지함</a>
+                        </li>
+                        <li>
+                            <a href="<c:url value='/chat/adminInbox'/>">
+                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
                         </li>
                         <li>
                             <a href="<c:url value='/admin/membership'/>">
-                                <i class="fas fa-chart-bar"></i>회원관리</a>
+                                <i class="fas fa-users"></i>회원관리</a>
                         </li>
+                        <li>
+                            <a href="<c:url value='/admin/adminship'/>">
+                                <i class="fas fa-sitemap"></i>운영자 관리</a>
+                        </li>
+                        <li>
+                            <a href="<c:url value='/admin/register'/>">
+                                <i class="fas  fa-user-md"></i> 운영자 등록</a>
+                        </li>
+                    </c:if>    
+                    <c:if test="${adminPosition eq 'QnA_Admin'}">
+                        <li>
+                            <a href="<c:url value='/admin/index'/>">
+                                <i class="fas fa-bar-chart-o"></i> 통계</a>
+                        </li>
+                        <li>
+                            <a href="<c:url value='/chat/adminInbox'/>">
+                                <i class="fas  fa-comments"></i>문의쪽지함</a>
+                        </li>
+                    </c:if>
+                    <c:if test="${adminPosition eq 'FUNDING_CHECK_Admin'}">
+                        <li>
+                            <a href="<c:url value='/admin/index'/>">
+                                <i class="fas fa-bar-chart-o"></i> 통계</a>
+                        </li>
+                        <li>
+                            <a href="<c:url value='/admin/confirm'/>">
+                                <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
+                        </li>
+                    </c:if>
                     </ul>
                 </div>
             </nav>
@@ -84,12 +159,17 @@
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
+            	<c:if test="${empty adminId }">
+            		로그인을 해야 이용가능합니다.
+            	</c:if>
+            	<c:if test="${!empty adminId }">
+            	   <li>
+                     <a href="<c:url value='/admin/index'/>">
+                   	 <i class="fas fa-bar-chart-o"></i> 통계</a>
+                   </li>
+                    <c:if test="${adminPosition eq 'ADMIN'}">
                         <li>
-                            <a class="js-arrow" href="<c:url value='/admin/index'/>">
-                                <i class="fas fa-bar-chart-o"></i> 통계</a>
-                        </li>
-                        <li>
-                            <a class="js-arrow" href="<c:url value='/admin/confirm'/>">
+                            <a href="<c:url value='/admin/confirm'/>">
                                 <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
                         </li>
                         <li>
@@ -108,6 +188,29 @@
                             <a href="<c:url value='/admin/register'/>">
                                 <i class="fas  fa-user-md"></i> 운영자 등록</a>
                         </li>
+                    </c:if>    
+                    <c:if test="${adminPosition eq 'QnA_Admin'}">
+                        <li>
+                            <a href="<c:url value='/chat/adminInbox'/>">
+                                <i class="fas  fa-comments"></i>문의쪽지함</a>
+                        </li>
+                    </c:if>
+                    <c:if test="${adminPosition eq 'FUNDING_CHECK_Admin'}">
+                        <li>
+                            <a href="<c:url value='/admin/confirm'/>">
+                                <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
+                        </li>
+                    </c:if>
+                        <li>
+                            <a href="<c:url value='/chat/adminInbox'/>">
+                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
+                        </li>
+                        <hr>
+                        <li>
+                            <a href="<c:url value='/'/>" target="_blank">
+                                <i class="fas fa-home"></i>회원페이지 열기</a>
+                        </li>
+				</c:if>
 					</ul>
 				</nav>	
 			</div>
@@ -120,155 +223,58 @@
             <!-- HEADER DESKTOP-->
             <header class="header-desktop">
                 <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="header-wrap">
+                    <div class="container-fluid" style="justify-content: center">
                             <form class="form-header" action="" method="POST">
                             </form>
                             <c:if test="${!empty sessionScope.adminId }">
-	                            <div class="header-button">
-	                                <div class="noti-wrap">
-	                                    <div class="noti__item js-item-menu">
-	                                        <i class="zmdi zmdi-comment-more"></i>
-	                                        <span class="quantity">1</span>
-	                                        <div class="mess-dropdown js-dropdown">
-	                                            <div class="mess__title">
-	                                                <p>You have 2 news message</p>
-	                                            </div>
-	                                            <div class="mess__item">
-	                                                <div class="image img-cir img-40">
-	                                                    <img src="${pageContext.request.contextPath}/admin_assets/images/icon/avatar-06.jpg" alt="Michelle Moreno" />
-	                                                </div>
-	                                                <div class="content">
-	                                                    <h6>Michelle Moreno</h6>
-	                                                    <p>Have sent a photo</p>
-	                                                    <span class="time">3 min ago</span>
-	                                                </div>
-	                                            </div>
-	                                            <div class="mess__item">
-	                                                <div class="image img-cir img-40">
-	                                                    <img src="${pageContext.request.contextPath}/admin_assets/images/icon/avatar-04.jpg" alt="Diane Myers" />
-	                                                </div>
-	                                                <div class="content">
-	                                                    <h6>Diane Myers</h6>
-	                                                    <p>You are now connected on message</p>
-	                                                    <span class="time">Yesterday</span>
-	                                                </div>
-	                                            </div>
-	                                            <div class="mess__footer">
-	                                                <a href="#">View all messages</a>
-	                                            </div>
-	                                        </div>
-	                                    </div>
-	                                    <div class="noti__item js-item-menu">
-	                                        <i class="zmdi zmdi-email"></i>
-	                                        <span class="quantity">1</span>
-	                                        <div class="email-dropdown js-dropdown">
-	                                            <div class="email__title">
-	                                                <p>You have 3 New Emails</p>
-	                                            </div>
-	                                            <div class="email__item">
-	                                                <div class="image img-cir img-40">
-	                                                    <img src="${pageContext.request.contextPath}/admin_assets/images/icon/avatar-06.jpg" alt="Cynthia Harvey" />
-	                                                </div>
-	                                                <div class="content">
-	                                                    <p>Meeting about new dashboard...</p>
-	                                                    <span>Cynthia Harvey, 3 min ago</span>
-	                                                </div>
-	                                            </div>
-	                                            <div class="email__item">
-	                                                <div class="image img-cir img-40">
-	                                                    <img src="${pageContext.request.contextPath}/admin_assets/images/icon/avatar-05.jpg" alt="Cynthia Harvey" />
-	                                                </div>
-	                                                <div class="content">
-	                                                    <p>Meeting about new dashboard...</p>
-	                                                    <span>Cynthia Harvey, Yesterday</span>
-	                                                </div>
-	                                            </div>
-	                                            <div class="email__item">
-	                                                <div class="image img-cir img-40">
-	                                                    <img src="${pageContext.request.contextPath}/admin_assets/images/icon/avatar-04.jpg" alt="Cynthia Harvey" />
-	                                                </div>
-	                                                <div class="content">
-	                                                    <p>Meeting about new dashboard...</p>
-	                                                    <span>Cynthia Harvey, April 12,,2018</span>
-	                                                </div>
-	                                            </div>
-	                                            <div class="email__footer">
-	                                                <a href="#">See all emails</a>
-	                                            </div>
-	                                        </div>
-	                                    </div>
-	                                    <div class="noti__item js-item-menu">
-	                                        <i class="zmdi zmdi-notifications"></i>
-	                                        <span class="quantity">3</span>
-	                                        <div class="notifi-dropdown js-dropdown">
-	                                            <div class="notifi__title">
-	                                                <p>You have 3 Notifications</p>
-	                                            </div>
-	                                            <div class="notifi__item">
-	                                                <div class="bg-c1 img-cir img-40">
-	                                                    <i class="zmdi zmdi-email-open"></i>
-	                                                </div>
-	                                                <div class="content">
-	                                                    <p>You got a email notification</p>
-	                                                    <span class="date">April 12, 2018 06:50</span>
-	                                                </div>
-	                                            </div>
-	                                            <div class="notifi__item">
-	                                                <div class="bg-c2 img-cir img-40">
-	                                                    <i class="zmdi zmdi-account-box"></i>
-	                                                </div>
-	                                                <div class="content">
-	                                                    <p>Your account has been blocked</p>
-	                                                    <span class="date">April 12, 2018 06:50</span>
-	                                                </div>
-	                                            </div>
-	                                            <div class="notifi__item">
-	                                                <div class="bg-c3 img-cir img-40">
-	                                                    <i class="zmdi zmdi-file-text"></i>
-	                                                </div>
-	                                                <div class="content">
-	                                                    <p>You got a new file</p>
-	                                                    <span class="date">April 12, 2018 06:50</span>
-	                                                </div>
-	                                            </div>
-	                                            <div class="notifi__footer">
-	                                                <a href="#">All notifications</a>
-	                                            </div>
-	                                        </div>
-	                                    </div>
-	                                </div>
-	                                <div class="account-wrap">
+	                                <div class="account-wrap" style="text-align: center;">
 	                                    <div class="account-item clearfix js-item-menu">
-			                                    <a class="js-acc-btn" href="#">
-													<c:if test="${adminPosition eq 'QnA_Admin'}">
-																QnA 담당자
+			                                    <a class="js-acc-btn">
+													[<c:if test="${adminPosition eq 'QnA_Admin'}">
+																문의쪽지 담당자
 													</c:if>
 													<c:if test="${adminPosition eq 'ADMIN'}">
 																총책임자
 													</c:if>
-													<c:if test="${adminPosition eq 'FUNDING_CHECK_ADMIN'}">
+													<c:if test="${adminPosition eq 'FUNDING_CHECK_Admin'}">
 																펀딩심사 담당자
 													</c:if>
+													-&nbsp;${sessionScope.adminName } ]
 												</a>
-	                                        <div class="account-dropdown js-dropdown">
-	                                            <div class="account-dropdown__body">
-	                                                <div class="account-dropdown__item">
-	                                                    <a href="#">
-	                                                        <i class="zmdi zmdi-account"></i>계정 정보변경</a>
-	                                                </div>
-	                                            </div>
-	                                            <div class="account-dropdown__footer">
-	                                                <a href="<c:url value='/admin/login/logout' />">
-	                                                    <i class="zmdi zmdi-power"></i>로그아웃</a>
-	                                            </div>
-	                                        </div>
 	                                    </div>
+			                            <a class="fas  fa-key" data-toggle="modal" data-target="#myModal" href="#"> 비밀번호 변경</a>&emsp;
+			                            <a class="fas  fa-power-off" href="<c:url value='/admin/login/logout'/>" onclick="if(!confirm('정말로 로그아웃 하시겠습니까?')){return false;}"> 로그아웃</a>
 	                                </div>
-	                            </div>
                             </c:if>
-                        </div>
                     </div>
                 </div>
             </header>
+            
             <!-- HEADER DESKTOP-->
+            
+		<!-- Modal -->
+		<form action="<c:url value='/admin/changePwd?adminId?=${sessionScope.adminId }'/>" method="post">
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header" style="display: block;">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">비밀번호 변경</h4>
+					</div>
+					<div class="modal-body">
+						<label>기존 비밀번호</label><input class="au-input au-input--full" type="password" name="beforePwd" id="beforePwd"><br>
+						<label>변경할 비밀번호</label><input class="au-input au-input--full" type="password" name="adminPwd" id="newPwd"><br>
+						<label>변경할 비밀번호 확인</label><input class="au-input au-input--full" type="password" name="adminPwd2" id="newPwd2">
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary" id="change">변경하기</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</form>

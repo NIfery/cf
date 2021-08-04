@@ -35,6 +35,11 @@
 		]]>
 	</select>
 	
+	<select id="answerList" parameterType="int" resultType="answerVo">
+	    select * from answerView 
+	    where USER_NO=#{userNo}
+	</select>
+	
 	<select id="questionCount" parameterType="SearchVo" resultType="int">
 		select count(*) from QUESTION
 		where USER_NO=#{userNo}
@@ -60,22 +65,15 @@
 		]]>
 	</select>
 	
-	<select id="answerList" parameterType="searchVo" resultType="answerVo">
-		select *
-		from
-		(
-		    select rownum as RNUM,A.*
-		    from
-		    (
-		        select * from answerView 
-		        where PROJECT_NO=#{projectNo}
-		        <include refid="searchWhere"></include>
-		    )A
-		)
-		<![CDATA[
-		where RNUM > #{firstRecordIndex} 
-		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
-		]]>
+	<select id="answerListbyProjectNo" parameterType="int" resultType="answerVo">
+	    select * from answerView 
+	    where PROJECT_NO=#{projectNo}
+	</select>
+	
+	<select id="questionProjectCount" parameterType="SearchVo" resultType="int">
+		select count(*) from QUESTION
+		where PROJECT_NO=#{projectNo}
+		<include refid="searchWhere"></include>
 	</select>
 	
 	<insert id="insertAnswer" parameterType="answerVo" >
@@ -86,11 +84,37 @@
 		values(#{answerNo},#{answerContent},#{questionNo})
 	</insert>
 	
-	<update id="questionFlagY" parameterType="questionVo">
+	<update id="questionFlagY" parameterType="int">
 		update QUESTION
 		set QUESTION_FLAG='Y'
 		where QUESTION_NO=#{questionNo}
 	</update>
+	
+	<update id="questionFlagN" parameterType="int">
+		update QUESTION
+		set QUESTION_FLAG='N'
+		where QUESTION_NO=#{questionNo}
+	</update>
+	
+	<update id="questionEdit" parameterType="questionVo">
+		update QUESTION
+		set QUESTION_TITLE=#{questionTitle}, QUESTION_CONTENT=#{questionContent}, QUESTION_REGDATE=sysdate
+		where QUESTION_NO=#{questionNo}
+	</update>
+	
+	<update id="answerEdit" parameterType="answerVo">
+		update ANSWER
+		set ANSWER_CONTENT=#{answerContent}, ANSWER_REGDATE=sysdate
+		where QUESTION_NO=#{questionNo}
+	</update>
+	
+	<delete id="deleteQuestion" parameterType="int">
+		delete from QUESTION where QUESTION_NO=#{questionNo}
+	</delete>
+	
+	<delete id="deleteAnswer" parameterType="int">
+		delete from ANSWER where QUESTION_NO=#{questionNo}
+	</delete>
 </mapper>
 
 

@@ -85,7 +85,7 @@ logger.info("사용자에게 답변하기, 파라미터 vo={}",vo);
 		logger.info("문의함, totalRecord={}",totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
 		
-		List<AnswerVO> answerList=questionService.answerList(searchVo);
+		List<AnswerVO> answerList=questionService.answerList(searchVo.getUserNo());
 		logger.info("answerList.size={}",answerList.size());
 		
 		model.addAttribute("list", list);
@@ -113,11 +113,11 @@ logger.info("사용자에게 답변하기, 파라미터 vo={}",vo);
 		List<QuestionVO> list= questionService.questionbyProjectNo(searchVo);
 		logger.info("list.size={}",list.size());
 		
-		int totalRecord=questionService.questionCount(searchVo);
+		int totalRecord=questionService.questionProjectCount(searchVo);
 		logger.info("해당 프로젝트 문의함, totalRecord={}",totalRecord);
 		pagingInfo.setTotalRecord(totalRecord);
 		
-		List<AnswerVO> answerList=questionService.answerList(searchVo);
+		List<AnswerVO> answerList=questionService.answerListbyProjectNo(searchVo.getProjectNo());
 		logger.info("answerList.size={}",answerList.size());
 		
 		model.addAttribute("list", list);
@@ -125,6 +125,71 @@ logger.info("사용자에게 답변하기, 파라미터 vo={}",vo);
 		model.addAttribute("pagingInfo", pagingInfo);
 		return "answer/answerList";
 		
+	}
+	
+	@RequestMapping("/question/questionEdit")
+	public String questionEdit(@ModelAttribute QuestionVO vo, Model model) {
+		logger.info("문의 수정, 파라미터 vo={}",vo);
+		
+		int cnt=questionService.questionEdit(vo);
+		logger.info("문의 수정 결과 cnt={}",cnt);
+		
+		String msg="문의 수정 실패!", url="/question/questionProject";
+		if(cnt>0) {
+			msg="문의 수정 성공";
+		}
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		return "common/message";
+	}
+	
+	@RequestMapping("/answer/answerEdit")
+	public String answerEdit(@RequestParam(defaultValue = "0")int projectNo, @ModelAttribute AnswerVO vo, Model model) {
+		logger.info("답변 수정, 파라미터 vo={}",vo);
+		
+		int cnt=questionService.answerEdit(vo);
+		logger.info("답변 수정 결과 cnt={}",cnt);
+		
+		String msg="답변 수정 실패!", url="/answer/answerList?projectNo="+projectNo;
+		if(cnt>0) {
+			msg="답변 수정 성공";
+		}
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		return "common/message";
+	}
+	
+	@RequestMapping("/question/deleteQuestion")
+	public String deleteQuestion(@RequestParam(defaultValue = "0")int questionNo, Model model) {
+		logger.info("문의 삭제, 파라미터 questionNo={}",questionNo);
+		
+		int cnt=questionService.deleteAnswer(questionNo);
+		cnt=questionService.deleteQuestion(questionNo);
+		logger.info("문의 삭제 결과 cnt={}",cnt);
+		
+		String msg="문의 삭제 실패!", url="/question/questionProject";
+		if(cnt>0) {
+			msg="문의 삭제 성공";
+		}
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		return "common/message";
+	}
+	
+	@RequestMapping("/answer/deleteAnswer")
+	public String deleteAnswer(@RequestParam(defaultValue = "0")int projectNo, @RequestParam(defaultValue = "0")int questionNo, Model model) {
+		logger.info("답변 삭제, 파라미터 questionNo={}",questionNo);
+		
+		int cnt=questionService.deleteAnswer(questionNo);
+		logger.info("답변 삭제 결과 cnt={}",cnt);
+		
+		String msg="답변 삭제 실패!", url="/answer/answerList?projectNo="+projectNo;
+		if(cnt>0) {
+			msg="문의 삭제 성공";
+		}
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		return "common/message";
 	}
 	
 }

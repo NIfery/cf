@@ -1,7 +1,8 @@
  package com.it.cf.admin.controller;
 
-import java.util.LinkedHashMap;
+
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -54,11 +55,6 @@ public class AdminController {
 
    private final AdminService adminService;
    private final ProjectService projectService;
-   
-   @RequestMapping("/index")
-   public void index() {
-      
-   }
    
    @RequestMapping("/login")
    public void login() {
@@ -269,29 +265,6 @@ public class AdminController {
 		
 		return "common/message";
    }
-   
-   //펀딩 심사하기 
-   @RequestMapping("/confirm")
-   public String confirm(@ModelAttribute ProjectVO pageVo, Model model) {
-	   ProjectPageInfo pagingInfo = new ProjectPageInfo();
-	   pagingInfo.setBlockSize(ProjectUtil.BLOCK_SIZE);
-	   pagingInfo.setCurrentPage(pageVo.getCurrentPage());
-	   pagingInfo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
-
-	   pageVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
-	   pageVo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
-
-	   int totalRecord = projectService.selectTotalRecord();
-	   pagingInfo.setTotalRecord(totalRecord);
-
-	   List<ProjectVO> list = projectService.selectAllAdmin(pageVo);
-
-	   model.addAttribute("list", list);
-	   model.addAttribute("pagingInfo", pagingInfo);
-
-	   return "admin/confirm";
-   }
-   
 
    //관리자 비밀번호 변경
    @RequestMapping("/changePwd")
@@ -321,6 +294,29 @@ public class AdminController {
 	      return "common/message";
    }
    
+   //펀딩 심사하기 페이징처리
+   @RequestMapping("/confirm")
+   public String confirm(@ModelAttribute ProjectVO pageVo, Model model) {
+	   ProjectPageInfo pagingInfo = new ProjectPageInfo();
+	   pagingInfo.setBlockSize(ProjectUtil.BLOCK_SIZE);
+	   pagingInfo.setCurrentPage(pageVo.getCurrentPage());
+	   pagingInfo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
+
+	   pageVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
+	   pageVo.setRecordCountPerPage(ProjectUtil.RECORD_COUNT);
+
+	   int totalRecord = projectService.selectTotalRecord();
+	   pagingInfo.setTotalRecord(totalRecord);
+
+	   List<ProjectVO> list = projectService.selectAllAdmin(pageVo);
+
+	   model.addAttribute("list", list);
+	   model.addAttribute("pagingInfo", pagingInfo);
+
+	   return "admin/confirm";
+   }
+   
+   //펀딩 심사 처리
    @RequestMapping("/confirmProject")
    public String confirmProject(@ModelAttribute ProjectVO pageVo, @RequestParam int projectNo, Model model) {
 	   ProjectPageInfo pagingInfo = new ProjectPageInfo();
@@ -350,4 +346,14 @@ public class AdminController {
 		
 	   return "common/message";
    }
+   
+   @RequestMapping("/index")
+ 	public String home(Locale locale, UserVO vo, Model model)throws Exception {
+ 		int jul = adminService.getJuly(vo);
+ 		logger.info("jul={}",jul);
+ 		model.addAttribute("jul", jul);
+
+ 		return "/admin/index";
+
+ 	}
 }

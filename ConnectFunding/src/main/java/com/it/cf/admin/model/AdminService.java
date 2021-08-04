@@ -30,4 +30,5 @@ public interface AdminService {
 	int deleteAdminMulti(List<AdminVO> list);
 	int checkPwd(String adminId, String adminPwd);
 	int updatePwd(AdminVO vo);
+	int getJuly(UserVO vo);
 }

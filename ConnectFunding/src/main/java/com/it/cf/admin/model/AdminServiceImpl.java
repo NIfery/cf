@@ -148,6 +148,11 @@ public class AdminServiceImpl implements AdminService{
 		return adminDao.updatePwd(vo);
 	}
 
+	@Override
+	public int getJuly(UserVO vo) {
+		return adminDao.getJuly(vo);
+	}
+
 
 
 

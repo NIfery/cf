@@ -39,6 +39,14 @@
     
     <!-- Jquery JS-->
     <script src="${pageContext.request.contextPath}/admin_assets/vendor/jquery-3.2.1.min.js"></script>
+    
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 </head>
 
 <script type="text/javascript">
@@ -155,11 +163,11 @@ $(document).ready(function(){
             		로그인을 해야 이용가능합니다.
             	</c:if>
             	<c:if test="${!empty adminId }">
+            	   <li>
+                     <a href="<c:url value='/admin/index'/>">
+                   	 <i class="fas fa-bar-chart-o"></i> 통계</a>
+                   </li>
                     <c:if test="${adminPosition eq 'ADMIN'}">
-                        <li>
-                            <a href="<c:url value='/admin/index'/>">
-                                <i class="fas fa-bar-chart-o"></i> 통계</a>
-                        </li>
                         <li>
                             <a href="<c:url value='/admin/confirm'/>">
                                 <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
@@ -167,10 +175,6 @@ $(document).ready(function(){
                         <li>
                             <a href="<c:url value='/chat/adminInbox'/>">
                                 <i class="fas  fa-comments"></i>문의쪽지함</a>
-                        </li>
-                        <li>
-                            <a href="<c:url value='/chat/adminInbox'/>">
-                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
                         </li>
                         <li>
                             <a href="<c:url value='/admin/membership'/>">
@@ -184,36 +188,28 @@ $(document).ready(function(){
                             <a href="<c:url value='/admin/register'/>">
                                 <i class="fas  fa-user-md"></i> 운영자 등록</a>
                         </li>
-                        
                     </c:if>    
                     <c:if test="${adminPosition eq 'QnA_Admin'}">
-                        <li>
-                            <a href="<c:url value='/admin/index'/>">
-                                <i class="fas fa-bar-chart-o"></i> 통계</a>
-                        </li>
                         <li>
                             <a href="<c:url value='/chat/adminInbox'/>">
                                 <i class="fas  fa-comments"></i>문의쪽지함</a>
                         </li>
-                        <li>
-                            <a href="<c:url value='/chat/adminInbox'/>">
-                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
-                        </li>
                     </c:if>
                     <c:if test="${adminPosition eq 'FUNDING_CHECK_Admin'}">
-                        <li>
-                            <a href="<c:url value='/admin/index'/>">
-                                <i class="fas fa-bar-chart-o"></i> 통계</a>
-                        </li>
                         <li>
                             <a href="<c:url value='/admin/confirm'/>">
                                 <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
                         </li>
+                    </c:if>
                         <li>
                             <a href="<c:url value='/chat/adminInbox'/>">
                                 <i class="fas fa-bullhorn"></i>공지사항 관리</a>
                         </li>
-                    </c:if>
+                        <hr>
+                        <li>
+                            <a href="<c:url value='/'/>" target="_blank">
+                                <i class="fas fa-home"></i>회원페이지 열기</a>
+                        </li>
 				</c:if>
 					</ul>
 				</nav>	

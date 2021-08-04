@@ -95,6 +95,12 @@
 		set admin_pwd=#{adminPwd}
 		where admin_id=#{adminId}
 	</update>
+	
+	<select id="getJuly" parameterType="userVo" resultType="int">
+		select count(*)
+		from users 
+		where to_char(user_joindate, 'mm')='07'
+	</select>
 </mapper>
 
 

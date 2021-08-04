@@ -26,4 +26,5 @@ public interface AdminDAO {
 	int deleteAdmin(int adminNo);
 	int checkPwd(String adminId, String adminPwd);
 	int updatePwd(AdminVO vo);
+	int getJuly(UserVO vo);
 }

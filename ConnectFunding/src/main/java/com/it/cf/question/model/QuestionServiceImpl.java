@@ -27,8 +27,8 @@ public class QuestionServiceImpl implements QuestionService{
 	}
 
 	@Override
-	public List<AnswerVO> answerList(SearchVOQuestion vo) {
-		return questiondao.answerList(vo);
+	public List<AnswerVO> answerList(int userNo) {
+		return questiondao.answerList(userNo);
 	}
 
 	@Override
@@ -41,6 +41,38 @@ public class QuestionServiceImpl implements QuestionService{
 		int cnt=questiondao.insertAnswer(vo);
 		cnt=questiondao.questionFlagY(vo.getQuestionNo());
 		return cnt;
+	}
+
+	@Override
+	public int questionEdit(QuestionVO vo) {
+		return questiondao.questionEdit(vo);
+	}
+
+	@Override
+	public int questionProjectCount(SearchVOQuestion vo) {
+		return questiondao.questionProjectCount(vo);
+	}
+
+	@Override
+	public List<AnswerVO> answerListbyProjectNo(int projectNo) {
+		return questiondao.answerListbyProjectNo(projectNo);
+	}
+
+	@Override
+	public int deleteQuestion(int questionNo) {
+		return questiondao.deleteQuestion(questionNo);
+	}
+
+	@Override
+	public int deleteAnswer(int questionNo) {
+		int cnt=questiondao.deleteAnswer(questionNo);
+		cnt=questiondao.questionFlagN(questionNo);
+		return cnt;
+	}
+
+	@Override
+	public int answerEdit(AnswerVO vo) {
+		return questiondao.answerEdit(vo);
 	}
 
 }

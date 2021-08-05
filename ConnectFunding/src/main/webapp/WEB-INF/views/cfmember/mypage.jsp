@@ -33,6 +33,9 @@
 				<li><a href="<c:url value='/chat/sent'/>" class="d-flex">
 						<p>메시지</p>
 				</a></li>
+				<li><a href="<c:url value='/question/questionProject'/>" class="d-flex">
+						<p>문의함</p>
+				</a></li>
 				<li><a href="<c:url value='/mypages/support'/>" class="d-flex">
 						<p>후원현황</p>
 				</a></li>

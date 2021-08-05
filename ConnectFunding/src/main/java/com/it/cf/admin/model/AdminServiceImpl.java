@@ -12,6 +12,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.common.SearchVO;
+import com.it.cf.project.model.ProjectVO;
 import com.it.cf.user.model.UserVO;
 
 import lombok.RequiredArgsConstructor;
@@ -149,9 +150,40 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public int getJuly(UserVO vo) {
-		return adminDao.getJuly(vo);
+	public int getEnter(UserVO vo) {
+		return adminDao.getEnter(vo);
 	}
+
+	@Override
+	public int getGeneral(UserVO vo) {
+		return adminDao.getGeneral(vo);
+	}
+
+	@Override
+	public int getTotalUser(UserVO vo) {
+		return adminDao.getTotalUser(vo);
+	}
+
+	@Override
+	public int getTotalFunding(ProjectVO vo) {
+		return adminDao.getTotalFunding(vo);
+	}
+
+	@Override
+	public Map<String, Object> getMonthFunding() {
+	      return adminDao.getMonthFunding();
+	   }
+
+	@Override
+	public int getTotalWaitFunding(ProjectVO vo) {
+		return adminDao.getTotalWaitFunding(vo);
+	}
+
+	@Override
+	public Map<String, Object> getMonthWaitFunding() {
+		return adminDao.getMonthWaitFunding();
+	}
+
 
 
 

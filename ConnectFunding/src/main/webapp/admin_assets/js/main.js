@@ -9,12 +9,12 @@ var ctx = document.getElementById("widgetChart1");
 if (ctx) {
   ctx.height = 130;
   var myChart = new Chart(ctx, {
-    type: 'line',
+    type: 'bar',
     data: {
-      labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-      type: 'line',
+      labels: ['일반회원', '기업회원'],
+      type: 'bar',
       datasets: [{
-        data: ['${jan}','${feb}','${mar}','${apr}','${may}','${jun}','${jul}','${aug}','${sep}','${oct}','${nov}','${dec}'],
+        data: [$('#general').val(),$('#enterprise').val()],
         label: 'Dataset',
         backgroundColor: 'rgba(255,255,255,.1)',
         borderColor: 'rgba(255,255,255,.55)',
@@ -77,10 +77,11 @@ if (ctx) {
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+          labels: ['1월', '2월', '3월', '4월', '5월', '6월','7월','8월','9월','10월','11월','12월'],
           type: 'line',
           datasets: [{
-            data: [1, 18, 9, 17, 34, 22],
+            data: [$('#JAN').val(),$('#FEB').val(),$('#MAR').val(),$('#APR').val(),$('#MAY').val(),$('#JUN').val(),
+                  $('#JUL').val(),$('#AUG').val(),$('#SEP').val(),$('#OCT').val(),$('#NOV').val(),$('#DEC').val()],
             label: 'Dataset',
             backgroundColor: 'transparent',
             borderColor: 'rgba(255,255,255,.55)',
@@ -148,10 +149,11 @@ if (ctx) {
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+          labels: ['1월', '2월', '3월', '4월', '5월', '6월','7월','8월','9월','10월','11월','12월'],
           type: 'line',
           datasets: [{
-            data: [65, 59, 84, 84, 51, 55],
+            data: [$('#JAN2').val(),$('#FEB2').val(),$('#MAR2').val(),$('#APR2').val(),$('#MAY2').val(),$('#JUN2').val(),
+                  $('#JUL2').val(),$('#AUG2').val(),$('#SEP2').val(),$('#OCT2').val(),$('#NOV2').val(),$('#DEC2').val()],
             label: 'Dataset',
             backgroundColor: 'transparent',
             borderColor: 'rgba(255,255,255,.55)',

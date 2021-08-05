@@ -347,11 +347,25 @@ public class AdminController {
 	   return "common/message";
    }
    
+   //
    @RequestMapping("/index")
- 	public String home(Locale locale, UserVO vo, Model model)throws Exception {
- 		int jul = adminService.getJuly(vo);
- 		logger.info("jul={}",jul);
- 		model.addAttribute("jul", jul);
+ 	public String home(Locale locale, UserVO userVo, ProjectVO projectVo, Model model)throws Exception {
+ 		int general = adminService.getGeneral(userVo);
+ 		int enterprise = adminService.getEnter(userVo);
+ 		int totalUser = adminService.getTotalUser(userVo);
+ 		int totalFunding = adminService.getTotalFunding(projectVo);
+ 		Map<String, Object> map = adminService.getMonthFunding();
+ 		int totalWaitFunding = adminService.getTotalWaitFunding(projectVo);
+ 		Map<String, Object> map2 = adminService.getMonthWaitFunding();
+ 		
+ 		logger.info("totalUser={}"+totalUser);
+ 		model.addAttribute("general", general);
+ 		model.addAttribute("enterprise", enterprise);
+ 		model.addAttribute("totalUser", totalUser);
+ 		model.addAttribute("totalFunding", totalFunding);
+ 		model.addAttribute("map", map);
+ 		model.addAttribute("totalWaitFunding", totalWaitFunding);
+ 		model.addAttribute("map2", map2);
 
  		return "/admin/index";
 

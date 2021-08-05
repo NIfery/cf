@@ -21,10 +21,12 @@
                                                 <i class="zmdi zmdi-account-o"></i>
                                             </div>
                                             <div class="text">
-                                                <h2>10368</h2>
+                                                <h2>${totalUser }명</h2>
                                                 <span>전체 회원 현황</span>
                                             </div>
                                         </div>
+                                        	<input type="hidden" value="${general}" id="general">
+                                        	<input type="hidden" value="${enterprise}" id="enterprise">
                                         <div class="overview-chart">
                                             <canvas id="widgetChart1"></canvas>
                                         </div>
@@ -35,13 +37,17 @@
                                 <div class="overview-item overview-item--c2">
                                     <div class="overview__inner">
                                         <div class="overview-box clearfix">
+                                        
                                             <div class="icon">
                                                 <i class="zmdi zmdi-shopping-cart"></i>
                                             </div>
                                             <div class="text">
-                                                <h2>388,688</h2>
+                                                <h2>${totalFunding }개</h2>
                                                 <span>등록 펀딩 현황</span>
                                             </div>
+                                            <c:forEach var="month" items="${map }">
+											   <input type="hidden" id="${month.key }" value="${month.value }">
+											</c:forEach>
                                         </div>
                                         <div class="overview-chart">
                                             <canvas id="widgetChart2"></canvas>
@@ -56,9 +62,12 @@
                                             <div class="icon">
                                                 <i class="zmdi zmdi-calendar-note"></i>
                                             </div>
+                                            <c:forEach var="month2" items="${map2 }">
+											   <input type="hidden" id="${month2.key }" value="${month2.value }">
+											</c:forEach>
                                             <div class="text">
-                                                <h2>1,086</h2>
-                                                <span>심사 대기 펀딩</span>
+                                                <h2>${totalWaitFunding }개</h2>
+                                                <span>대기 펀딩 현황</span>
                                             </div>
                                         </div>
                                         <div class="overview-chart">

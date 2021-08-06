@@ -102,5 +102,19 @@ public class ProjectServiceImpl implements ProjectService{
 	
 	public List<FundingListVO> selectFundingListByProjectNo(int projectNo) {
 		return projectDao.selectFundingListByProjectNo(projectNo);
+
+	@Override
+	public Map<String, Object> checkLike(int projectNo) {
+		return projectDao.checkLike(projectNo);
+	}
+
+	@Override
+	public Map<String, Object> selectPlanProject(int projectNo) {
+		return projectDao.selectPlanProject(projectNo);
+	}
+
+	@Override
+	public int planCount(int projectNo) {
+		return projectDao.planCount(projectNo);
 	}
 }

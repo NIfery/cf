@@ -32,4 +32,7 @@ public interface ProjectDAO {
 	int insertFunding(FundingListVO vo);
 	int deleteFunding(String receiptId);
 	List<FundingListVO> selectFundingListByProjectNo(int projectNo);
+	Map<String, Object> checkLike(int projectNo);
+	Map<String, Object> selectPlanProject(int projectNo);
+	int planCount (int projectNo);
 }

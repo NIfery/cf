@@ -213,7 +213,7 @@
 	<select id="selectByNo" parameterType="int" resultMap="DetailResultMap">
 		select A.*,t.total_funding_amount from 
 			(
-				select p.*, u.USER_NAME from PROJECT p join USERS u
+				select p.* , u.USER_NAME from PROJECT p join USERS u
 				on p.USER_NO=u.USER_NO
 			)A left join (select project_no, sum(funding_amount) as total_funding_amount from funding_list
                 group by project_no) t
@@ -263,5 +263,26 @@
 		delete from FUNDING_LIST
 		where RECEIPT_ID=#{receiptId}
 	</delete>
+	
+	<select id="checkLike" parameterType="int" resultType="map">
+		select count(*) as likecheck
+		from like_project
+		where project_no=#{projectNo}
+	</select>
+	
+	<select id="selectPlanProject" parameterType="int" resultType="map">
+		select p.project_name, p.project_inshort, p.project_startdate, p.project_image,
+		s.category_name, u.user_name
+		from project p join second_category s
+		on p.second_category_no=s.second_category_no
+		join users u on u.user_no=p.user_no
+		where p.project_no=#{projectNo}
+	</select>
+	
+	<select id="planCount" parameterType="int" resultType="int">
+		select count(*)
+		from inform_project
+		where project_no=#{projectNo}
+	</select>
 	
 </mapper>

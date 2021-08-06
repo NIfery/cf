@@ -132,6 +132,16 @@
 			    }
 			}); */
 		});
+		
+		$('#addLike').click(function(){
+			var no = $('#projectNo').val();
+			$(this).attr('href',"<c:url value='/mypages/addLikeProject?projectNo="+no+"'/>");
+		});
+		
+		$('#deleteLike').click(function(){
+			var name = $('#projectName').val();
+			$(this).attr('href',"<c:url value='/mypages/deletelikeName?projectName="+name+"'/>");
+		});
 	});
 	
 	function getFormatDate(date){
@@ -173,7 +183,7 @@
                   	<input type="hidden" id="fdAmount">
                   	
                   	 <div style="text-align:center">
-	                     <h1 style="font-weight:bold;">${map['PROJECT_NAME']}</h1>
+	                     <h1 style="font-weight:bold;" id="name">${map['PROJECT_NAME']}</h1>
 	                     <!-- 작성자이름 클릭시 작성자 정보조회? 쪽지문의? -->
                          <a href="#" style="color:gray;"><i class="fa fa-user"></i> ${map['USER_NAME']}</a>
                   	 </div>
@@ -223,12 +233,13 @@
 						    	<div class="row row-cols-1"><h2 style="margin: 5px 0px 20px -10px">${userCnt }명</h2></div>
 						    	<br>
 						    	<div class="row row-cols-1">
-						    		<div style="background: white;border:2px solid #e4e1e1">
+						    		<div style="background: white;border:2px solid #e4e1e1; padding: 10px; 10px;" >
 						    			펀딩 진행중<br>
 										목표 금액 <fmt:formatNumber value="${map['TOTAL_AMOUNT']}" pattern="#,###"/>원
 						    		</div>
 						    	</div>
 						    	<br>
+						    	
 						    	<div class="row row-cols-1">
 						    		<c:if test="${userVo.userNo!=map['USER_NO'] }">
 						    			<c:if test="${ckTodayDate<strDate }">
@@ -236,7 +247,60 @@
 										</c:if>
 										<c:if test="${ckTodayDate>=strDate }">
 											<c:if test="${ckTodayDate<=endDate }">
-									    		<a href="#" data-toggle="modal" data-target="#myModal" id="btFundingModal">후원하기</a>
+												<c:if test="${check['LIKECHECK']=='1' }">
+													<div style="border: 1px solid #e4e1e1; width: 50px; height: 50px; border-radius: 10px;">
+														<a href="#" id="deleteLike">
+														<img src="${pageContext.request.contextPath}/assets/img/ssong/heart.png"
+															style="width: 30px; margin: 8px -3px;">
+														</a>
+													</div>
+												</c:if>
+												<c:if test="${check['LIKECHECK']=='0' }">
+													<div style="border: 1px solid #e4e1e1; width: 50px; height: 50px; border-radius: 10px;">
+														<a id="addLike" href="#">
+														<img src="${pageContext.request.contextPath}/assets/img/ssong/no_heart.png"
+															style="width: 30px; margin: 8px -3px;">
+														</a>
+													</div>
+												</c:if>
+												<div style="border: 1px solid #e4e1e1; width: 50px; height: 50px; border-radius: 10px; margin-left: 15px;">
+													<a href="#" data-toggle="modal" data-target="#myModalQustion" id="btFundingModalQuestion">
+													<img src="${pageContext.request.contextPath}/assets/img/ssong/email.png"
+														style="width: 30px; margin: 8px -3px;">
+													</a>
+												</div>
+												  <div class="modal fade" id="myModalQustion" data-backdrop="static" tabindex="-1" role="dialog"
+				                                       aria-labelledby="staticBackdropLabelQuestion" aria-hidden="true">
+				                                       <div class="modal-dialog" role="document">
+				                                          <div class="modal-content">
+				                                             <div class="modal-header">
+				                                                <h5 class="modal-title" id="staticBackdropLabelQuestion">창작자에게 문의하기</h5>
+				                                                <button type="button" class="btn-close" data-dismiss="modal"
+				                                                   aria-label="Close" id="btFundingModalClose">
+				                                                </button>
+				                                             </div>
+				                                             <form name="frmQuestion" method="post" action="<c:url value='/question/wrtie?projectNo=${map["PROJECT_NO"] }&userNo=${userVo.userNo }'/>">
+				                                                <div class="modal-body">
+				                                                   <!-- 모달 body -->
+				                                                   <div class="form-group" style="width: 450px; margin: 3px;">
+				                                                      <label class="form-label mt-4">제목</label> 
+				                                                      <input type="text" class="form-control" name="questionTitle" id="questionTitle" placeholder="제목을 입력하세요.">
+				                                                      <label class="form-label mt-4">내용</label> 
+				                                                      <textarea class="form-control" id="questionContent" name="questionContent" rows="3"
+				                                                         placeholder="내용을 입력하세요"></textarea>
+				                                                   </div>
+				                                                </div>
+				                                             <div class="modal-footer">
+				                                                <button type="submit" id="btQuestion" class="genric-btn warning circle">문의하기</button>
+				                                             </div>
+				                                             </form>
+				                                          </div>
+				                                       </div>
+				                                    </div>
+												<div style="border: 1px solid #e4e1e1; width: 220px; height: 50px; border-radius: 10px; margin-left: 20px; background: #ffeb3b">
+									    		<a href="#" data-toggle="modal" data-target="#myModal" id="btFundingModal" 
+									    			style="font-size: 1.5em; padding-left: 10px; color: #ffffff;">프로젝트 후원하기</a>
+									    		</div>
 								    			<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog"
 													aria-labelledby="staticBackdropLabel" aria-hidden="true">
 													<div class="modal-dialog" role="document">

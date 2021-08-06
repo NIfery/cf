@@ -23,4 +23,7 @@ public interface ProjectService {
 	int deleteProject(int projectNo);
 	int insertFunding(FundingListVO vo);
 	int deleteFunding(String receiptId);
+	Map<String, Object> checkLike(int projectNo);
+	Map<String, Object> selectPlanProject(int projectNo);
+	int planCount (int projectNo);
 }

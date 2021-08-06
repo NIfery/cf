@@ -91,6 +91,8 @@ public class UserController {
          session.setAttribute("userName", vo.getUserName());
          session.setAttribute("userNo", vo.getUserNo());
          session.setAttribute("userProfile", vo.getUserProfile());
+         session.setAttribute("UserNickname", vo.getUserNickname());
+         
       
          //쿠키저장
          Cookie cookie = new Cookie("ck_mail", userEmail);
@@ -181,6 +183,8 @@ public class UserController {
       }
       
       userVo.setUserProfile(profile);
+      HttpSession sessions = request.getSession();
+      sessions.setAttribute("userProfile", profile);
       
       int cnt = userService.updateProfile(userVo);
       logger.info("회원수정 결과, cnt={}", cnt);
@@ -263,5 +267,48 @@ public class UserController {
 	   logger.info("bool={}", bool);
 	   
 	   return bool;
+   }//
+   
+   @RequestMapping("/cfmember/OutUser")
+   public void OutUser() {
+	   logger.info("회원탈퇴 페이지");
    }
+   
+   @RequestMapping("/cfmember/outUser")
+   public String outuser(@RequestParam String userEmail, @RequestParam String userPwd,
+		   HttpSession session, HttpServletResponse response, Model model) {
+
+	   logger.info("회원탈퇴, 파라미터 userEmail={}, userPwd={}", userEmail, userPwd);
+
+	   int result = userService.loginCheck(userEmail, userPwd);
+	   logger.info("회원정보 조회 결과. result={}", result);
+
+	   String msg="회원탈퇴 실패, 다시 시도 해주세요.", url="/cfmember/OutUser";
+	   if(result==UserService.LOGIN_OK) {
+		   int cnt = userService.outUser(userEmail);
+		   if(cnt>0) {
+			   msg="그동안 이용해주셔서 감사합니다.";
+			   url="/";
+			   
+			   session.invalidate();
+			   
+			   Cookie ck = new Cookie("ck_mail", userEmail);
+			   ck.setPath("/");
+			   ck.setMaxAge(0); 
+			   response.addCookie(ck);
+			   
+		   }else {
+			   msg="회원탈퇴 실패, 다시시도 해주세요.";
+		   }
+
+	   }else if(result==UserService.NO_PWD) {
+		   msg="비밀번호가 일치하지 않습니다.";
+	   }
+
+	   model.addAttribute("msg", msg);
+	   model.addAttribute("url", url);
+
+	   return "common/message";
+   }
+   
 }

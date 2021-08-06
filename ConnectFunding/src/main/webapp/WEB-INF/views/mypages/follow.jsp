@@ -92,7 +92,7 @@
 												<div class="trand-right-img">
 													<c:if test="${empty map['USER_PROFILE'] }">
 														<img src="<c:url value='/assets/img/logo/user.png'/>"
-															style="width: 80px; height: 70px; margin: 40px 13px;">
+															style="width: 60px; height: 60px; margin: 40px 25px;">
 													</c:if>
 													<c:if test="${!empty map['USER_PROFILE'] }">
 														<div class="profile" style="margin: 30px 20px;">

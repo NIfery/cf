@@ -75,7 +75,7 @@
 								<div style="margin-bottom: 10px;">
 								<span class="color1" style="font-size: 1em;">
 								알림신청하신 ${map['PROJECT_NAME'] } 프로젝트가 공개되었습니다.
-								</span><br><br>
+								</span><br>
 								</div>
 								<span class="color2" style="font-size: 0.8em;">
 									${map['OPENDATE'] }일 전</span> 

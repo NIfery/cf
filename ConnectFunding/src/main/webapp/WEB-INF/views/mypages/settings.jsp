@@ -25,7 +25,7 @@
 
 </style>
 	<div class="single_sidebar_widget post_category_widget"
-		style="width:980px; margin-left: 200px; background: white; height: 1300px; margin-top: 50px;">
+		style="width:980px; margin-left: 200px; background: white; height:1300px; margin-top: 50px;">
 		<span class="widget_title"
 			style="text-align: left; font-size: 2.5em; margin-left: 10px;">설정</span>
 		<br>
@@ -533,6 +533,14 @@
 																style="font-size: 0.9em;"> 텀블벅 신규 콘텐츠 및 프로젝트 추천
 																알림을 이메일로 수신하지 않습니다.</label>
 														</div>
+													</div>
+												</li>
+												<li>
+													<div class="form-group" style="width: 500px;">
+														<label class="col-form-label col-form-label-sm mt-4" id="label_name" 
+															style="color: #a1a1a1; font-size: 1em;"> 
+														<a target="_blank" href="<c:url value='/cfmember/OutUser'/>">
+															회원탈퇴</a></label>
 													</div>
 												</li>
 												<li>

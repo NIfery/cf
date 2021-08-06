@@ -34,6 +34,7 @@ public class likeProjectController {
 			HttpSession session, Model model) {
 
 		int userNo = (int) session.getAttribute("userNo");
+		
 		likeVo.setUserNo(userNo);
 
 		logger.info("좋아한 프로젝트 등록, 파라미터 likeVo={}", likeVo);
@@ -82,6 +83,22 @@ public class likeProjectController {
 		return "common/message";
 	}//
 	
+	@RequestMapping("/mypages/deletelikeName")
+	public String deletelikeName(@RequestParam String projectName,
+			Model model) {
+		
+		logger.info("좋아한 프로젝트 삭제, 파라미터 projectName={}", projectName);
+		
+		int cnt = likeService.deleteLikeByName(projectName);
+		logger.info("좋아한 프로젝트 삭제결과, cnt={}", cnt);
+		
+		if(cnt>0) {
+			model.addAttribute("msg", "취소되었습니다.");
+			model.addAttribute("url", "/mypages/likeProject");
+		}
+		return "common/message";
+	}//
+	
 	@ResponseBody
 	@RequestMapping("/list/checkLike")
 	public boolean checkLike(@RequestParam String projectNo) {
@@ -105,7 +122,7 @@ public class likeProjectController {
 			Model model) {
 		
 		int userNo = (int) session.getAttribute("userNo");
-		logger.info("좋아요 페이지, userNo={}, likeVo={}", userNo, likeVo);
+		logger.info("좋아요 페이지, userNo={}", userNo);
 		
 		PaginationInfo pageInfo = new PaginationInfo();
 		pageInfo.setCurrentPage(likeVo.getCurrentPage());
@@ -115,11 +132,9 @@ public class likeProjectController {
 		likeVo.setFirstRecordIndex(pageInfo.getFirstRecordIndex());
 		likeVo.setRecordCountPerPage(6);
 		likeVo.setUserNo(userNo);
-		int num = likeVo.getUserNo();
-		logger.info("num={}", num);
 
 		List<Map<String, Object>> likelist = likeService.searchlikeprojectList(likeVo);
-		logger.info("내가 후원한 프로젝트 likelist.size={}", likelist.size());
+		logger.info("내가 좋아한 프로젝트 likelist.size={}", likelist.size());
 
 		int totalRecord = likeService.selectLikeListTotalRecord(likeVo);
 		pageInfo.setTotalRecord(totalRecord);

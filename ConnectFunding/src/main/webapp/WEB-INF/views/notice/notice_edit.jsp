@@ -36,9 +36,11 @@ $(document).ready(function() {
 <style>
 </style>
 <article>
-	<form method="post" name="frmNotice" 
+	<form method="post" name="frmNotice" enctype="multipart/form-data"
 		action="<c:url value='/notice/notice_edit'/>">
 	<input type="hidden" name="noticeNo" value="${noticeVo.noticeNo }">
+	<input type="hidden" name="noticeOldfilename" value="${noticeVo.noticeOldfilename }">
+	
 	<div class="container" style="height: 1000px;">
 		<div class="notice_title" style="margin-top: 50px;">
 			<h2>공지사항 수정</h2>
@@ -64,6 +66,14 @@ $(document).ready(function() {
 			<textarea class="form-control" name="noticeContent"
 				id="summernote">${noticeVo.noticeContent }
 			</textarea>
+		</div>
+		<div class="collapse2" id="collapseExample">
+			<input class="form-control" type="file" id="formFile" name="file"
+				style="width: 330px;"><br>
+			<c:if test="${!empty noticeVo.noticeOldfilename}">
+            	<span style="color: red;">
+            		첨부파일을 새로 지정할 경우 기존파일 ${noticeVo.noticeOldfilename } 는 삭제됩니다.</span>
+            </c:if>
 		</div>
 		<br>
 		<button class="genric-btn warning circle arrow" type="submit">수정하기</button>

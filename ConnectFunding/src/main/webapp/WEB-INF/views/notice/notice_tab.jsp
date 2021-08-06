@@ -27,11 +27,17 @@
     border: 1px solid #9a9a9a;
     background: #fff;
 }
+
+.page-link{
+	background-color: white;
+}
 </style>
 	<div class="single_sidebar_widget post_category_widget"
-		style="width: 1200px; margin-left: 200px; background: white; height: 1000px; margin-top: 50px;">
+		style="width: 1200px; margin-left: 200px; background: white; height: auto; margin-top: 50px; overflow: hidden;">
+		<a href="<c:url value='/notice/notice_tab'/>" style="color: black;">
 		<span class="widget_title"
 			style="text-align: left; font-size: 2.5em; margin-left: 10px;">공지사항</span>
+		</a>
 		<br>
 		<br>
 		<br>
@@ -42,8 +48,11 @@
 					<!--Nav Button  -->
 					<nav>
 						<div class="nav nav-tabs" id="nav-tab" role="tablist">
-							<a class="nav-item nav-link active" id="nav-notice-tab" data-toggle="tab" 
-								href="#nav-notice" role="tab" aria-controls="nav-notice" aria-selected="true">
+							<a class="nav-item nav-link active" id="nav-all-tab" data-toggle="tab" 
+								href="#nav-all" role="tab" aria-controls="nav-all" aria-selected="true">
+							전체보기</a>
+							<a class="nav-item nav-link" id="nav-notice-tab" data-toggle="tab"
+								href="#nav-notice" role="tab" aria-controls="nav-notice" aria-selected="false">
 							공지사항</a>
 							<a class="nav-item nav-link" id="nav-event-tab" data-toggle="tab"
 								href="#nav-event" role="tab" aria-controls="nav-event" aria-selected="false">
@@ -61,13 +70,13 @@
 					<!-- Nav Card -->
 					<div class="tab-content" id="nav-tabContent">
 						<!-- card one -->
-						<div class="tab-pane fade show active" id="nav-notice"
-							role="tabpanel" aria-labelledby="nav-notice-tab">
+						<div class="tab-pane fade show active" id="nav-all"
+							role="tabpanel" aria-labelledby="nav-all-tab">
 							<div class="whats-news-caption" id="one">
-								<div>
-								<c:if test="${!empty noticelist }">
-									<c:forEach var="noticeVo" items="${noticelist }">
-										<div class="wrap" style="height: 120px; width: 900px; margin-top: 10px;">
+							<div>
+								<c:if test="${!empty allList }">
+									<c:forEach var="noticeVo" items="${allList }">
+										<div class="wrap" style="height: 130px; width: 900px; margin-top: 10px;">
 											<div class="trand-right-single d-flex">
 												<div class="trand-right-cap"
 													style="margin: 15px 25px; width: 600px;">
@@ -75,7 +84,7 @@
 													<br>
 													<div style="margin-top: 10px; margin-bottom: 10px;">
 													<span class="color1" >
-														<a href="<c:url value='/notice/notice_detail?noticeNo=${noticeVo.noticeNo }'/>"
+														<a href="<c:url value='/notice/all_detail?noticeNo=${noticeVo.noticeNo }'/>"
 															style="color: black;"> 
 														${noticeVo.noticeTitle}
 														</a>
@@ -89,7 +98,7 @@
 															style="width: 150px; margin: -80px 0px 0px 700px; display: flex;">
 													</c:if>
 													<c:if test="${!empty noticeVo.noticeFilename}">
-														<img src="<c:url value='/assets/img/notice/${noticeVo.noticeFilename }'/>"
+														<img src="<c:url value='/project_assets/noticeImg/${noticeVo.noticeFilename }'/>"
 															style="width: 150px; margin: -104px 0px 0px 700px; display: flex; border-radius: 20px;">
 													</c:if>
 												</div>
@@ -98,21 +107,75 @@
 									</c:forEach>
 								</c:if>
 								<br>
+								<c:if test="${sessionScope.userEmail=='admin@cf' }">
 									<a href="<c:url value='/notice/notice_write'/>" style="float: right; margin-right: 300px;"
-										class="genric-btn primary-border circle arrow">등록하기</a>
+										class="genric-btn primary-border circle arrow">등록하기</a><br><br>
+								</c:if>
+								<!-- 페이징처리 -->
+								<div style="margin-right: 300px;">
+								<nav class="blog-pagination justify-content-center d-flex">
+									<ul class="pagination">
+										<c:if test="${pageInfo.firstPage>1 }">
+											<li class="page-item"><a href="#" class="page-link"
+												onclick="pageProc(${pageInfo.firstPage-1})" aria-label="Previous">
+													<i class="ti-angle-left"></i>
+											</a></li>
+										</c:if>
+					
+										<c:forEach var="i" begin="${pageInfo.firstPage }" end="${pageInfo.lastPage}">
+											<c:if test="${i==pageInfo.currentPage }">
+											<li class="page-item active">
+												<a href="#" class="page-link">${i}</a>
+											</li>
+											</c:if>
+											<c:if test="${i!=pageInfo.currentPage }">
+												<a href="#"  onclick="pageProc(${i})" class="page-link">${i}</a>
+											</c:if>
+										</c:forEach>
+					
+										<c:if test="${pageInfo.lastPage < pageInfo.totalPage }">
+											<li class="page-item"><a href="#" class="page-link"
+												onclick="pageProc(${pageInfo.lastPage+1})"> <i
+													class="ti-angle-right"></i></a></li>
+										</c:if>
+									</ul>
+								</nav>
+								</div>
+								<form action="<c:url value='/notice/notice_tab'/>" name="frmSearch" method="post">
+								<span class="d-flex" style="margin-left: 340px; margin-top: 20px;">
+									<input type="text" class="form-control" placeholder="검색어를 입력해주세요."
+										name="noticeTitle" value="${noticeVo.noticeTitle}" style="width: 250px;">
+									<button class="btns" type="submit" style="background: none; border: 1px; color: black;">
+										<i class="fas fa-search special-tag"></i>
+									</button>
+								</span>
+								</form>
+								<form action="<c:url value='/notice/notice_tab'/>" name="frmSupport" method="post">
+									<input type="hidden" name="currentPage"><br> 
+									<input type="hidden" name="noticeTitle" value="${noticeVo.noticeTitle}"><br>
+								</form>
 								</div>
 							</div>
 						</div>
-						<!-- Card two -->
-						<div class="tab-pane fade" id="nav-event" role="tabpanel"
-							aria-labelledby="nav-event-tab">
+						<!-- card two -->
+						<div class="tab-pane fade=" id="nav-notice"
+							role="tabpanel" aria-labelledby="nav-notice-tab">
 							<div class="whats-news-caption" id="two">
+							<!-- 내용 -->	
 							</div>
 						</div>
 						<!-- Card three -->
-						<div class="tab-pane fade" id="nav-news" role="tabpanel"
-							aria-labelledby="nav-cnews-tab">
+						<div class="tab-pane fade" id="nav-event" role="tabpanel"
+							aria-labelledby="nav-event-tab">
 							<div class="whats-news-caption" id="three">
+							<!-- 내용 -->
+							</div>
+						</div>
+						<!-- Card four -->
+						<div class="tab-pane fade" id="nav-news" role="tabpanel"
+							aria-labelledby="nav-news-tab">
+							<div class="whats-news-caption" id="four">
+							<!-- 내용 -->
 							</div>
 						</div>
 					</div>
@@ -125,19 +188,28 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
-		$('#nav-noitce-tab').click(function(){
-			$('#one').load('${pageContext.request.contextPath}/notice/notice_tab');
+		$('#nav-all-tab').click(function(){
+			$('#one').load('${pageContext.request.contextPath}/notice/noticeAll');
+		});
+		
+		$('#nav-notice-tab').click(function(){
+			$('#two').load('${pageContext.request.contextPath}/notice/notices');
 		});
 		
 		$('#nav-event-tab').click(function(){
-			$('#two').load('${pageContext.request.contextPath}/notice/event');
+			$('#three').load('${pageContext.request.contextPath}/notice/event');
 		});
 		
  		$('#nav-news-tab').click(function(){
-			$('#three').load('${pageContext.request.contextPath}/notice/news');
+			$('#four').load('${pageContext.request.contextPath}/notice/news');
 		}); 
+ 		
 
 	});//
 
+ 		function pageProc(curPage){
+ 		   $('input[name=currentPage]').val(curPage);
+ 		   $('form[name=frmSupport]').submit();   
+ 		}
 </script>	
 <%@ include file="../include/bottom.jsp"%>

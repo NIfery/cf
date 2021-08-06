@@ -14,7 +14,8 @@ public interface ProjectUtil {
 	//관리자 페이지 - 상품 등록 시 상품 이미지 저장 경로 
 	String IMAGE_FILE_UPLOAD_PATH = "projectImg";
 	String IMAGE_FILE_UPLOAD_PATH_TEST =
-	"E:\\팀프로젝트-2차\\git\\cf\\ConnectFunding\\src\\main\\webapp\\project_assets\\projectImg";
+	//"E:\\팀프로젝트-2차\\git\\cf\\ConnectFunding\\src\\main\\webapp\\project_assets\\projectImg";
+	"D:\\팀프로젝트-2차\\git\\cf\\ConnectFunding\\src\\main\\webapp\\project_assets\\projectImg";
 
 	int UPLOAD_IMAGE_FLAG = 1; //상품 등록 시 이미지 업로드
 }

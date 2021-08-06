@@ -90,8 +90,9 @@ public class UserController {
          session.setAttribute("userEmail", userEmail);
          session.setAttribute("userName", vo.getUserName());
          session.setAttribute("userNo", vo.getUserNo());
-         session.setAttribute("UserNickname", vo.getUserNickname());
          session.setAttribute("userProfile", vo.getUserProfile());
+         session.setAttribute("UserNickname", vo.getUserNickname());
+         
       
          //쿠키저장
          Cookie cookie = new Cookie("ck_mail", userEmail);
@@ -149,7 +150,7 @@ public class UserController {
    @RequestMapping("/mypages/update")
    public String update(@ModelAttribute UserVO userVo, @RequestParam(required = false) String privacy,
          HttpServletResponse response, HttpServletRequest request,
-            HttpSession session , Model model) {
+         	HttpSession session , Model model) {
       
       int userNo = (int) session.getAttribute("userNo");
       userVo.setUserNo(userNo);
@@ -160,28 +161,30 @@ public class UserController {
       Cookie cookie = new Cookie("ck_privacy", privacy);
       cookie.setPath("/");
       if(privacy != null && !privacy.isEmpty()) {
-         cookie.setMaxAge(100*24*60*60);
+     	 cookie.setMaxAge(100*24*60*60);
       }else {
-         cookie.setMaxAge(0);
+     	 cookie.setMaxAge(0);
       }//
       response.addCookie(cookie);
       
       //프로필 사진 업로드
       String profile = "";
       try {
-         List<Map<String, Object>> list =
-               fileuploadUtil.fileUpload(request, ConstUtil.UPLOAD_PROFILE_FLAG);
+    	  List<Map<String, Object>> list =
+    			  fileuploadUtil.fileUpload(request, ConstUtil.UPLOAD_PROFILE_FLAG);
 
-         for(Map<String, Object> map : list) {
-            profile=(String) map.get("fileName");
-         }
+    	  for(Map<String, Object> map : list) {
+    		  profile=(String) map.get("fileName");
+    	  }
       } catch (IllegalStateException e) {
-         e.printStackTrace();
+    	  e.printStackTrace();
       } catch (IOException e) {
-         e.printStackTrace();
+    	  e.printStackTrace();
       }
       
       userVo.setUserProfile(profile);
+      HttpSession sessions = request.getSession();
+      sessions.setAttribute("userProfile", profile);
       
       int cnt = userService.updateProfile(userVo);
       logger.info("회원수정 결과, cnt={}", cnt);
@@ -250,19 +253,62 @@ public class UserController {
    @ResponseBody
    @RequestMapping("/cfmember/checkNickname")
    public boolean checkNickname(@RequestParam String userNickname) {
-      
-      logger.info("닉네임 중복체크, userNickname={}", userNickname);
-      
-      int result = userService.checkNickname(userNickname);
-      logger.info("닉네임 중복체크 결과, result={}", result);
-      
-      boolean bool=false;
-      if(result==UserService.USABLE_NICKNAME) {
-         bool=true;
-      }
-      
-      logger.info("bool={}", bool);
-      
-      return bool;
+	   
+	   logger.info("닉네임 중복체크, userNickname={}", userNickname);
+	   
+	   int result = userService.checkNickname(userNickname);
+	   logger.info("닉네임 중복체크 결과, result={}", result);
+	   
+	   boolean bool=false;
+	   if(result==UserService.USABLE_NICKNAME) {
+		   bool=true;
+	   }
+	   
+	   logger.info("bool={}", bool);
+	   
+	   return bool;
+   }//
+   
+   @RequestMapping("/cfmember/OutUser")
+   public void OutUser() {
+	   logger.info("회원탈퇴 페이지");
    }
+   
+   @RequestMapping("/cfmember/outUser")
+   public String outuser(@RequestParam String userEmail, @RequestParam String userPwd,
+		   HttpSession session, HttpServletResponse response, Model model) {
+
+	   logger.info("회원탈퇴, 파라미터 userEmail={}, userPwd={}", userEmail, userPwd);
+
+	   int result = userService.loginCheck(userEmail, userPwd);
+	   logger.info("회원정보 조회 결과. result={}", result);
+
+	   String msg="회원탈퇴 실패, 다시 시도 해주세요.", url="/cfmember/OutUser";
+	   if(result==UserService.LOGIN_OK) {
+		   int cnt = userService.outUser(userEmail);
+		   if(cnt>0) {
+			   msg="그동안 이용해주셔서 감사합니다.";
+			   url="/";
+			   
+			   session.invalidate();
+			   
+			   Cookie ck = new Cookie("ck_mail", userEmail);
+			   ck.setPath("/");
+			   ck.setMaxAge(0); 
+			   response.addCookie(ck);
+			   
+		   }else {
+			   msg="회원탈퇴 실패, 다시시도 해주세요.";
+		   }
+
+	   }else if(result==UserService.NO_PWD) {
+		   msg="비밀번호가 일치하지 않습니다.";
+	   }
+
+	   model.addAttribute("msg", msg);
+	   model.addAttribute("url", url);
+
+	   return "common/message";
+   }
+   
 }

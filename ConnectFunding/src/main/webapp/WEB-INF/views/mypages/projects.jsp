@@ -68,7 +68,7 @@
 			<c:if test="${!empty list}">
 			<c:forEach var="vo" items="${list }">
 				<div class="wrap"
-					style="height: 180px; margin-bottom: 20px; border-radius: 0; border: none; border-bottom: 1px solid #ced4da; width: 700px;">
+					style="height: 240px; margin-bottom: 20px; border-radius: 0; border: none; border-bottom: 1px solid #ced4da; width: 700px;">
 					<div class="trand-right-single d-flex">
 						<div class="trand-right-img">
 							<a href="#" data-toggle="modal" data-target="#myModal${vo.projectNo }" id="btCancleModal">

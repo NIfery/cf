@@ -27,4 +27,6 @@ public interface UserService {
 	int checkPwd(String userEmail, String userPwd);
 	int checkEmail(String userEmail);
 	int checkNickname(String userNickname);
+	int outUser(String userEmail);
+
 }

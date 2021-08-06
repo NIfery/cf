@@ -23,9 +23,11 @@
 				lang: "ko-KR",					// 한글 설정
 				placeholder: '내용을 입력하세요.',	//placeholder 설정
 				callbacks: {	//여기 부분이 이미지를 첨부하는 부분
-					onImageUpload : function(files) {
-						uploadSummernoteImageFile(files[0],this);
-					},
+					onImageUpload: function(files, editor, welEditable) {
+		        		for(var i = files.length -1; i>=0; i--) {
+		        			sendFile(files[i], this);
+		        		}
+		        	},
 					onPaste: function (e) {
 						var clipboardData = e.originalEvent.clipboardData;
 						if (clipboardData && clipboardData.items && clipboardData.items.length) {
@@ -77,8 +79,6 @@
 			});
 		});
 		
-		cleanText = $("#summernote").code().replace(/<\/?[^>]+(>|$)/g, "");
-		
 	</script>
 <style>
 body {
@@ -101,7 +101,7 @@ body {
 				<br>
 				<div class="mb-3">
 					<label for="reg_id">작성자</label>
-					<input type="text" class="form-control" name="userName" id="userName" placeholder="id 출력란" value="${userName }" readonly="readonly">
+					<input type="text" class="form-control" name="userNickName" id="userNickName" placeholder="id 출력란" value="${userNickName }" readonly="readonly">
 				</div>		
 				<br>	
 				<div class="mb-3">

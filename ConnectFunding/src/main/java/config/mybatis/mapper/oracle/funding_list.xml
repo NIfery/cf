@@ -40,11 +40,8 @@
 		    (
 		        select * from fundingListView
 		    	where user_no=#{userNo}
-		    	<if test="projectName!=null and projectName!=''">
+		    	 <if test="projectName!=null and projectName!=''">
 					and project_name like  '%'||#{projectName}||'%'
-				</if>
-				<if test="userName!=null and userName!=''">
-					and user_name like  '%'||#{userName}||'%'
 				</if>
 		    )A   
 		)
@@ -59,9 +56,6 @@
 		where user_no=#{userNo}
 			<if test="projectName!=null and projectName!=''">
 					and project_name like  '%'||#{projectName}||'%'
-			</if>
-			<if test="userName!=null and userName!=''">
-					and user_name like  '%'||#{userName}||'%'
 			</if>
 	</select>	
 	

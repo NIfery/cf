@@ -21,6 +21,10 @@
 		delete likeprojectview where like_no=#{likeNo}
 	</delete>
 	
+	<delete id="deleteLikeByName" parameterType="String">
+		delete likeprojectview where project_name=#{projectName}
+	</delete>
+	
 	<select id="selecLikeCheck" parameterType="int" resultType="int">
 		select count(*) from like_project
 		where project_no=#{projectNo}
@@ -36,11 +40,11 @@
 		        select * from likeprojectview
 		    	where user_no=#{userNo}
 		    	<if test="searchKeyword!=null and searchKeyword!=''">
-				and (${searchCondition} like '%' || #{searchKeyword} || '%')
+				${searchCondition} like '%' || #{searchKeyword} || '%'
 				</if>
 				order by
 				<choose>
-					<when test="searchCondition == 'like_no'">like_no</when>	<!-- 추가순 -->
+					<when test="searchCondition == 'like_no'">like_no desc</when>	<!-- 추가순 -->
 					<when test="searchCondition == 'restday'">restday</when>
 					<otherwise>like_no</otherwise>
 				</choose>
@@ -56,8 +60,14 @@
 		select count(*) from likeprojectview
 		where user_no=#{userNo}
 		<if test="searchKeyword!=null and searchKeyword!=''">
-			and (${searchCondition} like '%' || #{searchKeyword} || '%')
+			${searchCondition} like '%' || #{searchKeyword} || '%'
 		</if>
+		order by
+			<choose>
+				<when test="searchCondition == 'like_no'">like_no</when>	<!-- 추가순 -->
+				<when test="searchCondition == 'restday'">restday</when>
+				<otherwise>like_no</otherwise>
+			</choose>
 	</select>
 
 </mapper>

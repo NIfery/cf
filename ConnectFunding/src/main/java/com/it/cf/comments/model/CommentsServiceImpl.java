@@ -50,6 +50,11 @@ public class CommentsServiceImpl implements CommentsService {
 	  @Override public List<Map<Object, Object>> CommentsCount() {
 	  return CommentsDao.CommentsCount();
 	  }
+
+	@Override
+	public List<Map<Object, Object>> ShowProfileImg() {
+		return CommentsDao.ShowProfileImg();
+	}
 	 
 
 

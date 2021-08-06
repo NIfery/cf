@@ -30,7 +30,7 @@ public class SearchVO {
     /**페이지 별 레코드 갯수 (pageSize) */
     private int recordCountPerPage; 
     
-    private int BoardNo;
+    private String userNickName;
    /**
       검색 조건을  설정한다.
       @param bean 검색조건
@@ -43,7 +43,6 @@ public class SearchVO {
     	this.firstRecordIndex = bean.firstRecordIndex;
     	this.lastRecordIndex = bean.lastRecordIndex;
     	this.recordCountPerPage = bean.recordCountPerPage;
-    	this.BoardNo = bean.BoardNo;
     }
 	
 }

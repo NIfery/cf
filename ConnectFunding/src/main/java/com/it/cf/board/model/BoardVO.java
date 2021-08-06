@@ -19,7 +19,8 @@ public class BoardVO {
 	private int boardDowncount;
 	private Timestamp boardRegdate;
 	private int boardReadcount;
-	private String userName;
+	/* private String userName; */
+	private String userNickName;
 	
 	private int newImg;
 	private String delFlag;

@@ -8,12 +8,13 @@
 <script type="text/javascript">
 
 var boardNo = '${vo.boardNo}';
+var NickName ='${vo.userNickName}';
 
-var UserName = '<%=(String)session.getAttribute("userName")%>';
+var userNickName = '<%=(String)session.getAttribute("userNickName")%>';
 
-$('[name=commentInsertBtn]').click(function(){ //댓글 등록 버튼 클릭시 
-    var insertData = $('[name=commentInsertForm]').serialize(); //commentInsertForm의 내용을 가져옴
-    commentInsert(insertData); //Insert 함수호출(아래)
+$('[name=commentInsertBtn]').click(function(){  
+    var insertData = $('[name=commentInsertForm]').serialize(); 
+    commentInsert(insertData); 
 });
 
 //목록 출력
@@ -23,10 +24,12 @@ function commentList(){
         type : 'get',
         data : {'boardNo':boardNo},
         success : function(data){
+        	console.log(data.ProfileImg);
+        	console.log(data.CommentList);
+			
             var a =''; 
-            $.each(data, function(key, value){ 
+            $.each(data.CommentList, function(key, value){ 
                 a += '<div class="commentArea" style="border-bottom:1px solid darkgray; margin-bottom: 15px;">';
-                
                 if(value.CommentStep > 0) {
                	for(var i=0; i < value.CommentStep; i++ ) {
                		a +='&nbsp&nbsp&nbsp';
@@ -34,10 +37,29 @@ function commentList(){
                 a += '<img src="<c:url value='/resources/images/re.gif'/>">';
                 }
                 
-                a += '<div class="commentInfo'+value.CommentNo+'">'+'작성자 : '+value.UserName;
+                a += '<div class="commentInfo'+value.CommentNo+'">';
+            	
+                $.each(data.ProfileImg, function(key2, value2){
+                	var imgSrcTemplate = '<c:url value="${contextRoot}/profile_img/_PROFILE_" />';
+                	if(value.userNickName == value2.NICKNAME) {
+                		if(value2.PROFILE !=null){
+                		a += '<a href="<c:url value='/board/UserBoard'/>"><img style="width: 20px" src=\"' + imgSrcTemplate.replace( "_PROFILE_",  value2.PROFILE ) + '\"></a>';
+                		}else {
+                		a += '<a href="<c:url value='/board/UserBoard'/>"><img style="width: 20px" src=\"' + imgSrcTemplate.replace( "_PROFILE_",  "non.PNG" ) + '\"></a>';
+                		}
+                	}
+                		
+                });
+                
+                /* a += '<select class="selectpicker"><option value="게시글보기">게시글보기</option></select>'; */
+                 a += '&nbsp<span style="font-weight: 550;">'+value.userNickName+'</span>';
+
+                if(value.userNickName == ${'NickName'}) {
+                	a+= '&nbsp<img style="width:40px" src="<c:url value='/resources/images/my.PNG'/>">';
+                }
                 a += '<div class="commentContent'+value.CommentNo+'"> <p>'+value.CommentContent +'</p>';
                 a += '<a data-toggle="collapse" href="#collapseExample'+value.CommentNo+'" aria-expanded="false" aria-controls="collapseExample">답글쓰기</a>';
-                if(value.UserName == ${'UserName'}){
+                if(value.userNickName == ${'userNickName'}){
                 a += '<a onclick="commentUpdate('+value.CommentNo+',\''+value.CommentContent+'\');">ㅣ 수정 </a>ㅣ';
                 a += '<a onclick="commentDelete('+value.CommentNo+');"> 삭제 </a>';
                 }
@@ -51,9 +73,9 @@ function commentList(){
                 a += '<input type="hidden" name="CommentSortNo" value="'+value.CommentSortNo+'" />';
                 a += '<input type="hidden" name="BoardNo" value="'+value.BoardNo+'" />';
                 a += '<input type="hidden" name="CommentNo" value="'+value.CommentNo+'" />';
-				a += '<input type="hidden" name="UserName" value="'+${'UserName'}+'"/>';
+				a += '<input type="hidden" name="userNickName" value="'+${'userNickName'}+'"/>';
                
-                a += '<span>'+${'UserName'}+'</span>';
+                a += '<span>'+${'userNickName'}+'</span>';
                 
                 a += '<input type="text" class="form-control" id="Reply" name="CommentReply" placeholder="댓글 내용을 입력하세요.">';	
                 

@@ -20,8 +20,10 @@ public class LoginInterceptor implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest request, 
 			HttpServletResponse response, Object handler)
 			throws Exception {
-		String userName=(String) request.getSession().getAttribute("userName");		
-		logger.info("preHandle 호출!, 세션 userName={}", userName);
+		String userName=(String) request.getSession().getAttribute("userName");	
+		String userNickName=(String) request.getSession().getAttribute("userNickName");
+		logger.info("preHandle 호출!, 세션 userName={}, 세션 userNickName={}", userName,userNickName);
+		
 		
 		//컨트롤러 수행이전에 먼저 수행되는 메서드
 		//- 클라이언트의 요청을 컨트롤러에 전달하기 전에 호출됨

@@ -77,8 +77,8 @@ public class BoardController {
 	// Write 화면 출력 / 등록
 	@GetMapping("/Write")
 	public String Write(HttpSession session, Model model) {
-		String userName = (String) session.getAttribute("userName");
-		model.addAttribute("userName",userName);
+		String userNickName = (String) session.getAttribute("userNickName");
+		model.addAttribute("userNickName",userNickName);
 		
 		logger.info("게시판 글쓰기 화면 출력");
 		
@@ -152,8 +152,8 @@ public class BoardController {
 	public String Detail(@RequestParam (defaultValue = "0") int boardNo,HttpServletRequest request,
 						HttpSession session, Model model) {
 		
-		String userName = (String) session.getAttribute("userName");
-		logger.info("detail 화면 출력 파라미터 boardNo={}", boardNo);
+		String userNickName = (String) session.getAttribute("userNickName");
+		logger.info("detail 화면 출력 파라미터 boardNo={}, userNickName", boardNo, userNickName);
 		
 		BoardVO vo = boardService.selectByNo(boardNo);
 		logger.info("detail 조회 결과 vo={}",vo);
@@ -166,7 +166,7 @@ public class BoardController {
 		BoardVO vo2 = boardService.SelectNextAndPre(boardNo);
 		
 		model.addAttribute("vo",vo);
-		model.addAttribute("userName",userName);
+		model.addAttribute("userNickName",userNickName);
 		model.addAttribute("vo2",vo2);
 		return "board/Detail";
 	}
@@ -299,5 +299,32 @@ public class BoardController {
 		model.addAttribute("url",url);
 		
 		return "common/message";
+	}
+	
+	@RequestMapping("UserBoard")
+	public String UserBoard(@ModelAttribute SearchVO searchVo,Model model) {
+				//[1]
+				PaginationInfo pagingInfo = new PaginationInfo();
+				pagingInfo.setCurrentPage(searchVo.getCurrentPage());
+				pagingInfo.setBlockSize(ConstUtil.BLOCK_SIZE);
+				pagingInfo.setRecordCountPerPage(ConstUtil.RECORD_COUNT);
+				//[2]
+				searchVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
+				searchVo.setRecordCountPerPage(ConstUtil.RECORD_COUNT);
+				logger.info("페이징 처리 적용후 파라미터 searchVo={}",searchVo);
+				
+				List<Map<Object, Object>> list = boardService.UserBoard(searchVo);
+				logger.info("게시판 목록 출력 list.size={}",list.size());
+				
+				int TotalRecord = boardService.TotalRecord(searchVo);
+				logger.info("게시판 레코드 수 TotalRecord ={}",TotalRecord);
+				pagingInfo.setTotalRecord(TotalRecord);
+				
+				List<Map<Object, Object>> countList = commentsService.CommentsCount();
+				
+				model.addAttribute("list",list);
+				model.addAttribute("pagingInfo",pagingInfo);
+				model.addAttribute("countList",countList);
+				return "board/UserBoard";
 	}
 }

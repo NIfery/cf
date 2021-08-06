@@ -12,6 +12,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.common.SearchVO;
+import com.it.cf.fdList.model.FDListViewVO;
 import com.it.cf.fdList.model.FundingListVO;
 import com.it.cf.project.model.ProjectVO;
 import com.it.cf.user.model.UserVO;
@@ -193,6 +194,16 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public Map<String, Object> getMonthFundingComm() {
 		return adminDao.getMonthFundingComm();
+	}
+
+	@Override
+	public Map<String, Object> getCategoryFunding() {
+		return adminDao.getCategoryFunding();
+	}
+
+	@Override
+	public Map<String, Object> getFundingPercent() {
+		return adminDao.getFundingPercent();
 	}
 
 

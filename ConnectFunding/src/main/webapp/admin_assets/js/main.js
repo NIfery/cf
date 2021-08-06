@@ -247,6 +247,58 @@ if (ctx) {
           }
         }
       });
+      
+    }
+    //WidgetChart 5
+    var ctx = document.getElementById("widgetChart5");
+    if (ctx) {
+      ctx.height = 75;
+      var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['게임', '공연', '디자인', '만화', '예술', '사진', '영화', '푸드', '음악', '출판', '테크', '패션', '저널리즘', '공예'],
+          datasets: [
+            {
+              data: [$('#GAME').val(), $('#SHOW').val(), $('#DESIGN').val(), $('#CARTOON').val(), $('#ART').val(), $('#PICTURE').val(),
+                  $('#MOVIE').val(),$('#FOOD').val(),$('#MUSIC').val(),$('#PUBLISHING').val(),$('#TECH').val(),$('#PASHION').val(),$('#JOURNALISM').val(),$('#CRAFTS').val()],
+              borderColor: "transparent",
+              borderWidth: "0",
+              backgroundColor: [
+              					'#fec1c6',
+              					'#bdeeed', 
+              					'#e4da84',
+              					'#e8b0b5', 
+              					'#aad2d0', 
+              					'#d3ca76',
+              					'#fec1c6',
+              					'#bdeeed', 
+              					'#e4da84',
+              					'#e8b0b5', 
+              					'#aad2d0', 
+              					'#d3ca76',
+              					'#fec1c6',
+              					'#bdeeed'
+              				   ],
+            }
+          ]
+        },
+        options: {
+          maintainAspectRatio: true,
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              display: true,
+              categoryPercentage: 1,
+              barPercentage: 0.65
+            }],
+            yAxes: [{
+              display: false
+            }]
+          }
+        }
+      });
     }
 
     // Recent Report
@@ -578,48 +630,6 @@ if (ctx) {
   }
 
   try {
-    //WidgetChart 5
-    var ctx = document.getElementById("widgetChart5");
-    if (ctx) {
-      ctx.height = 220;
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          datasets: [
-            {
-              label: "My First dataset",
-              data: [78, 81, 80, 64, 65, 80, 70, 75, 67, 85, 66, 68],
-              borderColor: "transparent",
-              borderWidth: "0",
-              backgroundColor: "#ccc",
-            }
-          ]
-        },
-        options: {
-          maintainAspectRatio: true,
-          legend: {
-            display: false
-          },
-          scales: {
-            xAxes: [{
-              display: false,
-              categoryPercentage: 1,
-              barPercentage: 0.65
-            }],
-            yAxes: [{
-              display: false
-            }]
-          }
-        }
-      });
-    }
-
-  } catch (error) {
-    console.log(error);
-  }
-
-  try {
 
     // Percent Chart 2
     var ctx = document.getElementById("percent-chart2");
@@ -631,7 +641,7 @@ if (ctx) {
           datasets: [
             {
               label: "My First dataset",
-              data: [60, 40],
+              data: [$('#success').val(), $('#fail').val()],
               backgroundColor: [
                 '#00b5e9',
                 '#fa4251'
@@ -650,8 +660,8 @@ if (ctx) {
             }
           ],
           labels: [
-            'Products',
-            'Services'
+            '달성',
+            '미달성'
           ]
         },
         options: {

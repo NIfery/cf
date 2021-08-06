@@ -96,18 +96,93 @@
 		where admin_id=#{adminId}
 	</update>
 	
-	<select id="getJuly" parameterType="userVo" resultType="int">
+	<select id="getTotalUser" parameterType="userVo" resultType="int">
+		select count(*) from users
+	</select>
+	
+	<select id="getEnter" parameterType="userVo" resultType="int">
 		select count(*)
 		from users 
-		where to_char(user_joindate, 'mm')='07'
+		where user_flag=1
+	</select>
+	
+	<select id="getGeneral" parameterType="userVo" resultType="int">
+		select count(*)
+		from users 
+		where user_flag=0
+	</select>
+	
+	<select id="getTotalFunding" parameterType="projectVo" resultType="int">
+		select count(*) from project
+		where confirm='Y'
+	</select>
+	
+	<select id="getMonthFunding" resultType="map">
+		select 
+		count (decode(to_char(project_regdate,'mm'),'01',1))jan,
+		count (decode(to_char(project_regdate,'mm'),'02',1))feb,
+		count (decode(to_char(project_regdate,'mm'),'03',1))mar,
+		count (decode(to_char(project_regdate,'mm'),'04',1))apr,
+		count (decode(to_char(project_regdate,'mm'),'05',1))may,
+		count (decode(to_char(project_regdate,'mm'),'06',1))jun,
+		count (decode(to_char(project_regdate,'mm'),'07',1))jul,
+		count (decode(to_char(project_regdate,'mm'),'08',1))aug,
+		count (decode(to_char(project_regdate,'mm'),'09',1))sep,
+		count (decode(to_char(project_regdate,'mm'),'10',1))oct,
+		count (decode(to_char(project_regdate,'mm'),'11',1))nov,
+		count (decode(to_char(project_regdate,'mm'),'12',1))dec
+		from project
+		where confirm='Y'
+	</select>
+	
+	<select id="getTotalWaitFunding" parameterType="projectVo" resultType="int">
+		select count(*) from project
+		where confirm='N'
+	</select>
+
+	<select id="getMonthWaitFunding" resultType="map">
+		select 
+		count (decode(to_char(project_regdate,'mm'),'01',2))jan2,
+		count (decode(to_char(project_regdate,'mm'),'02',2))feb2,
+		count (decode(to_char(project_regdate,'mm'),'03',2))mar2,
+		count (decode(to_char(project_regdate,'mm'),'04',2))apr2,
+		count (decode(to_char(project_regdate,'mm'),'05',2))may2,
+		count (decode(to_char(project_regdate,'mm'),'06',2))jun2,
+		count (decode(to_char(project_regdate,'mm'),'07',2))jul2,
+		count (decode(to_char(project_regdate,'mm'),'08',2))aug2,
+		count (decode(to_char(project_regdate,'mm'),'09',2))sep2,
+		count (decode(to_char(project_regdate,'mm'),'10',2))oct2,
+		count (decode(to_char(project_regdate,'mm'),'11',2))nov2,
+		count (decode(to_char(project_regdate,'mm'),'12',2))dec2
+		from project
+		where confirm='N'
+	</select>
+	
+	<select id="getTotalFundingComm" parameterType="FundingListVo" resultType="int">
+		select trunc(sum((funding_amount*5)/100)) from fundingListView
+		<![CDATA[
+		where project_enddate<=sysdate
+		and total_amount<=funding_amount
+		]]>
+	</select>
+	
+	<select id="getMonthFundingComm" resultType="map">
+		WITH TEMP AS(
+		SELECT SUBSTR(PROJECT_ENDDATE, 4, 2)  AS PROJECT_END_MONTH, funding_amount
+		FROM fundinglistview
+		<![CDATA[
+		where project_enddate<=sysdate
+		and total_amount<=funding_amount
+		]]>
+		)
+		SELECT  nvl(jan,0) as jan3, nvl(feb,0) as feb3, nvl(mar,0) as mar3, nvl(apr,0) as apr3, nvl(may,0) as may3, nvl(jun,0) as jun3,
+		nvl(jul,0) as jul3, nvl(aug,0) as aug3, nvl(sep,0) as sep3, nvl(oct,0) as oct3 ,nvl(nov,0) as nov3, nvl(dec,0) as dec3
+		  FROM TEMP
+		 PIVOT(
+		    SUM((funding_amount*5)/100)
+		    FOR PROJECT_END_MONTH
+		    IN('01' as jan,'02' as feb,'03' as mar,'04' as apr,'05' as may,'06' as jun,
+		    '07' as jul,'08' as aug,'09' as sep,'10' as oct,'11' as nov,'12' as dec)
+		 )
 	</select>
 </mapper>
-
-
-
-
-
-
-
-
-

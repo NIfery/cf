@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.common.SearchVO;
+import com.it.cf.fdList.model.FundingListVO;
+import com.it.cf.project.model.ProjectVO;
 import com.it.cf.user.model.UserVO;
 
 @Mapper
@@ -26,5 +28,13 @@ public interface AdminDAO {
 	int deleteAdmin(int adminNo);
 	int checkPwd(String adminId, String adminPwd);
 	int updatePwd(AdminVO vo);
-	int getJuly(UserVO vo);
+	int getEnter(UserVO vo);
+	int getGeneral(UserVO vo);
+	int getTotalUser(UserVO vo);
+	int getTotalFunding(ProjectVO vo);
+	Map<String, Object> getMonthFunding();
+	int getTotalWaitFunding(ProjectVO vo);
+	Map<String, Object> getMonthWaitFunding();
+	int getTotalFundingComm(FundingListVO vo);
+	Map<String, Object> getMonthFundingComm();
 }

@@ -238,6 +238,9 @@ public class ProjectController {
 		UserVO userVo = userService.selectByNo(userNo);
 		logger.info("user 정보={}", userVo);
 		
+		Map<String, Object> check = projectService.checkLike(projectNo);
+		logger.info("check={}", check);
+		
 		Map<String, Object> map = projectService.selectByNo(projectNo);
 		int userCnt = projectService.selectFundingUserCount(projectNo);
 		logger.info("프로젝트 상세화면 결과 map={}, userCnt={}", map, userCnt);
@@ -245,6 +248,7 @@ public class ProjectController {
 		model.addAttribute("map", map);
 		model.addAttribute("userCnt", userCnt);
 		model.addAttribute("userVo", userVo);
+		model.addAttribute("check", check);
 		
 		return "project/detail";
 	}
@@ -445,5 +449,22 @@ public class ProjectController {
 		model.addAttribute("url", url);
 		
 		return "common/message";
+	}
+	
+	@RequestMapping("/plan")
+	public String plan(@RequestParam(defaultValue = "0") int projectNo, Model model) {
+		
+		logger.info("공개 예정 프로젝트 페이지, projectNo={}", projectNo);
+		
+		Map<String, Object> plan = projectService.selectPlanProject(projectNo);
+		logger.info("공개 예정 프로젝트 조회 결과 plan={}", plan);
+		
+		int count = projectService.planCount(projectNo);
+		logger.info("알림 신청 count={}", count);
+		
+		model.addAttribute("plan", plan);
+		model.addAttribute("count", count);
+		
+		return "project/plan";
 	}
 }

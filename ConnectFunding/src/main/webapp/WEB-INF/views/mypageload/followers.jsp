@@ -115,7 +115,6 @@
 		
 		$('#unfollow').click(function(){
 		var no = $('#followNo').val();
-		alert(no);
 			$('form').attr('action',"<c:url value='/mypageload/unfollow?no="+no+"'/>");
 			$('form').submit();
 		});

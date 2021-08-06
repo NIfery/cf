@@ -7,5 +7,7 @@ public interface AccountService {
 	int insertAccount(AccountVO accountVo); 
 	List<AccountVO> selectAccount(int userNo);
 	int deleteAccount(String accountNo);
-	int updateUserFlag(int userNo);
+	int updateUserFlag(AccountVO accountVo);
+	String selectBusinessNo(int userNo);
+	int deleteBusinessNo(int userNo);
 }

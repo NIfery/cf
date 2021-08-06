@@ -20,11 +20,11 @@
 		if ($('#inputEmail').val().length < 1) {
 			alert('이메일을 입력하세요.');
 			$('#inputEmail').focus();
-			event.preventDefaulut();
+			event.preventDefault();
 		} else if ($('#inputPassword').val().length < 1) {
 			alert('비밀번호를 입력하세요.');
 			$('#inputPassword').focus();
-			event.preventDefaulut();
+			event.preventDefault();
 		}
 	});
 });// */	

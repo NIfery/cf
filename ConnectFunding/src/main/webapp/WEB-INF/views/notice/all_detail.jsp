@@ -65,11 +65,11 @@
 					<!--Nav Button  -->
 					<nav>
 						<div class="nav nav-tabs" id="nav-tab" role="tablist">
-							<a class="nav-item nav-link" id="nav-all-tab" data-toggle="tab" 
-								href="#nav-all" role="tab" aria-controls="nav-all" aria-selected="false">
+							<a class="nav-item nav-link active" id="nav-all-tab" data-toggle="tab" 
+								href="#nav-all" role="tab" aria-controls="nav-all" aria-selected="true">
 							전체보기</a>
-							<a class="nav-item nav-link active" id="nav-notice-tab" data-toggle="tab"
-								href="#nav-notice" role="tab" aria-controls="nav-notice" aria-selected="true">
+							<a class="nav-item nav-link" id="nav-notice-tab" data-toggle="tab"
+								href="#nav-notice" role="tab" aria-controls="nav-notice" aria-selected="false">
 							공지사항</a>
 							<a class="nav-item nav-link" id="nav-event-tab" data-toggle="tab"
 								href="#nav-event" role="tab" aria-controls="nav-event" aria-selected="false">
@@ -87,16 +87,9 @@
 					<!-- Nav Card -->
 					<div class="tab-content" id="nav-tabContent">
 						<!-- card one -->
-						<div class="tab-pane fade" id="nav-all"
+						<div class="tab-pane fade show active" id="nav-all"
 							role="tabpanel" aria-labelledby="nav-all-tab">
 							<div class="whats-news-caption" id="one">
-							
-							</div>
-						</div>
-						<!-- card two -->
-						<div class="tab-pane fade show active" id="nav-notice"
-							role="tabpanel" aria-labelledby="nav-notice-tab">
-							<div class="whats-news-caption" id="two">
 							<form action="<c:url value='/notice/deleteNotice'/>" method="post" name="frmDelete">
 							<input type="hidden" name="noticeFilename" value="${noticemap['NOTICE_FILENAME']}">
 							<input type="hidden" name="noticeNo" value="${noticemap['NOTICE_NO']}">
@@ -128,7 +121,7 @@
 										<ul>
 											<li>
 												<b>이전글</b>
-												<a href="<c:url value='/notice/notice_detail?noticeNo=${noticemap["PRE_NO"]}'/>"
+												<a href="<c:url value='/notice/all_detail?noticeNo=${noticemap["PRE_NO"]}'/>"
 													style="color: black;">
 												<span style="margin-left: 15px; margin-top: 15px;">
 												<strong>${noticemap['PRE_CATEGORY']}&nbsp ·&nbsp </strong> ${noticemap['PRE_TITLE']}</span>
@@ -143,7 +136,7 @@
 										<ul>
 											<li>
 												<b>다음글</b>
-												<a href="<c:url value='/notice/notice_detail?noticeNo=${noticemap["NEXT_NO"]}'/>"
+												<a href="<c:url value='/notice/all_detail?noticeNo=${noticemap["NEXT_NO"]}'/>"
 													style="color: black;">
 												<span style="margin-left: 15px; margin-top: 15px;">
 												<strong>${noticemap['NEXT_CATEGORY']}&nbsp ·&nbsp </strong> ${noticemap['NEXT_TITLE']}</span>
@@ -158,7 +151,7 @@
 										<ul>
 											<li>
 												<b>이전글</b>
-												<a href="<c:url value='/notice/notice_detail?noticeNo=${noticemap["PRE_NO"]}'/>"
+												<a href="<c:url value='/notice/all_detail?noticeNo=${noticemap["PRE_NO"]}'/>"
 													style="color: black;">
 												<span style="margin-left: 15px; margin-top: 15px;">
 												<strong>${noticemap['PRE_CATEGORY']}&nbsp ·&nbsp </strong> ${noticemap['PRE_TITLE']}</span>
@@ -166,7 +159,7 @@
 											</li>
 											<li>
 												<b>다음글</b>
-												<a href="<c:url value='/notice/notice_detail?noticeNo=${noticemap["NEXT_NO"]}'/>"
+												<a href="<c:url value='/notice/all_detail?noticeNo=${noticemap["NEXT_NO"]}'/>"
 													style="color: black;">
 												<span style="margin-left: 15px; margin-top: 15px;">
 												<strong>${noticemap['NEXT_CATEGORY']}&nbsp ·&nbsp </strong> ${noticemap['NEXT_TITLE']}</span>
@@ -190,8 +183,15 @@
 									<a href="<c:url value='/notice/notice_tab'/>" style="margin-right: 450px;"
 										class="genric-btn primary-border circle arrow" >목록보기</a><br><br><br><br>
 									</div>	
-								</c:if>	
+								</c:if>
 								</form>
+							</div>
+						</div>
+						<!-- card two -->
+						<div class="tab-pane fade=" id="nav-notice"
+							role="tabpanel" aria-labelledby="nav-notice-tab">
+							<div class="whats-news-caption" id="two">
+							<!-- 내용 -->	
 							</div>
 						</div>
 						<!-- Card three -->

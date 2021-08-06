@@ -15,10 +15,5 @@ public class Utility {  //detail view에서 첨부파일 내용 보여주기
 		}
 		return result;
 	}
-	
-	public static String secretAcc(String accountNo) {
-		String accNo=accountNo.substring(accountNo.length()-4, accountNo.length());
-		
-		return accNo;
-	}
+
 }

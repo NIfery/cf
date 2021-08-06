@@ -83,8 +83,11 @@
                                             <div class="icon">
                                                 <i class="zmdi zmdi-money"></i>
                                             </div>
+                                            <c:forEach var="month3" items="${map3 }">
+											   <input type="hidden" id="${month3.key }" value="${month3.value }">
+											</c:forEach>
                                             <div class="text">
-                                                <h2>$1,060,386</h2>
+                                                <h2> <fmt:formatNumber value="${totalFundingComm }" pattern="#,###" /></h2>
                                                 <span>누적 수수료</span>
                                             </div>
                                         </div>

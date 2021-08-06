@@ -90,6 +90,7 @@ public class UserController {
          session.setAttribute("userEmail", userEmail);
          session.setAttribute("userName", vo.getUserName());
          session.setAttribute("userNo", vo.getUserNo());
+         session.setAttribute("userNickName", vo.getUserNickname());
          session.setAttribute("userProfile", vo.getUserProfile());
       
          //쿠키저장
@@ -124,6 +125,7 @@ public class UserController {
       session.removeAttribute("userEmail");
       session.removeAttribute("userName");
       session.removeAttribute("userNo");
+      session.removeAttribute("userNickName");
       
       return "redirect:/";
    }//

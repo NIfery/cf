@@ -10,4 +10,5 @@ public interface CommentsService {
 	int CommentsDelete(int CommentNo);
 	List<Map<Object, Object>> CommentsCount();
 	int CommentsReply(CommentsVO vo);
+	List<Map<Object, Object>> ShowProfileImg();
 }

@@ -1,6 +1,7 @@
 package com.it.cf.board.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,4 +18,6 @@ public interface BoardDAO {
 	int EditBoard(BoardVO vo);
 	int DeleteBoard(BoardVO vo);
 	BoardVO SelectNextAndPre(int boardNo);
+	List<Map<Object, Object>> UserBoard(SearchVO searchVO);
+	int TotalRecord2(SearchVO saerchVo);
 }

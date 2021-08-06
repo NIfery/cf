@@ -47,7 +47,7 @@ body {
 				<br>
 				<div class="mb-3">
 					<label for="reg_id">작성자</label>
-					<input type="text" class="form-control" name="userName" id="userName" placeholder="id 출력란" readonly="readonly" value="${vo.userName }">
+					<input type="text" class="form-control" name="userNickName" id="userNickName" placeholder="id 출력란" readonly="readonly" value="${vo.userNickName }">
 				</div>		
 				<br>	
 				<div class="mb-3">
@@ -67,7 +67,7 @@ body {
 				</div>
 			<div>
 			<!-- 본인글 일경우에만 보이게 처리 -->
-				<c:if test="${vo.userName == userName}">
+				<c:if test="${vo.userNickName == userNickName}">
 					<a href="<c:url value='/board/Edit?boardNo=${vo.boardNo}'/>">
 						<button type="submit" class="btn btn-sm btn-primary" id="btnEdit">수정</button>
 					</a>
@@ -118,14 +118,14 @@ body {
 				<!--  -->
 			</div>
 				<br>
-				<c:if test="${vo.userName != userName }">
-				<a href="<c:url value='/board/List?searchCondition=USER_NAME&searchKeyword=${vo.userName }'/>">
-				 	< ${vo.userName }님의 게시글 더 보기 >
+				<c:if test="${vo.userNickName != userNickName }">
+				<a href="<c:url value='/board/List?searchCondition=USER_NICKNAME&searchKeyword=${vo.userNickName }'/>">
+				 	< ${vo.userNickName }님의 게시글 더 보기 >
 				</a>
 				</c:if> 
 				
-				<c:if test="${vo.userName == userName }">
-				<a href="<c:url value='/board/List?searchCondition=USER_NAME&searchKeyword=${userName }'/>">
+				<c:if test="${vo.userNickName == userNickName }">
+				<a href="<c:url value='/board/List?searchCondition=USER_NICKNAME&searchKeyword=${userNickName }'/>">
 					< 내가쓴 게시글 더 보기 >
 				</a>
 				</c:if> 
@@ -143,11 +143,11 @@ body {
 		<!-- 출력 종료   -->
 		
 		<div class="container">
-			<label for="content">댓글 작성</label>
+			<label for="content">${userNickName}</label>
 			<form name="commentInsertForm">
 				<div class="input-group">
 					<input type="hidden" name="BoardNo" value="${vo.boardNo}" />
-					<input type="hidden" name="UserName" value="${userName}"/>
+					<input type="hidden" name="userNickName" value="${userNickName}"/>
 					<input type="text" class="form-control" id="content" name="CommentContent"placeholder="댓글 내용을 입력하세요.">
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button"name="commentInsertBtn">등록</button>
@@ -158,7 +158,6 @@ body {
 
 		<br>
 		<br>
-		
 		
 	    <!-- ajax 댓글 처리  -->
 			<%@ include file="Comments.jsp" %>

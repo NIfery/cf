@@ -7,6 +7,7 @@
    <sql id="searchForm">
       <if test="searchKeyword!=null and searchKeyword!=''">
          where ${searchCondition}  like '%' || #{searchKeyword} || '%'
+         and DELFLAG = 'N'
       </if>
    </sql>
    
@@ -20,8 +21,8 @@
    <!--<selectKey keyColumn="boardNo" resultType="int" order="BEFORE">
           select board2_seq.nextval from dual
       </selectKey> -->
-      insert into board2(board_No,USER_NAME,board_Title,board_Content,board_Filename,board_Oldfilename,board_Filesize)
-      values(board2_seq.nextval,#{userName},#{boardTitle},#{boardContent},#{boardFilename},#{boardOldfilename},#{boardFilesize})
+      insert into board2(board_No,user_nickname,board_Title,board_Content,board_Filename,board_Oldfilename,board_Filesize)
+      values(board2_seq.nextval,#{userNickName},#{boardTitle},#{boardContent},#{boardFilename},#{boardOldfilename},#{boardFilesize})
    </insert>
    
    <select id="selectAll" parameterType="SearchVO" resultType="boardVo">
@@ -95,4 +96,14 @@
 	) A
 	WHERE A.BOARD_no=#{boardNo}
     </select>
+    
+    <select id="UserBoard" parameterType="searchVo" resultType="map">
+    	select * from Userboard
+    	where user_nickname=#{userNickName}
+    </select>
+    
+    <select id="TotalRecord2" parameterType="SearchVo" resultType="int">
+      select count(*) from Userboard
+      where user_nickname =#{userNickName}
+   </select>
 </mapper>

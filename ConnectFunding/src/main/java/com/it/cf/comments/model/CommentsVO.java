@@ -18,5 +18,5 @@ public class CommentsVO {
 	private int CommentSortNo; /* 정렬 */
 	private String CommentDelflag; /* 삭제여부 */
 	private int BoardNo; /* 게시글번호 */
-	private String UserName;/* 회원아이디 */
+	private String userNickName;/* 회원닉네임 */
 }

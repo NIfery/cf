@@ -6,7 +6,7 @@
  	<select id="selectCommentsList" resultType="CommentsVO" parameterType="int">
 		select * from comments
 		where Board_No =#{BoardNo}
-		order by COMMENT_REGDATE,COMMENT_GROUPNO,COMMENT_SORTNO
+		order by COMMENT_GROUPNO,COMMENT_SORTNO
 	</select>
 	
 <!--  	<select id="selectCommentsList" resultType="CommentsVO" parameterType="int">
@@ -28,8 +28,8 @@
 			<selectKey resultType="int" keyProperty="CommentNo" order="BEFORE">
 			select comments_seq.nextval from dual
 			</selectKey>
-		insert into comments(comment_no,user_name,comment_content,comment_regdate,board_no,COMMENT_GROUPNO)
-		values(#{CommentNo},#{UserName},#{CommentContent},sysdate,#{BoardNo},#{CommentNo})
+		insert into comments(comment_no,USER_NICKNAME,comment_content,comment_regdate,board_no,COMMENT_GROUPNO)
+		values(#{CommentNo},#{userNickName},#{CommentContent},sysdate,#{BoardNo},#{CommentNo})
 	</insert>
 	
 	<update id="CommentsUpdate" parameterType="CommentsVO">
@@ -49,8 +49,8 @@
 	</select>
 	
 	<insert id="CommentsReply" parameterType="CommentsVO">
-		insert into comments(comment_no,user_name,comment_content,comment_regdate,board_no,COMMENT_STEP,COMMENT_SORTNO,COMMENT_GROUPNO)
-		values(comments_seq.nextval,#{UserName},#{CommentContent},sysdate,#{BoardNo},#{CommentStep}+1,#{CommentSortNo}+1,#{CommentGroupNo})
+		insert into comments(comment_no,USER_NICKNAME,comment_content,comment_regdate,board_no,COMMENT_STEP,COMMENT_SORTNO,COMMENT_GROUPNO)
+		values(comments_seq.nextval,#{userNickName},#{CommentContent},sysdate,#{BoardNo},#{CommentStep}+1,#{CommentSortNo}+1,#{CommentGroupNo})
 	</insert>
 	
 	<update id="UpdateSortNo" parameterType="CommentsVO">
@@ -58,6 +58,11 @@
 	 	set COMMENT_SORTNO=COMMENT_SORTNO+1
 	 	where COMMENT_GROUPNO=#{CommentGroupNo} and COMMENT_SORTNO > #{CommentSortNo}
 	 </update>
+	 
+	 <select id="ShowProfileImg" resultType="map">
+		select * from showprofile
+		group by nickname,profile
+	 </select>
 </mapper>
 
 

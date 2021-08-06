@@ -14,4 +14,5 @@ public interface CommentsDAO {
 	List<Map<Object, Object>> CommentsCount();
 	int CommentsReply(CommentsVO vo);
 	int UpdateSortNo(CommentsVO vo);
+	List<Map<Object, Object>> ShowProfileImg();
 }

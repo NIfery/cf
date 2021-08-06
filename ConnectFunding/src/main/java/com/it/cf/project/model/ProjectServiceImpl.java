@@ -50,8 +50,8 @@ public class ProjectServiceImpl implements ProjectService{
 		return projectDao.selectTotalRecordConfirm();
 	}
 	
-	public int selectTotalRecordBySecondCategoryNo(int firstCategoryNo, int secondCategoryNo) {
-		return projectDao.selectTotalRecordBySecondCategoryNo(firstCategoryNo, secondCategoryNo);
+	public int selectTotalRecordBySecondCategoryNo(int firstCategoryNo, int secondCategoryNo, int ingType) {
+		return projectDao.selectTotalRecordBySecondCategoryNo(firstCategoryNo, secondCategoryNo, ingType);
 	}
 	
 	public List<FirstCategoryVO> selectFirstCategory() {

@@ -1,6 +1,7 @@
 package com.it.cf.board.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -57,6 +58,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public BoardVO SelectNextAndPre(int boardNo) {
 		return boardDao.SelectNextAndPre(boardNo);
+	}
+
+	@Override
+	public List<Map<Object, Object>> UserBoard(SearchVO searchVO) {
+		return boardDao.UserBoard(searchVO);
+	}
+
+	@Override
+	public int TotalRecord2(SearchVO searchVo) {
+		return boardDao.TotalRecord2(searchVo);
 	}
 
 }

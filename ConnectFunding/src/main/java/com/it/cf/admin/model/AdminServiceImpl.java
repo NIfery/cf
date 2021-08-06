@@ -12,6 +12,8 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.common.SearchVO;
+import com.it.cf.fdList.model.FundingListVO;
+import com.it.cf.project.model.ProjectVO;
 import com.it.cf.user.model.UserVO;
 
 import lombok.RequiredArgsConstructor;
@@ -129,6 +131,70 @@ public class AdminServiceImpl implements AdminService{
 		logger.info("cnt={}",cnt);
 		return cnt;
 	}
+
+	@Override
+	public int checkPwd(String adminId, String adminPwd) {
+		String dbPwd = adminDao.selectPwd(adminId);
+		
+		int result=0;
+		if(adminPwd.equals(dbPwd)) {
+			result= PWD_OK;
+		}else {
+			result= PWD_NO;
+		}
+		return result;
+	}
+
+	@Override
+	public int updatePwd(AdminVO vo) {
+		return adminDao.updatePwd(vo);
+	}
+
+	@Override
+	public int getEnter(UserVO vo) {
+		return adminDao.getEnter(vo);
+	}
+
+	@Override
+	public int getGeneral(UserVO vo) {
+		return adminDao.getGeneral(vo);
+	}
+
+	@Override
+	public int getTotalUser(UserVO vo) {
+		return adminDao.getTotalUser(vo);
+	}
+
+	@Override
+	public int getTotalFunding(ProjectVO vo) {
+		return adminDao.getTotalFunding(vo);
+	}
+
+	@Override
+	public Map<String, Object> getMonthFunding() {
+	      return adminDao.getMonthFunding();
+	   }
+
+	@Override
+	public int getTotalWaitFunding(ProjectVO vo) {
+		return adminDao.getTotalWaitFunding(vo);
+	}
+
+	@Override
+	public Map<String, Object> getMonthWaitFunding() {
+		return adminDao.getMonthWaitFunding();
+	}
+
+	@Override
+	public int getTotalFundingComm(FundingListVO vo) {
+		return adminDao.getTotalFundingComm(vo);
+	}
+
+	@Override
+	public Map<String, Object> getMonthFundingComm() {
+		return adminDao.getMonthFundingComm();
+	}
+
 
 
 

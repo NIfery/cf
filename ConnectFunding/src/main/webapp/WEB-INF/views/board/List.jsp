@@ -83,7 +83,7 @@
 								해당 글은 작성자에 의하여 삭제된 게시글입니다.	
 							</c:if>
 							</th>
-							<th>${vo.userName }</th>
+							<th>${vo.userNickName }</th>
 							<th><fmt:formatDate value="${vo.boardRegdate}" pattern="yyyy-MM-dd HH:mm:ss"/></th>
 							<th>${vo.boardOldfilename }</th>
 							<th>${vo.boardReadcount }</th>
@@ -103,8 +103,8 @@
             		selected="selected"
             		</c:if>
 					>제목</option>
-					<option value="USER_NAME"
-				    <c:if test="${param.searchCondition == 'USER_NAME' }">            	
+					<option value="USER_NICKNAME"
+				    <c:if test="${param.searchCondition == 'USER_NICKNAME' }">            	
             		selected="selected"
             		</c:if>
 					>작성자</option>

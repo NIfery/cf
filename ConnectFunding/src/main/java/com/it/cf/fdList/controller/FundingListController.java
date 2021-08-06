@@ -89,10 +89,10 @@ public class FundingListController {
 		PaginationInfo pageInfo = new PaginationInfo();
 		pageInfo.setCurrentPage(fdListViewVo.getCurrentPage());
 		pageInfo.setBlockSize(2);
-		pageInfo.setRecordCountPerPage(1);
+		pageInfo.setRecordCountPerPage(3);
 
 		fdListViewVo.setFirstRecordIndex(pageInfo.getFirstRecordIndex());
-		fdListViewVo.setRecordCountPerPage(1);
+		fdListViewVo.setRecordCountPerPage(3);
 		fdListViewVo.setUserNo(userNo);
 		int num = fdListViewVo.getUserNo();
 		logger.info("num={}", num);

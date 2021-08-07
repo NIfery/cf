@@ -679,4 +679,3 @@
 	} // 주소 API
 </script>	
 <%@ include file="../include/bottom.jsp"%>
-	

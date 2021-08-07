@@ -334,9 +334,15 @@
 										
 										
 						    		</c:if>
-						    		<c:if test="${userVo.userNo==map['USER_NO'] }">
-							    		<a href="<c:url value='/project/update?projectNo=${map["PROJECT_NO"] }'/>">[수정 버튼]</a> 
-							    		<a href="#" data-toggle="modal" data-target="#myModal2">[삭제 버튼]</a>
+
+							    	<c:if test="${userVo.userNo==map['USER_NO'] }">
+						    			<c:if test="${ckTodayDate2<=endDate2 }">
+								    		<a href="<c:url value='/project/update?projectNo=${map["PROJECT_NO"] }'/>">[수정]</a> 
+								    		<a href="#" data-toggle="modal" data-target="#myModal2">[삭제]</a>
+							    		</c:if>
+							    		<c:if test="${ckTodayDate2>endDate2 }">
+									    	<h2 style="margin: 5px 0px 20px -10px">종료되었습니다.</h2>
+									</c:if>
 						    		</c:if>
 						    		<div class="modal fade" id="myModal2" data-backdrop="static" tabindex="-1" role="dialog"
 									aria-labelledby="staticBackdropLabel" aria-hidden="true">

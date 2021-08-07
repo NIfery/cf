@@ -310,5 +310,4 @@ public class UserController {
 
 	   return "common/message";
    }
-   
 }

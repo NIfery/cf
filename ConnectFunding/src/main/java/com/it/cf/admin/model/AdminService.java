@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.common.SearchVO;
+import com.it.cf.fdList.model.FDListViewVO;
 import com.it.cf.fdList.model.FundingListVO;
 import com.it.cf.project.model.ProjectVO;
 import com.it.cf.user.model.UserVO;
@@ -41,4 +42,6 @@ public interface AdminService {
 	Map<String, Object> getMonthWaitFunding();
 	int getTotalFundingComm(FundingListVO vo);
 	Map<String, Object> getMonthFundingComm();
+	Map<String, Object> getCategoryFunding();
+	Map<String, Object> getFundingPercent();
 }

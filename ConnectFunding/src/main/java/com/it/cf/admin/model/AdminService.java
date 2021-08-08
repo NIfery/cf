@@ -44,4 +44,5 @@ public interface AdminService {
 	Map<String, Object> getMonthFundingComm();
 	Map<String, Object> getCategoryFunding();
 	Map<String, Object> getFundingPercent();
+	List<Map<String, Object>> getFundingTop5();
 }

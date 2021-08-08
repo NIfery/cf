@@ -213,7 +213,15 @@
 		concat(round(count(case when total_amount>funding_amount then 0 end)/count(*)*100,2),'') as "fail"
 		from fundinglistview
 		where confirm='Y'
-		and project_enddate>sysdate
+		]]>
+	</select>
+	
+	<select id="getFundingTop5" resultType="map">
+		select project_name, funding_amount
+		from fundinglistview
+		<![CDATA[
+		WHERE ROWNUM <= 5
+		order by funding_amount desc
 		]]>
 	</select>
 </mapper>

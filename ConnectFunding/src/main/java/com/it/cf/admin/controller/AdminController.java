@@ -189,7 +189,7 @@ public class AdminController {
    //운영자 선택삭제
    @RequestMapping("/adminDeleteMulti")
 	public String adminDeleteMulti(@ModelAttribute AdminListVO adminListVo,Model model) {
-		logger.info("선택한 회원 삭제, 파라미터 adminListVo={}",adminListVo);
+		logger.info("선택한 관리자 삭제, 파라미터 adminListVo={}",adminListVo);
 		
 		List<AdminVO> list=adminListVo.getSelectAdmin();
 		for(int i=0;i<list.size();i++) {
@@ -363,8 +363,11 @@ public class AdminController {
  		Map<String, Object> map3 = adminService.getMonthFundingComm();
  		Map<String, Object> map4 = adminService.getCategoryFunding();
  		Map<String, Object> map5 = adminService.getFundingPercent();
- 		
- 		logger.info("map5={}"+map5);
+ 		List<Map<String, Object>> list=adminService.getFundingTop5();
+        logger.info("글 전체 조회 결과, list.size={}", list.size());
+ 		int cnt = 5-list.size();
+        
+ 		logger.info("list={}"+list);
  		model.addAttribute("general", general);
  		model.addAttribute("enterprise", enterprise);
  		model.addAttribute("totalUser", totalUser);
@@ -376,6 +379,8 @@ public class AdminController {
  		model.addAttribute("map3", map3);
  		model.addAttribute("map4", map4);
  		model.addAttribute("map5", map5);
+ 		model.addAttribute("list", list);
+ 		model.addAttribute("cnt", cnt);
 
  		return "/admin/index";
 

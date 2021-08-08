@@ -206,6 +206,11 @@ public class AdminServiceImpl implements AdminService{
 		return adminDao.getFundingPercent();
 	}
 
+	@Override
+	public List<Map<String, Object>> getFundingTop5() {
+		return adminDao.getFundingTop5();
+	}
+
 
 
 

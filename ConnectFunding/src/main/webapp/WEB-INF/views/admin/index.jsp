@@ -104,12 +104,12 @@
                        			<c:forEach var="category" items="${map4 }">
 									<input type="hidden" id="${category.key }" value="${category.value }">
 								</c:forEach>
-                                <h3 class="title-3 m-b-30">카테고리별 펀딩 수</h3>
+                                <h3 class="title-3 m-b-30">카테고리별 펀딩 현황</h3>
                                 <div class="chart-wrap">
                                     <canvas id="widgetChart5"></canvas>
                                 </div>
                                 <div style="text-align: center;">
-                                    <p> - 현재 진행중인 펀딩의 카테고리별 프로젝트 수</p>
+                                    <p> - 현재 등록된 펀딩의 카테고리별 프로젝트 수</p>
                                </div>
                             </div>
                             <!-- END CHART-->
@@ -119,36 +119,38 @@
                         <div class="col-md-6 col-lg-6">
                             <!-- TOP CAMPAIGN-->
                             <div class="top-campaign">
-                                <h3 class="title-3 m-b-30">Top 5 펀딩금액 달성</h3>
+                                <h3 class="title-3 m-b-30">Top 5 펀딩금액 순위</h3>
                                 <div class="table-responsive">
                                     <table class="table table-top-campaign">
-                                        <tbody>
-                                            <tr>
-                                                <td>1. 믹서기</td>
-                                                <td>$70,261.65</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2. 세탁기</td>
-                                                <td>$46,399.22</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3. 청소기</td>
-                                                <td>$35,364.90</td>
-                                            </tr>
-                                            <tr>
-                                                <td>4. 컴퓨터</td>
-                                                <td>$20,366.96</td>
-                                            </tr>
-                                            <tr>
-                                                <td>5. 침대</td>
-                                                <td>$10,366.96</td>
-                                            </tr>
-                                        </tbody>
+	                                   
+										    <tbody>
+										    	<c:if test="${empty list}">
+											    	<tr>
+														<td colspan="2" class="align_center">데이터가 없습니다.</td>
+													</tr>
+										    	</c:if>
+										    	 <c:forEach var="top" items="${list }" varStatus="status">
+										    		<c:if test="${!empty list}">
+				                                            <tr>
+				                                                <td>${status.count }.&emsp;<fmt:formatNumber value="${top.FUNDING_AMOUNT}" pattern="#,###" />원</td>
+				                                                <td>${top.PROJECT_NAME }</td>
+				                                            </tr>
+	                                            	</c:if>
+	                                            </c:forEach>
+	                                            <c:if test="${list.size()<5}">
+													<c:forEach begin="1" end="${cnt }">
+														<tr>
+															<td colspan="2" class="align_center" style="text-align: center;">데이터가 없습니다.</td>
+														</tr>
+				                                   </c:forEach>
+					                           </c:if>
+	                                        </tbody>
+                                       
                                     </table>
                                 </div>
                                 <br><br>
                                <div class="chart-info">
-                                    <p> - 카테고리에 상관없이 현재 진행중인 프로젝트의 총 모금액 TOP 5 선정함</p>
+                                    <p> - 카테고리에 상관없이 현재까지 프로젝트의 총 모금액 TOP 5 선정함</p>
                                </div>  
                             </div>
                             <!-- END TOP CAMPAIGN-->
@@ -177,7 +179,7 @@
                                     </div>
                                 </div>
                                 <div class="chart-info">
-                                    <p> - 펀딩 심사가 완료된 프로젝트 중 종료기한이 남아있는 프로젝트에 한함</p>
+                                    <p> - 펀딩 심사가 완료된 프로젝트 중 목표금액 달성여부 [%]비율</p>
                                </div>      
                             </div>
                             <!-- END CHART PERCENT-->

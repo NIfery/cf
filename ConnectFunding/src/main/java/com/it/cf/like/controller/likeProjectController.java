@@ -3,6 +3,7 @@ package com.it.cf.like.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.it.cf.common.PaginationInfo;
 import com.it.cf.like.model.likeProjectService;
@@ -31,25 +33,24 @@ public class likeProjectController {
 	
 		@RequestMapping("/mypages/addLikeProject")
 		public String addLikeProject(@ModelAttribute likeProjectVO likeVo,
-			HttpSession session, Model model) {
+			HttpSession session, HttpServletRequest request, RedirectAttributes rttr) {
 
 		int userNo = (int) session.getAttribute("userNo");
+		
 		likeVo.setUserNo(userNo);
 
 		logger.info("좋아한 프로젝트 등록, 파라미터 likeVo={}", likeVo);
 
 		int cnt = likeService.insertLikeProject(likeVo);
 		logger.info("프로젝트 좋아요 완료");
-
-		String msg="좋아한 프로젝트 등록에 실패하였습니다.", url="/mypages/likeProject";
+		
 		if(cnt>0) {
-			msg="좋아한 프로젝트에 추가되었습니다.";
+			rttr.addFlashAttribute("msg", "success");
 		}
 		
-		model.addAttribute("msg", msg);
-		model.addAttribute("url", url);
-		
-		return "common/message";
+	    String referer = request.getHeader("Referer");
+
+		return "redirect:"+ referer;
 	}//
 	
 //	@RequestMapping("/mypages/likeProject")
@@ -68,7 +69,7 @@ public class likeProjectController {
 	
 	@RequestMapping("/mypages/deletelike")
 	public String deletelike(@RequestParam(defaultValue = "0") int likeNo,
-			Model model) {
+			HttpServletRequest request, RedirectAttributes rttr) {
 		
 		logger.info("좋아한 프로젝트 삭제, 파라미터 likeNo={}", likeNo);
 		
@@ -76,10 +77,30 @@ public class likeProjectController {
 		logger.info("좋아한 프로젝트 삭제결과, cnt={}", cnt);
 		
 		if(cnt>0) {
-			model.addAttribute("msg", "취소되었습니다.");
-			model.addAttribute("url", "/mypages/likeProject");
+			rttr.addFlashAttribute("msg", "success");
 		}
-		return "common/message";
+		
+		String referer = request.getHeader("Referer");
+
+		return "redirect:"+ referer;
+	}//
+	
+	@RequestMapping("/mypages/deletelikeName")
+	public String deletelikeName(@RequestParam String projectName,
+			HttpServletRequest request, RedirectAttributes rttr) {
+		
+		logger.info("좋아한 프로젝트 삭제, 파라미터 projectName={}", projectName);
+		
+		int cnt = likeService.deleteLikeByName(projectName);
+		logger.info("좋아한 프로젝트 삭제결과, cnt={}", cnt);
+		
+		if(cnt>0) {
+			rttr.addFlashAttribute("msg", "fail");
+		}
+		
+		String referer = request.getHeader("Referer");
+
+		return "redirect:"+ referer;
 	}//
 	
 	@ResponseBody
@@ -105,7 +126,7 @@ public class likeProjectController {
 			Model model) {
 		
 		int userNo = (int) session.getAttribute("userNo");
-		logger.info("좋아요 페이지, userNo={}, likeVo={}", userNo, likeVo);
+		logger.info("좋아요 페이지, userNo={}", userNo);
 		
 		PaginationInfo pageInfo = new PaginationInfo();
 		pageInfo.setCurrentPage(likeVo.getCurrentPage());
@@ -115,11 +136,9 @@ public class likeProjectController {
 		likeVo.setFirstRecordIndex(pageInfo.getFirstRecordIndex());
 		likeVo.setRecordCountPerPage(6);
 		likeVo.setUserNo(userNo);
-		int num = likeVo.getUserNo();
-		logger.info("num={}", num);
 
 		List<Map<String, Object>> likelist = likeService.searchlikeprojectList(likeVo);
-		logger.info("내가 후원한 프로젝트 likelist.size={}", likelist.size());
+		logger.info("내가 좋아한 프로젝트 likelist.size={}", likelist.size());
 
 		int totalRecord = likeService.selectLikeListTotalRecord(likeVo);
 		pageInfo.setTotalRecord(totalRecord);

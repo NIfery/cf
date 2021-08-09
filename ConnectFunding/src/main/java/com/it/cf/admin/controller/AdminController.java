@@ -34,6 +34,7 @@ import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.common.AdminConstUtil;
 import com.it.cf.common.PaginationInfo;
 import com.it.cf.common.SearchVO;
+import com.it.cf.fdList.model.FDListViewVO;
 import com.it.cf.fdList.model.FundingListVO;
 import com.it.cf.project.model.FirstCategoryVO;
 import com.it.cf.project.model.ProjectPageInfo;
@@ -188,7 +189,7 @@ public class AdminController {
    //운영자 선택삭제
    @RequestMapping("/adminDeleteMulti")
 	public String adminDeleteMulti(@ModelAttribute AdminListVO adminListVo,Model model) {
-		logger.info("선택한 회원 삭제, 파라미터 adminListVo={}",adminListVo);
+		logger.info("선택한 관리자 삭제, 파라미터 adminListVo={}",adminListVo);
 		
 		List<AdminVO> list=adminListVo.getSelectAdmin();
 		for(int i=0;i<list.size();i++) {
@@ -350,7 +351,7 @@ public class AdminController {
    
    //
    @RequestMapping("/index")
- 	public String home(Locale locale, UserVO userVo, ProjectVO projectVo, FundingListVO fundingListVo, Model model)throws Exception {
+ 	public String home(Locale locale, UserVO userVo, ProjectVO projectVo, FundingListVO fundingListVo, FDListViewVO fdListVo, Model model)throws Exception {
  		int general = adminService.getGeneral(userVo);
  		int enterprise = adminService.getEnter(userVo);
  		int totalUser = adminService.getTotalUser(userVo);
@@ -360,8 +361,13 @@ public class AdminController {
  		Map<String, Object> map2 = adminService.getMonthWaitFunding();
  		int totalFundingComm = adminService.getTotalFundingComm(fundingListVo);
  		Map<String, Object> map3 = adminService.getMonthFundingComm();
- 		
- 		logger.info("totalUser={}"+totalUser);
+ 		Map<String, Object> map4 = adminService.getCategoryFunding();
+ 		Map<String, Object> map5 = adminService.getFundingPercent();
+ 		List<Map<String, Object>> list=adminService.getFundingTop5();
+        logger.info("글 전체 조회 결과, list.size={}", list.size());
+ 		int cnt = 5-list.size();
+        
+ 		logger.info("list={}"+list);
  		model.addAttribute("general", general);
  		model.addAttribute("enterprise", enterprise);
  		model.addAttribute("totalUser", totalUser);
@@ -371,6 +377,10 @@ public class AdminController {
  		model.addAttribute("map2", map2);
  		model.addAttribute("totalFundingComm", totalFundingComm);
  		model.addAttribute("map3", map3);
+ 		model.addAttribute("map4", map4);
+ 		model.addAttribute("map5", map5);
+ 		model.addAttribute("list", list);
+ 		model.addAttribute("cnt", cnt);
 
  		return "/admin/index";
 

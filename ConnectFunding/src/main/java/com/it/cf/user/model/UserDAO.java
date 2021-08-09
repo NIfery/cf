@@ -14,4 +14,5 @@ public interface UserDAO {
 	int updatePwd(UserVO vo);
 	int checkEmail(String userEmail);
 	int checkNickname(String userNickname);
+	int outUser(String userEmail);
 }

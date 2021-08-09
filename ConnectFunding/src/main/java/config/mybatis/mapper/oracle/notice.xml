@@ -8,49 +8,118 @@
 		<selectKey keyProperty="noticeNo" resultType="int" order="BEFORE">
 			select NOTICE_SEQ.nextval from dual
 		</selectKey>
-		insert into notice(NOTICE_NO, ADMIN_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_CATEGORY, NOTICE_FILENAME)
-		values(#{noticeNo}, #{adminNo}, #{noticeTitle}, #{noticeContent}, #{noticeCategory}, #{noticeFilename})
+		insert into notice(NOTICE_NO, ADMIN_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_CATEGORY, NOTICE_FILENAME, NOTICE_OLDFILENAME)
+		values(#{noticeNo}, #{adminNo}, #{noticeTitle}, #{noticeContent},
+			#{noticeCategory}, #{noticeFilename}, #{noticeOldfilename})
 	</insert>
 	
-	<select id="selectNotice" parameterType="String" resultType="noticeVo">
+	<!-- <select id="selectNotice" parameterType="String" resultType="noticeVo">
 		select * from notice
 		where notice_category=#{noticeCategory}
 		order by notice_no desc
+	</select> -->
+	<select id="selectNotice" parameterType="noticeVo" resultType="noticeVo">
+		select *
+		from
+		(
+		        select rownum as RNUM , A.*, (notice_regdate+30) as endday 
+		        from  
+		    (
+		        select * from notice
+				where notice_category=#{noticeCategory}
+		    	<if test="noticeTitle!=null and noticeTitle!=''">
+					and NOTICE_TITLE like  '%'||#{noticeTitle}||'%'
+				</if>
+				order by notice_no desc
+		    )A   
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
 	</select>
 	
-	<select id="selectEvent" parameterType="String" resultType="noticeVo">
-		select * from notice
+	<select id="selectTotalCount" parameterType="noticeVo" resultType="int">
+		select count(*) from notice
+        <if test="noticeTitle!=null and noticeTitle!=''">
+			where NOTICE_TITLE like  '%'||#{noticeTitle}||'%'
+		</if>
+	</select>
+	
+	<select id="TotalCountByCate" parameterType="String" resultType="int">
+		select count(*) from notice
 		where notice_category=#{noticeCategory}
-		order by notice_no desc
 	</select>
 	
-	<select id="selectNews" parameterType="String" resultType="noticeVo">
-		select * from notice
-		where notice_category=#{noticeCategory}
-		order by notice_no desc
+	<select id="selectAll" resultType="noticeVo" parameterType="noticeVo">
+		select *
+		from
+		(
+		        select rownum as RNUM , A.* 
+		        from  
+		    (
+		        select * from notice
+		        <if test="noticeTitle!=null and noticeTitle!=''">
+					where NOTICE_TITLE like  '%'||#{noticeTitle}||'%'
+				</if>	
+				order by notice_no desc
+		    )A   
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
 	</select>
 	
-	<select id="selectByNoticeNo" parameterType="int" resultType="noticeVo">
+	<select id="selectByNo" parameterType="int" resultType="noticeVo">
 		select * from notice
+		where notice_no=#{noticeNo}
+	</select>
+	
+	<resultMap type="HashMap" id="NoticeMap">
+		<result column="NOTICE_NO" jdbcType="BIGINT" property="NOTICE_NO"/>
+		<result column="ADMIN_NO" jdbcType="BIGINT" property="ADMIN_NO"/>
+		<result column="NOTICE_TITLE" jdbcType="VARCHAR" property="NOTICE_TITLE"/>
+		<result column="NOTICE_CONTENT" jdbcType="CLOB" property="NOTICE_CONTENT" javaType="java.lang.String"/>
+		<result column="NOTICE_CATEGORY" jdbcType="VARCHAR" property="NOTICE_CATEGORY"/>
+		<result column="NOTICE_FILENAME" jdbcType="VARCHAR" property="NOTICE_FILENAME"/>
+		<result column="NOTICE_OLDFILENAME" jdbcType="VARCHAR" property="NOTICE_OLDFILENAME"/>
+		<result column="NOTICE_REGDATE" jdbcType="TIMESTAMP" property="NOTICE_REGDATE"/>
+		<result column="NOTICE_COUNT" jdbcType="BIGINT" property="NOTICE_COUNT"/>
+	</resultMap>
+	
+	<select id="selectByNoticeNo" parameterType="noticeVo" resultMap="NoticeMap">
+		SELECT A.*, (notice_regdate+30) as endday
+		FROM (
+		    SELECT
+		        NOTICE_NO,
+		        NOTICE_CATEGORY,
+		        NOTICE_TITLE,
+		        NOTICE_CONTENT,
+		        NOTICE_FILENAME,
+		        NOTICE_REGDATE,
+		        LEAD(NOTICE_TITLE, 1, '다음글이 없습니다') OVER (ORDER BY NOTICE_NO) AS NEXT_TITLE,
+		        LEAD(NOTICE_NO, 1) OVER (ORDER BY NOTICE_NO) AS NEXT_NO,
+		        LEAD(NOTICE_CATEGORY, 1) OVER (ORDER BY NOTICE_NO) AS NEXT_CATEGORY,
+		        LAG(NOTICE_TITLE, 1, '이전글이 없습니다') OVER (ORDER BY NOTICE_NO) AS PRE_TITLE,
+		        LAG(NOTICE_NO, 1) OVER (ORDER BY NOTICE_NO) AS PRE_NO,
+		        LAG(NOTICE_CATEGORY, 1) OVER (ORDER BY NOTICE_NO) AS PRE_CATEGORY
+		    FROM NOTICE
+		    <if test="noticeCategory!=null and noticeCategory!=''">
+		    where notice_category=#{noticeCategory}
+		    </if>
+		) A
 		where notice_no=#{noticeNo}
 	</select>
 
 	<update id="updateNotice" parameterType="noticeVo">
 		update notice
-		set NOTICE_TITLE=#{noticeTitle}, ADMIN_NO=#{adminNo}, NOTICE_CONTENT=#{noticeContent}, NOTICE_CATEGORY=#{noticeCategory}
+		set NOTICE_TITLE=#{noticeTitle}, ADMIN_NO=#{adminNo}, NOTICE_CONTENT=#{noticeContent}, NOTICE_CATEGORY=#{noticeCategory},
+			NOTICE_FILENAME=#{noticeFilename}, NOTICE_OLDFILENAME=#{noticeOldfilename}
 		where notice_no=#{noticeNo}
 	</update>
 	
-	<delete id="deleteNotice" parameterType="int">
+	<delete id="deleteNotice" parameterType="noticeVo">
 		delete notice where notice_no=#{noticeNo}
 	</delete>
 </mapper>
-
-
-
-
-
-
-
-
-

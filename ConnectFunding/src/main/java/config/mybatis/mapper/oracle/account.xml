@@ -20,8 +20,19 @@
 		where account_no=#{accountNo}
 	</delete>
 	
-	<update id="updateUserFlag" parameterType="int">
+	<update id="updateUserFlag" parameterType="accountVo">
 		update users set user_flag=1 , business_no=#{birth}
+		where user_no=#{userNo}
+	</update>
+	
+	<select id="selectBusinessNo" parameterType="int" resultType="String">
+		select business_no from users
+		where user_no=#{userNo}
+	</select>
+	
+	<update id="deleteBusinessNo" parameterType="int">
+		update users
+		set business_no=''
 		where user_no=#{userNo}
 	</update>
 	

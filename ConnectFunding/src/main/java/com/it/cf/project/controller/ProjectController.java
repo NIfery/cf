@@ -30,6 +30,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.it.cf.bootpay.BootpayApi;
 import com.it.cf.bootpay.model.request.Cancel;
 import com.it.cf.fdList.model.FundingListVO;
+import com.it.cf.informProject.model.informProjectService;
+import com.it.cf.informProject.model.informProjectVO;
 import com.it.cf.project.model.FirstCategoryVO;
 import com.it.cf.project.model.ProjectFileUploadUtil;
 import com.it.cf.project.model.ProjectPageInfo;
@@ -51,6 +53,7 @@ public class ProjectController {
 	private final ProjectService projectService;
 	private final UserService userService;
 	private final ProjectFileUploadUtil fileUploadUtil;
+	private final informProjectService informService;
 	
 	static BootpayApi api;
 	
@@ -238,6 +241,9 @@ public class ProjectController {
 		UserVO userVo = userService.selectByNo(userNo);
 		logger.info("user 정보={}", userVo);
 		
+		Map<String, Object> check = projectService.checkLike(projectNo);
+		logger.info("check={}", check);
+		
 		Map<String, Object> map = projectService.selectByNo(projectNo);
 		int userCnt = projectService.selectFundingUserCount(projectNo);
 		logger.info("프로젝트 상세화면 결과 map={}, userCnt={}", map, userCnt);
@@ -245,6 +251,7 @@ public class ProjectController {
 		model.addAttribute("map", map);
 		model.addAttribute("userCnt", userCnt);
 		model.addAttribute("userVo", userVo);
+		model.addAttribute("check", check);
 		
 		return "project/detail";
 	}
@@ -445,5 +452,54 @@ public class ProjectController {
 		model.addAttribute("url", url);
 		
 		return "common/message";
+	}
+	
+	@RequestMapping("/plan")
+	public String plan(@RequestParam(defaultValue = "0") int projectNo, Model model, 
+			HttpSession session) {
+		
+		int userNo = (int) session.getAttribute("userNo");
+		logger.info("userNo={}",userNo);
+		logger.info("공개 예정 프로젝트 페이지, projectNo={}", projectNo);
+		
+		Map<String, Object> plan = projectService.selectPlanProject(projectNo);
+		logger.info("공개 예정 프로젝트 조회 결과 plan={}", plan);
+		
+		int count = projectService.planCount(projectNo);
+		logger.info("알림 신청 count={}", count);
+		
+		int informCheck = informService.informCheck(projectNo, userNo);
+		logger.info("userNo={},projectNo={}",userNo, projectNo);
+		logger.info("informCheck={}", informCheck);
+		
+		model.addAttribute("plan", plan);
+		model.addAttribute("count", count);
+		model.addAttribute("informCheck", informCheck);
+		
+		return "project/plan";
+	}
+	
+	@RequestMapping("/planList")
+	public String planList(Model model) {
+		logger.info("공개 예정 프로젝트 목록(랜덤)");
+		
+		List<Map<String, Object>> planList = projectService.selectplan();
+		logger.info("planList={}", planList.size());
+		
+		model.addAttribute("planList", planList);
+		
+		return "project/planList";
+	}
+	
+	@RequestMapping("/randomList")
+	public String randomList(Model model) {
+		logger.info("프로젝트 랜덤 목록(import용)");
+		
+		List<Map<String, Object>> random = projectService.randomList();
+		logger.info("random={}", random.size());
+		
+		model.addAttribute("random", random);
+		
+		return "project/randomList";
 	}
 }

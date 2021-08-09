@@ -51,5 +51,10 @@ public class likeProjectServiceImpl implements likeProjectService {
 	public int selectLikeListTotalRecord(likeProjectVO likeprojectVo) {
 		return likeprojectDao.selectLikeListTotalRecord(likeprojectVo);
 	}
+
+	@Override
+	public int deleteLikeByName(String projectName) {
+		return likeprojectDao.deleteLikeByName(projectName);
+	}
 	
 }

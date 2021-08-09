@@ -58,4 +58,10 @@
 		where user_nickname=#{userNickname}
 	</select>
 	
+	<update id="outUser" parameterType="String">
+		update users
+		set user_outdate=sysdate , out_flag='Y'
+		where user_email=#{userEmail}
+	</update>
+	
 </mapper>

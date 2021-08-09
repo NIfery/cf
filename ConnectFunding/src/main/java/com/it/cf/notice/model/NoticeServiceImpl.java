@@ -1,6 +1,7 @@
 package com.it.cf.notice.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -18,23 +19,17 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public List<NoticeVO> selectNotice(String noticeCategory) {
-		return noticeDao.selectNotice(noticeCategory);
+	public List<NoticeVO> selectNotice(NoticeVO noticeVo) {
+		return noticeDao.selectNotice(noticeVo);
 	}
 
-	@Override
-	public List<NoticeVO> selectEvent(String noticeCategory) {
-		return noticeDao.selectEvent(noticeCategory);
-	}
 
+	@Override public NoticeVO selectByNo(int noticeNo) {
+		return noticeDao.selectByNo(noticeNo); }
+	 
 	@Override
-	public List<NoticeVO> selectNews(String noticeCategory) {
-		return noticeDao.selectNews(noticeCategory);
-	}
-
-	@Override
-	public NoticeVO selectByNoticeNo(int noticeNo) {
-		return noticeDao.selectByNoticeNo(noticeNo);
+	public Map<String, Object> selectByNoticeNo(NoticeVO noticeVo) {
+		return noticeDao.selectByNoticeNo(noticeVo);
 	}
 
 	@Override
@@ -43,7 +38,23 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public int deleteNotice(int noticeNo) {
-		return noticeDao.deleteNotice(noticeNo);
+	public int deleteNotice(NoticeVO noticeVo) {
+		return noticeDao.deleteNotice(noticeVo);
 	}
+
+	@Override
+	public int selectTotalCount(NoticeVO noticeVo) {
+		return noticeDao.selectTotalCount(noticeVo);
+	}
+
+	@Override
+	public List<NoticeVO> selectAll(NoticeVO noticeVo) {
+		return noticeDao.selectAll(noticeVo);
+	}
+
+	@Override
+	public int TotalCountByCate(String noticeCategory) {
+		return noticeDao.TotalCountByCate(noticeCategory);
+	}
+
 }

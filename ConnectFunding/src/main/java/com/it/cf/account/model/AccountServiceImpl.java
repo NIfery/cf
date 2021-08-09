@@ -28,8 +28,18 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public int updateUserFlag(int userNo) {
-		return accountDao.updateUserFlag(userNo);
+	public int updateUserFlag(AccountVO accountVo) {
+		return accountDao.updateUserFlag(accountVo);
+	}
+
+	@Override
+	public String selectBusinessNo(int userNo) {
+		return accountDao.selectBusinessNo(userNo);
+	}
+
+	@Override
+	public int deleteBusinessNo(int userNo) {
+		return accountDao.deleteBusinessNo(userNo);
 	}
 
 }

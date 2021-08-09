@@ -43,10 +43,10 @@ public class NoticeFileUpload {
 			//=> 업로드된 파일을 임시파일 형태로 제공
 			
 			if(!tempFile.isEmpty()) {
-				String originFileName = tempFile.getOriginalFilename();
+				String originalFileName = tempFile.getOriginalFilename();
 				
 				//변경된 파일 이름
-				String fileName = getUniqueFileName(originFileName);
+				String fileName = getUniqueFileName(originalFileName);
 				
 				//업로드 경로
 				String uploadPath = getUploadPath(request, pathFlag);
@@ -57,7 +57,7 @@ public class NoticeFileUpload {
 				
 				Map<String, Object> map = new HashMap<>();
 				map.put("fileName", fileName);
-				map.put("originalFileName", originFileName);
+				map.put("originalFileName", originalFileName);
 				
 				list.add(map);
 			}

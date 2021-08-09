@@ -92,7 +92,7 @@
 												<div class="trand-right-img">
 													<c:if test="${empty map['USER_PROFILE'] }">
 														<img src="<c:url value='/assets/img/logo/user.png'/>"
-															style="width: 80px; height: 70px; margin: 40px 13px;">
+															style="width: 60px; height: 60px; margin: 40px 25px;">
 													</c:if>
 													<c:if test="${!empty map['USER_PROFILE'] }">
 														<div class="profile" style="margin: 30px 20px;">
@@ -158,7 +158,8 @@
 	$(document).ready(function(){
 		
 		/* $('#nav-home-tab').click(function(){
-			$('#one').load('${pageContext.request.contextPath}/mypageload/creators');
+			alert('안녕');
+			$('#one').load('${pageContext.request.contextPath}/mypages/follow');
 		}); */
 		
 		$('#nav-following-tab').click(function(){
@@ -172,7 +173,6 @@
 	});//
 
 	$(function(){
-		$('#followw').click(function(){
 			var data = $('#followingUserNo').val();
 			$.ajax({
 				url:"<c:url value='/mypageload/checkFollow'/>",
@@ -196,7 +196,6 @@
 					alert("error 발생..." + error);
 				}
 			});
-		});
 	}); 
 </script>	
 <%@ include file="../include/bottom.jsp"%>

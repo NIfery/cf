@@ -15,4 +15,5 @@ public interface CommentsDAO {
 	int CommentsReply(CommentsVO vo);
 	int UpdateSortNo(CommentsVO vo);
 	List<Map<Object, Object>> ShowProfileImg();
+	int UserCommentsCount(String userNickName);
 }

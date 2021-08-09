@@ -55,6 +55,11 @@ public class CommentsServiceImpl implements CommentsService {
 	public List<Map<Object, Object>> ShowProfileImg() {
 		return CommentsDao.ShowProfileImg();
 	}
+
+	@Override
+	public int UserCommentsCount(String userNickName) {
+		return CommentsDao.UserCommentsCount(userNickName);
+	}
 	 
 
 

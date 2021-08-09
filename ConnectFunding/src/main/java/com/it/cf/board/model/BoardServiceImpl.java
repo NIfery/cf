@@ -61,13 +61,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<Map<Object, Object>> UserBoard(SearchVO searchVO) {
-		return boardDao.UserBoard(searchVO);
+	public List<Map<Object, Object>> UserBoard(String userNickName) {
+		return boardDao.UserBoard(userNickName);
 	}
 
 	@Override
-	public int TotalRecord2(SearchVO searchVo) {
-		return boardDao.TotalRecord2(searchVo);
+	public int TotalRecord2(String userNickName) {
+		return boardDao.TotalRecord2(userNickName);
 	}
 
 }

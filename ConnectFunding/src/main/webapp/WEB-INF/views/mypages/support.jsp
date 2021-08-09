@@ -214,5 +214,4 @@ function pageProc(curPage){
    $('form[name=frmSupport]').submit();   
 }
 </script>
-
 <%@ include file="../include/bottom.jsp"%>

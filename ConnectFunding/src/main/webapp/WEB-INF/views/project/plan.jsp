@@ -55,6 +55,13 @@
     padding: 15px 10px;
     background: rgb(255, 87, 87);
 }
+
+.button1{
+    border-radius: 20px;
+    margin-top: 20px;
+    padding: 15px 10px;
+    background: rgb(229 229 229);
+}
 </style>
 <div>
 	<div class="div1">
@@ -62,7 +69,7 @@
 			<section class="section1">
 				<figure class="f1">
 					<img src="<c:url value='/project_assets/projectImg/${plan["PROJECT_IMAGE"]}'/>"
-						style="width: 500px; height: 350px; ">
+						style="width: 500px; height: 400px; ">
 				</figure>
 			</section>
 			<div class="div3">
@@ -85,12 +92,22 @@
 									<fmt:formatDate value="${plan['PROJECT_STARTDATE']}" pattern="yyyy년 MM월 dd일"/>
 									<span>공개 예정</span>
 								</div>
-								<div class="button">
-									<a href="#" style="color: white;">
-										<img src="<c:url value='/assets/img/ssong/alarm.png'/>" style="width: 30px; margin-left: 100px;">
-										<span style="margin-left: 10px; font-size: 1.2em;">알림신청 (${count }명 신청중)</span>
-									</a>
-								</div>
+								<c:if test="${informCheck=='1' }">
+									<div class="button1">
+										<a href="<c:url value='/mypages/deleteInform?projectNo=${plan["PROJECT_NO"]}'/>" style="color: #ff4747;">
+											<img src="<c:url value='/assets/img/ssong/alarm.png'/>" style="width: 30px; margin-left: 100px;">
+											<span style="margin-left: 10px; font-size: 1.2em;">알림신청 완료 (${count }명 신청중)</span>
+										</a>
+									</div>
+								</c:if>
+								<c:if test="${informCheck=='0' }">
+									<div class="button">
+										<a href="<c:url value='/mypages/addInform?projectNo=${plan["PROJECT_NO"]}'/>" style="color: white;">
+											<img src="<c:url value='/assets/img/ssong/alarm.png'/>" style="width: 30px; margin-left: 100px;">
+											<span style="margin-left: 10px; font-size: 1.2em;">알림신청 (${count }명 신청중)</span>
+										</a>
+									</div>
+								</c:if>
 							</div>
 						</div>
 					</div>
@@ -98,5 +115,17 @@
 			</div>
 		</div>
 	</div>
+	
+	<article>
+	<c:import url="/project/randomList"></c:import>
+	</article>
 </div>
+<script type="text/javascript">
+var result = '${msg}';
+if (result == 'success') {
+        alert("알림신청이 완료되었습니다.");
+}else if(result == 'fail'){
+	 alert("알림신청이 취소되었습니다.");
+}
+</script>
 <%@ include file="../include/bottom.jsp" %>  

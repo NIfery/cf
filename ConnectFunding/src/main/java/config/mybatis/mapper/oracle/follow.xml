@@ -9,7 +9,7 @@
 		values(#{following}, #{followingUserNo}, #{userNo})
 	</insert>
 
-	<select id="selectFollowing" parameterType="int" resultType="followVo">
+<!-- 	<select id="selectFollowing" parameterType="int" resultType="followVo">
 		select user_name, user_profile, user_intro, user_no
 		from users
 		where user_no in
@@ -17,18 +17,59 @@
 		select  following_user_no
 		from follow
 		where user_no=#{userNo})
+	</select> -->
+	
+	<select id="selectFollowing" parameterType="followVo" resultType="map">
+		select *
+		from
+		(
+		        select rownum as RNUM , A.* 
+		        from  
+		    (
+				select user_name, user_profile, user_intro, user_no
+				from users
+				where user_no in
+				(
+				select  following_user_no
+				from follow
+				where user_no=#{userNo})
+		    )A   
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
 	</select>
 	
 	<select id="projectCount" parameterType="int" resultType="int">
 		select count(*) from project 
 		where user_no=#{userNo}
 	</select>
-	
+<!-- 	
 	<select id="selectFollower" resultType="followVo" parameterType="int">
 		select u.user_name, u.user_no,  u.user_profile, u.user_intro, f.follow_check
 		from follow f join users u
 		on f.user_no=u.user_no
 		where following_user_no=#{followingUserNo}
+	</select> -->
+	
+	<select id="selectFollower" resultType="map" parameterType="followVo">
+		select *
+		from
+		(
+		        select rownum as RNUM , A.* 
+		        from  
+		    (
+			select u.user_name, u.user_no,  u.user_profile, u.user_intro, f.follow_check
+			from follow f join users u
+			on f.user_no=u.user_no
+			where following_user_no=#{followingUserNo}
+		    )A   
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
 	</select>
 	
 	<select id="checkFollow" resultType="int" parameterType="int">
@@ -57,4 +98,14 @@
 		set follow_check=0
 		where user_no=#{userNo}
 	</update>
+	
+	<select id="followCount" parameterType="int" resultType="int">
+		select count(*) from follow
+		where user_no=#{userNo}
+	</select>
+	
+	<select id="followerCount" parameterType="int" resultType="int">
+		select count(*) from follow
+		where following_user_no=#{followingUserNo}
+	</select>
 </mapper>

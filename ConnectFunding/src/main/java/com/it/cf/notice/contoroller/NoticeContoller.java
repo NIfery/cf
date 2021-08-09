@@ -50,7 +50,7 @@ public class NoticeContoller {
 		
 		PaginationInfo pageInfo = new PaginationInfo();
 		pageInfo.setCurrentPage(noticeVo.getCurrentPage());
-		pageInfo.setBlockSize(2);
+		pageInfo.setBlockSize(5);
 		pageInfo.setRecordCountPerPage(5);
 		
 		noticeVo.setFirstRecordIndex(pageInfo.getFirstRecordIndex());
@@ -77,7 +77,7 @@ public class NoticeContoller {
 		
 		PaginationInfo pageInfo = new PaginationInfo();
 		pageInfo.setCurrentPage(noticeVo.getCurrentPage());
-		pageInfo.setBlockSize(2);
+		pageInfo.setBlockSize(5);
 		pageInfo.setRecordCountPerPage(5);
 		
 		noticeVo.setFirstRecordIndex(pageInfo.getFirstRecordIndex());

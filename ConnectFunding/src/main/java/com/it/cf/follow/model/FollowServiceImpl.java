@@ -1,6 +1,7 @@
 package com.it.cf.follow.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -23,13 +24,13 @@ public class FollowServiceImpl implements FollowService {
 	}
 
 	@Override
-	public List<FollowVO> selectFollowing(int userNo) {
-		return followDao.selectFollowing(userNo);
+	public List<Map<String, Object>> selectFollowing(FollowVO followVo) {
+		return followDao.selectFollowing(followVo);
 	}
 
 	@Override
-	public List<FollowVO> selectFollower(int followingUserNo) {
-		return followDao.selectFollower(followingUserNo);
+	public List<Map<String, Object>> selectFollower(FollowVO followVo) {
+		return followDao.selectFollower(followVo);
 	}
 
 	@Override
@@ -64,5 +65,15 @@ public class FollowServiceImpl implements FollowService {
 	@Override
 	public int updateFollow(int userNo) {
 		return followDao.updateFollow(userNo);
+	}
+
+	@Override
+	public int followCount(int userNo) {
+		return followDao.followCount(userNo);
+	}
+
+	@Override
+	public int followerCount(int followingUserNo) {
+		return followDao.followerCount(followingUserNo);
 	}//
 }

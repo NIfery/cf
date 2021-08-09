@@ -1,5 +1,8 @@
 package com.it.cf.follow.model;
 
+import java.sql.Timestamp;
+
+import com.it.cf.common.SearchVO;
 import com.it.cf.user.model.UserVO;
 
 import lombok.Getter;
@@ -9,7 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class FollowVO extends UserVO {
+public class FollowVO extends SearchVO {
 
 	private String following;	//내가 팔로우한 사람들
 	private String followers;	//나를 팔로우한 사람들

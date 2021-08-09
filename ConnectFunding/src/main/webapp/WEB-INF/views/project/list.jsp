@@ -47,7 +47,16 @@
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
       <script type="text/javascript">
          var totalCount=0;
-      
+         var today = getFormatDate(new Date());
+         function getFormatDate(date){
+     		var year = date.getFullYear();
+     		var month = (1 + date.getMonth());
+     		month = month >= 10 ? month : '0' + month;
+     		var day = date.getDate();
+     		day = day >= 10 ? day : '0' + day;
+     		return year + '-' + month + '-' + day;
+     	 }
+         
          $(function(){
             $('.dropdown-submenu a.test').on("click", function(e){
                $(this).next('ul').toggle();
@@ -58,11 +67,10 @@
                e.preventDefault();
             });
             
-            
-            
             $('#btWrite').click(function(){
                location.href="<c:url value='/project/writeMain'/>";
             });
+            
          });
          
          function send(curPage) {
@@ -122,9 +130,15 @@
                      $.each(list, function(idx,item){
                         if(idx<4){
                            str+="<div class='weekly2-single'><div class='weekly2-img'>";
-                           str+="<a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'><img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></a></div>";
-                           str+="<div class='weekly2-caption'><span></span>";
-                           str+="<h4><a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'>"+item.projectName+"</a></h4>";
+                           if((today>=moment(item.projectStartdate).format("YYYY-MM-DD"))){
+	                           str+="<a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'><img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></a></div>";
+	                           str+="<div class='weekly2-caption'><span></span>";
+	                           str+="<h4><a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'>"+item.projectName+"</a></h4>";
+                           }else{
+                        	   str+="<a href='${pageContext.request.contextPath}/project/plan?projectNo="+item.projectNo+"'><img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></a></div>";
+	                           str+="<div class='weekly2-caption'><span></span>";
+	                           str+="<h4><a href='${pageContext.request.contextPath}/project/plan?projectNo="+item.projectNo+"'>"+item.projectName+"</a></h4>";
+                           }
                            str+="<p>"+moment(item.projectRegdate).format("YYYY-MM-DD")+"</p>";
                            str+="<h6>"+item.projectSummary+"</h6>";
                            
@@ -144,9 +158,15 @@
                         $.each(list, function(idx,item){
                            if(idx>=4){
                               str+="<div class='weekly2-single'><div class='weekly2-img'>";
-                              str+="<a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'><img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></a></div>";
-                              str+="<div class='weekly2-caption'><span></span>";
-                              str+="<h4><a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'>"+item.projectName+"</a></h4>";
+                              if((today>=moment(item.projectStartdate).format("YYYY-MM-DD"))){
+   	                           str+="<a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'><img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></a></div>";
+   	                           str+="<div class='weekly2-caption'><span></span>";
+   	                           str+="<h4><a href='${pageContext.request.contextPath}/project/detail?projectNo="+item.projectNo+"'>"+item.projectName+"</a></h4>";
+                              }else{
+                           	   str+="<a href='${pageContext.request.contextPath}/project/plan?projectNo="+item.projectNo+"'><img src='${pageContext.request.contextPath}/project_assets/projectImg/"+item.projectImage+"' style='width:263px; height:170px'></a></div>";
+   	                           str+="<div class='weekly2-caption'><span></span>";
+   	                           str+="<h4><a href='${pageContext.request.contextPath}/project/plan?projectNo="+item.projectNo+"'>"+item.projectName+"</a></h4>";
+                              }
                               str+="<p>"+moment(item.projectRegdate).format("YYYY-MM-DD")+"</p>";
                               str+="<h6>"+item.projectSummary+"</h6>";
 
@@ -212,9 +232,18 @@
             var regexp = /\B(?=(\d{3})+(?!\d))/g;
             return num.toString().replace(regexp, ',');
          }
+         
+         var result = '${msg}';
+         if (result == 'success') {
+                 alert("좋아한 프로젝트에 추가되었습니다.");
+         }else if(result == 'fail'){
+        	 alert("삭제되었습니다.");
+         }
 
       </script>   
 <br>
+	<c:set var="today" value="<%=new java.util.Date()%>" />
+	<c:set var="todayDate"><fmt:formatDate value="${today}" pattern="yyyy-MM-dd hh:mm:ss" /></c:set>
     <div class="weekly-news-area pt-50">
         <div class="container">
            <div class="weekly-wrapper">
@@ -297,14 +326,25 @@
                          </c:if>
                          <c:if test="${!empty list }">
                             <c:forEach var="vo" items="${list }" begin="0" end="3">
-                               <div class="weekly2-single">
+                               <div class="weekly2-single" style="width: 270px;">
                                       <div class="weekly2-img">
-                                          <a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>"><img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
-                                             style="width:263px; height:170px"></a>
+	                                      <c:if test="${todayDate<vo.projectStartdate }">
+	                                      	  <a href="<c:url value="/project/plan?projectNo=${vo.projectNo }"/>"><img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
+		                                             style="width:263px; height:170px"></a>
+	                                      </c:if>
+	                                      <c:if test="${todayDate>=vo.projectStartdate }">
+		                                      <a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>"><img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
+		                                             style="width:263px; height:170px"></a>
+	                                      </c:if>
                                       </div>
                                       <div class="weekly2-caption">
                                           <span></span>
-                                          <h4><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
+                                          <c:if test="${todayDate<vo.projectStartdate }">
+	                                      	<h4 style="height: 60px;"><a href="<c:url value="/project/plan?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
+	                                      </c:if>
+	                                      <c:if test="${todayDate>=vo.projectStartdate }">
+                                          	<h4 style="height: 60px;"><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
+                                          </c:if>
                                           <p><fmt:formatDate value="${vo.projectRegdate }" pattern="yyyy-MM-dd"/></p>
                                           <h6>${vo.projectSummary }</h6>
                                           <div class="percentage">
@@ -313,8 +353,14 @@
                                           aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                  </div>
+                                 <div style="display: flex;">
                                           <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
                                           <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
+                                          <a href="<c:url value='/mypages/addLikeProject?projectNo=${vo.projectNo }'/>" style="color: red;">
+												<img src="${pageContext.request.contextPath}/assets/img/ssong/no_heart.png"
+													style="width: 20px; margin-left: 100px; "  >
+											</a>
+                                     </div>
                                       </div>
                                   </div> 
                             </c:forEach>
@@ -339,14 +385,14 @@
                         <div class="dot-style d-flex dot-style">
                             <c:if test="${!empty list && fn:length(list)>4}">
                             <c:forEach var="vo" items="${list }" begin="4">
-                            <div class="weekly2-single">
+                            <div class="weekly2-single" style="width: 270px;">
                                      <div class="weekly2-img">
                                          <a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>"><img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
                                                style="width:263px; height:170px"></a>
                                      </div>
                                      <div class="weekly2-caption">
                                          <span></span>
-                                         <h4><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
+                                         <h4 style="height: 60px;"><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
                                          <p><fmt:formatDate value="${vo.projectRegdate }" pattern="yyyy-MM-dd"/></p>
                                          <h6>${vo.projectSummary }</h6>
                                          <div class="percentage">
@@ -355,8 +401,14 @@
                                           aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                  </div>
+                                 	<div style="display: flex;">
                                          <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
                                          <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
+                                          <a href="<c:url value='/mypages/addLikeProject?projectNo=${vo.projectNo }'/>"  style="color: red;">
+												<img src="${pageContext.request.contextPath}/assets/img/ssong/no_heart.png"
+													style="width: 20px; margin-left: 100px; " >
+											</a>
+									</div>
                                      </div>
                                  </div> 
                          </c:forEach>

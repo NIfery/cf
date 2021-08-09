@@ -496,7 +496,7 @@ public class ProjectController {
 		logger.info("프로젝트 랜덤 목록(import용)");
 		
 		List<Map<String, Object>> random = projectService.randomList();
-		logger.info("random={}", random.size());
+		logger.info("random={}", random);
 		
 		model.addAttribute("random", random);
 		

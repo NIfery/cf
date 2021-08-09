@@ -210,6 +210,20 @@ $(document).ready(function(){
                             <a href="<c:url value='/'/>" target="_blank">
                                 <i class="fas fa-home"></i>회원페이지 열기</a>
                         </li>
+                        <li class="nav-item dropdown"> 
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-download"></i>엑셀로 저장
+                                <span class="caret"></span>
+                            </a>
+							<div class="dropdown-menu">
+								<form action="<c:url value='/admin/membershipDownload'/>" method="post">
+									<input type="submit" class="dropdown-item" value="회원정보 다운로드">									
+								</form>
+								<form action="<c:url value='/admin/FundingDownload'/>" method="post">
+									<input type="submit" class="dropdown-item" value="등록펀딩 현황">									
+								</form>
+							</div>
+						</li>
 				</c:if>
 					</ul>
 				</nav>	

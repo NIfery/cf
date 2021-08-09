@@ -215,22 +215,27 @@
 						    	<div class="row row-cols-1">
 									<!-- 현재날짜 -->
 							    	<c:set var="today" value="<%=new java.util.Date()%>" />
-							    	<c:set var="todayDate"><fmt:formatDate value="${today}" pattern="yyyy-MM-dd" /></c:set>
-							    	<fmt:parseDate value="${todayDate }" var="ckTodayDate" pattern="yyyy-MM-dd"/>
+							    	<c:set var="todayDate"><fmt:formatDate value="${today}" pattern="yyyy-MM-dd hh:mm:ss" /></c:set>
+							    	<fmt:parseDate value="${todayDate }" var="ckTodayDate" pattern="yyyy-MM-dd hh:mm:ss"/>
+							    	<fmt:parseDate value="${todayDate }" var="ckTodayDate2" pattern="yyyy-MM-dd hh:mm:ss"/>
 									<fmt:parseNumber value="${ckTodayDate.time / (1000*60*60*24)}" integerOnly="true" var="ckTodayDate"></fmt:parseNumber>
+									<fmt:parseNumber value="${ckTodayDate2.time}" integerOnly="true" var="ckTodayDate2"></fmt:parseNumber>
 									<!-- 프로젝트 기간 -->
 							    	<fmt:parseDate value="${map['PROJECT_STARTDATE'] }" var="strPlanDate" pattern="yyyy-MM-dd"/>
 									<fmt:parseNumber value="${strPlanDate.time / (1000*60*60*24)}" integerOnly="true" var="strDate"></fmt:parseNumber>
+									<fmt:parseNumber value="${strPlanDate.time}" integerOnly="true" var="strDate2"></fmt:parseNumber>
 									<fmt:parseDate value="${map['PROJECT_ENDDATE'] }" var="endPlanDate" pattern="yyyy-MM-dd"/>
 									<fmt:parseNumber value="${endPlanDate.time / (1000*60*60*24)}" integerOnly="true" var="endDate"></fmt:parseNumber>
-									<c:if test="${ckTodayDate<strDate }">
+									<fmt:parseNumber value="${endPlanDate.time}" integerOnly="true" var="endDate2"></fmt:parseNumber>
+									<input type="hidden" value="${map['PROJECT_ENDDATE'] }" id="endDateFrm">
+									<c:if test="${ckTodayDate2<strDate2 }">
 							    		<h2 style="margin: 5px 0px 20px -10px">펀딩 시작 대기중</h2>
 									</c:if>
-									<c:if test="${ckTodayDate>=strDate }">
-										<c:if test="${ckTodayDate<=endDate }">
+									<c:if test="${ckTodayDate2>=strDate2 }">
+										<c:if test="${ckTodayDate2<=endDate2 }">
 								    		<h2 style="margin: 5px 0px 20px -10px">${endDate-ckTodayDate }일</h2>
 										</c:if>
-										<c:if test="${ckTodayDate>endDate }">
+										<c:if test="${ckTodayDate2>endDate2 }">
 								    		<h2 style="margin: 5px 0px 20px -10px">종료되었습니다.</h2>
 										</c:if>
 									</c:if>
@@ -249,11 +254,11 @@
 						    	
 						    	<div class="row row-cols-1">
 						    		<c:if test="${userVo.userNo!=map['USER_NO'] }">
-						    			<c:if test="${ckTodayDate<strDate }">
+						    			<c:if test="${ckTodayDate2<strDate2 }">
 								    		<h2 style="margin: 5px 0px 20px -10px">펀딩 시작 대기중</h2>
 										</c:if>
-										<c:if test="${ckTodayDate>=strDate }">
-											<c:if test="${ckTodayDate<=endDate }">
+										<c:if test="${ckTodayDate2>=strDate2 }">
+											<c:if test="${ckTodayDate2<=endDate2 }">
 												<c:if test="${check['LIKECHECK']=='1' }">
 													<div style="border: 1px solid #e4e1e1; width: 50px; height: 50px; border-radius: 10px;">
 														<a href="#" id="deleteLike">
@@ -334,23 +339,23 @@
 												</div>
 												<!-- 모달 -->
 											</c:if>
-											<c:if test="${ckTodayDate>endDate }">
-									    		<h2 style="margin: 5px 0px 20px -10px">종료되었습니다.</h2>
+											<c:if test="${ckTodayDate2>endDate2 }">
+										    	<h2 style="margin: 5px 0px 20px -10px">종료되었습니다.</h2>
 											</c:if>
 										</c:if>
 										
 										
 						    		</c:if>
-
-							    	<c:if test="${userVo.userNo==map['USER_NO'] }">
-						    			<c:if test="${ckTodayDate2<=endDate2 }">
-								    		<a href="<c:url value='/project/update?projectNo=${map["PROJECT_NO"] }'/>">[수정]</a> 
-								    		<a href="#" data-toggle="modal" data-target="#myModal2">[삭제]</a>
-							    		</c:if>
-							    		<c:if test="${ckTodayDate2>endDate2 }">
+						    		<c:if test="${userVo.userNo==map['USER_NO'] }">
+								    	<c:if test="${ckTodayDate2<=endDate2 }">
+									   		<a href="<c:url value='/project/update?projectNo=${map["PROJECT_NO"] }'/>">[수정]</a> 
+									   		<a href="#" data-toggle="modal" data-target="#myModal2">[삭제]</a>
+									  	</c:if>
+									  	<c:if test="${ckTodayDate2>endDate2 }">
 									    	<h2 style="margin: 5px 0px 20px -10px">종료되었습니다.</h2>
-									</c:if>
-						    		</c:if>
+										</c:if>
+								    </c:if>
+								    		
 						    		<div class="modal fade" id="myModal2" data-backdrop="static" tabindex="-1" role="dialog"
 									aria-labelledby="staticBackdropLabel" aria-hidden="true">
 									<div class="modal-dialog" role="document">

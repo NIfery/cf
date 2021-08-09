@@ -71,6 +71,16 @@ $(document).ready(function(){
 		}
 	});
 });
+
+function logout(){
+	var con = confirm("로그아웃 하시겠습니까?");
+	if(con == true){
+		alert('로그아웃 되었습니다.');
+		$("#logout").attr("href", "<c:url value='/admin/logout'/>");
+	}else{
+		return;
+	}
+}
 </script>
 <body class="animsition">
     <div class="page-wrapper">
@@ -270,7 +280,7 @@ $(document).ready(function(){
 												</a>
 	                                    </div>
 			                            <a class="fas  fa-key" data-toggle="modal" data-target="#myModal" href="#"> 비밀번호 변경</a>&emsp;
-			                            <a class="fas  fa-power-off" href="<c:url value='/admin/login/logout'/>" onclick="if(!confirm('정말로 로그아웃 하시겠습니까?')){return false;}"> 로그아웃</a>
+			                            <a class="fas  fa-power-off" id="logout" href="#" onclick="logout()"> 로그아웃</a>
 	                                </div>
                             </c:if>
                     </div>

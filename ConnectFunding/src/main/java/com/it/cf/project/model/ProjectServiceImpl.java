@@ -100,10 +100,11 @@ public class ProjectServiceImpl implements ProjectService{
 		return projectDao.deleteFunding(receiptId);
 	}
 	
+	@Override
 	public List<FundingListVO> selectFundingListByProjectNo(int projectNo) {
 		return projectDao.selectFundingListByProjectNo(projectNo);
 	}
-	
+
 	@Override
 	public Map<String, Object> checkLike(int projectNo) {
 		return projectDao.checkLike(projectNo);
@@ -117,5 +118,15 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public int planCount(int projectNo) {
 		return projectDao.planCount(projectNo);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectplan() {
+		return projectDao.selectplan();
+	}
+
+	@Override
+	public List<Map<String, Object>> randomList() {
+		return projectDao.randomList();
 	}
 }

@@ -32,4 +32,6 @@ public interface ProjectService {
 	Map<String, Object> checkLike(int projectNo);
 	Map<String, Object> selectPlanProject(int projectNo);
 	int planCount (int projectNo);
+	List<Map<String, Object>> selectplan();
+	List<Map<String, Object>> randomList();
 }

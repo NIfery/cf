@@ -63,6 +63,7 @@
             $('#btWrite').click(function(){
                location.href="<c:url value='/project/writeMain'/>";
             });
+            
          });
          
          function send(curPage) {
@@ -212,6 +213,13 @@
             var regexp = /\B(?=(\d{3})+(?!\d))/g;
             return num.toString().replace(regexp, ',');
          }
+         
+         var result = '${msg}';
+         if (result == 'success') {
+                 alert("좋아한 프로젝트에 추가되었습니다.");
+         }else if(result == 'fail'){
+        	 alert("삭제되었습니다.");
+         }
 
       </script>   
 <br>
@@ -297,14 +305,14 @@
                          </c:if>
                          <c:if test="${!empty list }">
                             <c:forEach var="vo" items="${list }" begin="0" end="3">
-                               <div class="weekly2-single">
+                               <div class="weekly2-single" style="width: 270px;">
                                       <div class="weekly2-img">
                                           <a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>"><img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
                                              style="width:263px; height:170px"></a>
                                       </div>
                                       <div class="weekly2-caption">
                                           <span></span>
-                                          <h4><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
+                                          <h4 style="height: 60px;"><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
                                           <p><fmt:formatDate value="${vo.projectRegdate }" pattern="yyyy-MM-dd"/></p>
                                           <h6>${vo.projectSummary }</h6>
                                           <div class="percentage">
@@ -313,8 +321,14 @@
                                           aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                  </div>
+                                 <div style="display: flex;">
                                           <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
                                           <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
+                                          <a href="<c:url value='/mypages/addLikeProject?projectNo=${vo.projectNo }'/>" style="color: red;">
+												<img src="${pageContext.request.contextPath}/assets/img/ssong/no_heart.png"
+													style="width: 20px; margin-left: 100px; "  >
+											</a>
+                                     </div>
                                       </div>
                                   </div> 
                             </c:forEach>
@@ -339,14 +353,14 @@
                         <div class="dot-style d-flex dot-style">
                             <c:if test="${!empty list && fn:length(list)>4}">
                             <c:forEach var="vo" items="${list }" begin="4">
-                            <div class="weekly2-single">
+                            <div class="weekly2-single" style="width: 270px;">
                                      <div class="weekly2-img">
                                          <a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>"><img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
                                                style="width:263px; height:170px"></a>
                                      </div>
                                      <div class="weekly2-caption">
                                          <span></span>
-                                         <h4><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
+                                         <h4 style="height: 60px;"><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
                                          <p><fmt:formatDate value="${vo.projectRegdate }" pattern="yyyy-MM-dd"/></p>
                                          <h6>${vo.projectSummary }</h6>
                                          <div class="percentage">
@@ -355,8 +369,14 @@
                                           aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                  </div>
+                                 	<div style="display: flex;">
                                          <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
                                          <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
+                                          <a href="<c:url value='/mypages/addLikeProject?projectNo=${vo.projectNo }'/>"  style="color: red;">
+												<img src="${pageContext.request.contextPath}/assets/img/ssong/no_heart.png"
+													style="width: 20px; margin-left: 100px; " >
+											</a>
+									</div>
                                      </div>
                                  </div> 
                          </c:forEach>

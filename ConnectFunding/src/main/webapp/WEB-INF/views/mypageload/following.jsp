@@ -37,6 +37,9 @@
     background: #fff;
 }
 
+.page-link{
+	background-color: white;
+}
 </style>
 <div>	
 	<c:if test="${empty followlist }">
@@ -55,19 +58,19 @@
 		</div>
 	</c:if>	
 	<c:if test="${!empty followlist }">
-		<c:forEach var="followVo" items="${followlist }">
+		<c:forEach var="map" items="${followlist }">
 			<div class="wrap" style="height: 115px; width: 800px; margin-top: 15px; border-bottom: 1px solid #d4cece">
 				<div class="trand-right-single d-flex">
 					<div class="trand-right-img">
-						<c:if test="${empty followVo.userProfile }">
+						<c:if test="${empty map['USER_PROFILE']}">
 							<div class="profile" style="margin: 20px 20px;">
 								<img src="<c:url value='/assets/img/logo/user.png'/>"
 									style="width: 60px; height: 60px; margin: 5px 5px;">
 							</div>
 						</c:if>
-						<c:if test="${!empty followVo.userProfile}">
+						<c:if test="${!empty map['USER_PROFILE']}">
 							<div class="profile" style="margin: 20px 20px;">
-								<img src="<c:url value='/profile_img/${followVo.userProfile}'/>"
+								<img src="<c:url value='/profile_img/${map["USER_PROFILE"]}'/>"
 									style="width: 70px; height: 70px;">
 							</div>
 						</c:if>
@@ -76,12 +79,12 @@
 						style="margin: 10px 25px; width: 470px;">
 						<span class="color1">
 							<p style="font-size: 1.1em;">
-								<strong>${followVo.userName}</strong>
+								<strong>${map['USER_NAME']}</strong>
 							</p>
 						</span> 
 						<span> 
-							<c:if test="${!empty followVo.userIntro}">
-								<span style="color: black;">${followVo.userIntro}</span>
+							<c:if test="${!empty map['USER_INTRO']}">
+								<span style="color: black;">${map['USER_INTRO']}</span>
 							</c:if>
 						</span>
 						<span style="font-size: 0.9em;"><br>
@@ -102,7 +105,7 @@
 									<button type="button" class="genric-btn primary-border circle arrow" 
 										data-dismiss="modal">취소</button>
 									<button type="button" class="genric-btn danger-border circle arrow"
-										onclick="location.href='<c:url value="/mypageload/unfollow?no=${followVo.userNo }"/>'">
+										onclick="location.href='<c:url value="/mypageload/unfollow?no=${map['USER_NO'] }"/>'">
 									확인</button>
 								</div>
 							</div>
@@ -112,5 +115,45 @@
 			</div>
 		</c:forEach>
 	</c:if>	
+	<!-- 페이징처리 -->
+	<div style="margin-right: 400px;">
+	<nav class="blog-pagination justify-content-center d-flex">
+			<ul class="pagination">
+				<c:if test="${pageInfo.firstPage>1 }">
+					<li class="page-item"><a href="#" class="page-link"
+						onclick="pageProc(${pageInfo.firstPage-1})" aria-label="Previous">
+							<i class="ti-angle-left"></i>
+					</a></li>
+				</c:if>
+
+				<c:forEach var="i" begin="${pageInfo.firstPage }"
+					end="${pageInfo.lastPage}">
+					<c:if test="${i==pageInfo.currentPage }">
+						<li class="page-item active"><a href="#" class="page-link">${i}</a>
+						</li>
+					</c:if>
+					<c:if test="${i!=pageInfo.currentPage }">
+						<a href="#" onclick="pageProc(${i})" class="page-link">${i}</a>
+					</c:if>
+				</c:forEach>
+
+				<c:if test="${pageInfo.lastPage < pageInfo.totalPage }">
+					<li class="page-item"><a href="#" class="page-link"
+						onclick="pageProc(${pageInfo.lastPage+1})"> <i
+							class="ti-angle-right"></i></a></li>
+				</c:if>
+			</ul>
+		</nav>
+	<!-- 페이징처리 끝 -->
+	</div>
+	<form action="<c:url value='/mypageload/following'/>" name="frmSupport" method="post">
+		<input type="hidden" name="currentPage"><br> 
+	</form>
 </div>
+<script type="text/javascript">
+function pageProc(curPage){
+	$('input[name=currentPage]').val(curPage);
+ 	$('form[name=frmSupport]').submit();	
+ }
+</script>
 

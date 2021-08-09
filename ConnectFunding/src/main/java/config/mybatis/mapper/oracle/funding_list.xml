@@ -22,7 +22,28 @@
 		from funding_list right join project on project.project_no=funding_list.project_no
 		join users on project.user_no=users.user_no
 		where funding_list.user_no=#{userNo}
+		group by users.user_name, users.user_intro, users.user_profile, users.user_no
 	</select>
+
+<!-- 	<select id="selectFundingList" parameterType="searchVo" resultType="map">
+		select *
+		from
+		(
+		        select rownum as RNUM , A.* 
+		        from  
+		    (
+			select users.user_name, users.user_intro, users.user_profile, users.user_no
+			from funding_list right join project on project.project_no=funding_list.project_no
+			join users on project.user_no=users.user_no
+			where funding_list.user_no=#{userNo}
+			group by users.user_name, users.user_intro, users.user_profile, users.user_no
+		    )A   
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
+	</select> -->
 	
 <!-- 	<select id="selectFundingList" parameterType="int" resultType="map">
 		select users.user_name, users.user_intro, users.user_profile, users.user_no, follow.follow_check

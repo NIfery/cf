@@ -152,6 +152,13 @@
 		day = day >= 10 ? day : '0' + day;
 		return year + '-' + month + '-' + day;
 	}
+	
+	 var result = '${msg}';
+     if (result == 'success') {
+             alert("좋아한 프로젝트에 추가되었습니다.");
+     }else if(result == 'fail'){
+    	 alert("삭제되었습니다.");
+     }
 </script>
 <style type="text/css">
 	.detailRow{

@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../include/top.jsp"%>
+<script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/ssong.css">
 <style type="text/css">
 .div_1 {
@@ -50,7 +51,7 @@
 							<option value="마감 임박순">마감 임박순</option>
 						</select>
 					</div> -->
-				<div class="form-group" style="width: 250px; margin-left: 250px;">
+				<div class="form-group" style="width: 250px;">
 					<div class="input-group mb-3">
 						<form action="<c:url value='/mypages/likeProject'/>" name="frmSearch"
 							method="post">
@@ -70,7 +71,7 @@
 							</select>
 								<button class="btns" type="submit"
 									style="background: none; border: 1px; color: black;">
-									&nbsp<i class="fas fa-search special-tag"></i>
+									<i class="fas fa-search special-tag"></i>
 								</button>
 							</span>
 						</form>
@@ -168,8 +169,14 @@
 </form>
 <script type="text/javascript">
 function pageProc(curPage){
+	console.log($('input[name=currentPage]').val(curPage));
 	$('input[name=currentPage]').val(curPage);
-	$('form[name=frmSupport]').submit();	
+ 	$('form[name=frmSupport]').submit();	
+ }
+ 
+var result = '${msg}';
+if (result == 'success') {
+        alert("삭제되었습니다.");
 }
 </script>
 

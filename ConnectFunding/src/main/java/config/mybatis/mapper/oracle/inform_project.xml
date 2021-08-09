@@ -12,14 +12,54 @@
 		values(#{informProjectNo}, #{projectNo}, #{userNo})
 	</insert>
 
-	<select id="selectInformProject" parameterType="int" resultType="map">
+<!-- 	<select id="selectInformProject" parameterType="int" resultType="map">
 		select * from informProjectView
 		where user_no=#{userNo}
 		order by opendate
+	</select> -->
+	
+	<select id="selectInformProject" parameterType="informProjectVo" resultType="map">
+			select *
+		from
+		(
+		        select rownum as RNUM , A.* 
+		        from  
+		    (
+			select * from informProjectView
+			where user_no=#{userNo} and opendate>=0
+			order by opendate
+		    )A   
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="informTotalCount" parameterType="int" resultType="int">
+		select count(*) from informProjectView         
+		where user_no=#{userNo} and opendate>=0
 	</select>
 	
 	<delete id="deleteinformProject" parameterType="int">
 		delete informProjectView where project_no=#{projectNo}
+	</delete>
+	
+	<update id="updateCheck" parameterType="int">
+		update inform_project
+		set inform_check=1
+		where project_no=#{projectNo}
+	</update>
+	
+	<select id="informCheck" parameterType="int" resultType="int">
+		select count(*)
+		from inform_project
+		where user_no=#{userNo} and project_no=#{projectNo}
+	</select>
+
+	<delete id="deleteInform" parameterType="int"> 
+		delete inform_project 
+		where user_no=#{userNo} and project_no=#{projectNo}
 	</delete>
 </mapper>
 

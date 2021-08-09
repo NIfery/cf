@@ -8,7 +8,8 @@
 <link rel="stylesheet" href="../_vendor/prismjs/themes/prism-okaidia.css">
 <link rel="stylesheet" href="../_assets/css/custom.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/ssong.css">
-<title>마이페이지</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <style type="text/css">
 .div_1 {
 	padding: 0px 16px;

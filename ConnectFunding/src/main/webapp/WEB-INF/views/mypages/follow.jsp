@@ -158,7 +158,8 @@
 	$(document).ready(function(){
 		
 		/* $('#nav-home-tab').click(function(){
-			$('#one').load('${pageContext.request.contextPath}/mypageload/creators');
+			alert('안녕');
+			$('#one').load('${pageContext.request.contextPath}/mypages/follow');
 		}); */
 		
 		$('#nav-following-tab').click(function(){
@@ -172,7 +173,6 @@
 	});//
 
 	$(function(){
-		$('#followw').click(function(){
 			var data = $('#followingUserNo').val();
 			$.ajax({
 				url:"<c:url value='/mypageload/checkFollow'/>",
@@ -196,7 +196,6 @@
 					alert("error 발생..." + error);
 				}
 			});
-		});
 	}); 
 </script>	
 <%@ include file="../include/bottom.jsp"%>

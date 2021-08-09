@@ -271,7 +271,7 @@
 	</select>
 	
 	<select id="selectPlanProject" parameterType="int" resultType="map">
-		select p.project_name, p.project_inshort, p.project_startdate, p.project_image,
+		select p.project_name, p.project_inshort, p.project_startdate, p.project_image, p.project_no,
 		s.category_name, u.user_name
 		from project p join second_category s
 		on p.second_category_no=s.second_category_no
@@ -283,6 +283,37 @@
 		select count(*)
 		from inform_project
 		where project_no=#{projectNo}
+	</select>
+	
+	<select id="selectplan" resultType="map">
+		select * from  
+		(select project_name, project_image, s.category_name
+		from project p join second_category s
+		on p.second_category_no=s.second_category_no where sysdate
+		<![CDATA[
+		<to_char(project_startdate, 'yyyy-mm-dd')
+        order by dbms_random.value)
+        where rownum <= 4
+		]]>
+	</select>
+	
+	<select id="randomList" resultType="map">
+		select * from  (select * from
+        		(
+        			select p.*, s.first_category_no from PROJECT p join second_category s
+        			on p.second_category_no=s.second_category_no
+        		)A
+		        left join        
+		        (
+			        select project_no, sum(funding_amount) as totalFundingAmount from funding_list
+			        group by project_no
+        		)B
+		        on a.project_no=b.project_no where sysdate
+		<![CDATA[
+			>to_char(project_startdate, 'yyyy-mm-dd')
+	        order by dbms_random.value)
+	        where rownum <= 4
+		]]> 
 	</select>
 	
 </mapper>

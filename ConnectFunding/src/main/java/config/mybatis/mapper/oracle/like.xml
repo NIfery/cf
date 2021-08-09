@@ -44,9 +44,9 @@
 				</if>
 				order by
 				<choose>
-					<when test="searchCondition == 'like_no'">like_no desc</when>	<!-- 추가순 -->
+					<when test="searchCondition == 'like_no'">like_no</when>	<!-- 추가순 -->
 					<when test="searchCondition == 'restday'">restday</when>
-					<otherwise>like_no</otherwise>
+					<otherwise>like_no desc</otherwise>
 				</choose>
 		    )A   
 		)

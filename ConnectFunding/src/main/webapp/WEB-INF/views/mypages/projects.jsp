@@ -68,7 +68,7 @@
 			<c:if test="${!empty list}">
 			<c:forEach var="vo" items="${list }">
 				<div class="wrap"
-					style="height: 240px; margin-bottom: 20px; border-radius: 0; border: none; border-bottom: 1px solid #ced4da; width: 700px;">
+					style="height: 240px; margin-bottom: 20px; border-radius: 0; border: none; border-bottom: 1px solid #ced4da; width: 900px;">
 					<div class="trand-right-single d-flex">
 						<div class="trand-right-img">
 							<a href="#" data-toggle="modal" data-target="#myModal${vo.projectNo }" id="btCancleModal">
@@ -77,7 +77,7 @@
 							</a>							
 						</div>
 						<div class="trand-right-cap"
-							style="margin: 20px 10px; width: 450px;">
+							style="margin: 20px 10px; width: 750px;">
 							<div class="row">
 								<div class="col">
 									<span class="color2" style="font-size: 0.9em;">
@@ -88,7 +88,7 @@
 											심사중
 										</c:if>
 									&nbsp;</span><br>
-									<div style="margin-top: 10px; margin-bottom: 10px;">
+									<div style="margin-top: 10px; margin-bottom: 10px; width: 400px;">
 										<span class="color1" style="font-size: 1.2em;">
 											<a style="color: black" href="#" data-toggle="modal" data-target="#myModal${vo.projectNo }" id="btCancleModal">
 												${vo.projectName}

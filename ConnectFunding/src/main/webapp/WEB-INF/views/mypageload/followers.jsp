@@ -55,23 +55,23 @@
 		</div>
 	</c:if>	
 	<c:if test="${!empty followerlist }">
-		<c:forEach var="followerVo" items="${followerlist }">
+		<c:forEach var="map" items="${followerlist }">
 		<form method="post">
-		<input type="hidden" name="following" value="${followerVo.userName}">
-		<input type="hidden" id="followNo" name="followingUserNo" value="${followerVo.userNo}"> 
+		<input type="hidden" name="following" value="${map['USER_NAME']}">
+		<input type="hidden" id="followNo" name="followingUserNo" value="${map['USER_NO']}"> 
 		<input type="hidden" name="userNo" value="${sessionScope.userNo}">
 			<div class="wrap" style="height: 115px; width: 800px; margin-top: 30px; border-bottom: 1px solid #d4cece">
 				<div class="trand-right-single d-flex">
 					<div class="trand-right-img">
-						<c:if test="${empty followerVo.userProfile }">
+						<c:if test="${empty map['USER_PROFILE'] }">
 							<div class="profile" style="margin: 20px 20px;">
 								<img src="<c:url value='/assets/img/logo/user.png'/>"
 									style="width: 60px; height: 60px; margin: 5px 5px;">
 							</div>
 						</c:if>
-						<c:if test="${!empty followerVo.userProfile}">
+						<c:if test="${!empty map['USER_PROFILE']}">
 							<div class="profile" style="margin: 30px 20px;">
-								<img src="<c:url value='/profile_img/${followerVo.userProfile}'/>"
+								<img src="<c:url value='/profile_img/${map["USER_PROFILE"]}'/>"
 									style="width: 70px; height: 70px;">
 							</div>
 						</c:if>
@@ -80,22 +80,22 @@
 						style="margin: 15px 25px; width: 470px;">
 						<span class="color1">
 							<p style="font-size: 1.1em;">
-								<strong>${followerVo.userName}</strong>
+								<strong>${map['USER_NAME']}</strong>
 							</p>
 						</span> 
 						<span> 
-							<c:if test="${!empty followerVo.userIntro}">
-								<span style="color: black;">${followerVo.userIntro}</span>
+							<c:if test="${!empty map['USER_INTRO']}">
+								<span style="color: black;">${map['USER_INTRO']}</span>
 							</c:if>
 						</span>
 						<span style="font-size: 0.9em;"><br>
 							<!-- 팔로워 11 · 올린 프로젝트 5</span> -->
 					</div>
-					<c:if test="${followerVo.followCheck=='0' }">
+					<c:if test="${map['FOLLOW_CHECK']=='0' }">
 						<button class="genric-btn info-border circle arrow" id="follow"
 							style="width: 110px; height: 40px; margin: 40px 0px 0px 40px;">+ 팔로우</button>
 					</c:if>
-					<c:if test="${followerVo.followCheck=='1' }">
+					<c:if test="${map['FOLLOW_CHECK']=='1' }">
 						<button class="genric-btn info circle" id="unfollow"
 							style="width: 110px; height: 40px; margin: 40px 0px 0px 40px;">√ 팔로잉</button>	
 					</c:if>
@@ -104,6 +104,40 @@
 			</form>
 		</c:forEach>
 	</c:if>	
+		<!-- 페이징처리 -->
+	<div style="margin-right: 400px;">
+		<nav class="blog-pagination justify-content-center d-flex">
+			<ul class="pagination">
+				<c:if test="${pageInfo.firstPage>1 }">
+					<li class="page-item"><a href="#" class="page-link"
+						onclick="pageProc(${pageInfo.firstPage-1})" aria-label="Previous">
+							<i class="ti-angle-left"></i>
+					</a></li>
+				</c:if>
+	
+				<c:forEach var="i" begin="${pageInfo.firstPage }" end="${pageInfo.lastPage}">
+					<c:if test="${i==pageInfo.currentPage }">
+					<li class="page-item active">
+						<a href="#" class="page-link">${i}</a>
+					</li>
+					</c:if>
+					<c:if test="${i!=pageInfo.currentPage }">
+						<a href="#"  onclick="pageProc(${i})" class="page-link">${i}</a>
+					</c:if>
+				</c:forEach>
+	
+				<c:if test="${pageInfo.lastPage < pageInfo.totalPage }">
+					<li class="page-item"><a href="#" class="page-link"
+						onclick="pageProc(${pageInfo.lastPage+1})"> <i
+							class="ti-angle-right"></i></a></li>
+				</c:if>
+			</ul>
+		</nav>
+	<!-- 페이징처리 끝 -->
+	</div>
+	<form action="<c:url value='/mypageload/following'/>" name="frmSupport" method="post">
+		<input type="hidden" name="currentPage"><br> 
+	</form>
 </div>
 <script type="text/javascript">
 	$(function(){
@@ -118,5 +152,11 @@
 			$('form').attr('action',"<c:url value='/mypageload/unfollow?no="+no+"'/>");
 			$('form').submit();
 		});
+		
 	});
+	
+	function pageProc(curPage){
+		$('input[name=currentPage]').val(curPage);
+	 	$('form[name=frmSupport]').submit();	
+	 }
 </script>

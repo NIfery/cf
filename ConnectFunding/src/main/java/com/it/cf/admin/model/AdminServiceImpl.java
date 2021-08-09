@@ -395,7 +395,7 @@ public class AdminServiceImpl implements AdminService{
 			SimpleDateFormat sdf2 = new SimpleDateFormat("yyMMddHHmmss");
 			Date time = new Date();
 			String today = sdf2.format(time);
-			DecimalFormat df = new DecimalFormat("#,###");
+			DecimalFormat df = new DecimalFormat("###,###,###,###");
 			
 			for(Map<Object, Object> excelData:fundingList) {
 				row=sheet.createRow(rowNo++);
@@ -418,11 +418,13 @@ public class AdminServiceImpl implements AdminService{
 
 				cell=row.createCell(4);
 				cell.setCellStyle(bodyStyle);
-				cell.setCellValue((String) String.valueOf(excelData.get("FIVE")));
+				int int1 = Integer.parseInt(String.valueOf(excelData.get("FIVE")));
+				cell.setCellValue(df.format(int1));
 
 				cell=row.createCell(5);
 				cell.setCellStyle(bodyStyle);
-				cell.setCellValue((String) String.valueOf(excelData.get("SIX")));
+				int int2 = Integer.parseInt(String.valueOf(excelData.get("SIX")));
+				cell.setCellValue(df.format(int2));
 
 				cell=row.createCell(6);
 				cell.setCellStyle(bodyStyle);

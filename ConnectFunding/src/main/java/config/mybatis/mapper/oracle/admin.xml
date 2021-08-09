@@ -224,4 +224,22 @@
 		order by funding_amount desc
 		]]>
 	</select>
+	
+	<select id="DownAllUser" parameterType="searchVo" resultType="userVo" >
+		select *
+		from
+		(
+		    select rownum as RNUM,A.*
+		    from
+		    (
+		    	select * from users 
+		    	<include refid="searchWhere"></include>
+		    	order by user_no desc
+		    )A
+		)
+	</select>
+	
+	<select id="DownAllFunding" resultType="map">
+		select * from downfundingview
+	</select>
 </mapper>

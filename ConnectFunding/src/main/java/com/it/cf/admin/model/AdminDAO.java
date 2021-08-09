@@ -3,6 +3,8 @@ package com.it.cf.admin.model;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.it.cf.chat.model.MessageSendVO;
@@ -41,5 +43,6 @@ public interface AdminDAO {
 	Map<String, Object> getCategoryFunding();
 	Map<String, Object> getFundingPercent();
 	List<Map<String, Object>> getFundingTop5();
-
+	List<UserVO>DownAllUser(SearchVO searchVo)throws Exception;
+	List<Map<Object, Object>> DownAllFunding()throws Exception;
 }

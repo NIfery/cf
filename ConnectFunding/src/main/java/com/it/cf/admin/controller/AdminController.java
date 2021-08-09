@@ -214,7 +214,7 @@ public class AdminController {
    //회원관리 페이지
    @RequestMapping("/membership")
    public String membership(@ModelAttribute SearchVO searchVo, HttpSession session, Model model) {
-            logger.info("글 목록 페이지, 파라미터 searchVo={}", searchVo);
+            logger.info("회원 목록 페이지, 파라미터 searchVo={}", searchVo);
             
             //페이징 처리
             //[1] PaginationInfo 객체 생성
@@ -349,9 +349,9 @@ public class AdminController {
 	   return "common/message";
    }
    
-   //
+   //통계 처리
    @RequestMapping("/index")
- 	public String home(Locale locale, UserVO userVo, ProjectVO projectVo, FundingListVO fundingListVo, FDListViewVO fdListVo, Model model)throws Exception {
+ 	public String statistics(Locale locale, UserVO userVo, ProjectVO projectVo, FundingListVO fundingListVo, FDListViewVO fdListVo, Model model)throws Exception {
  		int general = adminService.getGeneral(userVo);
  		int enterprise = adminService.getEnter(userVo);
  		int totalUser = adminService.getTotalUser(userVo);
@@ -385,4 +385,20 @@ public class AdminController {
  		return "/admin/index";
 
  	}
+
+   // 회원 엑셀 다운로드 처리
+   @RequestMapping("/membershipDownload")
+   @ResponseBody
+   public void membershipDownload(@ModelAttribute SearchVO searchVo, HttpServletResponse response, Model model) throws Exception{
+	    adminService.UserExcelDown(searchVo, response);
+	    
+   }
+   
+   //등록 펀딩 엑셀 다운로드 처리
+   @RequestMapping("/FundingDownload")
+   @ResponseBody
+   public void fundingDownload(@ModelAttribute ProjectVO projectVo, HttpServletResponse response, Model model) throws Exception{
+	   adminService.DownAllFunding(response);
+   }
+   
 }

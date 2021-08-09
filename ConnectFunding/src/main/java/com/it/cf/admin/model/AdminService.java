@@ -3,6 +3,8 @@ package com.it.cf.admin.model;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.it.cf.chat.model.MessageSendVO;
 import com.it.cf.common.SearchVO;
 import com.it.cf.fdList.model.FDListViewVO;
@@ -45,4 +47,7 @@ public interface AdminService {
 	Map<String, Object> getCategoryFunding();
 	Map<String, Object> getFundingPercent();
 	List<Map<String, Object>> getFundingTop5();
+	void UserExcelDown(SearchVO searchVo, HttpServletResponse response) throws Exception;
+	void DownAllFunding(HttpServletResponse response) throws Exception;
+	
 }

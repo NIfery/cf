@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.it.cf.account.model.AccountService;
 import com.it.cf.account.model.AccountVO;
@@ -43,6 +42,11 @@ public class AccountController {
 		int cnt = accountService.insertAccount(accVo);
 		logger.info("계좌입력 결과, cnt={}", cnt);
 		
+		String msg="계좌등록 실패, 다시 시도해주세요.", url="/mypages/settings";
+		if(cnt>0) {
+			msg="계좌를 등록하였습니다.";
+		}
+		
 		Cookie cookie = new Cookie("ck_pay", pay);
 		cookie.setPath("/");
 		if(pay != null && !pay.isEmpty()) {
@@ -52,14 +56,19 @@ public class AccountController {
 		}//
 		response.addCookie(cookie);
 		
-		if(business!=null && !business.isEmpty()) {
-			int flagcnt = accountService.updateUserFlag(userNo);
-			logger.info("userFlag 변경, 결과 flagcnt={}", flagcnt);
-		}
+		Cookie cookie2 = new Cookie("ck_business", business);
+		cookie2.setPath("/");
+		if(business != null && !business.isEmpty()) {
+			cookie2.setMaxAge(100*24*60*60);
+		}else {
+			cookie2.setMaxAge(0);
+		}//
+		response.addCookie(cookie2);
 		
-		String msg="계좌등록 실패, 다시 시도해주세요.", url="/mypages/settings";
-		if(cnt>0) {
-			msg="계좌를 등록하였습니다.";
+		if(business!=null && !business.isEmpty()) {
+			int flagcnt = accountService.updateUserFlag(accVo);
+			logger.info("userFlag 변경, 결과 flagcnt={}", flagcnt);
+			
 		}
 		
 		model.addAttribute("msg", msg);
@@ -105,9 +114,14 @@ public class AccountController {
 	}
 	
 	@RequestMapping("/mypages/deleteAcc")
-	public String deleteAcc(@RequestParam(defaultValue = "0") String accountNo, Model model) {
+	public String deleteAcc(@RequestParam String accountNo, @RequestParam String birth,
+			HttpSession session, Model model) {
 		
-		logger.info("계좌삭제, 파라미터 accountNo={}", accountNo);
+		int userNo = (int) session.getAttribute("userNo");
+		logger.info("계좌삭제, 파라미터 accountNo={}, userNo={}", accountNo, userNo);
+		
+		String businessNo = accountService.selectBusinessNo(userNo);
+		logger.info("검색 businessNo={}", businessNo);
 		
 		int cnt = accountService.deleteAccount(accountNo);
 		logger.info("등록계좌 삭제결과, cnt={}", cnt);
@@ -115,6 +129,11 @@ public class AccountController {
 		if(cnt>0) {
 			model.addAttribute("msg", "선택하신 계좌정보가 삭제되었습니다.");
 			model.addAttribute("url", "/mypages/settings");
+		}
+		
+		if(businessNo.equals(birth)) {
+			int delcnt = accountService.deleteBusinessNo(userNo);
+			logger.info("회원테이블에서 사업자번호 삭제결과, delcnt={}", delcnt);
 		}
 		
 		return "common/message";

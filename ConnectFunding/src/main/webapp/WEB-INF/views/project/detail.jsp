@@ -9,23 +9,7 @@
 <script src="../assets/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		var today = new Date().getTime();
-		var ckEndDate = new Date($('#endDateFrm').val()).getTime();
-		var projectNo = $('#projectNo').val();
-
-		if(today>ckEndDate){
-			if($('#fundingPercent').val()<100){
-				$.ajax({
-					url:"<c:url value='/project/cancleAll?projectNo="+projectNo+"'/>",
-					type:"get",
-					success:function(res){
-					
-					},error:function(xhr, status, error){
-						alert("Error 발생 : " + error);
-					}
-				});
-			}
-		}
+		var today = getFormatDate(new Date());
 		
 		$('form[name=frmDelete]').submit(function(){
 			if($('#pwd').val().length<1){
@@ -56,6 +40,7 @@
 			var userZipcode = $('#userZipcode').val();
 			var userAddress = $('#userAddress').val();
 			var projectName = $('#projectName').val();
+			var projectNo = $('#projectNo').val();
 			var fdAmount = $('#fdAmount').val();
 			
 			
@@ -109,6 +94,53 @@
 			    
 				console.log(data);
 			});
+			
+			
+			// IMP.request_pay(param, callback) 호출
+			/* IMP.request_pay({ // param
+				pg: "html5_inicis", // PG사 선택
+			    pay_method: "card", // 지불 수단
+			    merchant_uid: merchantUid, //가맹점에서 구별할 수 있는 고유한id
+			    customer_uid: customerUid,
+			    name: projectName, // 상품명
+			    amount: fdAmount, // 가격
+			    buyer_email: "test@test.com",
+			    buyer_name: userName, // 구매자 이름
+			    buyer_tel: userHp, // 구매자 연락처 
+			    buyer_addr: userAddress,// 구매자 주소지
+			    buyer_postcode: userZipcode // 구매자 우편번호
+			}, function (rsp) { // callback
+			    if (rsp.success) {
+			        // 결제 성공 시 로직,
+			        jQuery.ajax({
+				        url: "https://www.myservice.com/billings/", // 서비스 웹서버
+				        method: "POST",
+				        headers: { "Content-Type": "application/json" },
+				        data: {
+				        	customer_uid: customerUid, // 카드(빌링키)와 1:1로 대응하는 값
+				        }
+				    });
+			        
+			        alert('빌링성공');
+			        //location.href="<c:url value='/project/detailFunding?projectNo="+projectNo+"&fdAmount="+fdAmount+"'/>";
+			        
+			        $('#btFundingModalClose').click();
+			        $('#amount').val('');
+			    } else {
+			        $('#btFundingModalClose').click();
+			        $('#amount').val('');
+			    }
+			}); */
+		});
+		
+		$('#addLike').click(function(){
+			var no = $('#projectNo').val();
+			$(this).attr('href',"<c:url value='/mypages/addLikeProject?projectNo="+no+"'/>");
+		});
+		
+		$('#deleteLike').click(function(){
+			var name = $('#projectName').val();
+			$(this).attr('href',"<c:url value='/mypages/deletelikeName?projectName="+name+"'/>");
 		});
 	});
 	
@@ -120,6 +152,13 @@
 		day = day >= 10 ? day : '0' + day;
 		return year + '-' + month + '-' + day;
 	}
+	
+	 var result = '${msg}';
+     if (result == 'success') {
+             alert("좋아한 프로젝트에 추가되었습니다.");
+     }else if(result == 'fail'){
+    	 alert("삭제되었습니다.");
+     }
 </script>
 <style type="text/css">
 	.detailRow{
@@ -151,7 +190,7 @@
                   	<input type="hidden" id="fdAmount">
                   	
                   	 <div style="text-align:center">
-	                     <h1 style="font-weight:bold;">${map['PROJECT_NAME']}</h1>
+	                     <h1 style="font-weight:bold;" id="name">${map['PROJECT_NAME']}</h1>
 	                     <!-- 작성자이름 클릭시 작성자 정보조회? 쪽지문의? -->
                          <a href="#" style="color:gray;"><i class="fa fa-user"></i> ${map['USER_NAME']}</a>
                   	 </div>
@@ -165,12 +204,10 @@
 						    	<div class="row row-cols-1">
 						    		<c:if test="${empty map['TOTAL_FUNDING_AMOUNT']}">
 								    	<h2 style="margin: 5px 0px 20px -10px">0원 0.00%</h2>
-								    	<input type="hidden" value="0" id="fundingPercent">
 						    		</c:if>
 						    		<c:if test="${!empty map['TOTAL_FUNDING_AMOUNT']}">
 								    	<h2 style="margin: 5px 0px 20px -10px">
 							    		<fmt:formatNumber value="${map['TOTAL_FUNDING_AMOUNT'] }" pattern="#,###"/>원 <fmt:formatNumber value="${map['TOTAL_FUNDING_AMOUNT']/map['TOTAL_AMOUNT']*100.0 }" pattern="0.00"/>%</h2>
-								    	<input type="hidden" value="<fmt:formatNumber value='${map["TOTAL_FUNDING_AMOUNT"]/map["TOTAL_AMOUNT"]*100.0 }' pattern='0.00'/>" id="fundingPercent">
 						    		</c:if>
 						    	</div>
 						    	<br>
@@ -208,12 +245,13 @@
 						    	<div class="row row-cols-1"><h2 style="margin: 5px 0px 20px -10px">${userCnt }명</h2></div>
 						    	<br>
 						    	<div class="row row-cols-1">
-						    		<div style="background: white;border:2px solid #e4e1e1">
+						    		<div style="background: white;border:2px solid #e4e1e1; padding: 10px; 10px;" >
 						    			펀딩 진행중<br>
 										목표 금액 <fmt:formatNumber value="${map['TOTAL_AMOUNT']}" pattern="#,###"/>원
 						    		</div>
 						    	</div>
 						    	<br>
+						    	
 						    	<div class="row row-cols-1">
 						    		<c:if test="${userVo.userNo!=map['USER_NO'] }">
 						    			<c:if test="${ckTodayDate2<strDate2 }">
@@ -221,7 +259,60 @@
 										</c:if>
 										<c:if test="${ckTodayDate2>=strDate2 }">
 											<c:if test="${ckTodayDate2<=endDate2 }">
-									    		<a href="#" data-toggle="modal" data-target="#myModal" id="btFundingModal">후원하기</a>
+												<c:if test="${check['LIKECHECK']=='1' }">
+													<div style="border: 1px solid #e4e1e1; width: 50px; height: 50px; border-radius: 10px;">
+														<a href="#" id="deleteLike">
+														<img src="${pageContext.request.contextPath}/assets/img/ssong/heart.png"
+															style="width: 30px; margin: 8px -3px;">
+														</a>
+													</div>
+												</c:if>
+												<c:if test="${check['LIKECHECK']=='0' }">
+													<div style="border: 1px solid #e4e1e1; width: 50px; height: 50px; border-radius: 10px;">
+														<a id="addLike" href="#">
+														<img src="${pageContext.request.contextPath}/assets/img/ssong/no_heart.png"
+															style="width: 30px; margin: 8px -3px;">
+														</a>
+													</div>
+												</c:if>
+												<div style="border: 1px solid #e4e1e1; width: 50px; height: 50px; border-radius: 10px; margin-left: 15px;">
+													<a href="#" data-toggle="modal" data-target="#myModalQustion" id="btFundingModalQuestion">
+													<img src="${pageContext.request.contextPath}/assets/img/ssong/email.png"
+														style="width: 30px; margin: 8px -3px;">
+													</a>
+												</div>
+												  <div class="modal fade" id="myModalQustion" data-backdrop="static" tabindex="-1" role="dialog"
+				                                       aria-labelledby="staticBackdropLabelQuestion" aria-hidden="true">
+				                                       <div class="modal-dialog" role="document">
+				                                          <div class="modal-content">
+				                                             <div class="modal-header">
+				                                                <h5 class="modal-title" id="staticBackdropLabelQuestion">창작자에게 문의하기</h5>
+				                                                <button type="button" class="btn-close" data-dismiss="modal"
+				                                                   aria-label="Close" id="btFundingModalClose">
+				                                                </button>
+				                                             </div>
+				                                             <form name="frmQuestion" method="post" action="<c:url value='/question/wrtie?projectNo=${map["PROJECT_NO"] }&userNo=${userVo.userNo }'/>">
+				                                                <div class="modal-body">
+				                                                   <!-- 모달 body -->
+				                                                   <div class="form-group" style="width: 450px; margin: 3px;">
+				                                                      <label class="form-label mt-4">제목</label> 
+				                                                      <input type="text" class="form-control" name="questionTitle" id="questionTitle" placeholder="제목을 입력하세요.">
+				                                                      <label class="form-label mt-4">내용</label> 
+				                                                      <textarea class="form-control" id="questionContent" name="questionContent" rows="3"
+				                                                         placeholder="내용을 입력하세요"></textarea>
+				                                                   </div>
+				                                                </div>
+				                                             <div class="modal-footer">
+				                                                <button type="submit" id="btQuestion" class="genric-btn warning circle">문의하기</button>
+				                                             </div>
+				                                             </form>
+				                                          </div>
+				                                       </div>
+				                                    </div>
+												<div style="border: 1px solid #e4e1e1; width: 220px; height: 50px; border-radius: 10px; margin-left: 20px; background: #ffeb3b">
+									    		<a href="#" data-toggle="modal" data-target="#myModal" id="btFundingModal" 
+									    			style="font-size: 1.5em; padding-left: 10px; color: #ffffff;">프로젝트 후원하기</a>
+									    		</div>
 								    			<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog"
 													aria-labelledby="staticBackdropLabel" aria-hidden="true">
 													<div class="modal-dialog" role="document">
@@ -249,16 +340,22 @@
 												<!-- 모달 -->
 											</c:if>
 											<c:if test="${ckTodayDate2>endDate2 }">
-									    		<h2 style="margin: 5px 0px 20px -10px">종료되었습니다.</h2>
+										    	<h2 style="margin: 5px 0px 20px -10px">종료되었습니다.</h2>
 											</c:if>
 										</c:if>
 										
 										
 						    		</c:if>
 						    		<c:if test="${userVo.userNo==map['USER_NO'] }">
-							    		<a href="<c:url value='/project/update?projectNo=${map["PROJECT_NO"] }'/>">[수정]</a> 
-							    		<a href="#" data-toggle="modal" data-target="#myModal2">[삭제]</a>
-						    		</c:if>
+								    	<c:if test="${ckTodayDate2<=endDate2 }">
+									   		<a href="<c:url value='/project/update?projectNo=${map["PROJECT_NO"] }'/>">[수정]</a> 
+									   		<a href="#" data-toggle="modal" data-target="#myModal2">[삭제]</a>
+									  	</c:if>
+									  	<c:if test="${ckTodayDate2>endDate2 }">
+									    	<h2 style="margin: 5px 0px 20px -10px">종료되었습니다.</h2>
+										</c:if>
+								    </c:if>
+								    		
 						    		<div class="modal fade" id="myModal2" data-backdrop="static" tabindex="-1" role="dialog"
 									aria-labelledby="staticBackdropLabel" aria-hidden="true">
 									<div class="modal-dialog" role="document">
@@ -269,7 +366,7 @@
 													aria-label="Close">
 												</button>
 											</div>
-											<form name="frmDelete" method="post" action="<c:url value='/project/delete?projectNo=${map["PROJECT_NO"] }&userNo=${map["USER_NO"] }&type=detail'/>">
+											<form name="frmDelete" method="post" action="<c:url value='/project/delete?projectNo=${map["PROJECT_NO"] }&userNo=${map["USER_NO"] }'/>">
 												<div class="modal-body">
 													<!-- 모달 body -->
 													<div class="form-group" style="width: 450px; margin: 3px;">

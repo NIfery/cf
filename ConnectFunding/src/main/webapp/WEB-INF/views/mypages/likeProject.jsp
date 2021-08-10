@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../include/top.jsp"%>
+<script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/ssong.css">
 <style type="text/css">
 .div_1 {
@@ -23,22 +24,28 @@
 	font-size: 0.9em;
 	margin-left: 250px;
 }
+
+.page-link{
+	background-color: white;
+}
 </style>
 
-<div style="width: 1000px;  height: 1300px;">
+<div style="width: 1000px;  height: auto; min-height: 700px;">
 	<div class="single_sidebar_widget post_category_widget"
 		style="width: 1000px; margin-left: 200px; background: white; margin-top: 50px;">
 		<div>
+			<a href="<c:url value='/mypages/likeProject'/>" style="color: black;">
 			<span class="widget_title"
 				style="text-align: left; font-size: 2.5em; margin-left: 10px;">
 				좋아한 프로젝트</span> <br> <br> <br>
+				</a>
 		</div>
 		<div style="margin-left: auto; margin-right: auto;">
 			<div class="row" style="margin-top: 20px; margin-left: 5px; margin-bottom: 45px;">
 				<div class="col-md-6" style="width: 500px; height: 50px;">
 					<strong style="color: red;">
 						${pageInfo.totalRecord}
-					</strong> 건의 후원 내역이 있습니다.
+					</strong> 개의 프로젝트가 있습니다.
 				</div>
 				<div class="col-md-6 col-md-offset-6">
 					<!-- <div class="form-group" style="width: 150px; margin-left: 250px;">
@@ -48,7 +55,7 @@
 							<option value="마감 임박순">마감 임박순</option>
 						</select>
 					</div> -->
-				<div class="form-group" style="width: 250px; margin-left: 250px;">
+				<div class="form-group" style="width: 250px;">
 					<div class="input-group mb-3">
 						<form action="<c:url value='/mypages/likeProject'/>" name="frmSearch"
 							method="post">
@@ -68,7 +75,7 @@
 							</select>
 								<button class="btns" type="submit"
 									style="background: none; border: 1px; color: black;">
-									&nbsp<i class="fas fa-search special-tag"></i>
+									<i class="fas fa-search special-tag"></i>
 								</button>
 							</span>
 						</form>
@@ -127,28 +134,36 @@
 				</div>
 			</c:if>
 			<!-- 페이징처리 -->
+			<div>
 			<nav class="blog-pagination justify-content-center d-flex">
-				<ul class="pagination">
-					<c:if test="${pageInfo.firstPage>1 }">
-						<li class="page-item">
-						<a href="#" class="page-link" onclick="pageProc(${pageInfo.firstPage-1})" aria-label="Previous">
-						<i class="ti-angle-left"></i></a></li>
-					</c:if>	
-					
-					<c:forEach var="i" begin="${pageInfo.firstPage }" end="${pageInfo.lastPage}" >
-						<li class="page-item active"><a href="#" class="page-link">${i}</a>
-						</li>
-					</c:forEach>
-					
-					<c:if test="${pageInfo.lastPage < pageInfo.totalPage }">
-						<li class="page-item">
-							<a href="#" class="page-link" onclick="pageProc(${pageInfo.lastPage+1})"> 
-							<i class="ti-angle-right"></i></a>
-						</li>
-					</c:if>
-				</ul>
-			</nav> 
+					<ul class="pagination">
+						<c:if test="${pageInfo.firstPage>1 }">
+							<li class="page-item"><a href="#" class="page-link"
+								onclick="pageProc(${pageInfo.firstPage-1})" aria-label="Previous">
+									<i class="ti-angle-left"></i>
+							</a></li>
+						</c:if>
+			
+						<c:forEach var="i" begin="${pageInfo.firstPage }" end="${pageInfo.lastPage}">
+							<c:if test="${i==pageInfo.currentPage }">
+							<li class="page-item active">
+								<a href="#" class="page-link">${i}</a>
+							</li>
+							</c:if>
+							<c:if test="${i!=pageInfo.currentPage }">
+								<a href="#"  onclick="pageProc(${i})" class="page-link">${i}</a>
+							</c:if>
+						</c:forEach>
+			
+						<c:if test="${pageInfo.lastPage < pageInfo.totalPage }">
+							<li class="page-item"><a href="#" class="page-link"
+								onclick="pageProc(${pageInfo.lastPage+1})"> <i
+									class="ti-angle-right"></i></a></li>
+						</c:if>
+					</ul>
+				</nav>
 			<!-- 페이징처리 끝 -->
+			</div>
 		</div>
 	</div>
 </div>
@@ -158,8 +173,14 @@
 </form>
 <script type="text/javascript">
 function pageProc(curPage){
+	console.log($('input[name=currentPage]').val(curPage));
 	$('input[name=currentPage]').val(curPage);
-	$('form[name=frmSupport]').submit();	
+ 	$('form[name=frmSupport]').submit();	
+ }
+ 
+var result = '${msg}';
+if (result == 'success') {
+        alert("삭제되었습니다.");
 }
 </script>
 

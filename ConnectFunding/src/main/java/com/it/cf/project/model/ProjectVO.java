@@ -26,6 +26,7 @@ public class ProjectVO extends PageVO{
 	private String confirm;
 	
 	private int firstCategoryNo;
+	private int ingType;
 	
 	private int totalFundingAmount;
 

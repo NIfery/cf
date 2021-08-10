@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <!-- Jquery JS-->
-    <script src="${pageContext.request.contextPath}/admin_assets/vendor/jquery-3.2.1.min.js"></script>
+    
     <!-- Bootstrap JS-->
     <script src="${pageContext.request.contextPath}/admin_assets/vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="${pageContext.request.contextPath}/admin_assets/vendor/bootstrap-4.1/bootstrap.min.js"></script>
@@ -23,7 +22,7 @@
 
     <!-- Main JS-->
     <script src="${pageContext.request.contextPath}/admin_assets/js/main.js"></script>
-
+	
 </body>
 
 </html>

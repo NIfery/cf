@@ -20,7 +20,8 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
 			throws Exception {		
 		String adminId=(String) request.getSession().getAttribute("adminId");
 		String adminPosition=(String) request.getSession().getAttribute("adminPosition");
-		log.info("admin-preHandle()호출, adminId={}, adminPosition={}", adminId, adminPosition);
+		String adminName=(String) request.getSession().getAttribute("adminName");
+		log.info("admin-preHandle()호출, adminId={}, adminPosition={}, adminName={}", adminId, adminPosition, adminName);
 		
 		if(adminId==null || adminId.isEmpty()) {
 			request.setAttribute("msg", "먼저 관리자 로그인하세요");

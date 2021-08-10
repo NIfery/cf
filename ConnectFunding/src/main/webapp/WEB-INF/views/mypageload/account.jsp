@@ -41,22 +41,36 @@
 							style="width: 80px; height: 25px; margin: 20px 20px;">
 					</div>
 					<div class="trand-right-cap" style="margin: 5px 0px; width: 580px;">
-						<span class="color1">${accVo.bankName }</span>
-						<c:if test="${!empty cookie.ck_pay }">
-							<span style="background-color: red; margin-left: 5px; color: white; border-radius: 5px;">
-							&nbsp기본&nbsp</span>
-						</c:if>	
+						<c:choose>
+							<c:when test="${!empty cookie.ck_pay }">
+								<span class="color1">${accVo.bankName }</span>
+								<span style="background-color: red; margin-left: 5px; color: white; border-radius: 5px;">
+									&nbsp기본&nbsp</span>
+							</c:when>
+							<c:when test="${!empty cookie.ck_business }">
+								<span class="color1">${accVo.bankName }</span>
+								<span style="background-color: red; margin-left: 5px; color: white; border-radius: 5px;">
+									&nbsp사업자&nbsp</span>
+							</c:when>
+							<c:otherwise>
+								<span class="color1">${accVo.bankName }</span>
+							</c:otherwise>
+						</c:choose>
 						<br> 
 						<span class="color2" id="accNo"> 
-						<c:set var="accNo" value="${accVo.accountNo }" />
-							**********${fn:substring(accNo,10,15) }
-						</span> <a
-							href="<c:url value='/mypages/deleteAcc?accountNo=${accVo.accountNo}'/>"
-							class="trand-right-img" id="delete"> <img
-							src="<c:url value='/assets/img/cancel.png'/>"
+						<c:set var="acc" value="${accVo.accountNo }" />
+						<c:set var="acclength" value="${fn:length(acc)}" />
+						<c:set var="accNo" value="${fn:substring(acc, acclength-4, acclength)}" />
+							**********${accNo }
+						</span>
+					</div>
+					<div class="trand-right-cap" style="position: absolute; margin: 33px 200px;">
+						<a href="<c:url value='/mypages/deleteAcc?accountNo=${accVo.accountNo}&birth=${accVo.birth }'/>"
+							class="trand-right-img" id="delete"> 
+						<img src="<c:url value='/assets/img/cancel.png'/>"
 							style="width: 20px; margin: -30px 0px 0px 310px;">
 						</a>
-					</div>
+					</div>	 
 				</div>
 			</div>
 		</c:forEach>

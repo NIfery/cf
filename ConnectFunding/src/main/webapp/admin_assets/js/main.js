@@ -4,70 +4,70 @@
   "use strict";
 
   try {
-    //WidgetChart 1
-    var ctx = document.getElementById("widgetChart1");
-    if (ctx) {
-      ctx.height = 130;
-      var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-          type: 'line',
-          datasets: [{
-            data: [78, 81, 80, 45, 34, 12, 40],
-            label: 'Dataset',
-            backgroundColor: 'rgba(255,255,255,.1)',
-            borderColor: 'rgba(255,255,255,.55)',
-          },]
-        },
-        options: {
-          maintainAspectRatio: true,
-          legend: {
-            display: false
-          },
-          layout: {
-            padding: {
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0
-            }
-          },
-          responsive: true,
-          scales: {
-            xAxes: [{
-              gridLines: {
-                color: 'transparent',
-                zeroLineColor: 'transparent'
-              },
-              ticks: {
-                fontSize: 2,
-                fontColor: 'transparent'
-              }
-            }],
-            yAxes: [{
-              display: false,
-              ticks: {
-                display: false,
-              }
-            }]
-          },
-          title: {
-            display: false,
-          },
-          elements: {
-            line: {
-              borderWidth: 0
-            },
-            point: {
-              radius: 0,
-              hitRadius: 10,
-              hoverRadius: 4
-            }
-          }
+//WidgetChart 1
+var ctx = document.getElementById("widgetChart1");
+if (ctx) {
+  ctx.height = 130;
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['일반회원', '기업회원'],
+      type: 'bar',
+      datasets: [{
+        data: [$('#general').val(),$('#enterprise').val()],
+        backgroundColor: 'rgba(255,255,255,.1)',
+        borderColor: 'rgba(255,255,255,.55)',
+      },]
+    },
+    options: {
+      maintainAspectRatio: true,
+      legend: {
+        display: false
+      },
+      layout: {
+        padding: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0
         }
-      });
+      },
+      responsive: true,
+      scales: {
+        xAxes: [{
+          gridLines: {
+            color: 'transparent',
+            zeroLineColor: 'transparent'
+          	
+          },
+          ticks: {
+            fontSize: 2,
+            fontColor: 'transparent'
+          }
+        }],
+        yAxes: [{
+          display: false,
+          ticks: {
+            display: false,
+          }
+        }]
+      },
+      title: {
+        display: false,
+      },
+      elements: {
+        line: {
+          borderWidth: 0
+        },
+        point: {
+          radius: 0,
+          hitRadius: 10,
+          hoverRadius: 4
+        }
+      }
     }
+  });
+}
 
 
     //WidgetChart 2
@@ -77,11 +77,11 @@
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+          labels: ['1월', '2월', '3월', '4월', '5월', '6월','7월','8월','9월','10월','11월','12월'],
           type: 'line',
           datasets: [{
-            data: [1, 18, 9, 17, 34, 22],
-            label: 'Dataset',
+            data: [$('#JAN').val(),$('#FEB').val(),$('#MAR').val(),$('#APR').val(),$('#MAY').val(),$('#JUN').val(),
+                  $('#JUL').val(),$('#AUG').val(),$('#SEP').val(),$('#OCT').val(),$('#NOV').val(),$('#DEC').val()],
             backgroundColor: 'transparent',
             borderColor: 'rgba(255,255,255,.55)',
           },]
@@ -148,11 +148,11 @@
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+          labels: ['1월', '2월', '3월', '4월', '5월', '6월','7월','8월','9월','10월','11월','12월'],
           type: 'line',
           datasets: [{
-            data: [65, 59, 84, 84, 51, 55],
-            label: 'Dataset',
+            data: [$('#JAN2').val(),$('#FEB2').val(),$('#MAR2').val(),$('#APR2').val(),$('#MAY2').val(),$('#JUN2').val(),
+                  $('#JUL2').val(),$('#AUG2').val(),$('#SEP2').val(),$('#OCT2').val(),$('#NOV2').val(),$('#DEC2').val()],
             backgroundColor: 'transparent',
             borderColor: 'rgba(255,255,255,.55)',
           },]
@@ -218,11 +218,12 @@
       var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          labels: ['1월', '2월', '3월', '4월', '5월', '6월','7월','8월','9월','10월','11월','12월'],
           datasets: [
             {
-              label: "My First dataset",
-              data: [78, 81, 80, 65, 58, 75, 60, 75, 65, 60, 60, 75],
+              
+              data: [$('#JAN3').val(),$('#FEB3').val(),$('#MAR3').val(),$('#APR3').val(),$('#MAY3').val(),$('#JUN3').val(),
+                  $('#JUL3').val(),$('#AUG3').val(),$('#SEP3').val(),$('#OCT3').val(),$('#NOV3').val(),$('#DEC3').val()],
               borderColor: "transparent",
               borderWidth: "0",
               backgroundColor: "rgba(255,255,255,.3)"
@@ -236,7 +237,59 @@
           },
           scales: {
             xAxes: [{
-              display: false,
+              display: true,
+              categoryPercentage: 1,
+              barPercentage: 0.65
+            }],
+            yAxes: [{
+              display: false
+            }]
+          }
+        }
+      });
+      
+    }
+    //WidgetChart 5
+    var ctx = document.getElementById("widgetChart5");
+    if (ctx) {
+      ctx.height = 75;
+      var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['게임', '공연', '디자인', '만화', '예술', '사진', '영화', '푸드', '음악', '출판', '테크', '패션', '저널리즘', '공예'],
+          datasets: [
+            {
+              data: [$('#GAME').val(), $('#SHOW').val(), $('#DESIGN').val(), $('#CARTOON').val(), $('#ART').val(), $('#PICTURE').val(),
+                  $('#MOVIE').val(),$('#FOOD').val(),$('#MUSIC').val(),$('#PUBLISHING').val(),$('#TECH').val(),$('#PASHION').val(),$('#JOURNALISM').val(),$('#CRAFTS').val()],
+              borderColor: "transparent",
+              borderWidth: "0",
+              backgroundColor: [
+              					'#fec1c6',
+              					'#bdeeed', 
+              					'#e4da84',
+              					'#e8b0b5', 
+              					'#aad2d0', 
+              					'#d3ca76',
+              					'#fec1c6',
+              					'#bdeeed', 
+              					'#e4da84',
+              					'#e8b0b5', 
+              					'#aad2d0', 
+              					'#d3ca76',
+              					'#fec1c6',
+              					'#bdeeed'
+              				   ],
+            }
+          ]
+        },
+        options: {
+          maintainAspectRatio: true,
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              display: true,
               categoryPercentage: 1,
               barPercentage: 0.65
             }],
@@ -577,48 +630,6 @@
   }
 
   try {
-    //WidgetChart 5
-    var ctx = document.getElementById("widgetChart5");
-    if (ctx) {
-      ctx.height = 220;
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          datasets: [
-            {
-              label: "My First dataset",
-              data: [78, 81, 80, 64, 65, 80, 70, 75, 67, 85, 66, 68],
-              borderColor: "transparent",
-              borderWidth: "0",
-              backgroundColor: "#ccc",
-            }
-          ]
-        },
-        options: {
-          maintainAspectRatio: true,
-          legend: {
-            display: false
-          },
-          scales: {
-            xAxes: [{
-              display: false,
-              categoryPercentage: 1,
-              barPercentage: 0.65
-            }],
-            yAxes: [{
-              display: false
-            }]
-          }
-        }
-      });
-    }
-
-  } catch (error) {
-    console.log(error);
-  }
-
-  try {
 
     // Percent Chart 2
     var ctx = document.getElementById("percent-chart2");
@@ -630,7 +641,7 @@
           datasets: [
             {
               label: "My First dataset",
-              data: [60, 40],
+              data: [$('#success').val(), $('#fail').val()],
               backgroundColor: [
                 '#00b5e9',
                 '#fa4251'
@@ -649,8 +660,8 @@
             }
           ],
           labels: [
-            'Products',
-            'Services'
+            '달성',
+            '미달성'
           ]
         },
         options: {

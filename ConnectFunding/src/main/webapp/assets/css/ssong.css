@@ -266,3 +266,35 @@ body{
     margin: 10px 10px;
     overflow: hidden;
 }
+
+/* 공지사항 */
+
+.detail{
+	width: 1000px;
+    border: 1px solid #eaeaea;
+    margin-top: 30px;
+}
+
+.head {
+    width: 900px;
+    margin: 0 auto;
+    margin-top: 20px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.hspan{
+	font-size: 15px;
+    line-height: 20px;
+    letter-spacing: -0.015em;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.nfoot{
+	float: right;
+	margin-right: 210px;
+}
+
+.page-link{
+	background-color: white;
+}

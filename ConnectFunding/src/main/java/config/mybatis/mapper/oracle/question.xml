@@ -3,13 +3,118 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.it.cf.question.model.QuestionDAO">
+	<sql id="searchWhere">
+		<if test="searchKeyword!=null and searchKeyword!=''">
+			and ${searchCondition}  like '%' || #{searchKeyword} || '%'
+		</if>
+	</sql>
 	<insert id="insertQuestion" parameterType="questionVo" >
 		<selectKey keyProperty="questionNo" resultType="int" order="BEFORE">
 			select question_SEQ.nextval from dual
 		</selectKey>
-		insert into QUESTION(QUESTION_NO,QUESTION_TITLE,QUESTION_CONTENT,QUESTION_FLAG,USER_NO,PROJECT_NO)
-		values(#{questionNo},#{questionTitle},#{questionContent},#{questionFlag},#{userNo},#{projectNo})
+		insert into QUESTION(QUESTION_NO,QUESTION_TITLE,QUESTION_CONTENT,USER_NO,PROJECT_NO)
+		values(#{questionNo},#{questionTitle},#{questionContent},#{userNo},#{projectNo})
 	</insert>
+	
+	<select id="questionList" parameterType="searchVo" resultType="questionVo">
+		select *
+		from
+		(
+		    select rownum as RNUM,A.*
+		    from
+		    (
+		        select * from QUESTION 
+		        where USER_NO=#{userNo}
+		        <include refid="searchWhere"></include>
+		        order by QUESTION_REGDATE desc
+		    )A
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="answerList" parameterType="int" resultType="answerVo">
+	    select * from answerView 
+	    where USER_NO=#{userNo}
+	</select>
+	
+	<select id="questionCount" parameterType="SearchVo" resultType="int">
+		select count(*) from QUESTION
+		where USER_NO=#{userNo}
+		<include refid="searchWhere"></include>
+	</select>
+	
+	<select id="questionbyProjectNo" parameterType="searchVo" resultType="questionVo">
+		select *
+		from
+		(
+		    select rownum as RNUM,A.*
+		    from
+		    (
+		        select * from QUESTION 
+		        where PROJECT_NO=#{projectNo}
+		        <include refid="searchWhere"></include>
+		        order by QUESTION_FLAG, QUESTION_REGDATE desc
+		    )A
+		)
+		<![CDATA[
+		where RNUM > #{firstRecordIndex} 
+		and RNUM <= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="answerListbyProjectNo" parameterType="int" resultType="answerVo">
+	    select * from answerView 
+	    where PROJECT_NO=#{projectNo}
+	</select>
+	
+	<select id="questionProjectCount" parameterType="SearchVo" resultType="int">
+		select count(*) from QUESTION
+		where PROJECT_NO=#{projectNo}
+		<include refid="searchWhere"></include>
+	</select>
+	
+	<insert id="insertAnswer" parameterType="answerVo" >
+		<selectKey keyProperty="answerNo" resultType="int" order="BEFORE">
+			select answer_SEQ.nextval from dual
+		</selectKey>
+		insert into ANSWER(ANSWER_NO,ANSWER_CONTENT,QUESTION_NO)
+		values(#{answerNo},#{answerContent},#{questionNo})
+	</insert>
+	
+	<update id="questionFlagY" parameterType="int">
+		update QUESTION
+		set QUESTION_FLAG='Y'
+		where QUESTION_NO=#{questionNo}
+	</update>
+	
+	<update id="questionFlagN" parameterType="int">
+		update QUESTION
+		set QUESTION_FLAG='N'
+		where QUESTION_NO=#{questionNo}
+	</update>
+	
+	<update id="questionEdit" parameterType="questionVo">
+		update QUESTION
+		set QUESTION_TITLE=#{questionTitle}, QUESTION_CONTENT=#{questionContent}, QUESTION_REGDATE=sysdate
+		where QUESTION_NO=#{questionNo}
+	</update>
+	
+	<update id="answerEdit" parameterType="answerVo">
+		update ANSWER
+		set ANSWER_CONTENT=#{answerContent}, ANSWER_REGDATE=sysdate
+		where QUESTION_NO=#{questionNo}
+	</update>
+	
+	<delete id="deleteQuestion" parameterType="int">
+		delete from QUESTION where QUESTION_NO=#{questionNo}
+	</delete>
+	
+	<delete id="deleteAnswer" parameterType="int">
+		delete from ANSWER where QUESTION_NO=#{questionNo}
+	</delete>
 </mapper>
 
 

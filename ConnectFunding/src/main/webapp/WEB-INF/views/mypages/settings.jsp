@@ -25,7 +25,7 @@
 
 </style>
 	<div class="single_sidebar_widget post_category_widget"
-		style="width:980px; margin-left: 200px; background: white; height: 1300px; margin-top: 50px;">
+		style="width:980px; margin-left: 200px; background: white; height:1300px; margin-top: 50px;">
 		<span class="widget_title"
 			style="text-align: left; font-size: 2.5em; margin-left: 10px;">설정</span>
 		<br>
@@ -327,8 +327,8 @@
 														<option value="우체국">우체국</option>
 													</select>
 												</div>
-												<div class="form-group" style="margin-left: 10px;"width: 450px; margin: 3px;">
-													<div class="form-check">
+												<div class="form-group" style="margin-left: 10px; width: 450px; margin: 3px;">
+													<div class="form-check" id="check2">
 														<input class="form-check-input" type="checkbox"
 															id="flexCheckDefault" name="business"> <label
 															class="form-check-label" for="flexCheckDefault"
@@ -342,9 +342,16 @@
 															id="accountHolder" placeholder="예금주 명을 입력해주세요.">
 													</div>
 													<div class="col-md-6 col-md-offset-6">
-														<label class="form-label mt-6" style="color: black">예금주
-															생년월일</label> <input type="text" class="form-control" name="birth" 
-															id="birth" placeholder="예) 2000-01-01">
+														<div class="addBusiness" style="display: none;">
+															<label class="form-label mt-6">사업자 번호</label> 
+															<input type="text" class="form-control" name="birth"
+																id="birth" placeholder="예) 1058752823">
+														</div>
+														<div class="addAccount" style="display: block;">
+															<label class="form-label mt-6" style="color: black">예금주 생년월일</label> 
+															<input type="text" class="form-control" name="birth" 
+																id="birth" placeholder="예) 2000-01-01">
+														</div>
 													</div>
 												</div>
 												<div class="form-group"
@@ -529,6 +536,14 @@
 													</div>
 												</li>
 												<li>
+													<div class="form-group" style="width: 500px;">
+														<label class="col-form-label col-form-label-sm mt-4" id="label_name" 
+															style="color: #a1a1a1; font-size: 1em;"> 
+														<a target="_blank" href="<c:url value='/cfmember/OutUser'/>">
+															회원탈퇴</a></label>
+													</div>
+												</li>
+												<li>
 													<div class="form-group">
 														<button type="submit" class="genric-btn link-border circle"
 															 style="margin-left: -25px; font-size: initial;">
@@ -584,11 +599,7 @@
 				alert('예금주명을 입력하세요.');
 				$('#accountHolder').focus();
 				event.preventDefault();
-			} else if ($('#birth').val().length < 1) {
-				alert("생년월일을 입력하세요.");
-				$('#birth').focus();
-				event.preventDefault();
-			}else if(leng==0){
+			} else if(leng==0){
 				alert('결제사 정보제공에 동의해주세요.');
 				event.preventDefault();
 			}
@@ -610,42 +621,61 @@
 			}
 		});
 		
-		$(function() {
-			$('#btn2').on('click', function () { 						
-				let collapses = $('div.row').find('.collapse2');	
-				
-				collapses.each(function () { 
-					$(this).collapse('toggle');							
-				}); 													
-			});
+
+		$('.form-group #check2 input[name=business]').click(function() {
+
+			var ischecked = $('.form-group #check2 input[name=business]:checked').length;
+			
+			if (ischecked) {
+				$('.addBusiness').css('display', 'block');
+				$('.addAccount').css('display', 'none');
+				$('#birth').val('');
+			} else {
+				$('.addBusiness').css('display', 'none');
+				$('#businessNo').val('');
+				$('.addAccount').css('display', 'block');
+			}
 		});
-		
-		$(function() {
-			$('#btn').on('click', function () { 						
-				let collapses = $('div.row').find('.collapse');	
-				
-				collapses.each(function () { 
-					$(this).collapse('toggle');							
-				}); 													
-			});
-		});
-		
-	});//
-	
-	function goPopup(){
+
+						$(function() {
+							$('#btn2').on(
+									'click',
+									function() {
+										let collapses = $('div.row').find(
+												'.collapse2');
+
+										collapses.each(function() {
+											$(this).collapse('toggle');
+										});
+									});
+						});
+
+						$(function() {
+							$('#btn').on('click', function() {
+								let collapses = $('div.row').find('.collapse');
+
+								collapses.each(function() {
+									$(this).collapse('toggle');
+								});
+							});
+						});
+
+					});//
+
+	function goPopup() {
 		// 주소검색을 수행할 팝업 페이지를 호출합니다.
 		// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다.
-		var pop = window.open("<c:url value='/cfmember/jusoPopup'/>","pop",
-				"width=500, height=400, top=220, left=550, scrollbars=yes, resizable=yes"); 
+		var pop = window
+				.open("<c:url value='/cfmember/jusoPopup'/>", "pop",
+						"width=500, height=400, top=220, left=550, scrollbars=yes, resizable=yes");
 	}
 
-	function jusoCallBack(roadFullAddr,zipNo){
-			var addressEl = document.querySelector("#address");
-			addressEl.value = roadFullAddr;
-			
-			var zipNoEl = document.querySelector("#zipNo");
-			zipNoEl.value = zipNo;
-	}	// 주소 API
+	function jusoCallBack(roadFullAddr, zipNo) {
+		var addressEl = document.querySelector("#address");
+		addressEl.value = roadFullAddr;
+
+		var zipNoEl = document.querySelector("#zipNo");
+		zipNoEl.value = zipNo;
+	} // 주소 API
 </script>	
 <%@ include file="../include/bottom.jsp"%>
-	

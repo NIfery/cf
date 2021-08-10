@@ -100,6 +100,19 @@
 				<if test="secondCategoryNo!=0">
 					and second_category_no=#{secondCategoryNo}
 				</if>
+				<if test="ingType==1">
+					<![CDATA[
+					and project_startdate<=sysdate and project_enddate>sysdate
+					]]>
+				</if>
+				<if test="ingType==2">
+					<![CDATA[
+					and project_enddate<=sysdate
+					]]>
+				</if>
+				<if test="ingType==3">
+					and project_startdate>sysdate
+				</if>
 		        order by a.project_no desc
         	)C
         )        
@@ -152,6 +165,19 @@
 		<if test="secondCategoryNo!=0">
 			and p.second_category_no=#{secondCategoryNo}
 		</if>
+		<if test="ingType==1">
+			<![CDATA[
+			and project_startdate<=sysdate and project_enddate>sysdate
+			]]>
+		</if>
+		<if test="ingType==2">
+			<![CDATA[
+			and project_enddate<=sysdate
+			]]>
+		</if>
+		<if test="ingType==3">
+			and project_startdate>sysdate
+		</if>
 	</select>
 	
 	<select id="selectTotalFundingAmountByFundingNo" parameterType="int" resultType="int">
@@ -187,7 +213,7 @@
 	<select id="selectByNo" parameterType="int" resultMap="DetailResultMap">
 		select A.*,t.total_funding_amount from 
 			(
-				select p.*, u.USER_NAME from PROJECT p join USERS u
+				select p.* , u.USER_NAME from PROJECT p join USERS u
 				on p.USER_NO=u.USER_NO
 			)A left join (select project_no, sum(funding_amount) as total_funding_amount from funding_list
                 group by project_no) t
@@ -237,5 +263,60 @@
 		delete from FUNDING_LIST
 		where RECEIPT_ID=#{receiptId}
 	</delete>
+	
+	<select id="checkLike" parameterType="int" resultType="map">
+		select count(*) as likecheck
+		from like_project
+		where project_no=#{projectNo}
+	</select>
+	
+	<select id="selectPlanProject" parameterType="int" resultType="map">
+		select p.project_name, p.project_inshort, p.project_startdate, p.project_image, p.project_no,
+		s.category_name, u.user_name
+		from project p join second_category s
+		on p.second_category_no=s.second_category_no
+		join users u on u.user_no=p.user_no
+		where p.project_no=#{projectNo}
+	</select>
+	
+	<select id="planCount" parameterType="int" resultType="int">
+		select count(*)
+		from inform_project
+		where project_no=#{projectNo}
+	</select>
+	
+	<select id="selectplan" resultType="map">
+		select * from  
+		(select project_name, project_image, s.category_name, u.user_name
+		from project p join second_category s
+		on p.second_category_no=s.second_category_no 
+		join users u on u.user_no = p.user_no
+		where sysdate
+		<![CDATA[
+		<to_char(project_startdate, 'yyyy-mm-dd')
+        order by dbms_random.value)
+        where rownum <= 4
+		]]>
+	</select>
+	
+	<select id="randomList" resultMap="DetailResultMap">
+		select * from  (select * from
+        		(
+        			select p.*, s.first_category_no, u.user_name from PROJECT p join second_category s
+        			on p.second_category_no=s.second_category_no
+                    join users u on u.user_no=p.user_no
+        		)A
+		        left join        
+		        (
+			        select project_no, sum(funding_amount) as totalFundingAmount from funding_list
+			        group by project_no
+        		)B
+		        on a.project_no=b.project_no where sysdate
+		<![CDATA[
+			>to_char(project_startdate, 'yyyy-mm-dd')
+	        order by dbms_random.value)
+	        where rownum <= 4
+		]]> 
+	</select>
 	
 </mapper>

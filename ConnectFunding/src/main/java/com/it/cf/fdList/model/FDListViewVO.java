@@ -12,15 +12,16 @@ import lombok.ToString;
 @Setter 
 @ToString
 public class FDListViewVO extends SearchVO {
-	
-	private String projectName; 
-	private String projectImage;
-	private Timestamp paydate; 
-	private int opendate;
-	private int fundingAmount;
-	private Timestamp supportDate; 
-	private int userNo; 
-	private String userName;
-	private String receiptId;
-	private Timestamp projecttEnddate; 
+   
+   private String projectName; 
+   private String projectImage;
+   private Timestamp paydate; 
+   private int opendate;
+   private int fundingAmount;
+   private int totalAmount;
+   private Timestamp supportDate; 
+   private int userNo; 
+   private String userName;
+   private String receiptId;
+   private int followCheck;
 }

@@ -14,4 +14,5 @@ public interface likeProjectService {
 	int selecLikeCheck(int projectNo);
 	List<Map<String, Object>> searchlikeprojectList(likeProjectVO likeprojectVo);
 	int selectLikeListTotalRecord(likeProjectVO likeprojectVo);
+	int deleteLikeByName(String projectName);
 }

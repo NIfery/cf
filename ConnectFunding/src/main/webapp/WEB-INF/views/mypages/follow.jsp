@@ -92,7 +92,7 @@
 												<div class="trand-right-img">
 													<c:if test="${empty map['USER_PROFILE'] }">
 														<img src="<c:url value='/assets/img/logo/user.png'/>"
-															style="width: 80px; height: 70px; margin: 40px 13px;">
+															style="width: 60px; height: 60px; margin: 40px 25px;">
 													</c:if>
 													<c:if test="${!empty map['USER_PROFILE'] }">
 														<div class="profile" style="margin: 30px 20px;">
@@ -107,6 +107,7 @@
 													<span class="color1">
 														<p style="font-size: 1.1em;">
 															<strong>${map['USER_NAME'] }</strong>
+															<strong>${map['FOLLOW_CHECK'] }</strong>
 														</p>
 													</span>
 													<c:if test="${!empty map['USER_INTRO'] }">
@@ -115,12 +116,16 @@
 													</c:if>
 													<span style="font-size: 0.9em;" class="count"></span>
 												</div>
-												<div class="followw">
-												<button class="genric-btn info circle" id="followcheck"
-														style="width: 110px; height: 40px; margin: 40px 0px 0px 30px;">+팔로우</button>
+												<div class="followw" style="display: block;">
+													<button class="genric-btn info-border circle arrow" id="followw"
+														style="width: 110px; height: 40px; margin: 40px 0px 0px 40px;">+ 팔로우</button>
 												<!-- <input type="submit" class="genric-btn info circle" id="followcheck"
 													style="width: 110px; height: 40px; margin: 40px 0px 0px 30px;"
 													value="팔로우"> -->
+												</div>
+												<div class="unfolloww" style="display: none;" >
+													<button class="genric-btn info circle" id="unfolloww"
+														style="width: 110px; height: 40px; margin: 40px 0px 0px 40px;">√ 팔로잉</button>	
 												</div>
 											</div>
 										</div>
@@ -153,7 +158,8 @@
 	$(document).ready(function(){
 		
 		/* $('#nav-home-tab').click(function(){
-			$('#one').load('${pageContext.request.contextPath}/mypageload/creators');
+			alert('안녕');
+			$('#one').load('${pageContext.request.contextPath}/mypages/follow');
 		}); */
 		
 		$('#nav-following-tab').click(function(){
@@ -167,7 +173,6 @@
 	});//
 
 	$(function(){
-		$('#followcheck').click(function(){
 			var data = $('#followingUserNo').val();
 			$.ajax({
 				url:"<c:url value='/mypageload/checkFollow'/>",
@@ -178,10 +183,12 @@
 					var result="";
 					if(ress){
 						result="안녕";
-						$('#followcheck').text(result);
+					    $('.followw').css('display', 'none');
+					    $('.unfolloww').css('display', 'block');
 					}else {
 						result="바보";
-						$('#followcheck').text(result);
+					    $('.followw').css('display', 'block');
+					    $('.unfolloww').css('display', 'none');
 					}
 					alert(result);
 				},
@@ -189,7 +196,6 @@
 					alert("error 발생..." + error);
 				}
 			});
-		});
 	}); 
 </script>	
 <%@ include file="../include/bottom.jsp"%>

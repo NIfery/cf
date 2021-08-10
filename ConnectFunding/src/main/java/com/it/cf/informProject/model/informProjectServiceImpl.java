@@ -19,12 +19,33 @@ public class informProjectServiceImpl implements informProjectService {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectInformProject(int userNo) {
-		return informPjecDao.selectInformProject(userNo);
+	public List<Map<String, Object>> selectInformProject(informProjectVO informProjectVo) {
+		return informPjecDao.selectInformProject(informProjectVo);
 	}
 
 	@Override
 	public int deleteinformProject(int projectNo) {
 		return informPjecDao.deleteinformProject(projectNo);
 	}
+
+	@Override
+	public int updateCheck(int projectNo) {
+		return informPjecDao.updateCheck(projectNo);
+	}
+
+	@Override
+	public int informCheck(int projectNo, int userNo) {
+		return informPjecDao.informCheck(projectNo, userNo);
+	}
+
+	@Override
+	public int deleteInform(int projectNo, int userNo) {
+		return informPjecDao.deleteInform(projectNo, userNo);
+	}
+
+	@Override
+	public int informTotalCount(int userNo) {
+		return informPjecDao.informTotalCount(userNo);
+	}
+
 }

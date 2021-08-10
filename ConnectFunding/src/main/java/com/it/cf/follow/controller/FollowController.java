@@ -1,6 +1,7 @@
 package com.it.cf.follow.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.it.cf.common.PaginationInfo;
 import com.it.cf.follow.model.FollowService;
 import com.it.cf.follow.model.FollowVO;
 
@@ -28,22 +30,40 @@ public class FollowController {
 	private final FollowService followservice;
 	
 	@RequestMapping("/mypageload/following")
-	public String following(HttpSession session, Model model) {
+	public String following(HttpSession session, Model model, 
+			@ModelAttribute FollowVO followVo) {
 		
 		logger.info("팔로우 - 팔로잉 탭");
 		
 		int userNo = (int) session.getAttribute("userNo");
 		
-		List<FollowVO> followlist = followservice.selectFollowing(userNo);
+		PaginationInfo pageInfo = new PaginationInfo();
+		pageInfo.setCurrentPage(followVo.getCurrentPage());
+		pageInfo.setBlockSize(5);
+		pageInfo.setRecordCountPerPage(5);
+		
+		followVo.setFirstRecordIndex(pageInfo.getFirstRecordIndex());
+		followVo.setRecordCountPerPage(5);
+		followVo.setUserNo(userNo);
+		
+		List<Map<String, Object>> followlist = followservice.selectFollowing(followVo);
 		logger.info("내가 팔로우한 사람 목록, followlist.size={}", followlist.size());
 	
+		int followCount = followservice.followCount(userNo);
+		pageInfo.setTotalRecord(followCount);
+		logger.info("내가 팔로우한 사람 총 수={}", followCount);
+		
 		model.addAttribute("followlist", followlist);
+		model.addAttribute("pageInfo", pageInfo);
 		
 		return "mypageload/following";
 	}//
 	
 	@RequestMapping("/mypageload/AddFollow")
-	public String addFollow(@ModelAttribute FollowVO followVo, Model model) {
+	public String addFollow(@ModelAttribute FollowVO followVo, Model model, 
+			HttpSession session) {
+		
+		int userNo = (int) session.getAttribute("userNo");
 		
 		int cnt = followservice.insertFollow(followVo);
 		logger.info("팔로우 결과, followVo={}", followVo);
@@ -62,15 +82,29 @@ public class FollowController {
 	}//
 	
 	@RequestMapping("/mypageload/followers")
-	public String followers(HttpSession session, Model model) {
+	public String followers(HttpSession session, Model model,
+				@ModelAttribute FollowVO followVo) {
 		
 		int followingUserNo = (int) session.getAttribute("userNo");
 		
-		List<FollowVO> followerlist = followservice.selectFollower(followingUserNo);
+		PaginationInfo pageInfo = new PaginationInfo();
+		pageInfo.setCurrentPage(followVo.getCurrentPage());
+		pageInfo.setBlockSize(5);
+		pageInfo.setRecordCountPerPage(5);
 		
+		followVo.setFirstRecordIndex(pageInfo.getFirstRecordIndex());
+		followVo.setRecordCountPerPage(5);
+		followVo.setFollowingUserNo(followingUserNo);
+		
+		List<Map<String, Object>> followerlist = followservice.selectFollower(followVo);
 		logger.info("나를 팔로워한 목록 조회, 팔로워 list.size={}", followerlist.size());
 		
+		int followerCount = followservice.followerCount(followingUserNo);
+		pageInfo.setTotalRecord(followerCount);
+		logger.info("나를 팔로워 한 총 수={}", followerCount);
+		
 		model.addAttribute("followerlist", followerlist);
+		model.addAttribute("pageInfo", pageInfo);
 		
 		return "mypageload/followers";
 	}//

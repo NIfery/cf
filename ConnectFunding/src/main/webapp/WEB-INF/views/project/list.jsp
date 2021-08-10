@@ -387,12 +387,23 @@
                             <c:forEach var="vo" items="${list }" begin="4">
                             <div class="weekly2-single" style="width: 270px;">
                                      <div class="weekly2-img">
-                                         <a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>"><img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
-                                               style="width:263px; height:170px"></a>
-                                     </div>
-                                     <div class="weekly2-caption">
-                                         <span></span>
-                                         <h4 style="height: 60px;"><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
+	                                      <c:if test="${todayDate<vo.projectStartdate }">
+	                                      	  <a href="<c:url value="/project/plan?projectNo=${vo.projectNo }"/>"><img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
+		                                             style="width:263px; height:170px"></a>
+	                                      </c:if>
+	                                      <c:if test="${todayDate>=vo.projectStartdate }">
+		                                      <a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>"><img src="${pageContext.request.contextPath}/project_assets/projectImg/${vo.projectImage}"
+		                                             style="width:263px; height:170px"></a>
+	                                      </c:if>
+                                      </div>
+                                      <div class="weekly2-caption">
+                                          <span></span>
+                                          <c:if test="${todayDate<vo.projectStartdate }">
+	                                      	<h4 style="height: 60px;"><a href="<c:url value="/project/plan?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
+	                                      </c:if>
+	                                      <c:if test="${todayDate>=vo.projectStartdate }">
+                                          	<h4 style="height: 60px;"><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
+                                          </c:if>
                                          <p><fmt:formatDate value="${vo.projectRegdate }" pattern="yyyy-MM-dd"/></p>
                                          <h6>${vo.projectSummary }</h6>
                                          <div class="percentage">

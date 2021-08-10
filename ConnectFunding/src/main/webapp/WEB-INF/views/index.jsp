@@ -30,8 +30,21 @@
 a {
 	text-decoration: none !important;
 }
-
 </style>
+<script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
+<script type="text/javascript">
+	$(function(){
+		$.ajax({
+			url:"<c:url value='/project/cancleAll'/>",
+			type:"get",
+			success:function(res){
+			
+			},error:function(xhr, status, error){
+				alert("Error 발생 : " + error);
+			}
+		});
+	})
+</script>
 </head>
 
    <body>

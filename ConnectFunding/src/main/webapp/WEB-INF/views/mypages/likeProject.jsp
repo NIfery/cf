@@ -24,6 +24,10 @@
 	font-size: 0.9em;
 	margin-left: 250px;
 }
+
+.page-link{
+	background-color: white;
+}
 </style>
 
 <div style="width: 1000px;  height: auto; min-height: 700px;">

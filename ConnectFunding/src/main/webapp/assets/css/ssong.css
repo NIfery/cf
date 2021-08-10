@@ -294,3 +294,7 @@ body{
 	float: right;
 	margin-right: 210px;
 }
+
+.page-link{
+	background-color: white;
+}

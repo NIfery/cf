@@ -34,7 +34,7 @@
 	<input type="hidden" name="searchKeyword" value="${param.searchKeyword }"><br>	
 </form>
 
-	<div class="container">
+	<div class="container" >
 		<table class="table table-hover">
 		<h1><span class="glyphicon glyphicon-list-alt"></span> 자유게시판 </h1>
 			<thead>

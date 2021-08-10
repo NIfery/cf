@@ -11,4 +11,5 @@ public interface CommentsService {
 	List<Map<Object, Object>> CommentsCount();
 	int CommentsReply(CommentsVO vo);
 	List<Map<Object, Object>> ShowProfileImg();
+	int UserCommentsCount(String userNickName);
 }

@@ -52,7 +52,7 @@ body {
 				<br>	
 				<div class="mb-3">
 					<label for="content">내용</label>
-					<textarea class="form-control" rows="10" name="boardContent" readonly="readonly">${vo.boardContent }</textarea>
+					<div style="height: 500px" class="form-control" name="boardContent" >${vo.boardContent }</div>
 				</div>
 				<br>
 				

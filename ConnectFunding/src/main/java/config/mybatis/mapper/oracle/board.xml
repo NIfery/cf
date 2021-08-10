@@ -97,12 +97,22 @@
 	WHERE A.BOARD_no=#{boardNo}
     </select>
     
-    <select id="UserBoard" parameterType="searchVo" resultType="map">
-    	select * from Userboard
-    	where user_nickname=#{userNickName}
+    <select id="UserBoard" parameterType="String" resultType="map">
+		select *
+		from
+		(
+		select rownum as RNUM, A.*
+		    from
+		    (
+		     select b.*, (sysdate-board_regdate)*24 as newImg
+		     from Userboard b
+		     where user_nickname =#{userNickName}
+		     order by board_no desc
+		     )A
+		)
     </select>
     
-    <select id="TotalRecord2" parameterType="SearchVo" resultType="int">
+    <select id="TotalRecord2" parameterType="String" resultType="int">
       select count(*) from Userboard
       where user_nickname =#{userNickName}
    </select>

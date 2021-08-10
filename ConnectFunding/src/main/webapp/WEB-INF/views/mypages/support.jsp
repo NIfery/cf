@@ -57,6 +57,8 @@
 	background-color: white;
 }
 </style>
+<c:set var="today" value="<%=new java.util.Date()%>" />
+<c:set var="todayDate"><fmt:formatDate value="${today}" pattern="yyyy-MM-dd hh:mm:ss" /></c:set>
 <div class="single_sidebar_widget post_category_widget"
 	style="width: 1000px; margin-left: 200px; background: white; margin-top: 50px; min-height: 1400px;">
 	<span class="widget_title"
@@ -129,18 +131,21 @@
 									<span class="color1" style="font-size: 1.2em;">${map['PROJECT_NAME']}</span><br>
 									<span class="color2" style="font-size: 0.9em;">${map['USER_NAME']}</span><br>
 									<span class="color2" style="font-weight: bold;"> <fmt:formatNumber
-											value="${map['FUNDING_AMOUNT']}" pattern="#,###" />원<!--  결제예정 -->
+											value="${map['FUNDING_AMOUNT']}" pattern="#,###" />원
 									</span><br>
 								</div>
-								<%-- <span class="color2" style="font-size: 0.8em; color: red;">
-                           결제 예정일 &nbsp
-                           <fmt:formatDate value="${map['PAYDATE']}" type="date"/>
-                        </span>  --%>
-								<a onclick="idThrow($(this).next().val())" style="color: blue"
-									href="#" data-toggle="modal" data-target="#myModal"
-									id="btCancleModal">환불하기</a> <input type="hidden" id="receiptId"
-									value="${map['RECEIPT_ID'] }"> <input type="hidden"
-									id="userNo" value="${map['USER_NO'] }">
+								<c:if test="${todayDate>=map['PROJECT_ENDDATE']}">
+									<c:if test="${todayDate<map['PROJECT_ENDDATE'] }">
+		                        	  <a onclick="idThrow($(this).next().val())" style="color: blue"
+										href="#" data-toggle="modal" data-target="#myModal"
+										id="btCancleModal">환불하기</a> <input type="hidden" id="receiptId"
+										value="${map['RECEIPT_ID'] }"> <input type="hidden"
+										id="userNo" value="${map['USER_NO'] }">
+		                          	</c:if>
+		                        	<c:if test="${todayDate>=map['PROJECT_ENDDATE'] }">
+			                    		펀딩종료
+		                        	</c:if>
+	                            </c:if>
 								<div class="modal fade" id="myModal" data-backdrop="static"
 									tabindex="-1" role="dialog"
 									aria-labelledby="staticBackdropLabel" aria-hidden="true">

@@ -43,6 +43,8 @@
 	background-color: white;
 }
 </style>
+<c:set var="today" value="<%=new java.util.Date()%>" />
+<c:set var="todayDate"><fmt:formatDate value="${today}" pattern="yyyy-MM-dd hh:mm:ss" /></c:set>
 <div class="single_sidebar_widget post_category_widget"
 	style="width: 1000px; margin-left: 200px; background: white; height: 1000px; margin-top: 50px;">
 	<span class="widget_title"
@@ -82,7 +84,17 @@
 								<div class="col">
 									<span class="color2" style="font-size: 0.9em;">
 										<c:if test="${vo.confirm=='Y' }">
-											펀딩중
+											<c:if test="${todayDate<vo.projectStartdate }">
+												펀딩대기중
+	                                      	</c:if>
+											<c:if test="${todayDate>=vo.projectStartdate }">
+												<c:if test="${todayDate<vo.projectEnddate }">
+		                                      	  펀딩중
+		                                      	</c:if>
+		                                      	<c:if test="${todayDate>=vo.projectEnddate }">
+			                                      펀딩종료
+		                                      	</c:if>
+	                                      	</c:if>
 										</c:if>
 										<c:if test="${vo.confirm!='Y' }">
 											심사중
@@ -108,8 +120,13 @@
 								</div>
 								<div class="col" style="display: flex;flex-direction: column;justify-content: center;">
 									<a style="color:blue" href="<c:url value='/answer/answerList?projectNo=${vo.projectNo }'/>">[받은 문의함]</a>
-									<a style="color:blue" href="<c:url value='/project/update?projectNo=${vo.projectNo }'/>">[수정]</a>
-							    	<a style="color:blue" href="#" data-toggle="modal" data-target="#deleteModal${vo.projectNo }">[삭제]</a>
+									<c:if test="${todayDate<vo.projectEnddate }">
+		                              	<a style="color:blue" href="<c:url value='/project/update?projectNo=${vo.projectNo }'/>">[수정]</a>
+							    		<a style="color:blue" href="#" data-toggle="modal" data-target="#deleteModal${vo.projectNo }">[삭제]</a>
+		                            </c:if>
+		                            <c:if test="${todayDate>=vo.projectEnddate }">
+			                          	펀딩이 종료되었습니다.
+		                            </c:if>
 								</div>
 							</div>
 							

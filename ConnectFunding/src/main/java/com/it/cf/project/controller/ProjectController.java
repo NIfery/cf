@@ -3,6 +3,8 @@ package com.it.cf.project.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -318,10 +320,61 @@ public class ProjectController {
 
 	@ResponseBody
 	@RequestMapping("/cancleAll")
-	public void cancleAll(@RequestParam int projectNo) {
-		logger.info("기간 종료 전체 환불 요청, 파라미터 projectNo={}", projectNo);
+	public void cancleAll() {
+		System.out.println("asdasdasd");
+		logger.info("기간 종료 전체 환불 체크");
 		
-		List<FundingListVO> list = projectService.selectFundingListByProjectNo(projectNo);
+		List<ProjectVO> list = projectService.selectAllCheck();
+		logger.info("기간 종료 전체 환불 체크, list.size={}", list.size());
+		
+		Date today = new Date();
+		logger.info("오늘 : {}",today);
+		for(int i=0;i<list.size();i++) {
+			ProjectVO vo = list.get(i);
+			Date end =new Date(vo.getProjectEnddate().getTime());
+			
+			if(today.after(end)) {
+				double totalAmount = (double)vo.getTotalAmount();
+				double totalFundingAmount = (double)vo.getTotalFundingAmount();
+				double percent = totalFundingAmount/totalAmount*100.0;
+				logger.info("토탈 : {}, 펀딩토탈 : {}, 퍼센트 : {}",totalAmount, totalFundingAmount, percent);
+				
+				if(percent<100.0) {
+					List<FundingListVO> rList = projectService.selectFundingListByProjectNo(vo.getProjectNo());
+					logger.info("영수증 rList={}", rList);
+					
+					if(rList.size()!=0) {
+						for(int j=0;j<rList.size();j++) {
+							if(rList.get(j).getReceiptId()!=null) {
+								api = new BootpayApi("60ffa2837b5ba400237bda13", "aAx7mTvRBnDZtARKP/FlAH3GjL6KmRyqFpH8k+8fzmg=");  // application_id, private key 
+								try {
+									api.getAccessToken();
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+								Cancel cancel = new Cancel();
+								cancel.receipt_id = rList.get(j).getReceiptId();
+								cancel.name = "관리자";
+								cancel.reason = "펀딩실패";
+								
+								try {
+									HttpResponse res = api.cancel(cancel);
+									String str = IOUtils.toString(res.getEntity().getContent(), "UTF-8");
+									System.out.println(str);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+								
+								int cnt = projectService.deleteFunding(rList.get(j).getReceiptId());
+								logger.info("환불 결과, cnt={}", cnt);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		/*List<FundingListVO> list = projectService.selectFundingListByProjectNo(projectNo);
 		logger.info("영수증 list={}", list);
 		
 		if(list.size()!=0) {
@@ -348,7 +401,7 @@ public class ProjectController {
 		        int cnt = projectService.deleteFunding(list.get(i).getReceiptId());
 		        logger.info("환불 결과, cnt={}", cnt);
 			}
-		}
+		}*/
 	}
 	
 	@GetMapping("/update")
@@ -457,8 +510,10 @@ public class ProjectController {
 	@RequestMapping("/plan")
 	public String plan(@RequestParam(defaultValue = "0") int projectNo, Model model, 
 			HttpSession session) {
-		
-		int userNo = (int) session.getAttribute("userNo");
+		int userNo=0;
+		if(session.getAttribute("userNo")!=null && session.getAttribute("userNo")!="") {
+			userNo = (int) session.getAttribute("userNo");
+		}
 		logger.info("userNo={}",userNo);
 		logger.info("공개 예정 프로젝트 페이지, projectNo={}", projectNo);
 		

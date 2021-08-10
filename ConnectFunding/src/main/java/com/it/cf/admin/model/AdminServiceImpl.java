@@ -419,12 +419,12 @@ public class AdminServiceImpl implements AdminService{
             cell=row.createCell(4);
             cell.setCellStyle(bodyStyle);
             int int1 = Integer.parseInt(String.valueOf(excelData.get("FIVE")));
-            cell.setCellValue(df.format(int1));
+            cell.setCellValue(df.format(int1)+"원");
 
             cell=row.createCell(5);
             cell.setCellStyle(bodyStyle);
             int int2 = Integer.parseInt(String.valueOf(excelData.get("SIX")));
-            cell.setCellValue(df.format(int2));
+            cell.setCellValue(df.format(int2)+"원");
 
             cell=row.createCell(6);
             cell.setCellStyle(bodyStyle);

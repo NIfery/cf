@@ -142,10 +142,6 @@ function logout(){
                                 <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
                         </li>
                     </c:if>
-                        <li>
-                            <a href="<c:url value='/chat/adminInbox'/>">
-                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
-                        </li>
                         <li class="nav-item dropdown"> 
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-download"></i>엑셀로 저장
@@ -224,10 +220,6 @@ function logout(){
                                 <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
                         </li>
                     </c:if>
-                        <li>
-                            <a href="<c:url value='/chat/adminInbox'/>">
-                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
-                        </li>
                         <li class="nav-item dropdown"> 
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-download"></i>엑셀로 저장

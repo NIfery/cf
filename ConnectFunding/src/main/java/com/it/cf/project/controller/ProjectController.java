@@ -457,8 +457,10 @@ public class ProjectController {
 	@RequestMapping("/plan")
 	public String plan(@RequestParam(defaultValue = "0") int projectNo, Model model, 
 			HttpSession session) {
-		
-		int userNo = (int) session.getAttribute("userNo");
+		int userNo=0;
+		if(session.getAttribute("userNo")!=null && session.getAttribute("userNo")!="") {
+			userNo = (int) session.getAttribute("userNo");
+		}
 		logger.info("userNo={}",userNo);
 		logger.info("공개 예정 프로젝트 페이지, projectNo={}", projectNo);
 		

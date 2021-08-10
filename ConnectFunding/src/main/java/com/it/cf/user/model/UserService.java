@@ -1,5 +1,7 @@
 package com.it.cf.user.model;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface UserService {
 	
 	//로그인 처리 상수
@@ -28,5 +30,11 @@ public interface UserService {
 	int checkEmail(String userEmail);
 	int checkNickname(String userNickname);
 	int outUser(String userEmail);
+	
+	//이메일발송
+	public void sendEmail(UserVO vo, String div) throws Exception;
+
+	//비밀번호찾기
+	public void findPw(HttpServletResponse resp, UserVO vo) throws Exception;
 
 }

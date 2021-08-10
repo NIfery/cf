@@ -58,6 +58,10 @@
                             
                            		<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit"
                            			id="login">로그인하기</button>
+                           			<br>
+                           			<p style="text-align: center;">
+                           				<a href="<c:url value='/cfmember/findPw'/>" style="color: rgb(39, 163, 255); ">비밀번호 찾기</a>
+									</p>
                             <hr class="my-4"> 
                            		<button class="btn btn-lg btn-google btn-block text-uppercase" type="submit">
                             <i class="fab fa-google mr-2"></i>구글 아이디로 로그인</button> 

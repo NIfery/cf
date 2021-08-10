@@ -14,6 +14,10 @@ import lombok.RequiredArgsConstructor;
 public class ProjectServiceImpl implements ProjectService{
 	private final ProjectDAO projectDao;
 	
+	public List<ProjectVO> selectAllCheck() {
+		return projectDao.selectAllCheck();
+	}
+	
 	public List<ProjectVO> selectAll(ProjectVO pageVo) {
 		return projectDao.selectAll(pageVo);
 	}

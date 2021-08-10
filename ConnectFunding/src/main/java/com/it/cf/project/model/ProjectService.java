@@ -6,6 +6,7 @@ import java.util.Map;
 import com.it.cf.fdList.model.FundingListVO;
 
 public interface ProjectService {
+	List<ProjectVO> selectAllCheck();
 	List<ProjectVO> selectAll(ProjectVO pageVo);
 	List<ProjectVO> selectAllConfirm(ProjectVO pageVo);
 	List<ProjectVO> selectAllAdmin(ProjectVO pageVo);

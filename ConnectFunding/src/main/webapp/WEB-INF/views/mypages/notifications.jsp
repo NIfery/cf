@@ -34,14 +34,21 @@
 	height: 300px;
 	margin-top: 70px;
 }
+
+.page-link{
+	background-color: white;
+}
 </style>
 
 <div class="single_sidebar_widget post_category_widget"
-	style="width: 1000px; margin-left: 200px; background: white; height: auto; margin-top: 30px; min-height: 700px; ">
+	style="width: 1000px; margin-left: 200px; background: white; height: auto; margin-top: 30px;">
 	<span class="widget_title"
 		style="text-align: left; font-size: 2.5em; margin-left: 10px;">
 		알림</span> <br> <br>
-	<div>
+	<div style="min-height: 900px;">
+	<form action="<c:url value='/mypages/notifications'/>" name="frmSupport" method="post">
+	<input type="hidden" name="currentPage"><br> 
+	</form>	
 		<div class="main" style="margin-top: 20px;">
 			<c:if test="${empty iflist}">
 				<div class="main" style="margin: 0 auto;">
@@ -130,9 +137,7 @@
 		</div>
 	</div>
 </div>
-<form action="<c:url value='/mypages/notifications'/>" name="frmSupport" method="post">
-	<input type="hidden" name="currentPage"><br> 
-</form>
+
 <script type="text/javascript">
 function pageProc(curPage){
 	$('input[name=currentPage]').val(curPage);

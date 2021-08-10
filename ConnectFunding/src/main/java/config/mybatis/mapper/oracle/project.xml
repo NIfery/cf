@@ -287,9 +287,11 @@
 	
 	<select id="selectplan" resultType="map">
 		select * from  
-		(select project_name, project_image, s.category_name
+		(select project_name, project_image, s.category_name, u.user_name
 		from project p join second_category s
-		on p.second_category_no=s.second_category_no where sysdate
+		on p.second_category_no=s.second_category_no 
+		join users u on u.user_no = p.user_no
+		where sysdate
 		<![CDATA[
 		<to_char(project_startdate, 'yyyy-mm-dd')
         order by dbms_random.value)
@@ -297,11 +299,12 @@
 		]]>
 	</select>
 	
-	<select id="randomList" resultType="map">
+	<select id="randomList" resultMap="DetailResultMap">
 		select * from  (select * from
         		(
-        			select p.*, s.first_category_no from PROJECT p join second_category s
+        			select p.*, s.first_category_no, u.user_name from PROJECT p join second_category s
         			on p.second_category_no=s.second_category_no
+                    join users u on u.user_no=p.user_no
         		)A
 		        left join        
 		        (

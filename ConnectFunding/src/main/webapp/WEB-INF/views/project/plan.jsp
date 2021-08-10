@@ -38,7 +38,7 @@
     width: 100%;
     height: 100%;
     margin: 0px;
-    overflow: hidden;
+
 }
 
 .div3{
@@ -119,6 +119,9 @@
 	<article>
 	<c:import url="/project/randomList"></c:import>
 	</article>
+<%-- 	<article>
+	<c:import url="/project/planList"></c:import>
+	</article> --%>
 </div>
 <script type="text/javascript">
 var result = '${msg}';

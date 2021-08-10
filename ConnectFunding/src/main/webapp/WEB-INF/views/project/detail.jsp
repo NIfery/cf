@@ -94,43 +94,6 @@
 			    
 				console.log(data);
 			});
-			
-			
-			// IMP.request_pay(param, callback) 호출
-			/* IMP.request_pay({ // param
-				pg: "html5_inicis", // PG사 선택
-			    pay_method: "card", // 지불 수단
-			    merchant_uid: merchantUid, //가맹점에서 구별할 수 있는 고유한id
-			    customer_uid: customerUid,
-			    name: projectName, // 상품명
-			    amount: fdAmount, // 가격
-			    buyer_email: "test@test.com",
-			    buyer_name: userName, // 구매자 이름
-			    buyer_tel: userHp, // 구매자 연락처 
-			    buyer_addr: userAddress,// 구매자 주소지
-			    buyer_postcode: userZipcode // 구매자 우편번호
-			}, function (rsp) { // callback
-			    if (rsp.success) {
-			        // 결제 성공 시 로직,
-			        jQuery.ajax({
-				        url: "https://www.myservice.com/billings/", // 서비스 웹서버
-				        method: "POST",
-				        headers: { "Content-Type": "application/json" },
-				        data: {
-				        	customer_uid: customerUid, // 카드(빌링키)와 1:1로 대응하는 값
-				        }
-				    });
-			        
-			        alert('빌링성공');
-			        //location.href="<c:url value='/project/detailFunding?projectNo="+projectNo+"&fdAmount="+fdAmount+"'/>";
-			        
-			        $('#btFundingModalClose').click();
-			        $('#amount').val('');
-			    } else {
-			        $('#btFundingModalClose').click();
-			        $('#amount').val('');
-			    }
-			}); */
 		});
 		
 		$('#addLike').click(function(){

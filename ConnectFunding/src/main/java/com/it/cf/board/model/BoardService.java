@@ -15,6 +15,6 @@ public interface BoardService {
 	int EditBoard(BoardVO vo);
 	int DeleteBoard(BoardVO vo);
 	BoardVO SelectNextAndPre(int boardNo);
-	List<Map<Object, Object>> UserBoard(SearchVO searchVO);
-	int TotalRecord2(SearchVO saerchVo);
+	List<Map<Object, Object>> UserBoard(String userNickName);
+	int TotalRecord2(String userNickName);
 }

@@ -103,7 +103,7 @@ body {
 				<br>
 				<div class="mb-3">
 					<label for="reg_id">작성자</label>
-					<input type="text" class="form-control" name="userName" id="userName" placeholder="id 출력란" value="${vo.userName }" readonly="readonly">
+					<input type="text" class="form-control" name="userNickName" id="userNickName" placeholder="id 출력란" value="${vo.userNickName }" readonly="readonly">
 				</div>		
 				<br>	
 				<div class="mb-3">

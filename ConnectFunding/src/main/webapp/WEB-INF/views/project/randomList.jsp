@@ -21,12 +21,14 @@
                                       </div>
                                       <div class="weekly2-caption">
                                           <span></span>
+                                          <p style="font-size: 0.9em; color: #b4b1b1;">${map['USER_NAME'] }</p>
                                           <h4 style="height: 60px;">
                                           <a href="<c:url value="/project/detail?projectNo=${map['PROJECT_NO'] }"/>">${map['PROJECT_NAME'] }</a></h4>
                                 	 <div style="display: flex;">
-                                          <h6>
-							    		<fmt:formatNumber value="${map['TOTALFUNDINGAMOUNT'] }" pattern="#,###"/>원 
-							    		<fmt:formatNumber value="${map['TOTALFUNDINGAMOUNT']/map['TOTAL_AMOUNT']*100.0 }" pattern="0.00"/>%</h6>
+                                     	<h6>
+							    		<fmt:formatNumber value="${map['TOTALFUNDINGAMOUNT'] }" pattern="#,###"/>
+ 							    		<fmt:formatNumber value="${(map['TOTALFUNDINGAMOUNT']/map['TOTAL_AMOUNT'])*100.00}" type="percent"/>
+							    		</h6>
                                      </div>
                                       </div>
                                   </div> 

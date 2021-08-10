@@ -42,13 +42,17 @@ function commentList(){
                 $.each(data.ProfileImg, function(key2, value2){
                 	var imgSrcTemplate = '<c:url value="${contextRoot}/profile_img/_PROFILE_" />';
                 	if(value.userNickName == value2.NICKNAME) {
+                		
                 		if(value2.PROFILE !=null){
-                		a += '<a href="<c:url value='/board/UserBoard'/>"><img style="width: 20px" src=\"' + imgSrcTemplate.replace( "_PROFILE_",  value2.PROFILE ) + '\"></a>';
+                			var UserBoard = "<c:url value='/board/UserBoard'/>";
+                    		a += "<a href='${'UserBoard'}?userNickName=" + value2.NICKNAME + "'>";
+                    		a += "<img style='width: 20px;' src='" + imgSrcTemplate.replace( "_PROFILE_", value2.PROFILE ) + "' /></a>";
                 		}else {
-                		a += '<a href="<c:url value='/board/UserBoard'/>"><img style="width: 20px" src=\"' + imgSrcTemplate.replace( "_PROFILE_",  "non.PNG" ) + '\"></a>';
+                			a += "<a href='${'UserBoard'}?userNickName=" + value2.NICKNAME + "'>";
+                    		a += "<img style='width: 20px;' src='" + imgSrcTemplate.replace( "_PROFILE_", "non.PNG" ) + "' /></a>";
                 		}
                 	}
-                		
+                	
                 });
                 
                 /* a += '<select class="selectpicker"><option value="게시글보기">게시글보기</option></select>'; */

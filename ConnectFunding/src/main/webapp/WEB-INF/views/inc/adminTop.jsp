@@ -71,6 +71,16 @@ $(document).ready(function(){
 		}
 	});
 });
+
+function logout(){
+	var con = confirm("로그아웃 하시겠습니까?");
+	if(con == true){
+		alert('로그아웃 되었습니다.');
+		$("#logout").attr("href", "<c:url value='/admin/logout'/>");
+	}else{
+		return;
+	}
+}
 </script>
 <body class="animsition">
     <div class="page-wrapper">
@@ -93,11 +103,12 @@ $(document).ready(function(){
             <nav class="navbar-mobile">
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
+                                	<c:if test="${!empty adminId }">
+            	   <li>
+                     <a href="<c:url value='/admin/index'/>">
+                   	 <i class="fas fa-bar-chart-o"></i> 통계</a>
+                   </li>
                     <c:if test="${adminPosition eq 'ADMIN'}">
-                        <li>
-                            <a href="<c:url value='/admin/index'/>">
-                                <i class="fas fa-bar-chart-o"></i> 통계</a>
-                        </li>
                         <li>
                             <a href="<c:url value='/admin/confirm'/>">
                                 <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
@@ -105,10 +116,6 @@ $(document).ready(function(){
                         <li>
                             <a href="<c:url value='/chat/adminInbox'/>">
                                 <i class="fas  fa-comments"></i>문의쪽지함</a>
-                        </li>
-                        <li>
-                            <a href="<c:url value='/chat/adminInbox'/>">
-                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
                         </li>
                         <li>
                             <a href="<c:url value='/admin/membership'/>">
@@ -125,24 +132,40 @@ $(document).ready(function(){
                     </c:if>    
                     <c:if test="${adminPosition eq 'QnA_Admin'}">
                         <li>
-                            <a href="<c:url value='/admin/index'/>">
-                                <i class="fas fa-bar-chart-o"></i> 통계</a>
-                        </li>
-                        <li>
                             <a href="<c:url value='/chat/adminInbox'/>">
                                 <i class="fas  fa-comments"></i>문의쪽지함</a>
                         </li>
                     </c:if>
                     <c:if test="${adminPosition eq 'FUNDING_CHECK_Admin'}">
                         <li>
-                            <a href="<c:url value='/admin/index'/>">
-                                <i class="fas fa-bar-chart-o"></i> 통계</a>
-                        </li>
-                        <li>
                             <a href="<c:url value='/admin/confirm'/>">
                                 <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
                         </li>
                     </c:if>
+                        <li>
+                            <a href="<c:url value='/chat/adminInbox'/>">
+                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
+                        </li>
+                        <li class="nav-item dropdown"> 
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-download"></i>엑셀로 저장
+                                <span class="caret"></span>
+                            </a>
+							<div class="dropdown-menu">
+								<form action="<c:url value='/admin/membershipDownload'/>" method="post">
+									<input type="submit" class="dropdown-item" value="회원정보 다운로드">									
+								</form>
+								<form action="<c:url value='/admin/FundingDownload'/>" method="post">
+									<input type="submit" class="dropdown-item" value="등록펀딩 현황">									
+								</form>
+							</div>
+						</li>
+                        <hr>
+                        <li>
+                            <a href="<c:url value='/'/>" target="_blank">
+                                <i class="fas fa-home"></i>회원페이지 열기</a>
+                        </li>
+				</c:if>
                     </ul>
                 </div>
             </nav>
@@ -205,11 +228,6 @@ $(document).ready(function(){
                             <a href="<c:url value='/chat/adminInbox'/>">
                                 <i class="fas fa-bullhorn"></i>공지사항 관리</a>
                         </li>
-                        <hr>
-                        <li>
-                            <a href="<c:url value='/'/>" target="_blank">
-                                <i class="fas fa-home"></i>회원페이지 열기</a>
-                        </li>
                         <li class="nav-item dropdown"> 
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-download"></i>엑셀로 저장
@@ -224,6 +242,11 @@ $(document).ready(function(){
 								</form>
 							</div>
 						</li>
+                        <hr>
+                        <li>
+                            <a href="<c:url value='/'/>" target="_blank">
+                                <i class="fas fa-home"></i>회원페이지 열기</a>
+                        </li>
 				</c:if>
 					</ul>
 				</nav>	
@@ -257,7 +280,7 @@ $(document).ready(function(){
 												</a>
 	                                    </div>
 			                            <a class="fas  fa-key" data-toggle="modal" data-target="#myModal" href="#"> 비밀번호 변경</a>&emsp;
-			                            <a class="fas  fa-power-off" href="<c:url value='/admin/login/logout'/>" onclick="if(!confirm('정말로 로그아웃 하시겠습니까?')){return false;}"> 로그아웃</a>
+			                            <a class="fas  fa-power-off" id="logout" href="#" onclick="logout()"> 로그아웃</a>
 	                                </div>
                             </c:if>
                     </div>

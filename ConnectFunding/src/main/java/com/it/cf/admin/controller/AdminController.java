@@ -110,7 +110,7 @@ public class AdminController {
    }
    
    //로그아웃 처리
-   @RequestMapping("/login/logout")
+   @RequestMapping("/logout")
    public String logout(HttpSession session) {
       logger.info("관리자 로그아웃");
       

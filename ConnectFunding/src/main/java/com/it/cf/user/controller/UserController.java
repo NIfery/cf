@@ -230,6 +230,19 @@ public class UserController {
       return "common/message";
    }//
    
+   @GetMapping("/cfmember/findPw")
+   public void findPw() throws Exception{
+	   logger.info("비밀번호 찾기 화면");
+   }
+   
+	
+	 @PostMapping("/cfmember/findPw") 
+	 public void findPw(@ModelAttribute UserVO userVo, HttpServletResponse response ) throws Exception {
+		 logger.info("비밀번호 찾기, userVo={}", userVo);
+		 userService.findPw(response,userVo); 
+	 }
+	
+   
    @ResponseBody
    @RequestMapping("/cfmember/checkEmail")
    public boolean checkEmail(@RequestParam String userEmail) {

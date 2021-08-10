@@ -359,7 +359,7 @@ public class AdminController {
  		Map<String, Object> map = adminService.getMonthFunding();
  		int totalWaitFunding = adminService.getTotalWaitFunding(projectVo);
  		Map<String, Object> map2 = adminService.getMonthWaitFunding();
- 		Integer totalFundingComm = adminService.getTotalFundingComm(fundingListVo);
+ 		int totalFundingComm = adminService.getTotalFundingComm(fundingListVo);
  		Map<String, Object> map3 = adminService.getMonthFundingComm();
  		Map<String, Object> map4 = adminService.getCategoryFunding();
  		Map<String, Object> map5 = adminService.getFundingPercent();

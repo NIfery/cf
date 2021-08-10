@@ -92,7 +92,7 @@
 												</div>
 											</div>
 										<div class="modal-footer">
-											<button type="submit" id="btAnswer" class="genric-btn warning circle">답변하기</button>
+											<button type="submit" class="genric-btn warning circle">답변하기</button>
 										</div>
 										</form>
 									</div>

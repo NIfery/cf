@@ -3,6 +3,18 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.it.cf.project.model.ProjectDAO">
+	<select id="selectAllCheck" resultType="projectVo">
+		select * from PROJECT p
+        left join 
+        (
+        	select project_no, sum(funding_amount) as totalFundingAmount from funding_list
+        	group by project_no
+        )t
+        on p.project_no=t.project_no
+        where confirm='Y'
+        order by p.PROJECT_NO
+	</select>
+
 	<select id="selectAllConfirm" parameterType="pageVo" resultType="projectVo">
 		select *
 		from

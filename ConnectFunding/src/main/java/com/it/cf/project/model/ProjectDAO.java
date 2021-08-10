@@ -9,6 +9,7 @@ import com.it.cf.fdList.model.FundingListVO;
 
 @Mapper
 public interface ProjectDAO {
+	List<ProjectVO> selectAllCheck();
 	List<ProjectVO> selectAll(ProjectVO pageVo);
 	List<ProjectVO> selectAllConfirm(ProjectVO pageVo);
 	List<ProjectVO> selectAllAdmin(ProjectVO pageVo);

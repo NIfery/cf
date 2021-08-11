@@ -13,6 +13,12 @@
 		<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/img/favicon.ico">
 
 		<!-- CSS here -->
+		<!-- swiper -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css" />
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+		
+<script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 		
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/owl.carousel.min.css">
@@ -30,6 +36,11 @@
 a {
 	text-decoration: none !important;
 }
+
+.swiper-container {
+		width: 80%;
+		height: 500px;
+	}
 </style>
 <script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
 <script type="text/javascript">
@@ -43,7 +54,24 @@ a {
 				alert("Error 발생 : " + error);
 			}
 		});
-	})
+		
+		const swiper = new Swiper('.swiper-container', {
+			// Optional parameters
+			direction : 'horizontal',
+			loop : true,
+	
+			// If we need pagination
+			pagination : {
+				el : '.swiper-pagination',
+				clickable: true,
+			},
+	
+			autoplay: {
+				delay: 3000,
+				disableOnInteraction : false,
+			},
+		});
+	});
 </script>
 </head>
 
@@ -154,245 +182,45 @@ a {
     </header>
 
     <main>
+    
+    	<div id="divWriteFirst">
+		<div class="weekly-news-area pt-50">
+	        <div class="container">
+	           <div class="weekly-wrapper">
+	                <!-- section Tittle -->
+	                <div class="row">
+	                    <div class="col-lg-12">
+	                    
+	                    	<!-- Slider main container -->
+							<div class="swiper-container">
+								<!-- Additional required wrapper -->
+								<div class="swiper-wrapper">
+									<!-- Slides -->
+									<div class="swiper-slide"><img src="<c:url value='/project_assets/back1.jpg'/>" style="width:100%;height:100%"></div>
+									<div class="swiper-slide"><img src="<c:url value='/project_assets/back2.jpg'/>" style="width:100%;height:100%"></div>
+									<div class="swiper-slide"><img src="<c:url value='/project_assets/back3.jpg'/>" style="width:100%;height:100%"></div>
+								</div>
+								<!-- If we need pagination -->
+								<div class="swiper-pagination"></div>
+							</div>
+							
+	                    </div>
+	                </div>
+	                
+	           </div>
+	        </div>
+	    </div>      
+    </div>
 
-    <!--   Weekly-News start -->
-    <div class="weekly-news-area pt-50">
-        <div class="container">
-           <div class="weekly-wrapper">
-                <!-- section Tittle -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-tittle mb-30">
-                            <h3>Weekly Top News</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="weekly-news-active dot-style d-flex dot-style">
-                            <div class="weekly-single">
-                                <div class="weekly-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/weeklyNews2.jpg" alt="">
-                                </div>
-                                <div class="weekly-caption">
-                                    <span class="color1">Strike</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div> 
-                            <div class="weekly-single active">
-                                <div class="weekly-img">
-                                        <img src="${pageContext.request.contextPath}/assets/img/news/weeklyNews1.jpg" alt="">
-                                </div>
-                                <div class="weekly-caption">
-                                    <span class="color1">Strike</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                            <div class="weekly-single">
-                                <div class="weekly-img">
-                                        <img src="${pageContext.request.contextPath}/assets/img/news/weeklyNews3.jpg" alt="">
-                                </div>
-                                <div class="weekly-caption">
-                                    <span class="color1">Strike</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                            <div class="weekly-single">
-                                <div class="weekly-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/weeklyNews1.jpg" alt="">
-                                </div>
-                                <div class="weekly-caption">
-                                    <span class="color1">Strike</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-           </div>
-        </div>
-    </div>           
-    <!-- End Weekly-News -->
-
-    <!--   Weekly2-News start -->
-    <div class="weekly2-news-area  weekly2-pading gray-bg">
-        <div class="container">
-            <div class="weekly2-wrapper">
-                <!-- section Tittle -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-tittle mb-30">
-                            <h3>Weekly Top News</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="dot-style d-flex dot-style">
-                            <div class="weekly2-single">
-                                <div class="weekly2-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/weekly2News1.jpg" alt="">
-                                </div>
-                                <div class="weekly2-caption">
-                                    <span></span>
-                                    <p>25 Jan 2020</p>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div> 
-                            <div class="weekly2-single">
-                                <div class="weekly2-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/weekly2News2.jpg" alt="">
-                                </div>
-                                <div class="weekly2-caption">
-                                     <span></span>
-                                    <p>25 Jan 2020</p>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div> 
-                            <div class="weekly2-single">
-                                <div class="weekly2-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/weekly2News3.jpg" alt="">
-                                </div>
-                                <div class="weekly2-caption">
-                                     <span></span>
-                                    <p>25 Jan 2020</p>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                             <div class="weekly2-single">
-                                <div class="weekly2-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/weekly2News4.jpg" alt="">
-                                </div>
-                                <div class="weekly2-caption">
-                                     <span></span>
-                                    <p>25 Jan 2020</p>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="weekly2-wrapper">
-                <!-- section Tittle -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-tittle mb-30">
-                        <br><br>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="dot-style d-flex dot-style">
-                            <div class="weekly2-single">
-                                <div class="weekly2-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/weekly2News1.jpg" alt="">
-                                </div>
-                                <div class="weekly2-caption">
-                                    <span></span>
-                                    <p>25 Jan 2020</p>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div> 
-                            <div class="weekly2-single">
-                                <div class="weekly2-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/weekly2News2.jpg" alt="">
-                                </div>
-                                <div class="weekly2-caption">
-                                     <span></span>
-                                    <p>25 Jan 2020</p>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div> 
-                            <div class="weekly2-single">
-                                <div class="weekly2-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/weekly2News3.jpg" alt="">
-                                </div>
-                                <div class="weekly2-caption">
-                                     <span></span>
-                                    <p>25 Jan 2020</p>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                             <div class="weekly2-single">
-                                <div class="weekly2-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/weekly2News4.jpg" alt="">
-                                </div>
-                                <div class="weekly2-caption">
-                                     <span></span>
-                                    <p>25 Jan 2020</p>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>           
-    <!-- End Weekly-News -->
-
-    <!--  Recent Articles start -->
-    <div class="recent-articles">
-        <div class="container">
-           <div class="recent-wrapper">
-                <!-- section Tittle -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-tittle mb-30">
-                            <h3>Recent Articles</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="recent-active dot-style d-flex dot-style">
-                            <div class="single-recent mb-100">
-                                <div class="what-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/recent1.jpg" alt="">
-                                </div>
-                                <div class="what-cap">
-                                    <span class="color1">Night party</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                            <div class="single-recent mb-100">
-                                <div class="what-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/recent2.jpg" alt="">
-                                </div>
-                                <div class="what-cap">
-                                    <span class="color1">Night party</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                            <div class="single-recent mb-100">
-                                <div class="what-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/recent3.jpg" alt="">
-                                </div>
-                                <div class="what-cap">
-                                    <span class="color1">Night party</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                            <div class="single-recent mb-100">
-                                <div class="what-img">
-                                    <img src="${pageContext.request.contextPath}/assets/img/news/recent2.jpg" alt="">
-                                </div>
-                                <div class="what-cap">
-                                    <span class="color1">Night party</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-           </div>
-        </div>
-    </div>           
-    <!--Recent Articles End -->
+	<article>
+	<c:import url="/project/randomListMain"></c:import>
+	</article>
+	<article>
+	<c:import url="/project/randomListMain"></c:import>
+	</article>
+	<article>
+	<c:import url="/project/planList"></c:import>
+	</article>
    
     </main>
     

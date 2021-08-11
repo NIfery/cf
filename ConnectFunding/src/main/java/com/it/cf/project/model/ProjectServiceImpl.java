@@ -133,4 +133,9 @@ public class ProjectServiceImpl implements ProjectService{
 	public List<Map<String, Object>> randomList() {
 		return projectDao.randomList();
 	}
+	
+	@Override
+	public List<Map<String, Object>> randomListMain() {
+		return projectDao.randomListMain();
+	}
 }

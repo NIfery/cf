@@ -79,7 +79,7 @@
 	</select>
 
 	<delete id="deleteFollow" parameterType="int">
-		delete follow where following_user_no=#{followingUserNo}
+		delete follow where following_user_no=#{followingUserNo} and user_no=#{userNo}
 	</delete>
 
 	<select id="followCheck" parameterType="int" resultType="int">

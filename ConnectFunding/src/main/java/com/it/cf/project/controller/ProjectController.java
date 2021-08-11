@@ -601,4 +601,16 @@ public class ProjectController {
 		
 		return "project/randomList";
 	}
+	
+	@RequestMapping("/randomListMain")
+	public String randomListMain(Model model) {
+		logger.info("프로젝트 랜덤 목록(import용)");
+		
+		List<Map<String, Object>> random = projectService.randomListMain();
+		logger.info("random={}", random.size());
+		
+		model.addAttribute("random", random);
+		
+		return "project/randomListMain";
+	}
 }

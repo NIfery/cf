@@ -17,7 +17,7 @@ public interface FollowService {
 	int projectCount(int followingUserNo);
 	List<Map<String, Object>> selectFollower(FollowVO followVo);
 	int checkFollow(int followingUserNo);
-	int deleteFollow(int followingUserNo);
+	int deleteFollow(int followingUserNo, int userNo);
 	int followCheck(int followingUserNo);
 	int updateCheck(int userNo, int followingUserNo);
 	int updateFollow(int userNo);

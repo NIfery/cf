@@ -56,10 +56,10 @@
 					</p>
 				</span>
 				<span class="color1">
-					<c:if test="${!empty map['USER_INTRO']}">
-						<span style="color: black;">${map['USER_INTRO']}</span>
+					<c:if test="${!empty vo.userIntro}">
+						<span style="color: black;">${vo.userIntro}</span>
 					</c:if>
-					<c:if test="${empty map['USER_INTRO']}">
+					<c:if test="${empty vo.userIntro}">
 						<span style="color: #c3bfbf;">등록된 자기소개가 없습니다.</span>
 					</c:if>
 				</span>

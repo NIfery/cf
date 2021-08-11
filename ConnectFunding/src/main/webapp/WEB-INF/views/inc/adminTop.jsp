@@ -108,6 +108,10 @@ function logout(){
                      <a href="<c:url value='/admin/index'/>">
                        <i class="fas fa-bar-chart-o"></i> 통계</a>
                    </li>
+                   <li>
+                     <a href="<c:url value='/admin/index'/>">
+                       <i class="fas fa-bullhorn"></i> 공지사항 관리</a>
+                   </li>
                     <c:if test="${adminPosition eq 'ADMIN'}">
                         <li>
                             <a href="<c:url value='/admin/confirm'/>">
@@ -185,6 +189,10 @@ function logout(){
                   <li>
                      <a href="<c:url value='/admin/index'/>">
                        <i class="fas fa-bar-chart-o"></i> 통계</a>
+                   </li>
+                  <li>
+                     <a href="<c:url value='/admin/index'/>">
+                       <i class="fas fa-bullhorn"></i> 공지사항 관리</a>
                    </li>
                     <c:if test="${adminPosition eq 'ADMIN'}">
                         <li>

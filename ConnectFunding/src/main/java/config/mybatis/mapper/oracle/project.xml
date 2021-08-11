@@ -312,23 +312,25 @@
 	</select>
 	
 	<select id="randomList" resultMap="DetailResultMap">
-		select * from  (select * from
-        		(
-        			select p.*, s.first_category_no, u.user_name from PROJECT p join second_category s
-        			on p.second_category_no=s.second_category_no
+      select * from  
+         (
+             select A.*, nvl(B.total_funding_amount,0) as total_funding_amount from
+              (
+                 select p.*, s.first_category_no, u.user_name from PROJECT p join second_category s
+                 on p.second_category_no=s.second_category_no
                     join users u on u.user_no=p.user_no
-        		)A
-		        left join        
-		        (
-			        select project_no, sum(funding_amount) as totalFundingAmount from funding_list
-			        group by project_no
-        		)B
-		        on a.project_no=b.project_no where sysdate
-		<![CDATA[
-			>to_char(project_startdate, 'yyyy-mm-dd')
-	        order by dbms_random.value)
-	        where rownum <= 4
-		]]> 
-	</select>
+              )A
+              left join        
+              (
+                 select project_no, sum(funding_amount) as total_funding_amount from funding_list
+                 group by project_no
+              )B
+              on a.project_no=b.project_no where sysdate
+      <![CDATA[
+         >to_char(project_startdate, 'yyyy-mm-dd')
+           order by dbms_random.value)
+           where rownum <= 4
+      ]]> 
+   </select>
 	
 </mapper>

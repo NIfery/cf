@@ -275,9 +275,9 @@
 				                                          </div>
 				                                       </div>
 				                                    </div>
-												<div style="border: 1px solid #e4e1e1; width: 220px; height: 50px; border-radius: 10px; margin-left: 20px; background: #ffeb3b">
+												<div style="border: 1px solid #e4e1e1; width: 220px; padding-top: 8px; height: 50px; border-radius: 10px; margin-left: 20px; background: #ffeb3b">
 									    		<a href="#" data-toggle="modal" data-target="#myModal" id="btFundingModal" 
-									    			style="font-size: 1.5em; padding-left: 10px; color: #ffffff;">프로젝트 후원하기</a>
+									    			style="font-size: 1.3em; padding-left: 10px; color: #ffffff;">프로젝트 후원하기</a>
 									    		</div>
 								    			<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog"
 													aria-labelledby="staticBackdropLabel" aria-hidden="true">

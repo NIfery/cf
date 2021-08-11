@@ -134,7 +134,6 @@
 											value="${map['FUNDING_AMOUNT']}" pattern="#,###" />원
 									</span><br>
 								</div>
-								<c:if test="${todayDate>=map['PROJECT_ENDDATE']}">
 									<c:if test="${todayDate<map['PROJECT_ENDDATE'] }">
 		                        	  <a onclick="idThrow($(this).next().val())" style="color: blue"
 										href="#" data-toggle="modal" data-target="#myModal"
@@ -145,7 +144,6 @@
 		                        	<c:if test="${todayDate>=map['PROJECT_ENDDATE'] }">
 			                    		펀딩종료
 		                        	</c:if>
-	                            </c:if>
 								<div class="modal fade" id="myModal" data-backdrop="static"
 									tabindex="-1" role="dialog"
 									aria-labelledby="staticBackdropLabel" aria-hidden="true">

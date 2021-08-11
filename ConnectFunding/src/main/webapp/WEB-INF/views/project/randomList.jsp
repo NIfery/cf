@@ -26,9 +26,9 @@
                                           <a href="<c:url value="/project/detail?projectNo=${map['PROJECT_NO'] }"/>">${map['PROJECT_NAME'] }</a></h4>
                                 	 <div style="display: flex;">
                                      	<h6>
-							    		<fmt:formatNumber value="${map['TOTALFUNDINGAMOUNT'] }" pattern="#,###"/>
- 							    		<fmt:formatNumber value="${(map['TOTALFUNDINGAMOUNT']/map['TOTAL_AMOUNT'])*100.00}" type="percent"/>
-							    		</h6>
+							    		<fmt:formatNumber value="${map['TOTAL_FUNDING_AMOUNT'] }" pattern="#,###"/>원
+		                                <fmt:formatNumber value="${map['TOTAL_FUNDING_AMOUNT']/map['TOTAL_AMOUNT']*100.0 }" pattern="0.00"/>%
+		                                </h6>
                                      </div>
                                       </div>
                                   </div> 

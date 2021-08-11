@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="../_vendor/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="../_vendor/prismjs/themes/prism-okaidia.css">
 <link rel="stylesheet" href="../_assets/css/custom.min.css">
-<title>마이페이지</title>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/ssong.css">
 <style type="text/css">
 .div_1 {
 	padding: 0px 16px;
@@ -82,54 +82,40 @@
 							</c:if>
 							<c:if test="${!empty list }">
 								<c:forEach var="map" items="${list }">
-									<form method="post" action="<c:url value='/mypageload/AddFollow'/>">
 										<input type="hidden" name="following" value="${map['USER_NAME'] }">
 										<input type="hidden" id="followingUserNo" name="followingUserNo" value="${map['USER_NO'] }"> 
 										<input type="hidden" name="userNo" value="${sessionScope.userNo}">
 										<div class="wrap"
-											style="height: 130px; width: 800px; margin-top: 20px; border-bottom: 1px solid #f0f2f3">
+											style="height: 60px; width: 800px; margin-top: 20px; border: none;">
 											<div class="trand-right-single d-flex">
 												<div class="trand-right-img">
 													<c:if test="${empty map['USER_PROFILE'] }">
 														<img src="<c:url value='/assets/img/logo/user.png'/>"
-															style="width: 60px; height: 60px; margin: 40px 25px;">
+															style="width: 30px; height: 30px; margin: 15px 25px;">
 													</c:if>
 													<c:if test="${!empty map['USER_PROFILE'] }">
-														<div class="profile" style="margin: 30px 20px;">
+														<div style="margin: 5px 20px;">
 															<img
 																src="<c:url value='/profile_img/${map["USER_PROFILE"] }'/>"
-																style="width: 70px; height: 70px;">
+																style="width: 40px; height: 40px;">
 														</div>
 													</c:if>
 												</div>
-												<div class="trand-right-cap"
+												<div class="trand-right-cap" id="nos"
 													style="margin: 15px 25px; width: 470px;">
 													<span class="color1">
 														<p style="font-size: 1.1em;">
 															<strong>${map['USER_NAME'] }</strong>
-															<strong>${map['FOLLOW_CHECK'] }</strong>
 														</p>
 													</span>
-													<c:if test="${!empty map['USER_INTRO'] }">
-														<span style="color: black;">${map['USER_INTRO'] }</span>
-														<br>
-													</c:if>
-													<span style="font-size: 0.9em;" class="count"></span>
 												</div>
-												<div class="followw" style="display: block;">
-													<button class="genric-btn info-border circle arrow" id="followw"
-														style="width: 110px; height: 40px; margin: 40px 0px 0px 40px;">+ 팔로우</button>
-												<!-- <input type="submit" class="genric-btn info circle" id="followcheck"
-													style="width: 110px; height: 40px; margin: 40px 0px 0px 30px;"
-													value="팔로우"> -->
-												</div>
-												<div class="unfolloww" style="display: none;" >
-													<button class="genric-btn info circle" id="unfolloww"
-														style="width: 110px; height: 40px; margin: 40px 0px 0px 40px;">√ 팔로잉</button>	
+												<div>
+													<a class="genric-btn info-border circle arrow"
+														href="<c:url value='/mypages/who?userNo=${map["USER_NO"] }'/>"
+														style="width: 110px; height: 40px; margin: 10px 10px;">정보 보기</a>
 												</div>
 											</div>
 										</div>
-									</form>
 								</c:forEach>
 							</c:if>
 							</div>
@@ -158,8 +144,7 @@
 	$(document).ready(function(){
 		
 		/* $('#nav-home-tab').click(function(){
-			alert('안녕');
-			$('#one').load('${pageContext.request.contextPath}/mypages/follow');
+			load('<c:url value="/mypages/follow"/>');
 		}); */
 		
 		$('#nav-following-tab').click(function(){
@@ -172,30 +157,5 @@
 
 	});//
 
-	$(function(){
-			var data = $('#followingUserNo').val();
-			$.ajax({
-				url:"<c:url value='/mypageload/checkFollow'/>",
-				type:"post",
-				data:"followingUserNo="+data,
-				success:function(ress){
-					alert(ress);
-					var result="";
-					if(ress){
-						result="안녕";
-					    $('.followw').css('display', 'none');
-					    $('.unfolloww').css('display', 'block');
-					}else {
-						result="바보";
-					    $('.followw').css('display', 'block');
-					    $('.unfolloww').css('display', 'none');
-					}
-					alert(result);
-				},
-				error:function(xhr, status, error){
-					alert("error 발생..." + error);
-				}
-			});
-	}); 
 </script>	
 <%@ include file="../include/bottom.jsp"%>

@@ -82,6 +82,11 @@ function logout(){
 	}
 }
 </script>
+<style>
+a {
+	text-decoration: none !important;
+}
+</style>
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
@@ -225,7 +230,7 @@ function logout(){
                         </li>
                     </c:if>
                         <li>
-                            <a href="<c:url value='/chat/adminInbox'/>">
+                            <a href="<c:url value='/admin_notice/notice_tab'/>">
                                 <i class="fas fa-bullhorn"></i>공지사항 관리</a>
                         </li>
                         <li class="nav-item dropdown"> 

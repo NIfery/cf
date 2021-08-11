@@ -158,7 +158,7 @@ public class BoardController {
 						HttpSession session, Model model) {
 		
 		String userNickName = (String) session.getAttribute("userNickName");
-		logger.info("detail 화면 출력 파라미터 boardNo={}, userNickName", boardNo, userNickName);
+		logger.info("detail 화면 출력 파라미터 boardNo={}, userNickName={}", boardNo, userNickName);
 		
 		BoardVO vo = boardService.selectByNo(boardNo);
 		logger.info("detail 조회 결과 vo={}",vo);

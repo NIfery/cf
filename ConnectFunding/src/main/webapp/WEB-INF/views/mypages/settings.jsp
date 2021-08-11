@@ -677,5 +677,14 @@
 		var zipNoEl = document.querySelector("#zipNo");
 		zipNoEl.value = zipNo;
 	} // 주소 API
+	
+	var result = '${msg}';
+	if (result == 'success') {
+		alert("계좌를 등록하였습니다.");
+	}else if(result == 'fail'){
+		alert("등록 실패. 다시 시도해주세요.");
+	}else if(result == 'success2'){
+		alert("선택하신 계좌정보가 삭제되었습니다.");
+	}
 </script>	
 <%@ include file="../include/bottom.jsp"%>

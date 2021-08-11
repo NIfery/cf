@@ -84,8 +84,10 @@ public class AdminController {
          request.getSession().setAttribute("adminId", vo.getAdminId());
          request.getSession().setAttribute("adminPosition", vo.getAdminPosition());
          request.getSession().setAttribute("adminName", vo.getAdminName());
+         request.getSession().setAttribute("adminNo", vo.getAdminNo());
          
          logger.info("adminPosition={}",vo.getAdminPosition());
+         logger.info("adminNo={}",vo.getAdminNo());
          
          //cookie - ck_admin_userid
          Cookie ck = new Cookie("ck_adminId", vo.getAdminId());
@@ -359,7 +361,7 @@ public class AdminController {
  		Map<String, Object> map = adminService.getMonthFunding();
  		int totalWaitFunding = adminService.getTotalWaitFunding(projectVo);
  		Map<String, Object> map2 = adminService.getMonthWaitFunding();
- 		int totalFundingComm = adminService.getTotalFundingComm(fundingListVo);
+ 		Integer totalFundingComm = adminService.getTotalFundingComm(fundingListVo);
  		Map<String, Object> map3 = adminService.getMonthFundingComm();
  		Map<String, Object> map4 = adminService.getCategoryFunding();
  		Map<String, Object> map5 = adminService.getFundingPercent();

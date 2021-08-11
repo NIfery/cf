@@ -94,6 +94,7 @@ a {
                                             <li><a href="<c:url value='/'/>">Home</a></li>
                                             <li><a href="<c:url value='/project/list'/>">프로젝트</a></li>
 			   								<li><a href="<c:url value='/board/List'/>">게시판</a></li>         
+			   								<li><a href="<c:url value='/notice/notice_tab'/>">공지사항</a></li>         
                                             <c:if test="${empty sessionScope.userName}">
 	                                            <li><a href="<c:url value='/cfmember/cfLogin'/>">로그인</a></li>
 	                                            <li><a href="<c:url value='/cfmember/register'/>">회원가입</a></li>

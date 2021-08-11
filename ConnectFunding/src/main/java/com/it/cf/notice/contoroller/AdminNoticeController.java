@@ -34,11 +34,11 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/notice")
-public class NoticeContoller {
+@RequestMapping("/admin_notice")
+public class AdminNoticeController {
 
 	private static final Logger logger
-		= LoggerFactory.getLogger(NoticeContoller.class);
+		= LoggerFactory.getLogger(AdminNoticeController.class);
 	
 	private final NoticeService noticeService;
 	private final NoticeFileUpload fileupLoad;
@@ -67,7 +67,7 @@ public class NoticeContoller {
 		model.addAttribute("allList", allList);
 		model.addAttribute("pageInfo", pageInfo);
 		
-		return "notice/notice_tab";
+		return "admin_notice/notice_tab";
 	}//
 	
 	@RequestMapping("/noticeAll")
@@ -94,7 +94,7 @@ public class NoticeContoller {
 		model.addAttribute("allList", allList);
 		model.addAttribute("pageInfo", pageInfo);
 		
-		return "notice/noticeAll";
+		return "admin_notice/noticeAll";
 	}//
 	
 	@RequestMapping("/notices")
@@ -122,7 +122,7 @@ public class NoticeContoller {
 		model.addAttribute("noticelist", noticelist);
 		model.addAttribute("pageInfo", pageInfo);
 
-		return "notice/notices";
+		return "admin_notice/notices";
 	}//
 	
 	@RequestMapping("/event")
@@ -150,7 +150,7 @@ public class NoticeContoller {
 		model.addAttribute("eventlist", eventlist);
 		model.addAttribute("pageInfo", pageInfo);
 		
-		return "notice/event";
+		return "admin_notice/event";
 	}//
 	
 	@RequestMapping("/news")
@@ -178,7 +178,7 @@ public class NoticeContoller {
 		model.addAttribute("newslist", newslist);
 		model.addAttribute("pageInfo", pageInfo);
 		
-		return "notice/news";
+		return "admin_notice/news";
 	}//
 	
 	@RequestMapping("/notice_detail")
@@ -194,14 +194,14 @@ public class NoticeContoller {
 		
 		if(noticeNo==0) {
 			model.addAttribute("msg", "잘못된 url입니다");
-			model.addAttribute("url", "/notice/notice_tab");
+			model.addAttribute("url", "/admin_notice/notice_tab");
 			
 			return "common/message";
 		}
 		
 		model.addAttribute("noticemap", noticemap);
 		
-		return "notice/notice_detail";
+		return "admin_notice/notice_detail";
 	}
 	
 	@RequestMapping("/event_detail")
@@ -217,14 +217,14 @@ public class NoticeContoller {
 		
 		if(noticeNo==0) {
 			model.addAttribute("msg", "잘못된 url입니다");
-			model.addAttribute("url", "/notice/notice_tab");
+			model.addAttribute("url", "/admin_notice/notice_tab");
 			
 			return "common/message";
 		}
 		
 		model.addAttribute("noticemap", noticemap);
 		
-		return "notice/event_detail";
+		return "admin_notice/event_detail";
 	}
 	
 	@RequestMapping("/news_detail")
@@ -241,14 +241,14 @@ public class NoticeContoller {
 		
 		if(noticeNo==0) {
 			model.addAttribute("msg", "잘못된 url입니다");
-			model.addAttribute("url", "/notice/notice_tab");
+			model.addAttribute("url", "/admin_notice/notice_tab");
 			
 			return "common/message";
 		}
 		
 		model.addAttribute("noticemap", noticemap);
 		
-		return "notice/news_detail";
+		return "admin_notice/news_detail";
 	}
 	
 	@RequestMapping("/all_detail")
@@ -264,20 +264,20 @@ public class NoticeContoller {
 		
 		if(noticeNo==0) {
 			model.addAttribute("msg", "잘못된 url입니다");
-			model.addAttribute("url", "/notice/notice_tab");
+			model.addAttribute("url", "/admin_notice/notice_tab");
 			
 			return "common/message";
 		}
 		
 		model.addAttribute("noticemap", noticemap);
 		
-		return "notice/all_detail";
+		return "admin_notice/all_detail";
 	}
 	
 	@GetMapping("/notice_write")
 	public String notice_write() {
 		logger.info("공지사항 등록화면");
-		return "/notice/notice_write";
+		return "/admin_notice/notice_write";
 	}
 	
 	@PostMapping("/notice_write")
@@ -309,10 +309,10 @@ public class NoticeContoller {
 		int cnt = noticeService.insertNotice(noticeVo);
 		noticeVo.setAdminNo(admin_no);
 		
-		String msg="공지사항 등록실패, 다시 시도하세요.", url="/notice/notice_write";
+		String msg="공지사항 등록실패, 다시 시도하세요.", url="/admin_notice/notice_write";
 		if(cnt>0) {
 			msg="공지사항을 등록하였습니다.";
-			url="/notice/notice_tab";
+			url="/admin_notice/notice_tab";
 		}
 		
 		model.addAttribute("msg", msg);
@@ -330,14 +330,14 @@ public class NoticeContoller {
 		
 		if(noticeNo==0) {
 			model.addAttribute("msg", "잘못된 url입니다.");
-			model.addAttribute("url", "/notice/notice_tab");
+			model.addAttribute("url", "/admin_notice/notice_tab");
 			
 			return "common/message";
 		}
 		
 		model.addAttribute("noticeVo", noticeVo);
 		
-		return "/notice/notice_edit";
+		return "admin_notice/notice_edit";
 	}
 	
 	@PostMapping("/notice_edit")
@@ -370,10 +370,10 @@ public class NoticeContoller {
 		int cnt = noticeService.updateNotice(noticeVo);
 		logger.info("공지사항 수정완료, cnt={}", cnt);
 		
-		String msg="공지사항 수정실패, 다시 시도해주세요.", url="/notice/notice_edit?noticeNo="+noticeVo.getNoticeNo();
+		String msg="공지사항 수정실패, 다시 시도해주세요.", url="/admin_notice/notice_edit?noticeNo="+noticeVo.getNoticeNo();
 		if(cnt>0) {
 			msg="공지사항을 수정하였습니다.";
-			url="/notice/notice_detail?noticeNo="+noticeVo.getNoticeNo();
+			url="/admin_notice/notice_detail?noticeNo="+noticeVo.getNoticeNo();
 			
 			if(!list.isEmpty()) {
 				if(noticeOldfilename!=null && !noticeOldfilename.isEmpty()) {
@@ -402,10 +402,10 @@ public class NoticeContoller {
 		
 		int cnt = noticeService.deleteNotice(noticeVo);
 
-		String msg="공지사항 삭제 실패, 다시 시도해주세요.", url="/notice/notice_detail?noticeNo="+noticeNo;
+		String msg="공지사항 삭제 실패, 다시 시도해주세요.", url="/admin_notice/notice_detail?noticeNo="+noticeNo;
 		if(cnt>0) {
 			msg="공지사항이 삭제되었습니다.";
-			url="/notice/notice_tab";
+			url="/admin_notice/notice_tab";
 			
 			if(fileName!=null && !fileName.isEmpty()) {
 				String path = fileupLoad.getUploadPath(request, NoticeUtil.UPLOAD_IMAGE_FLAG);

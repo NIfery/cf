@@ -155,11 +155,12 @@ public class FollowController {
 	
 	@RequestMapping("/mypageload/unfollow")
 	public String unfollow(@RequestParam(defaultValue = "0") int no,
-			HttpServletRequest request, RedirectAttributes rttr) {
+			HttpServletRequest request, RedirectAttributes rttr, HttpSession session) {
 		
+		int userNo=(int) session.getAttribute("userNo");
 		logger.info("팔로우 취소, 파라미터 no={}", no);
 		
-		int cnt = followservice.deleteFollow(no);
+		int cnt = followservice.deleteFollow(no, userNo);
 		logger.info("팔로우 삭제결과, cnt={}", cnt);
 		
 		if(cnt>0) {

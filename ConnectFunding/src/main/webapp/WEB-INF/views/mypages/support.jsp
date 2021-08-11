@@ -85,7 +85,7 @@
 							method="post">
 							<span class="d-flex"> <input type="text"
 								class="form-control" placeholder="프로젝트명을입력하세요."
-								name="projectName" value="${map['PROJECT_NAME']}"
+								name="projectName" value="${param.projectName}"
 								style="width: 250px;">
 								<button class="btns" type="submit"
 									style="background: none; border: 1px; color: black;">

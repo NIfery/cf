@@ -38,4 +38,5 @@ public interface ProjectDAO {
 	int planCount (int projectNo);
 	List<Map<String, Object>> selectplan();
 	List<Map<String, Object>> randomList();
+	List<Map<String, Object>> randomListMain();
 }

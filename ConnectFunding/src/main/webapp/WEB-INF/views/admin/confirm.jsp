@@ -11,12 +11,19 @@
 		$('input[name=currentPage]').val(curPage);
 		$('form[name=frmPage]').submit();	
 	}
-	
+
 	function accept(projectNo){
 		if(window.confirm("승인 하시겠습니까?")){
 			location.href="<c:url value='/admin/confirmProject?projectNo="+projectNo+"'/>";
 		}
 	}
+	
+	function deleteConfirm(projectNo){
+		if(window.confirm("프로젝트를 삭제 하시겠습니까?")){
+			location.href="<c:url value='/project/adminDelete?projectNo="+projectNo+"'/>";
+		}
+	}
+	
 </script>
 <!-- 페이징 처리를 위한 form -->
 <form action="<c:url value='/admin/confirm'/>" 
@@ -78,7 +85,7 @@
 													</c:if>
 													
 													<button class="item" data-toggle="tooltip"
-														data-placement="top" title="Delete">
+														data-placement="top" title="Delete" onclick="deleteConfirm(${vo.projectNo})">
 														<i class="zmdi zmdi-delete"></i>
 													</button>
 												</div>

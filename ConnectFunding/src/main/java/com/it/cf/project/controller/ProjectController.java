@@ -507,6 +507,50 @@ public class ProjectController {
 		return "common/message";
 	}
 	
+	@Transactional
+	@RequestMapping("/adminDelete")
+	public String admin_delete(@RequestParam int projectNo, Model model) {
+		logger.info("삭제 요청, 파라미터 projectNo={}", projectNo);
+		
+		String msg="", url="";
+		List<FundingListVO> list = projectService.selectFundingListByProjectNo(projectNo);
+		
+		if(list.size()!=0) {
+			for(int i=0;i<list.size();i++) {
+				api = new BootpayApi("60ffa2837b5ba400237bda13", "aAx7mTvRBnDZtARKP/FlAH3GjL6KmRyqFpH8k+8fzmg=");  // application_id, private key 
+				try {
+					api.getAccessToken();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				Cancel cancel = new Cancel();
+		        cancel.receipt_id = list.get(i).getReceiptId();
+		        cancel.name = "관리자";
+		        cancel.reason = "프로젝트 삭제";
+		        try {
+		            HttpResponse res = api.cancel(cancel);
+		            String str = IOUtils.toString(res.getEntity().getContent(), "UTF-8");
+		            System.out.println(str);
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		        
+		        int cnt = projectService.deleteFunding(list.get(i).getReceiptId());
+		        logger.info("환불 결과, cnt={}", cnt);
+			}
+		}
+		
+		projectService.deleteFundingList(projectNo);
+		projectService.deleteProject(projectNo);
+		msg="프로젝트가 삭제되었습니다.";
+		url="/admin/confirm"; 
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
+	
 	@RequestMapping("/plan")
 	public String plan(@RequestParam(defaultValue = "0") int projectNo, Model model, 
 			HttpSession session) {

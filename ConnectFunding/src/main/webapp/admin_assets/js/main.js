@@ -7,7 +7,7 @@
 //WidgetChart 1
 var ctx = document.getElementById("widgetChart1");
 if (ctx) {
-  ctx.height = 130;
+  ctx.height = 120;
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -49,6 +49,7 @@ if (ctx) {
           display: false,
           ticks: {
             display: false,
+            beginAtZero: true
           }
         }]
       },

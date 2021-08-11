@@ -217,7 +217,7 @@
    </select>
    
    <select id="getFundingTop5" resultType="map">
-      select project_name, funding_amount
+ select DISTINCT project_name, funding_amount
       from fundinglistview
       <![CDATA[
       WHERE ROWNUM <= 5

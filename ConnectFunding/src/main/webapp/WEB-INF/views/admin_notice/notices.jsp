@@ -24,6 +24,10 @@
 .page-link{
 	background-color: white;
 }
+
+a{
+	color: #2035ad;
+}
 </style>
 
 <div style="height: auto; min-height: 500px;">
@@ -37,7 +41,7 @@
 						<span class="color2" style="font-weight: bold; font-size: 1em;">${noticeVo.noticeCategory }</span> <br>
 						<div style="margin-top: 10px; margin-bottom: 10px;">
 							<span class="color1"> <a
-								href="<c:url value='/notice/notice_detail?noticeNo=${noticeVo.noticeNo }'/>"
+								href="<c:url value='/admin_notice/notice_detail?noticeNo=${noticeVo.noticeNo }'/>"
 								style="color: black;"> ${noticeVo.noticeTitle} </a>
 							</span><br>
 						</div>
@@ -56,8 +60,8 @@
 		</c:forEach>
 	</c:if>
 	<br> 
-	<c:if test="${sessionScope.userEmail=='admin@cf' }">
-		<a href="<c:url value='/notice/notice_write'/>" style="float: right; margin-right: 300px;"
+	<c:if test="${sessionScope.adminPosition=='ADMIN'}">
+		<a href="<c:url value='/admin_notice/notice_write'/>" style="float: left; margin-right: 300px;"
 			class="genric-btn primary-border circle arrow">등록하기</a><br><br>
 	</c:if>
 	<!-- 페이징처리 -->
@@ -90,7 +94,7 @@
 			</ul>
 		</nav>
 	</div>
-	<form action="<c:url value='/notice/notices'/>" name="frmSupport"
+	<form action="<c:url value='/admin_notice/notices'/>" name="frmSupport"
 		method="post">
 		<input type="hidden" name="currentPage"><br> 
 	</form>

@@ -108,4 +108,10 @@
 		select count(*) from follow
 		where following_user_no=#{followingUserNo}
 	</select>
+	
+	<select id="selectInfo" resultType="userVo" parameterType="int">
+		select user_name, user_profile, user_intro, user_no
+		from users
+		where user_no=#{userNo}
+	</select>
 </mapper>

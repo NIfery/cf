@@ -38,9 +38,9 @@ public class LoginInterceptor implements HandlerInterceptor{
 			out.print("</script>");
 			
 			return false; //컨트롤러를 수행하지 않음
-		}else {  //로그인 된 경우
-			return true;
 		}
+			return true;
+		
 	}
 
 	@Override

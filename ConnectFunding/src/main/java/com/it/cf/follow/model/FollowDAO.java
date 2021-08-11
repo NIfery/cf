@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.it.cf.user.model.UserVO;
+
 @Mapper
 public interface FollowDAO {
 	
@@ -19,4 +21,5 @@ public interface FollowDAO {
 	int updateFollow(int userNo);
 	int followCount(int userNo);
 	int followerCount(int followingUserNo);
+	UserVO selectInfo(int userNo);
 }

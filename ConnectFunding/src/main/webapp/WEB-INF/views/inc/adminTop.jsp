@@ -51,37 +51,42 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-   $('#change').on("click",function() {
-      var regex = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
-      if($('#beforePwd').val().length<1){
-         alert('비밀번호를 입력하세요.');
-         $('#beforePwd').focus();
-         event.preventDefault();
-      }else if($('#newPwd').val().length<1){
-         alert('변경하실 비밀번호를 입력하세요.');
-         $('#newPwd').focus();
-         event.preventDefault();
-      }else if($('#newPwd').val() != $('#newPwd2').val()) {
-         alert("비밀번호가 일치하지 않습니다.");
-         $('#newPwd2').focus();
-         event.preventDefault();
-      }else if(!regex.test($("#newPwd").val())){
-         alert("영문자, 숫자, 특수문자를 포함한 8~15자 이내이어야합니다.");
-         event.preventDefault();
-      }
-   });
+	$('#change').on("click",function() {
+		var regex = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+		if($('#beforePwd').val().length<1){
+			alert('비밀번호를 입력하세요.');
+			$('#beforePwd').focus();
+			event.preventDefault();
+		}else if($('#newPwd').val().length<1){
+			alert('변경하실 비밀번호를 입력하세요.');
+			$('#newPwd').focus();
+			event.preventDefault();
+		}else if($('#newPwd').val() != $('#newPwd2').val()) {
+			alert("비밀번호가 일치하지 않습니다.");
+			$('#newPwd2').focus();
+			event.preventDefault();
+		}else if(!regex.test($("#newPwd").val())){
+			alert("영문자, 숫자, 특수문자를 포함한 8~15자 이내이어야합니다.");
+			event.preventDefault();
+		}
+	});
 });
 
 function logout(){
-   var con = confirm("로그아웃 하시겠습니까?");
-   if(con == true){
-      alert('로그아웃 되었습니다.');
-      $("#logout").attr("href", "<c:url value='/admin/logout'/>");
-   }else{
-      return;
-   }
+	var con = confirm("로그아웃 하시겠습니까?");
+	if(con == true){
+		alert('로그아웃 되었습니다.');
+		$("#logout").attr("href", "<c:url value='/admin/logout'/>");
+	}else{
+		return;
+	}
 }
 </script>
+<style>
+a {
+	text-decoration: none !important;
+}
+</style>
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
@@ -103,14 +108,10 @@ function logout(){
             <nav class="navbar-mobile">
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
-                                   <c:if test="${!empty adminId }">
-                  <li>
+                                	<c:if test="${!empty adminId }">
+            	   <li>
                      <a href="<c:url value='/admin/index'/>">
-                       <i class="fas fa-bar-chart-o"></i> 통계</a>
-                   </li>
-                   <li>
-                     <a href="<c:url value='/admin/index'/>">
-                       <i class="fas fa-bullhorn"></i> 공지사항 관리</a>
+                   	 <i class="fas fa-bar-chart-o"></i> 통계</a>
                    </li>
                     <c:if test="${adminPosition eq 'ADMIN'}">
                         <li>
@@ -146,26 +147,30 @@ function logout(){
                                 <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
                         </li>
                     </c:if>
+                        <li>
+                            <a href="<c:url value='/chat/adminInbox'/>">
+                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
+                        </li>
                         <li class="nav-item dropdown"> 
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-download"></i>엑셀로 저장
                                 <span class="caret"></span>
                             </a>
-                     <div class="dropdown-menu">
-                        <form action="<c:url value='/admin/membershipDownload'/>" method="post">
-                           <input type="submit" class="dropdown-item" value="회원정보 다운로드">                           
-                        </form>
-                        <form action="<c:url value='/admin/FundingDownload'/>" method="post">
-                           <input type="submit" class="dropdown-item" value="등록펀딩 현황">                           
-                        </form>
-                     </div>
-                  </li>
+							<div class="dropdown-menu">
+								<form action="<c:url value='/admin/membershipDownload'/>" method="post">
+									<input type="submit" class="dropdown-item" value="회원정보 다운로드">									
+								</form>
+								<form action="<c:url value='/admin/FundingDownload'/>" method="post">
+									<input type="submit" class="dropdown-item" value="등록펀딩 현황">									
+								</form>
+							</div>
+						</li>
                         <hr>
                         <li>
                             <a href="<c:url value='/'/>" target="_blank">
                                 <i class="fas fa-home"></i>회원페이지 열기</a>
                         </li>
-            </c:if>
+				</c:if>
                     </ul>
                 </div>
             </nav>
@@ -182,17 +187,13 @@ function logout(){
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-               <c:if test="${empty adminId }">
-                  로그인을 해야 이용가능합니다.
-               </c:if>
-               <c:if test="${!empty adminId }">
-                  <li>
+            	<c:if test="${empty adminId }">
+            		로그인을 해야 이용가능합니다.
+            	</c:if>
+            	<c:if test="${!empty adminId }">
+            	   <li>
                      <a href="<c:url value='/admin/index'/>">
-                       <i class="fas fa-bar-chart-o"></i> 통계</a>
-                   </li>
-                  <li>
-                     <a href="<c:url value='/admin/index'/>">
-                       <i class="fas fa-bullhorn"></i> 공지사항 관리</a>
+                   	 <i class="fas fa-bar-chart-o"></i> 통계</a>
                    </li>
                     <c:if test="${adminPosition eq 'ADMIN'}">
                         <li>
@@ -228,33 +229,37 @@ function logout(){
                                 <i class="fas fa-check-square"></i> 등록 펀딩심사</a>
                         </li>
                     </c:if>
+                        <li>
+                            <a href="<c:url value='/admin_notice/notice_tab'/>">
+                                <i class="fas fa-bullhorn"></i>공지사항 관리</a>
+                        </li>
                         <li class="nav-item dropdown"> 
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-download"></i>엑셀로 저장
                                 <span class="caret"></span>
                             </a>
-                     <div class="dropdown-menu">
-                        <form action="<c:url value='/admin/membershipDownload'/>" method="post">
-                           <input type="submit" class="dropdown-item" value="회원정보 다운로드">                           
-                        </form>
-                        <form action="<c:url value='/admin/FundingDownload'/>" method="post">
-                           <input type="submit" class="dropdown-item" value="등록펀딩 현황">                           
-                        </form>
-                     </div>
-                  </li>
+							<div class="dropdown-menu">
+								<form action="<c:url value='/admin/membershipDownload'/>" method="post">
+									<input type="submit" class="dropdown-item" value="회원정보 다운로드">									
+								</form>
+								<form action="<c:url value='/admin/FundingDownload'/>" method="post">
+									<input type="submit" class="dropdown-item" value="등록펀딩 현황">									
+								</form>
+							</div>
+						</li>
                         <hr>
                         <li>
                             <a href="<c:url value='/'/>" target="_blank">
                                 <i class="fas fa-home"></i>회원페이지 열기</a>
                         </li>
-            </c:if>
-               </ul>
-            </nav>   
-         </div>
+				</c:if>
+					</ul>
+				</nav>	
+			</div>
         </aside>
         <!-- END MENU SIDEBAR-->
-      </div>
-      
+		</div>
+		
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
@@ -264,24 +269,24 @@ function logout(){
                             <form class="form-header" action="" method="POST">
                             </form>
                             <c:if test="${!empty sessionScope.adminId }">
-                                   <div class="account-wrap" style="text-align: center;">
-                                       <div class="account-item clearfix js-item-menu">
-                                             <a class="js-acc-btn">
-                                       [<c:if test="${adminPosition eq 'QnA_Admin'}">
-                                                문의쪽지 담당자
-                                       </c:if>
-                                       <c:if test="${adminPosition eq 'ADMIN'}">
-                                                총책임자
-                                       </c:if>
-                                       <c:if test="${adminPosition eq 'FUNDING_CHECK_Admin'}">
-                                                펀딩심사 담당자
-                                       </c:if>
-                                       -&nbsp;${sessionScope.adminName } ]
-                                    </a>
-                                       </div>
-                                     <a class="fas  fa-key" data-toggle="modal" data-target="#myModal" href="#"> 비밀번호 변경</a>&emsp;
-                                     <a class="fas  fa-power-off" id="logout" href="#" onclick="logout()"> 로그아웃</a>
-                                   </div>
+	                                <div class="account-wrap" style="text-align: center;">
+	                                    <div class="account-item clearfix js-item-menu">
+			                                    <a class="js-acc-btn">
+													[<c:if test="${adminPosition eq 'QnA_Admin'}">
+																문의쪽지 담당자
+													</c:if>
+													<c:if test="${adminPosition eq 'ADMIN'}">
+																총책임자
+													</c:if>
+													<c:if test="${adminPosition eq 'FUNDING_CHECK_Admin'}">
+																펀딩심사 담당자
+													</c:if>
+													-&nbsp;${sessionScope.adminName } ]
+												</a>
+	                                    </div>
+			                            <a class="fas  fa-key" data-toggle="modal" data-target="#myModal" href="#"> 비밀번호 변경</a>&emsp;
+			                            <a class="fas  fa-power-off" id="logout" href="#" onclick="logout()"> 로그아웃</a>
+	                                </div>
                             </c:if>
                     </div>
                 </div>
@@ -289,29 +294,29 @@ function logout(){
             
             <!-- HEADER DESKTOP-->
             
-      <!-- Modal -->
-      <form action="<c:url value='/admin/changePwd?adminId?=${sessionScope.adminId }'/>" method="post">
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-         aria-labelledby="myModalLabel" aria-hidden="true">
-         <div class="modal-dialog">
-            <div class="modal-content">
-               <div class="modal-header" style="display: block;">
-                  <button type="button" class="close" data-dismiss="modal"
-                     aria-label="Close">
-                     <span aria-hidden="true">&times;</span>
-                  </button>
-                  <h4 class="modal-title" id="myModalLabel">비밀번호 변경</h4>
-               </div>
-               <div class="modal-body">
-                  <label>기존 비밀번호</label><input class="au-input au-input--full" type="password" name="beforePwd" id="beforePwd"><br>
-                  <label>변경할 비밀번호</label><input class="au-input au-input--full" type="password" name="adminPwd" id="newPwd"><br>
-                  <label>변경할 비밀번호 확인</label><input class="au-input au-input--full" type="password" name="adminPwd2" id="newPwd2">
-               </div>
-               <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" id="change">변경하기</button>
-                  <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-               </div>
-            </div>
-         </div>
-      </div>
-      </form>
+		<!-- Modal -->
+		<form action="<c:url value='/admin/changePwd?adminId?=${sessionScope.adminId }'/>" method="post">
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header" style="display: block;">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">비밀번호 변경</h4>
+					</div>
+					<div class="modal-body">
+						<label>기존 비밀번호</label><input class="au-input au-input--full" type="password" name="beforePwd" id="beforePwd"><br>
+						<label>변경할 비밀번호</label><input class="au-input au-input--full" type="password" name="adminPwd" id="newPwd"><br>
+						<label>변경할 비밀번호 확인</label><input class="au-input au-input--full" type="password" name="adminPwd2" id="newPwd2">
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary" id="change">변경하기</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</form>

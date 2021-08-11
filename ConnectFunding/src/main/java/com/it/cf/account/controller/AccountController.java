@@ -3,6 +3,7 @@ package com.it.cf.account.controller;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.it.cf.account.model.AccountService;
 import com.it.cf.account.model.AccountVO;
@@ -32,7 +34,8 @@ public class AccountController {
 	@RequestMapping("/mypages/addAcc")
 	public String insertAccount(@ModelAttribute AccountVO accVo, @RequestParam(required = false) String pay, 
 			@RequestParam(required = false) String business,
-			HttpServletResponse response, HttpSession session, Model model) {
+			HttpServletResponse response, HttpSession session,
+			HttpServletRequest request, RedirectAttributes rttr) {
 		
 		int userNo = (int) session.getAttribute("userNo");
 		accVo.setUserNo(userNo);
@@ -42,9 +45,11 @@ public class AccountController {
 		int cnt = accountService.insertAccount(accVo);
 		logger.info("계좌입력 결과, cnt={}", cnt);
 		
-		String msg="계좌등록 실패, 다시 시도해주세요.", url="/mypages/settings";
 		if(cnt>0) {
-			msg="계좌를 등록하였습니다.";
+			rttr.addFlashAttribute("msg", "success");
+			//msg="계좌를 등록하였습니다.";
+		}else {
+			rttr.addFlashAttribute("msg", "fail");
 		}
 		
 		Cookie cookie = new Cookie("ck_pay", pay);
@@ -71,10 +76,9 @@ public class AccountController {
 			
 		}
 		
-		model.addAttribute("msg", msg);
-		model.addAttribute("url", url);
-		
-		return "common/message";
+		String referer = request.getHeader("Referer");
+
+		return "redirect:"+ referer;
 	}//
 	
 	@RequestMapping("/mypageload/account")
@@ -115,7 +119,7 @@ public class AccountController {
 	
 	@RequestMapping("/mypages/deleteAcc")
 	public String deleteAcc(@RequestParam String accountNo, @RequestParam String birth,
-			HttpSession session, Model model) {
+			HttpSession session, HttpServletRequest request, RedirectAttributes rttr) {
 		
 		int userNo = (int) session.getAttribute("userNo");
 		logger.info("계좌삭제, 파라미터 accountNo={}, userNo={}", accountNo, userNo);
@@ -127,8 +131,10 @@ public class AccountController {
 		logger.info("등록계좌 삭제결과, cnt={}", cnt);
 		
 		if(cnt>0) {
-			model.addAttribute("msg", "선택하신 계좌정보가 삭제되었습니다.");
-			model.addAttribute("url", "/mypages/settings");
+			rttr.addFlashAttribute("msg", "success2");
+			//model.addAttribute("msg", "선택하신 계좌정보가 삭제되었습니다.");
+		}else {
+			rttr.addFlashAttribute("msg", "fail");
 		}
 		
 		if(businessNo.equals(birth)) {
@@ -136,7 +142,10 @@ public class AccountController {
 			logger.info("회원테이블에서 사업자번호 삭제결과, delcnt={}", delcnt);
 		}
 		
-		return "common/message";
+		String referer = request.getHeader("Referer");
+
+		return "redirect:"+ referer;
+		
 	}//
 	
 	@RequestMapping("/agree")

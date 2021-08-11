@@ -3,6 +3,8 @@ package com.it.cf.follow.model;
 import java.util.List;
 import java.util.Map;
 
+import com.it.cf.user.model.UserVO;
+
 public interface FollowService {
 	
 	//팔로우 체크여부
@@ -21,4 +23,6 @@ public interface FollowService {
 	int updateFollow(int userNo);
 	int followCount(int userNo);
 	int followerCount(int followingUserNo);
+	UserVO selectInfo(int userNo);
+
 }

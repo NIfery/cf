@@ -346,7 +346,7 @@
                                           	<h4 style="height: 60px;"><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
                                           </c:if>
                                           <p><fmt:formatDate value="${vo.projectRegdate }" pattern="yyyy-MM-dd"/></p>
-                                          <h6>${vo.projectSummary }</h6>
+                                          <h6 style="height: 40px;">${vo.projectSummary }</h6>
                                           <div class="percentage">
                                     <div class="progress" style="background:#eceff8;height: 0.3em; ">
                                        <div class="progress-bar color-1" role="progressbar" style="width: ${vo.totalFundingAmount/vo.totalAmount*100 }%" 
@@ -356,10 +356,6 @@
                                  <div style="display: flex;">
                                           <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
                                           <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
-                                          <a href="<c:url value='/mypages/addLikeProject?projectNo=${vo.projectNo }'/>" style="color: red;">
-												<img src="${pageContext.request.contextPath}/assets/img/ssong/no_heart.png"
-													style="width: 20px; margin-left: 100px; "  >
-											</a>
                                      </div>
                                       </div>
                                   </div> 
@@ -405,7 +401,7 @@
                                           	<h4 style="height: 60px;"><a href="<c:url value="/project/detail?projectNo=${vo.projectNo }"/>">${vo.projectName}</a></h4>
                                           </c:if>
                                          <p><fmt:formatDate value="${vo.projectRegdate }" pattern="yyyy-MM-dd"/></p>
-                                         <h6>${vo.projectSummary }</h6>
+                                         <h6 style="height: 40px;">${vo.projectSummary }</h6>
                                          <div class="percentage">
                                     <div class="progress" style="background:#eceff8;height: 0.3em; ">
                                        <div class="progress-bar color-1" role="progressbar" style="width: ${vo.totalFundingAmount/vo.totalAmount*100 }%" 
@@ -413,12 +409,9 @@
                                     </div>
                                  </div>
                                  	<div style="display: flex;">
+                                          
                                          <h6><fmt:formatNumber value="${vo.totalFundingAmount }" pattern="#,###"/>원<span style="color:red;font-size:0.8em">
                                          <fmt:formatNumber value="${vo.totalFundingAmount/vo.totalAmount*100 }" pattern="0.00"/>%</span></h6>
-                                          <a href="<c:url value='/mypages/addLikeProject?projectNo=${vo.projectNo }'/>"  style="color: red;">
-												<img src="${pageContext.request.contextPath}/assets/img/ssong/no_heart.png"
-													style="width: 20px; margin-left: 100px; " >
-											</a>
 									</div>
                                      </div>
                                  </div> 

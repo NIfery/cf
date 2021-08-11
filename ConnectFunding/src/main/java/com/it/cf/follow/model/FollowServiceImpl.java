@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.it.cf.user.model.UserVO;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -75,5 +77,10 @@ public class FollowServiceImpl implements FollowService {
 	@Override
 	public int followerCount(int followingUserNo) {
 		return followDao.followerCount(followingUserNo);
+	}
+
+	@Override
+	public UserVO selectInfo(int userNo) {
+		return followDao.selectInfo(userNo);
 	}//
 }

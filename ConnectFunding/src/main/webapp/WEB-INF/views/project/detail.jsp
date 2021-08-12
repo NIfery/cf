@@ -9,7 +9,9 @@
 <script src="../assets/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		var today = getFormatDate(new Date());
+		var today = new Date().getTime();
+		var ckEndDate = new Date($('#endDateFrm').val()).getTime();
+		var projectNo = $('#projectNo').val();
 		
 		$('form[name=frmDelete]').submit(function(){
 			if($('#pwd').val().length<1){
@@ -40,7 +42,6 @@
 			var userZipcode = $('#userZipcode').val();
 			var userAddress = $('#userAddress').val();
 			var projectName = $('#projectName').val();
-			var projectNo = $('#projectNo').val();
 			var fdAmount = $('#fdAmount').val();
 			
 			
@@ -167,10 +168,12 @@
 						    	<div class="row row-cols-1">
 						    		<c:if test="${empty map['TOTAL_FUNDING_AMOUNT']}">
 								    	<h2 style="margin: 5px 0px 20px -10px">0원 0.00%</h2>
+								    	<input type="hidden" value="0" id="fundingPercent">
 						    		</c:if>
 						    		<c:if test="${!empty map['TOTAL_FUNDING_AMOUNT']}">
 								    	<h2 style="margin: 5px 0px 20px -10px">
 							    		<fmt:formatNumber value="${map['TOTAL_FUNDING_AMOUNT'] }" pattern="#,###"/>원 <fmt:formatNumber value="${map['TOTAL_FUNDING_AMOUNT']/map['TOTAL_AMOUNT']*100.0 }" pattern="0.00"/>%</h2>
+							    		<input type="hidden" value="<fmt:formatNumber value='${map["TOTAL_FUNDING_AMOUNT"]/map["TOTAL_AMOUNT"]*100.0 }' pattern='0.00'/>" id="fundingPercent">
 						    		</c:if>
 						    	</div>
 						    	<br>

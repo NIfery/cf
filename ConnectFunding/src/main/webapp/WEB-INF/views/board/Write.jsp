@@ -103,7 +103,7 @@ body {
 					<label for="tag">업로드파일</label>
 					<input type="file" name="upfile" id="upfile" placeholder="업로드 파일을 선택해 주세요">
 				</div>
-				
+				<br>
 			<div>
 				<button type="submit" class="btn btn-sm btn-primary" id="btnSave">등록</button>
 				<a href="<c:url value='/board/List'/>">

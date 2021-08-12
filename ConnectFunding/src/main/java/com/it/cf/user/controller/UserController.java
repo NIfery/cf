@@ -91,7 +91,7 @@ public class UserController {
          session.setAttribute("userName", vo.getUserName());
          session.setAttribute("userNo", vo.getUserNo());
          session.setAttribute("userProfile", vo.getUserProfile());
-         session.setAttribute("UserNickname", vo.getUserNickname());
+         session.setAttribute("userNickName", vo.getUserNickname());
          
       
          //쿠키저장

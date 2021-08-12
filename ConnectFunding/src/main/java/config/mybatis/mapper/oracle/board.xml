@@ -107,6 +107,7 @@
 		     select b.*, (sysdate-board_regdate)*24 as newImg
 		     from Userboard b
 		     where user_nickname =#{userNickName}
+		     and delflag='N'
 		     order by board_no desc
 		     )A
 		)

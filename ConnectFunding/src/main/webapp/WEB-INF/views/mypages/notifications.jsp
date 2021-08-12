@@ -81,7 +81,11 @@
 								style="margin: 20px 10px; width: 450px;">
 								<div style="margin-bottom: 10px;">
 									<span class="color1" style="font-size: 1em;">
-									알림신청하신 ${map['PROJECT_NAME'] } 프로젝트가 공개되었습니다.
+									알림신청하신 
+									<a href="<c:url value='/project/detail?projectNo=${map["PROJECT_NO"] }'/>">
+									<span style="color: #fd6666;">${map['PROJECT_NAME'] }</span>
+									</a>
+									 프로젝트가 공개되었습니다.
 									</span><br>
 								</div>
 								<c:choose>

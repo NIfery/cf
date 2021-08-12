@@ -2,9 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-    <div class="weekly2-news-area" style="margin-top: 50px;">
-    	<br><br>
-    	<h4 style="margin-left: 220px;">주목할 만한 프로젝트</h4>
+    <div class="weekly2-news-area">
     	<br><br>
         <div class="container">
             <div class="weekly2-wrapper">
@@ -23,7 +21,7 @@
                                           <h4 style="height: 60px;">
                                           <a href="<c:url value="/project/detail?projectNo=${map['PROJECT_NO'] }"/>">${map['PROJECT_NAME'] }</a></h4>
                                 	 <div style="display: flex;">
-                                     	<span style="font-weight: bold; color: #ff6274; font-size: 1em;">
+                                     	<span style="font-weight: bold; color: #ff6274; font-size: 1em; margin-left: -15px;">
                                 		<fmt:formatNumber value="${map['TOTAL_FUNDING_AMOUNT']/map['TOTAL_AMOUNT']*100.0 }" pattern="0.00"/>% 달성
                                      	</span>
                                      </div>

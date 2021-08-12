@@ -10,16 +10,15 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="manifest" href="site.webmanifest">
-		<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/img/favicon.ico">
+      <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/img/favicon.ico">
 
-		<!-- CSS here -->
-		<!-- swiper -->
+      <!-- CSS here -->
+                  		<!-- swiper -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css" />
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 		
 <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-		
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/owl.carousel.min.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/ticker-style.css">
@@ -32,30 +31,30 @@
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/slick.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/nice-select.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/style.css">
+
 <style type="text/css">
 a {
-	text-decoration: none !important;
+   text-decoration: none !important;
 }
-
 .swiper-container {
-		width: 80%;
+		width: 90%;
 		height: 500px;
 	}
 </style>
 <script type="text/javascript" src="<c:url value='/assets/js/jquery-3.6.0.min.js'/>"></script>
 <script type="text/javascript">
-	$(function(){
-		$.ajax({
-			url:"<c:url value='/project/cancleAll'/>",
-			type:"get",
-			success:function(res){
-			
-			},error:function(xhr, status, error){
-				alert("Error 발생 : " + error);
-			}
-		});
-		
-		const swiper = new Swiper('.swiper-container', {
+   $(function(){
+      $.ajax({
+         url:"<c:url value='/project/cancleAll'/>",
+         type:"get",
+         success:function(res){
+         
+         },error:function(xhr, status, error){
+            alert("Error 발생 : " + error);
+         }
+      });
+      
+      const swiper = new Swiper('.swiper-container', {
 			// Optional parameters
 			direction : 'horizontal',
 			loop : true,
@@ -71,7 +70,7 @@ a {
 				disableOnInteraction : false,
 			},
 		});
-	});
+   })
 </script>
 </head>
 
@@ -121,32 +120,32 @@ a {
                                         <ul id="navigation">    
                                             <li><a href="<c:url value='/'/>">Home</a></li>
                                             <li><a href="<c:url value='/project/list'/>">프로젝트</a></li>
-			   								<li><a href="<c:url value='/board/List'/>">게시판</a></li>         
-			   								<li><a href="<c:url value='/notice/notice_tab'/>">공지사항</a></li>         
+                                    <li><a href="<c:url value='/board/List'/>">게시판</a></li>         
+                                    <li><a href="<c:url value='/notice/notice_tab'/>">공지사항</a></li>         
                                             <c:if test="${empty sessionScope.userName}">
-	                                            <li><a href="<c:url value='/cfmember/cfLogin'/>">로그인</a></li>
-	                                            <li><a href="<c:url value='/cfmember/register'/>">회원가입</a></li>
-	                                            <li><a href="<c:url value='/cfmember/cfLogin'/>">
-	                                            	<img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
-	                                            	<%-- <img src="${pageContext.request.contextPath}/assets/img/${sessionScope.userName}.png" --%> 
-	                                            		alt="로그인" style="width: 40px;">
-	                                            	</a>
-	                                            </li>
+                                               <li><a href="<c:url value='/cfmember/cfLogin'/>">로그인</a></li>
+                                               <li><a href="<c:url value='/cfmember/register'/>">회원가입</a></li>
+                                               <li><a href="<c:url value='/cfmember/cfLogin'/>">
+                                                  <img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
+                                                  <%-- <img src="${pageContext.request.contextPath}/assets/img/${sessionScope.userName}.png" --%> 
+                                                     alt="로그인" style="width: 40px;">
+                                                  </a>
+                                               </li>
                                             </c:if>
                                             <c:if test="${!empty sessionScope.userName}">
-                                            	<li><a href="<c:url value='/cfmember/cfLogout'/>">로그아웃</a></li>
-                                            	<li><span>${sessionScope.userName}</span></li>
-	                                            <li><a href="<c:url value='/cfmember/mypage'/>">
-	                                            	<c:if test="${!empty sessionScope.userProfile }">
-	                                            		<img src="${pageContext.request.contextPath}/profile_img/${sessionScope.userProfile}" 
-	                                            			style="width: 50px;" >
-	                                            	</c:if>
-	                                            	<c:if test="${empty sessionScope.userProfile }">
-	                                            		<img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
-	                                            		alt="로그인" style="width: 40px;">
-	                                            	</c:if>
-	                                            	</a>
-	                                            </li>
+                                               <li><a href="<c:url value='/cfmember/cfLogout'/>">로그아웃</a></li>
+                                               <li><span>${sessionScope.userName}</span></li>
+                                               <li><a href="<c:url value='/cfmember/mypage'/>">
+                                                  <c:if test="${!empty sessionScope.userProfile }">
+                                                     <img src="${pageContext.request.contextPath}/profile_img/${sessionScope.userProfile}" 
+                                                        style="width: 50px;" >
+                                                  </c:if>
+                                                  <c:if test="${empty sessionScope.userProfile }">
+                                                     <img src="${pageContext.request.contextPath}/assets/img/logo/user.png" 
+                                                     alt="로그인" style="width: 40px;">
+                                                  </c:if>
+                                                  </a>
+                                               </li>
                                             </c:if>
                                                <!--  <ul class="submenu">
                                                     <li><a href="#">Element</a></li>
@@ -182,8 +181,8 @@ a {
     </header>
 
     <main>
-    
-    	<div id="divWriteFirst">
+
+<div id="divWriteFirst">
 		<div class="weekly-news-area pt-50">
 	        <div class="container">
 	           <div class="weekly-wrapper">
@@ -196,7 +195,9 @@ a {
 								<!-- Additional required wrapper -->
 								<div class="swiper-wrapper">
 									<!-- Slides -->
-									<div class="swiper-slide"><img src="<c:url value='/project_assets/back1.jpg'/>" style="width:100%;height:100%"></div>
+									<div class="swiper-slide">
+									<img src="<c:url value='/project_assets/back1.jpg'/>" style="width:100%;height:100%">
+									</div>
 									<div class="swiper-slide"><img src="<c:url value='/project_assets/back2.jpg'/>" style="width:100%;height:100%"></div>
 									<div class="swiper-slide"><img src="<c:url value='/project_assets/back3.jpg'/>" style="width:100%;height:100%"></div>
 								</div>
@@ -212,15 +213,26 @@ a {
 	    </div>      
     </div>
 
-	<article>
+	<div style="margin-top: 50px; margin-left: 220px;">
+	<h3>주목할 만한 프로젝트</h3>
+	</div>
+	<section>
 	<c:import url="/project/randomListMain"></c:import>
-	</article>
-	<article>
+	</section>
+	<section>
 	<c:import url="/project/randomListMain"></c:import>
-	</article>
-	<article>
+	</section>
+	<div style="margin-top: 100px; margin-left: 220px;">
+	<h3>공개예정 프로젝트</h3>
+	</div>
+	<section>
 	<c:import url="/project/planList"></c:import>
-	</article>
+	</section>
+	<section>
+	<c:import url="/project/planList"></c:import>
+	</section>
+	<div style="margin-top: 100px;">
+	</div>
    
     </main>
     
@@ -253,35 +265,35 @@ a {
        <!-- Footer End-->
    </footer>
    
-	<!-- JS here -->
-	
-		<!-- All JS Custom Plugins Link Here here -->
+   <!-- JS here -->
+   
+      <!-- All JS Custom Plugins Link Here here -->
         <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
-		<!-- Jquery, Popper, Bootstrap -->
-		<script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+      <!-- Jquery, Popper, Bootstrap -->
+      <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
         <script src="./assets/js/popper.min.js"></script>
         <script src="./assets/js/bootstrap.min.js"></script>
-	    <!-- Jquery Mobile Menu -->
+       <!-- Jquery Mobile Menu -->
         <script src="./assets/js/jquery.slicknav.min.js"></script>
 
-		<!-- Jquery Slick , Owl-Carousel Plugins -->
+      <!-- Jquery Slick , Owl-Carousel Plugins -->
         <script src="./assets/js/owl.carousel.min.js"></script>
         <script src="./assets/js/slick.min.js"></script>
         <!-- Date Picker -->
         <script src="./assets/js/gijgo.min.js"></script>
-		<!-- One Page, Animated-HeadLin -->
+      <!-- One Page, Animated-HeadLin -->
         <script src="./assets/js/wow.min.js"></script>
-		<script src="./assets/js/animated.headline.js"></script>
+      <script src="./assets/js/animated.headline.js"></script>
         <script src="./assets/js/jquery.magnific-popup.js"></script>
 
         <!-- Breaking New Pluging -->
         <script src="./assets/js/jquery.ticker.js"></script>
         <script src="./assets/js/site.js"></script>
 
-		<!-- Scrollup, nice-select, sticky -->
+      <!-- Scrollup, nice-select, sticky -->
         <script src="./assets/js/jquery.scrollUp.min.js"></script>
         <script src="./assets/js/jquery.nice-select.min.js"></script>
-		<script src="./assets/js/jquery.sticky.js"></script>
+      <script src="./assets/js/jquery.sticky.js"></script>
         
         <!-- contact js -->
         <script src="./assets/js/contact.js"></script>
@@ -290,7 +302,7 @@ a {
         <script src="./assets/js/mail-script.js"></script>
         <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
         
-		<!-- Jquery Plugins, main Jquery -->	
+      <!-- Jquery Plugins, main Jquery -->   
         <script src="./assets/js/plugins.js"></script>
         <script src="./assets/js/main.js"></script>
         

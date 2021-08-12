@@ -17,8 +17,8 @@ public class MvcConfiguration implements WebMvcConfigurer{
 
 		registry.addInterceptor(new LoginInterceptor())
 		.excludePathPatterns("/cfmember/cfLogin","/cfmember/register","/cfmember/jusoPopup", "/cfmember/checkEmail"
-				, "/cfmember/checkNickname", "/mypageload/checkFollow",
-				"/project/list","/project/alist","/project/detail","/project/plan","/project/randomList","/project/cancleAll","/cfmember/findPw")
+				, "/cfmember/checkNickname", "/mypageload/checkFollow","/project/randomListMain","/project/planList",
+				"/project/list","/project/alist","/project/detail","/project/plan","/project/randomList","/project/cancleAll")
 		.addPathPatterns("/cfmember/*","/project/*","/mypages/*");
 
 		registry.addInterceptor(new AdminLoginInterceptor())

@@ -2,9 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-    <div class="weekly2-news-area" style=" margin-bottom: 70px; margin-top: 30px;">
-    	<br><br>
-    	<h4 style="margin-left: 220px;">공개예정 프로젝트</h4>
+    <div class="weekly2-news-area">
     	<br><br>
         <div class="container">
             <div class="weekly2-wrapper">

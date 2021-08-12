@@ -75,7 +75,10 @@
 								<!-- Additional required wrapper -->
 								<div class="swiper-wrapper">
 									<!-- Slides -->
-									<div class="swiper-slide"><img src="<c:url value='/project_assets/swipe1.jpg'/>" style="width:100%;height:100%"></div>
+									<div class="swiper-slide">
+									<img src="<c:url value='/project_assets/swipe1.jpg'/>" style="width:100%;height:100%">
+									바보
+									</div>
 									<div class="swiper-slide"><img src="<c:url value='/project_assets/swipe2.jpg'/>" style="width:100%;height:100%"></div>
 									<div class="swiper-slide"><img src="<c:url value='/project_assets/swipe3.jpg'/>" style="width:100%;height:100%"></div>
 								</div>

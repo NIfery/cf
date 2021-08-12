@@ -307,7 +307,7 @@
 		<![CDATA[
 		<to_char(project_startdate, 'yyyy-mm-dd')
         order by dbms_random.value)
-        where rownum <= 8
+        where rownum <= 4
 		]]>
 	</select>
 	
